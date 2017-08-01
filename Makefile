@@ -19,6 +19,7 @@ EG = \
   $(QUICKEG)
 LISTHS   = find src mk tests eg -name \*.hs
 LISTOBJS = $(LISTHS) | sed -e 's/.hs$$/.o/'
+LISTLIBS = find src -name \*.hs
 ALLHS    = $(shell $(LISTHS))
 HSS      = $(shell $(LISTHS))
 ALLOBJS  = $(shell $(LISTOBJS))
@@ -101,13 +102,9 @@ clean-haddock:
 upload-haddock:
 	./mk/upload-haddock-to-hackage
 
-doc/index.html: $(ALLHS)
+doc/index.html: $(shell $(LISTLIBS))
 	./mk/haddock-i base template-haskell | xargs \
-	haddock --html -odoc $(ALLHS) --no-print-missing-docs --title=leancheck
-	@echo 'NOTE: please ensure that there are *only* 7'
-	@echo '      undocumented functions on Test.LeanCheck'
-	@echo '      as "OPTIONS_HADDOCK prune" is active'
-	@echo '      to hide cons6...cons12'
+	haddock --html -odoc $(shell $(LISTLIBS)) --no-print-missing-docs --title=extrapolate
 
 # NOTE: (very hacky!) the following target allows parallel compilation (-jN) of
 # eg and tests programs so long as they don't share dependencies _not_ stored
