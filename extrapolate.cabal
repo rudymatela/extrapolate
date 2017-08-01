@@ -1,7 +1,16 @@
 name:                extrapolate
 version:             0.0.0
--- synopsis:            
--- description:         
+synopsis:            generalize counter-examples of test properties
+description:
+  Extrapolate is a tool able to provide generalized counter-examples of test
+  properties where irrelevant sub-expressions are replaces with variables.
+  .
+  For the incorrect property @\xs -> nub xs == (xs::[Int])@:
+  .
+  * @[0,0]@ is a counter-example;
+  .
+  * @x:x:_@ is a generalized counter-example.
+
 license:             BSD3
 license-file:        LICENSE
 author:              Rudy Matela
