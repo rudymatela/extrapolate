@@ -4,37 +4,39 @@ Extrapolate
 [![Extrapolate Build Status][build-status]][build-log]
 [![Extrapolate on Hackage][hackage-version]][extrapolate-on-hackage]
 
-Extrapolate automatically generalizes counter-examples to test properties.
+Extrapolate is a property-based testing library capable of reporting
+generalized counter-examples.
 
 
 Example
 -------
 
-Consider the following (faulty) sort function and property:
+Consider the following (faulty) sort function and a property about it:
 
     sort :: Ord a => [a] -> [a]
-    sort [] = []
-    sort (x:xs) = sort (filter (< x) xs)
-               ++ [x]
-               ++ sort (filter (> x) xs)
+    sort []      =  []
+    sort (x:xs)  =  sort (filter (< x) xs)
+                 ++ [x]
+                 ++ sort (filter (> x) xs)
 
     prop_sortCount :: Ord a => a -> [a] -> Bool
-    prop_sortCount x xs = count x (sort xs) == count x xs
+    prop_sortCount x xs  =  count x (sort xs) == count x xs
       where
       count x = length . filter (== x)
 
-Extrapolate both returns a fully defined counter-example along with a
-generalization:
+After testing the property, Extrapolate returns a fully defined counter-example
+along with a generalization:
 
     > import Test.Extrapolate
     > check (prop_sortCount :: Int -> [Int] -> Bool)
     *** Failed! Falsifiable (after 4 tests):
     0 [0,0]
+
     Generalization:
     x (x:x:xs)
 
-This hopefully makes it easier to find the source of the bug.
-In this case, the faulty sort function discard repeated elements.
+This hopefully makes it easier to find the source of the bug.  In this case,
+the faulty sort function discards repeated elements.
 
 
 More documentation

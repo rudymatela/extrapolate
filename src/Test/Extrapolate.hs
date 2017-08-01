@@ -4,25 +4,34 @@
 -- License     : 3-Clause BSD  (see the file LICENSE)
 -- Maintainer  : Rudy Matela <rudy@matela.com.br>
 --
--- Extrapolate is a library for generalization of counter-examples.
+-- Extrapolate is a property-based testing library capable of reporting
+-- generalized counter-examples.
 --
 -- Consider the following faulty implementation of sort:
 --
 -- > sort :: Ord a => [a] -> [a]
--- > sort [] = []
--- > sort (x:xs) = sort (filter (< x) xs)
--- >            ++ [x]
--- >            ++ sort (filter (> x) xs)
+-- > sort []      =  []
+-- > sort (x:xs)  =  sort (filter (< x) xs)
+-- >              ++ [x]
+-- >              ++ sort (filter (> x) xs)
 --
--- Extrapolate works like so:
+-- When tests pass, Extrapolate works like a regular property-based testing
+-- library.  See:
 --
--- > > check $ \xs -> ordered (sort xs)
--- > +++ OK, passed 360 tests!
--- > > check $ \x xs -> count x (sort xs) == count x xs
--- > *** Failed! Falsifiable (after 4 tests):
--- > 0 [0,0]
+-- > > check $ \xs -> sort (sort xs :: [Int]) == sort xs
+-- > +++ OK, passed 360 tests.
+--
+-- When tests fail, Extrapolate reports a fully defined counter-example and a
+-- generalization of failing inputs.  See:
+--
+-- > > > check $ \xs -> length (sort xs :: [Int]) == length xs
+-- > *** Failed! Falsifiable (after 3 tests):
+-- > [0,0]
+-- >
 -- > Generalization:
--- > x (x:x:xs)
+-- > x:x:_
+--
+-- The property fails for any integer @x@ and for any list @_@ at the tail.
 module Test.Extrapolate
   ( module Test.Extrapolate.Core
   , module Test.Extrapolate.Basic
