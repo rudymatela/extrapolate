@@ -9,7 +9,7 @@ maintainer:          rudy@matela.com.br
 -- copyright:           
 category:            Testing
 build-type:          Simple
-extra-source-files:  ChangeLog.md
+extra-source-files:  README.md, TODO.md
 cabal-version:       >=1.10
 
 library
