@@ -35,13 +35,13 @@ source-repository this
 
 library
   exposed-modules: Test.Extrapolate
-                 , Test.Extrapolate.Derive
                  , Test.Extrapolate.Core
                  , Test.Extrapolate.Basic
+                 , Test.Extrapolate.Derive
                  , Test.Extrapolate.Exprs
-                 , Test.Extrapolate.TypeBinding
                  , Test.Extrapolate.IO
-  other-modules: Test.Extrapolate.Utils
+                 , Test.Extrapolate.TypeBinding
+  other-modules:   Test.Extrapolate.Utils
   other-extensions:    TemplateHaskell, CPP
   build-depends: base >=4.9 && <4.10
                , leancheck
