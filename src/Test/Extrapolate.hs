@@ -33,11 +33,40 @@
 --
 -- The property fails for any integer @x@ and for any list @_@ at the tail.
 module Test.Extrapolate
-  ( module Test.Extrapolate.Core
-  , module Test.Extrapolate.Basic
-  , module Test.Extrapolate.Derive
+  (
+-- * Checking properties
+    check
+  , checkResult
+  , for
+  , withBackground
+  , withConditionSize
+  , withInstances
+
+-- * Obtaining generalizations
+  , counterExampleGen
+  , counterExampleGens
+
+-- * Generalizable types
+  , Generalizable (..)
+  , this
+  , these
+  , usefuns
+  , nameOf
+  , Expr (..)
+  , constant, showConstant
+
+-- * Testable properties
+  , Testable
+
+-- ** Automatically deriving Generalizable instances
+  , deriveGeneralizable
+  , deriveGeneralizableIfNeeded
+  , deriveGeneralizableCascading
+
+-- * Other useful modules
   , module Test.Extrapolate.TypeBinding
-  , module Test.Extrapolate.IO
+  , module Test.LeanCheck
+  , module Test.LeanCheck.Utils.TypeBinding
   )
 where
 
@@ -46,3 +75,16 @@ import Test.Extrapolate.Basic
 import Test.Extrapolate.Derive
 import Test.Extrapolate.TypeBinding
 import Test.Extrapolate.IO
+
+import Test.LeanCheck hiding
+  ( Testable (..)
+  , results
+  , counterExamples
+  , counterExample
+  , productWith
+  , check
+  , checkFor
+  , checkResult
+  , checkResultFor
+  )
+import Test.LeanCheck.Utils.TypeBinding
