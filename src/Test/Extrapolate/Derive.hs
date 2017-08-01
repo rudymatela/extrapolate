@@ -44,9 +44,20 @@ import Data.Typeable
 -- will automatically derive the following 'Generalizable' instance:
 --
 -- > instance Generalizable a => Generalizable (Stack a) where
--- >   tiers = cons2 Stack \/ cons0 Empty
+-- >   expr (Stack x y) = constant "Stack" (argTypes2 Stack x y) :$ expr x :$ expr y
+-- >   expr Empty       = constant "Empty" (argTypes0 Empty)
+-- >   instances s = this "s" s
+-- >               $ let Stack x y = Stack undefined undefined `asTypeOf` s
+-- >                 in instances x
+-- >                  . instances y
 --
--- Needs the @TemplateHaskell@ extension.
+-- TODO: change the third line above to:
+--
+-- >   expr s@Empty     = constant "Empty" (Empty `asTypeOf` s)
+--
+-- As constructors with 0 arguments are a special case.
+--
+-- This function needs the @TemplateHaskell@ extension.
 deriveGeneralizable :: Name -> DecsQ
 deriveGeneralizable = deriveGeneralizableX True False
 
