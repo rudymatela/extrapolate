@@ -1,0 +1,11 @@
+*** Failed! Falsifiable (after 96 tests):
+(Lang {modules = [], funcs = [Func {fnName = Var "a", args = [And (Int 0) (Bool False)], stmts = []}]})
+*** Failed! Falsifiable (after 96 tests):
+Lang [] [Func (Var "a") [And (Int 0) (Bool False)] []]
+
+Generalization:
+Lang _ (Func _ (And (Int _) (Bool _):_) _:_)
+
+Conditional Generalization:
+Lang _ (Func _ (And e f:_) _:_)  when  e /= f
+

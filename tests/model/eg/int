@@ -1,0 +1,47 @@
+Properties that should be OK:
++++ OK, passed 360 tests.
+
++++ OK, passed 360 tests.
+
++++ OK, passed 360 tests.
+
++++ OK, passed 360 tests.
+
+
+Properties that should fail:
+*** Failed! Falsifiable (after 1 tests):
+0
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 1 tests):
+0
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 1 tests):
+0 0
+
+Generalization:
+x x
+
+*** Failed! Falsifiable (after 1 tests):
+0 0 0
+
+Generalization:
+_ x x
+
+*** Failed! Falsifiable (after 1 tests):
+(0,0)
+
+Generalization:
+(x,x)
+
+*** Failed! Falsifiable (after 1 tests):
+(0,0,0)
+
+Generalization:
+(_,x,x)
+

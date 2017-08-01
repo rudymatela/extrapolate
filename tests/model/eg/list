@@ -1,0 +1,43 @@
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 4 tests):
+[] [0,0]
+
+Generalization:
+xs (x:x:xs)
+
+Conditional Generalization:
+xs (_:xs)  when  0 /= length xs
+
+*** Failed! Falsifiable (after 6 tests):
+[0,1]
+
+Conditional Generalization:
+[x,y]  when  x /= y
+
+*** Failed! Falsifiable (after 3 tests):
+[0,0]
+
+Generalization:
+x:x:_
+
+*** Failed! Falsifiable (after 2 tests):
+[0]
+
+Generalization:
+_:_
+
+Conditional Generalization:
+xs  when  0 /= length xs
+
+*** Failed! Falsifiable (after 2 tests):
+[] [0]
+
+Generalization:
+_ (_:_)
+
+Conditional Generalization:
+_ xs  when  0 /= length xs
+
++++ OK, passed 360 tests.
+

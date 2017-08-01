@@ -1,0 +1,37 @@
+name:                extrapolate
+version:             0.0.0
+-- synopsis:            
+-- description:         
+license:             BSD3
+license-file:        LICENSE
+author:              Rudy Matela
+maintainer:          rudy@matela.com.br
+-- copyright:           
+category:            Testing
+build-type:          Simple
+extra-source-files:  ChangeLog.md
+cabal-version:       >=1.10
+
+library
+  exposed-modules: Test.Extrapolate
+                 , Test.Extrapolate.Derive
+                 , Test.Extrapolate.Core
+                 , Test.Extrapolate.Basic
+                 , Test.Extrapolate.Exprs
+                 , Test.Extrapolate.TypeBinding
+                 , Test.Extrapolate.IO
+  other-modules: Test.Extrapolate.Utils
+  other-extensions:    TemplateHaskell, CPP
+  build-depends: base >=4.9 && <4.10
+               , leancheck
+               , template-haskell
+               , speculate
+  hs-source-dirs:      src
+  default-language:    Haskell2010
+
+test-suite test
+  type:                exitcode-stdio-1.0
+  main-is:             test-extrapolate.hs
+  hs-source-dirs:      src, tests
+  build-depends:       base >= 4 && < 5, leancheck, speculate, template-haskell
+  default-language:    Haskell2010

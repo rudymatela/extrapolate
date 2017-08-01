@@ -1,0 +1,29 @@
+#!/bin/bash
+#
+# counts the number of constructors for the parser eg
+cat parser-out/* |
+sed "s/[{,][^=]*=//g;s/}//g"       | # remove record notation
+# cat; exit # for things without record notation
+sed "s/[()]//g"                    | # remove parentheses
+sed "s/\[]/Nil/g"                  | # [] becomes Nil
+sed "s/\[/[ /g;s/]/ ]/g;s/,/ , /g" | # spaces around [ , ]
+sed 's/\\[0-9]*/0/g'               | # \123 becomes 0
+sed 's/""/E/g'                     | # "" becomes E
+sed 's/"."/C : E/g'                | # "c" becomes C : E
+sed 's/".."/C : C : E/g'           | # "cc" becomes C : C : E
+sed 's/"..."/C : C : C : E/g'      |
+sed 's/"...."/C : C : C : C : E/g' |
+sed 's/"....."/C : C : C : C : C : E/g' |
+sed 's/"......"/C : C : C : C : C : C : E/g' |
+sed 's/"......."/C : C : C : C : C : C : C : E/g' |
+sed 's/"........"/C : C : C : C : C : C : C : C : E/g' |
+sed 's/"........."/C : C : C : C : C : C : C : C : C : E/g' |
+sed 's/".........."/C : C : C : C : C : C : C : C : C : C : E/g' |
+sed 's/"..........."/C : C : C : C : C : C : C : C : C : C : C : E/g' |
+sed 's/"............"/C : C : C : C : C : C : C : C : C : C : C : C : E/g' |
+sed 's/"............."/C : C : C : C : C : C : C : C : C : C : C : C : C : E/g' |
+#wc -w; exit # for total count of words (divide by 100 for the mean)
+while read conses
+do
+	echo $conses | wc -w
+done

@@ -1,0 +1,8 @@
+*** Failed! Falsifiable (after 1053 tests):
+(HeapPP {program = Insert 0 (Insert 1 (Insert 0 (Unit 0))), theHeap = Node 0 (Node 0 (Node 1 Nil Nil) (Node 0 Nil Nil)) Nil})
+*** Failed! Falsifiable (after 1053 tests):
+heappp (Insert 0 (Insert 1 (Insert 0 (Unit 0))))
+
+Conditional Generalization:
+heappp (Insert x (Insert y (Insert x (Unit x))))  when  x < y
+

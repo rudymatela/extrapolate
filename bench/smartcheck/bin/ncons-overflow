@@ -1,0 +1,7 @@
+#!/bin/bash
+tail -n -1 -q overflow-out/* |
+#wc -w; exit
+while read s
+do
+	echo $s | wc -w
+done
