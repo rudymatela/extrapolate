@@ -19,6 +19,7 @@
 **/tags
 
 doc
+README.html
 
 mk/toplibs
 tests/test-extrapolate
