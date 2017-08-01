@@ -18,6 +18,8 @@
 **/TAGS
 **/tags
 
+doc
+
 mk/toplibs
 tests/test-extrapolate
 eg/sorting
