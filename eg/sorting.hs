@@ -10,10 +10,9 @@ sort (x:xs)  =  sort (filter (< x) xs)
 
 prop_sortOrdered :: Ord a => [a] -> Bool
 prop_sortOrdered xs  =  ordered (sort xs)
-
-
-ordered (x:y:xs) = x <= y && ordered (y:xs)
-ordered _ = True
+  where
+  ordered (x:y:xs) = x <= y && ordered (y:xs)
+  ordered _ = True
 
 prop_sortCount :: Ord a => a -> [a] -> Bool
 prop_sortCount x xs  =  count x (sort xs) == count x xs
