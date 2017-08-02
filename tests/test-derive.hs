@@ -3,12 +3,12 @@
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
 
--- List isomorphic to []
+-- List is isomorphic to []
 data List a = Cons a (List a)
             | Nil
   deriving (Show, Eq, Ord)
 
--- Perhaps isomorphic to Maybe
+-- Perhaps is isomorphic to Maybe
 data Perhaps a = Naught
                | Simply a
   deriving (Show, Eq, Ord)
