@@ -46,6 +46,8 @@ module Test.Extrapolate
   , counterExampleGens
 
 -- * Generalizable types
+-- | The following typeclass and functions are currently very hacky.
+--   Expect them to change in the near future.
   , Generalizable (..)
   , this
   , these
