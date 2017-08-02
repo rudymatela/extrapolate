@@ -37,6 +37,9 @@ data Tree a  = Node (Tree a) a (Tree a) | Empty
 data Leafy a = Branch (Leafy a) (Leafy a) | Leaf a
   deriving (Show, Eq, Ord)
 
+data Dict a b = Meaning a b (Dict a b)
+  deriving (Show, Eq, Ord)
+
 
 -- TODO: auto-derive Listable from deriveGeneralizable?
 deriveListable ''List
@@ -52,6 +55,8 @@ deriveListable ''Shared
 deriveListable ''Tree
 deriveListable ''Leafy
 
+deriveListable ''Dict
+
 
 -- deriveGeneralizable ''List         -- TODO: make this work
 -- deriveGeneralizable ''Perhaps      -- TODO: make this work
@@ -65,6 +70,8 @@ deriveGeneralizable ''Shared
 
 -- deriveGeneralizable ''Tree         -- TODO: make this work
 deriveGeneralizable ''Leafy
+
+deriveGeneralizable ''Dict
 
 
 main :: IO ()
