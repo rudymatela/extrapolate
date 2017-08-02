@@ -29,7 +29,7 @@ import Data.Maybe (listToMaybe, mapMaybe)
 import Data.List (find, intercalate)
 import Control.Exception as E (SomeException, catch, evaluate)
 
--- | Use @`for`@ to configure the number of tests performed by @check@:
+-- | Use @`for`@ to configure the number of tests performed by @check@.
 --
 -- > > check `for` 10080 $ \xs -> sort (sort xs) == sort (xs :: [Int])
 -- > +++ OK, passed 10080 tests.
@@ -38,12 +38,26 @@ import Control.Exception as E (SomeException, catch, evaluate)
 for :: Testable a => (WithOption a -> b) -> Int -> a -> b
 check `for` m  =  \p -> check $ p `With` MaxTests m
 
+-- | Allows the user to customize instance information available when generalized.
+--   (For advanced users.)
 withInstances :: Testable a => (WithOption a -> b) -> Instances -> a -> b
 check `withInstances` is  =  \p -> check $ p `With` ExtraInstances is
 
+-- | Use @`withBackground`@ to provide additional functions to appear in side-conditions.
+--
+-- > check `withBackground` [constant "isSpace" isSpace] $ \xs -> unwords (words xs) == xs
+-- > *** Failed! Falsifiable (after 4 tests):
+-- > " "
+-- >
+-- > Generalization:
+-- > ' ':_
+-- >
+-- > Conditional Generalization:
+-- > c:_  when  isSpace c
 withBackground :: Testable a => (WithOption a -> b) -> [Expr] -> a -> b
 check `withBackground` ufs  =  check `withInstances` usefuns (undefined::Option) ufs
 
+-- | Use @`withConditionSize`@ to configure the maximum condition size allowed.
 withConditionSize :: Testable a => (WithOption a -> b) -> Int -> a -> b
 check `withConditionSize` s  =   \p -> check $ p `With` MaxConditionSize s
 
