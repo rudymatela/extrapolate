@@ -64,9 +64,7 @@ instance (Generalizable a) => Generalizable (List a) where
   expr xs@Nil            = constant "Nil"  (Nil    -: xs)
   expr xs@(Cons y ys)    = constant "Cons" (Cons ->>: xs) :$ expr y :$ expr ys
   instances xs = this "xs" xs
-               $ let Cons y ys = Cons undefined undefined `asTypeOf` xs
-                 in instances y
-                  . instances ys
+               $ instances (argTy1of1 xs)
 -- note the use of -: and ->>: instead of argTypes<N>
 
 -- deriveGeneralizable ''Perhaps      -- TODO: make this work
