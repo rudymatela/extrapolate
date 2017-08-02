@@ -40,7 +40,6 @@ module Test.Extrapolate
   , for
   , withBackground
   , withConditionSize
-  , withInstances
 
 -- * Obtaining generalizations
   , counterExampleGen
