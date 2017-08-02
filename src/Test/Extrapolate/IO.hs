@@ -29,6 +29,12 @@ import Data.Maybe (listToMaybe, mapMaybe)
 import Data.List (find, intercalate)
 import Control.Exception as E (SomeException, catch, evaluate)
 
+-- | Use @`for`@ to configure the number of tests performed by @check@:
+--
+-- > > check `for` 10080 $ \xs -> sort (sort xs) == sort (xs :: [Int])
+-- > +++ OK, passed 10080 tests.
+--
+-- Don't forget the dollar (@$@)!
 for :: Testable a => (WithOption a -> b) -> Int -> a -> b
 check `for` m  =  \p -> check $ p `With` MaxTests m
 
@@ -45,11 +51,13 @@ check `withConditionSize` s  =   \p -> check $ p `With` MaxConditionSize s
 --
 -- > > check $ \xs -> sort (sort xs) == sort (xs::[Int])
 -- > +++ OK, passed 360 tests.
+-- >
 -- > > check $ \xs ys -> xs `union` ys == ys `union` (xs::[Int])
 -- > *** Failed! Falsifiable (after 4 tests):
 -- > [] [0,0]
+-- >
 -- > Generalization:
--- > [] (x:x:xs)
+-- > [] (x:x:_)
 check :: Testable a => a -> IO ()
 check p = checkResult p >> return ()
 
