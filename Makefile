@@ -4,6 +4,7 @@
 # License:     3-Clause BSD  (see the file LICENSE)
 # Maintainer:  Rudy Matela <rudy@matela.com.br>
 TESTS = \
+  tests/test-derive \
   tests/test-extrapolate
 QUICKEG = \
   eg/int \

@@ -23,6 +23,7 @@ README.html
 
 mk/toplibs
 tests/test-extrapolate
+tests/test-derive
 eg/sorting
 eg/list
 eg/int

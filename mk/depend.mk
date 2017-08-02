@@ -174,6 +174,21 @@ src/Test/Extrapolate/TypeBinding.o: \
   src/Test/Extrapolate/TypeBinding.hs
 src/Test/Extrapolate/Utils.o: \
   src/Test/Extrapolate/Utils.hs
+tests/test-derive.o: \
+  tests/Test.hs \
+  tests/test-derive.hs \
+  src/Test/Extrapolate/Utils.hs \
+  src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/IO.hs \
+  src/Test/Extrapolate/Exprs.hs \
+  src/Test/Extrapolate/Derive.hs \
+  src/Test/Extrapolate/Core.hs \
+  src/Test/Extrapolate/Basic.hs
+tests/test-derive: \
+  tests/Test.hs \
+  tests/test-derive.hs \
+  mk/toplibs
 tests/test-extrapolate.o: \
   tests/Test.hs \
   tests/test-extrapolate.hs \
