@@ -58,7 +58,17 @@ deriveListable ''Leafy
 deriveListable ''Dict
 
 
--- deriveGeneralizable ''List         -- TODO: make this work
+-- deriveGeneralizable ''List         -- TODO: make this work, target:
+
+instance (Generalizable a) => Generalizable (List a) where
+  expr xs@Nil            = constant "Nil"  (Nil    -: xs)
+  expr xs@(Cons y ys)    = constant "Cons" (Cons ->>: xs) :$ expr y :$ expr ys
+  instances xs = this "xs" xs
+               $ let Cons y ys = Cons undefined undefined `asTypeOf` xs
+                 in instances y
+                  . instances ys
+-- note the use of -: and ->>: instead of argTypes<N>
+
 -- deriveGeneralizable ''Perhaps      -- TODO: make this work
 -- deriveGeneralizable ''Ship         -- TODO: make this work
 -- deriveGeneralizable ''Arrangement  -- TODO: make this work
