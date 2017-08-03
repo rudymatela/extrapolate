@@ -44,7 +44,7 @@ library
   other-modules:   Test.Extrapolate.Utils
   other-extensions:    TemplateHaskell, CPP
   build-depends: base >=4.9 && <4.10
-               , leancheck
+               , leancheck >= 0.6.3 -- TODO: bump after LeanCheck release
                , template-haskell
                , speculate
   hs-source-dirs:      src
