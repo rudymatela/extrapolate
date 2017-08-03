@@ -4,8 +4,8 @@ Extrapolate
 [![Extrapolate Build Status][build-status]][build-log]
 [![Extrapolate on Hackage][hackage-version]][extrapolate-on-hackage]
 
-Extrapolate is a property-based testing library capable of reporting
-generalized counter-examples.
+Extrapolate is a property-based testing library for Haskell
+capable of reporting generalized counter-examples.
 
 
 Example
