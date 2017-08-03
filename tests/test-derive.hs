@@ -136,24 +136,20 @@ tests :: Int -> [Bool]
 tests n =
   [ True
 
-  , holds n $ idExprEval -:> ls int
-  , holds n $ idExprEval -:> ls bool
-  , holds n $ idExprEval -:> perhaps int
-  , holds n $ idExprEval -:> perhaps bool
-  , holds n $ idExprEval -:> ship int int
-  , holds n $ idExprEval -:> ship bool ()
---, holds n $ idExprEval -:> arrangement -- TODO: make this work
-
-  , holds n $ showOK -:> ls int
-  , holds n $ showOK -:> ls bool
-  , holds n $ showOK -:> perhaps int
-  , holds n $ showOK -:> perhaps bool
-  , holds n $ showOK -:> ship int int
-  , holds n $ showOK -:> ship bool ()
---, holds n $ showOK -:> arrangement -- TODO: make this work
+  , holds n $ generalizableOK -:> ls int
+  , holds n $ generalizableOK -:> ls bool
+  , holds n $ generalizableOK -:> perhaps int
+  , holds n $ generalizableOK -:> perhaps bool
+  , holds n $ generalizableOK -:> ship int int
+  , holds n $ generalizableOK -:> ship bool ()
+--, holds n $ generalizableOK -:> arrangement -- TODO: make this work
 
 -- TODO: add tests of isomorphicity
   ]
+
+
+generalizableOK :: (Eq a, Show a, Generalizable a) => a -> Bool
+generalizableOK x = idExprEval x && showOK x
 
 idExprEval :: (Eq a, Generalizable a) => a -> Bool
 idExprEval x = eval (error "idExprEval: could not eval") (expr x) == x
