@@ -8,7 +8,7 @@ module Test
   , mainTest
   , printLines
 
-  , (-:-), ll
+  , (-:-), ll, llb
 
   , zero, one
   )
@@ -17,6 +17,7 @@ where
 import System.Exit (exitFailure)
 import Data.List (elemIndices)
 import System.Environment (getArgs)
+import Test.Speculate.Expr (typ)
 
 import Test.Extrapolate
 
@@ -45,7 +46,12 @@ printLines = putStrLn . unlines . map show
 (-:-) :: Expr -> Expr -> Expr
 x -:- xs  =  consE :$ x :$ xs
   where
-  consE = constant ":" ((:) -:> int) 
+  consE = case show $ typ x of
+            "Int"  -> consEint
+            "Bool" -> consEbool
+            t      -> error $ "(-:-): unhandled type " ++ t
+  consEint   =  constant ":" ((:) -:> int)
+  consEbool  =  constant ":" ((:) -:> bool)
 infixr 5 -:-
 
 ll :: Expr
@@ -56,3 +62,12 @@ zero  =  expr (0 :: Int)
 
 one :: Expr
 one  =  expr (1 :: Int)
+
+llb :: Expr
+llb  =  expr ([] :: [Bool])
+
+false :: Expr
+false  =  expr False
+
+true :: Expr
+true  =  expr True

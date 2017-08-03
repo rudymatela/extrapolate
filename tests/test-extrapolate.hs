@@ -12,4 +12,5 @@ tests n =
   , expr ([0::Int])  == zero -:- ll
   , expr ([0::Int,1])  == zero -:- one -:- ll
   , holds n $ \xs -> expr xs == foldr (-:-) ll (map expr (xs :: [Int]))
+  , holds n $ \xs -> expr xs == foldr (-:-) llb (map expr (xs :: [Bool]))
   ]
