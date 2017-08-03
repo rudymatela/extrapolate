@@ -2,6 +2,7 @@
 -- Copyright (c) 2017 Rudy Matela.
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
+import Data.List (isPrefixOf)
 
 -- List is isomorphic to []
 data List a = Cons a (List a)
@@ -143,8 +144,24 @@ tests n =
   , holds n $ idExprEval -:> ship bool ()
 --, holds n $ idExprEval -:> arrangement -- TODO: make this work
 
+  , holds n $ showOK -:> ls int
+  , holds n $ showOK -:> ls bool
+  , holds n $ showOK -:> perhaps int
+  , holds n $ showOK -:> perhaps bool
+  , holds n $ showOK -:> ship int int
+  , holds n $ showOK -:> ship bool ()
+--, holds n $ showOK -:> arrangement -- TODO: make this work
+
 -- TODO: add tests of isomorphicity
   ]
 
 idExprEval :: (Eq a, Generalizable a) => a -> Bool
 idExprEval x = eval (error "idExprEval: could not eval") (expr x) == x
+
+showOK :: (Show a, Generalizable a) => a -> Bool
+showOK x = show x == dropType (show (expr x))
+  where
+  dropType :: String -> String
+  dropType cs     | " :: " `isPrefixOf` cs = ""
+  dropType ""     =  ""
+  dropType (c:cs) =  c : dropType cs
