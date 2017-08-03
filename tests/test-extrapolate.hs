@@ -57,6 +57,37 @@ tests n =
 --, holds n $ \xyzwvu -> show (expr xyzwvu)
 --                    == show (xyzwvu :: ((),Int,Integer,Bool,(),Int)) ++ " :: ((),Int,Integer,Bool,(),Int)"
 
+  , holds n $ idExprEval -:> ()
+  , holds n $ idExprEval -:> int
+  , holds n $ idExprEval -:> integer
+  , holds n $ idExprEval -:> bool
+  , holds n $ idExprEval -:> char
+  , holds 9 $ idExprEval -:> [()]
+  , holds n $ idExprEval -:> [int]
+  , holds n $ idExprEval -:> [integer]
+  , holds n $ idExprEval -:> [bool]
+  , holds n $ idExprEval -:> [char]
+  , holds n $ idExprEval -:> (mayb ())
+  , holds n $ idExprEval -:> (mayb int)
+  , holds n $ idExprEval -:> (mayb integer)
+  , holds n $ idExprEval -:> (mayb bool)
+  , holds n $ idExprEval -:> (mayb char)
+  , holds n $ idExprEval -:> (int,bool)
+  , holds n $ idExprEval -:> ((),integer)
+  , holds n $ idExprEval -:> ((),bool,integer)
+-- TODO: implement further tuple instances (4,5,6) and uncomment below
+--, holds n $ idExprEval -:> (int,(),bool,integer)
+--, holds n $ idExprEval -:> (int,(),bool,integer,char)
+--, holds n $ idExprEval -:> (string,int,(),bool,integer,char)
+-- TODO: implement further tuple instances (7,8,9,10,11,12) and uncomment below
+--, holds n $ idExprEval -:> ((),(),(),(),(),(),())
+--, holds n $ idExprEval -:> ((),(),(),(),(),(),(),())
+--, holds n $ idExprEval -:> ((),(),(),(),(),(),(),(),())
+--, holds n $ idExprEval -:> ((),(),(),(),(),(),(),(),(),())
+--, holds n $ idExprEval -:> ((),(),(),(),(),(),(),(),(),(),())
+--, holds n $ idExprEval -:> ((),(),(),(),(),(),(),(),(),(),(),())
+
+
   -- Silly test, as it basically replicates the actual implementation:
   , backgroundOf int =$ sort $= [ constant "==" $ (==) -:> int
                                 , constant "/=" $ (/=) -:> int
@@ -97,6 +128,9 @@ tests n =
   , maybeBackgroundOK (mayb bool)
   , maybeBackgroundOK (mayb char)
   ]
+
+idExprEval :: (Eq a, Generalizable a) => a -> Bool
+idExprEval x = eval (error "idExprEval: could not eval") (expr x) == x
 
 listBackgroundOK :: Generalizable a => a -> Bool
 listBackgroundOK x = backgroundOf [x] =$ sort $= backgroundListOf x
