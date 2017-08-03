@@ -159,8 +159,6 @@ tests n =
   , holds n $ generalizableOK -:> leafy bool
   , holds n $ generalizableOK -:> dict int bool
   , holds n $ generalizableOK -:> dict bool int
-
--- TODO: add tests of isomorphicity
   ]
 
 
