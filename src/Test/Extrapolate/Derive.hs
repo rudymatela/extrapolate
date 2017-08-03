@@ -21,7 +21,7 @@ module Test.Extrapolate.Derive
   )
 where
 
-import Test.Extrapolate.Core (Generalizable(..), Expr ((:$)))
+import Test.Extrapolate.Core hiding (isInstanceOf)
 import Test.Extrapolate.TypeBinding
 import Language.Haskell.TH
 import Test.LeanCheck.Basic
@@ -335,7 +335,11 @@ mergeIFns :: DecsQ -> DecsQ
 mergeIFns qds = do ds <- qds
                    return $ map m' ds
   where
+#if __GLASGOW_HASKELL__ < 800
+  m' (InstanceD   c ts ds) = InstanceD   c ts [foldr1 m ds]
+#else
   m' (InstanceD o c ts ds) = InstanceD o c ts [foldr1 m ds]
+#endif
   FunD n cs1 `m` FunD _ cs2 = FunD n (cs1 ++ cs2)
 
 mergeI :: DecsQ -> DecsQ -> DecsQ
@@ -343,13 +347,22 @@ qds1 `mergeI` qds2 = do ds1 <- qds1
                         ds2 <- qds2
                         return $ ds1 `m` ds2
   where
+#if __GLASGOW_HASKELL__ < 800
+  [InstanceD   c ts ds1] `m` [InstanceD   _ _ ds2] = [InstanceD   c ts (ds1 ++ ds2)]
+#else
   [InstanceD o c ts ds1] `m` [InstanceD _ _ _ ds2] = [InstanceD o c ts (ds1 ++ ds2)]
+#endif
 
 whereI :: DecsQ -> [Dec] -> DecsQ
 qds `whereI` w = do ds <- qds
                     return $ map (`aw` w) ds
+#if __GLASGOW_HASKELL__ < 800
+  where aw (InstanceD   c ts ds) w' = InstanceD   c ts (ds++w')
+        aw d                     _  = d
+#else
   where aw (InstanceD o c ts ds) w' = InstanceD o c ts (ds++w')
         aw d                     _  = d
+#endif
 
 -- > nubMerge xs ys == nub (merge xs ys)
 -- > nubMerge xs ys == nub (sort (xs ++ ys))
