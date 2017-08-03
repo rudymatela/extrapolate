@@ -41,6 +41,39 @@ data Dict a b = Meaning a b (Dict a b)
   deriving (Show, Eq, Ord)
 
 
+-- Dummy undefined values --
+
+ls :: a -> List a
+ls = undefined
+
+perhaps :: a -> Perhaps a
+perhaps = undefined
+
+ship :: a -> b -> Ship a b
+ship = undefined
+
+arrangement :: Arrangement
+arrangement = undefined
+
+nonEmptyList :: a -> NonEmptyList a
+nonEmptyList = undefined
+
+mutual :: a -> Mutual a
+mutual = undefined
+
+shared :: a -> Shared a
+shared = undefined
+
+tree :: a -> Tree a
+tree = undefined
+
+leafy :: a -> Leafy a
+leafy = undefined
+
+dict :: a -> b -> Dict a b
+dict = undefined
+
+
 -- TODO: auto-derive Listable from deriveGeneralizable?
 deriveListable ''List
 deriveListable ''Perhaps
@@ -101,5 +134,17 @@ main = mainTest tests 10000
 tests :: Int -> [Bool]
 tests n =
   [ True
+
+  , holds n $ idExprEval -:> ls int
+  , holds n $ idExprEval -:> ls bool
+  , holds n $ idExprEval -:> perhaps int
+  , holds n $ idExprEval -:> perhaps bool
+  , holds n $ idExprEval -:> ship int int
+  , holds n $ idExprEval -:> ship bool ()
+--, holds n $ idExprEval -:> arrangement -- TODO: make this work
+
 -- TODO: add tests of isomorphicity
   ]
+
+idExprEval :: (Eq a, Generalizable a) => a -> Bool
+idExprEval x = eval (error "idExprEval: could not eval") (expr x) == x
