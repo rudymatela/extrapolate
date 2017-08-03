@@ -130,7 +130,7 @@ deriveGeneralizable ''Dict
 
 
 main :: IO ()
-main = mainTest tests 10000
+main = mainTest tests 2160
 
 tests :: Int -> [Bool]
 tests n =
