@@ -57,6 +57,14 @@ tests n =
 --, holds n $ \xyzwvu -> show (expr xyzwvu)
 --                    == show (xyzwvu :: ((),Int,Integer,Bool,(),Int)) ++ " :: ((),Int,Integer,Bool,(),Int)"
 
+  -- Silly test, as it basically replicates the actual implementation:
+  , backgroundOf int =$ sort $= [ constant "==" $ (==) -:> int
+                                , constant "/=" $ (/=) -:> int
+                                , constant "<=" $ (<=) -:> int
+                                , constant "<"  $ (<)  -:> int
+                                ]
+
+  -- background tests
   , listBackgroundOK ()
   , listBackgroundOK int
   , listBackgroundOK integer
