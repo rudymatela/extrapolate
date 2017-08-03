@@ -143,6 +143,16 @@ tests n =
   , holds n $ generalizableOK -:> ship int int
   , holds n $ generalizableOK -:> ship bool ()
 --, holds n $ generalizableOK -:> arrangement -- TODO: make this work
+  , holds n $ generalizableOK -:> mutual int
+  , holds n $ generalizableOK -:> mutual bool
+  , holds n $ generalizableOK -:> shared int
+  , holds n $ generalizableOK -:> shared bool
+--, holds n $ generalizableOK -:> tree int  -- TODO: make this work
+--, holds n $ generalizableOK -:> tree bool -- TODO: make this work
+  , holds n $ generalizableOK -:> leafy int
+  , holds n $ generalizableOK -:> leafy bool
+--, holds n $ generalizableOK -:> dict int bool -- TODO: fix infinite loop
+--, holds n $ generalizableOK -:> dict bool int -- TODO: fix infinite loop
 
 -- TODO: add tests of isomorphicity
   ]
