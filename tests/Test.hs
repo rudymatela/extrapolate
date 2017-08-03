@@ -7,6 +7,10 @@ module Test
   , getMaxTestsFromArgs
   , mainTest
   , printLines
+
+  , (-:-), ll
+
+  , zero, one
   )
 where
 
@@ -37,3 +41,18 @@ mainTest tests n' = do
 
 printLines :: Show a => [a] -> IO ()
 printLines = putStrLn . unlines . map show
+
+(-:-) :: Expr -> Expr -> Expr
+x -:- xs  =  consE :$ x :$ xs
+  where
+  consE = constant ":" ((:) -:> int) 
+infixr 5 -:-
+
+ll :: Expr
+ll  =  expr ([] :: [Int])
+
+zero :: Expr
+zero  =  expr (0 :: Int)
+
+one :: Expr
+one  =  expr (1 :: Int)
