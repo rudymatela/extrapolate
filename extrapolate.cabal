@@ -60,6 +60,14 @@ test-suite test
   default-language:    Haskell2010
   ghc-options:         -dynamic
 
+test-suite derive
+  type:                exitcode-stdio-1.0
+  main-is:             test-derive.hs
+  hs-source-dirs:      src, tests
+  build-depends:       base >= 4 && < 5, leancheck, speculate, template-haskell
+  default-language:    Haskell2010
+  ghc-options:         -dynamic
+
 -- NOTE: for some reason, my system is not able to compile extrapolate using
 -- cabal unless the -dynamic flag is present in ghc-options.  I do not know if
 -- this affects other systems, so I am including it by default.
