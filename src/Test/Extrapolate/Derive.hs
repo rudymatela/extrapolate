@@ -44,18 +44,12 @@ import Data.Typeable
 -- will automatically derive the following 'Generalizable' instance:
 --
 -- > instance Generalizable a => Generalizable (Stack a) where
--- >   expr (Stack x y) = constant "Stack" (argTypes2 Stack x y) :$ expr x :$ expr y
--- >   expr Empty       = constant "Empty" (argTypes0 Empty)
+-- >   expr s@(Stack x y) = constant "Stack" (Stack ->>: s) :$ expr x :$ expr y
+-- >   expr s@Empty       = constant "Empty" (Empty   -: s)
 -- >   instances s = this "s" s
 -- >               $ let Stack x y = Stack undefined undefined `asTypeOf` s
 -- >                 in instances x
 -- >                  . instances y
---
--- TODO: change the third line above to:
---
--- >   expr s@Empty     = constant "Empty" (Empty `asTypeOf` s)
---
--- As constructors with 0 arguments are a special case.
 --
 -- This function needs the @TemplateHaskell@ extension.
 deriveGeneralizable :: Name -> DecsQ
@@ -93,14 +87,15 @@ reallyDeriveGeneralizable t = do
                   | c <- ''Generalizable:([''Eq | isEq] ++ [''Ord | isOrd])
                   , v <- vs]
   cs <- typeConstructorsArgNames t
+  asName <- newName "x"
   let generalizableExpr = mergeIFns $ foldr1 mergeI
-        [ do argTypesN <- lookupValN $ "argTypes" ++ show (length ns)
+        [ do retTypeOf <- lookupValN $ "-" ++ replicate (length ns) '>' ++ ":"
              let exprs = [[| expr $(varE n) |] | n <- ns]
-             let conex = foldl AppE (VarE argTypesN) $ (ConE c:map VarE ns)
-             let root = [| constant $(stringE $ showJustName c) $(return conex) |]
+             let conex = [| $(varE retTypeOf) $(conE c) $(varE asName) |]
+             let root = [| constant $(stringE $ showJustName c) $(conex) |]
              let rhs = foldl (\e1 e2 -> [| $e1 :$ $e2 |]) root exprs
              [d| instance Generalizable $(return nt) where
-                   expr ($(conP c (map varP ns))) = $rhs |]
+                   expr $(asP asName $ conP c (map varP ns)) = $rhs |]
         | (c,ns) <- cs
         ]
   let generalizableInstances = do

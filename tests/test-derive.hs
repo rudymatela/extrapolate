@@ -93,41 +93,46 @@ deriveListable ''Leafy
 deriveListable ''Dict
 
 
--- deriveGeneralizable ''List         -- TODO: make this work, target:
-
+deriveGeneralizable ''List
+{- -- derivation:
 instance (Generalizable a) => Generalizable (List a) where
   expr xs@Nil          =  constant "Nil"  (Nil    -: xs)
   expr xs@(Cons y ys)  =  constant "Cons" (Cons ->>: xs) :$ expr y :$ expr ys
   instances xs = this "xs" xs
                $ instances (argTy1of1 xs)
 -- note the use of -: and ->>: instead of argTypes<N>
+-}
 
--- deriveGeneralizable ''Perhaps      -- TODO: make this work
+deriveGeneralizable ''Perhaps
+{- -- derivation:
 instance (Generalizable a) => Generalizable (Perhaps a) where
   expr px@Naught      =  constant "Naught" (Naught  -: px)
   expr px@(Simply x)  =  constant "Simply" (Simply ->: px) :$ expr x
   instances px = this "px" px
                $ instances (argTy1of1 px)
+-}
 
--- deriveGeneralizable ''Ship         -- TODO: make this work
+deriveGeneralizable ''Ship
+{- -- derivation:
 instance (Generalizable a, Generalizable b) => Generalizable (Ship a b) where
   expr s@(Port x)       =  constant "Port"      (Port      ->: s) :$ expr x
   expr s@(Starboard y)  =  constant "Starboard" (Starboard ->: s) :$ expr y
   instances s = this "s" s
               $ instances (argTy1of2 s)
               . instances (argTy2of2 s)
+-}
 
--- deriveGeneralizable ''Arrangement  -- TODO: make this work
+-- deriveGeneralizable ''Arrangement -- TODO: make this work
 
 deriveGeneralizable ''NonEmptyList
 
 deriveGeneralizable ''Mutual
 deriveGeneralizable ''Shared
 
--- deriveGeneralizable ''Tree         -- TODO: make this work
+deriveGeneralizable ''Tree
 deriveGeneralizable ''Leafy
 
--- deriveGeneralizable ''Dict         -- TODO: make this work
+deriveGeneralizable ''Dict
 
 
 main :: IO ()
@@ -148,12 +153,12 @@ tests n =
   , holds n $ generalizableOK -:> mutual bool
   , holds n $ generalizableOK -:> shared int
   , holds n $ generalizableOK -:> shared bool
---, holds n $ generalizableOK -:> tree int  -- TODO: make this work
---, holds n $ generalizableOK -:> tree bool -- TODO: make this work
+  , holds n $ generalizableOK -:> tree int
+  , holds n $ generalizableOK -:> tree bool
   , holds n $ generalizableOK -:> leafy int
   , holds n $ generalizableOK -:> leafy bool
---, holds n $ generalizableOK -:> dict int bool -- TODO: make this work
---, holds n $ generalizableOK -:> dict bool int -- TODO: make this work
+  , holds n $ generalizableOK -:> dict int bool
+  , holds n $ generalizableOK -:> dict bool int
 
 -- TODO: add tests of isomorphicity
   ]
