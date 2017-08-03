@@ -76,6 +76,11 @@ class (Listable a, Typeable a, Show a) => Generalizable a where
   useful _ = []
   instances :: a -> Instances -> Instances
   instances _ = id
+-- TODO: change Generalizable to include name and background:
+--   name :: a -> String
+--   background :: a -> [Expr]
+-- Use the instance being declared itself on instances.
+-- This is a _big change_: prototype first.
 
 instance Generalizable () where
   expr = showConstant
