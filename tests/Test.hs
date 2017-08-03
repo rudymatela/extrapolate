@@ -11,6 +11,9 @@ module Test
   , (-:-), ll, llb
 
   , zero, one
+
+  , false, true
+  , nothing, nothingBool, just
   )
 where
 
@@ -71,3 +74,19 @@ false  =  expr False
 
 true :: Expr
 true  =  expr True
+
+nothing :: Expr
+nothing  =  constant "Nothing" (Nothing :: Maybe Int)
+
+nothingBool :: Expr
+nothingBool  =  constant "Nothing" (Nothing :: Maybe Bool)
+
+just :: Expr -> Expr
+just x  =  justE :$ x
+  where
+  justE = case show $ typ x of
+            "Int"  -> justEint
+            "Bool" -> justEbool
+            t      -> error $ "(-:-): unhandled type " ++ t
+  justEint   =  constant "Just" (Just -:> int)
+  justEbool  =  constant "Just" (Just -:> bool)

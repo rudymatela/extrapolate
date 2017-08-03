@@ -14,7 +14,15 @@ tests n =
   , expr ([0::Int])  == zero -:- ll
   , expr ([0::Int,1])  == zero -:- one -:- ll
   , holds n $ \xs -> expr xs == foldr (-:-) ll (map expr (xs :: [Int]))
-  , holds n $ \xs -> expr xs == foldr (-:-) llb (map expr (xs :: [Bool]))
+  , holds n $ \ps -> expr ps == foldr (-:-) llb (map expr (ps :: [Bool]))
+
+  -- Transforming Maybes into Exprs
+  , expr (Nothing    :: Maybe Int)   ==  nothing
+  , expr (Nothing    :: Maybe Bool)  ==  nothingBool
+  , expr (Just 1     :: Maybe Int)   ==  just one
+  , expr (Just False :: Maybe Bool)  ==  just false
+  , holds n $ \x -> expr (Just x) == just (expr (x :: Int))
+  , holds n $ \p -> expr (Just p) == just (expr (p :: Bool))
 
   -- TODO: test transforming of values of other types into Exprs
   ]
