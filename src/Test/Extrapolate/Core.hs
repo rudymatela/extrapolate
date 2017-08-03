@@ -19,6 +19,7 @@ module Test.Extrapolate.Core
   , usefuns
   , (+++)
   , nameOf
+  , backgroundOf
 
   , Option (..)
   , options
@@ -181,6 +182,9 @@ usefuns x es = [ Instance "Background" (typeOf x) es ]
 
 getBackground :: Instances -> [Expr]
 getBackground is = concat [es | Instance "Background" _ es <- is]
+
+backgroundOf :: Generalizable a => a -> [Expr]
+backgroundOf x = getBackground $ instances x []
 
 -- |  generalizes an expression by making it less defined,
 --    starting with smaller changes, then bigger changes:

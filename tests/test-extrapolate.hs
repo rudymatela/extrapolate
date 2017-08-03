@@ -2,6 +2,8 @@
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
 
+import Data.List (sort)
+
 main :: IO ()
 main = mainTest tests 10000
 
@@ -54,4 +56,49 @@ tests n =
 --                   == show (xyzwv :: ((),Int,Integer,Bool,())) ++ " :: ((),Int,Integer,Bool,())"
 --, holds n $ \xyzwvu -> show (expr xyzwvu)
 --                    == show (xyzwvu :: ((),Int,Integer,Bool,(),Int)) ++ " :: ((),Int,Integer,Bool,(),Int)"
+
+  , listBackgroundOK ()
+  , listBackgroundOK int
+  , listBackgroundOK integer
+  , listBackgroundOK bool
+  , listBackgroundOK char
+  , listBackgroundOK [()]
+  , listBackgroundOK [int]
+  , listBackgroundOK [integer]
+  , listBackgroundOK [bool]
+  , listBackgroundOK [char]
+  , listBackgroundOK (mayb ())
+  , listBackgroundOK (mayb int)
+  , listBackgroundOK (mayb integer)
+  , listBackgroundOK (mayb bool)
+  , listBackgroundOK (mayb char)
+
+  , maybeBackgroundOK ()
+  , maybeBackgroundOK int
+  , maybeBackgroundOK integer
+  , maybeBackgroundOK bool
+  , maybeBackgroundOK char
+  , maybeBackgroundOK [()]
+  , maybeBackgroundOK [int]
+  , maybeBackgroundOK [integer]
+  , maybeBackgroundOK [bool]
+  , maybeBackgroundOK [char]
+  , maybeBackgroundOK (mayb ())
+  , maybeBackgroundOK (mayb int)
+  , maybeBackgroundOK (mayb integer)
+  , maybeBackgroundOK (mayb bool)
+  , maybeBackgroundOK (mayb char)
   ]
+
+listBackgroundOK :: Generalizable a => a -> Bool
+listBackgroundOK x = backgroundOf [x] =$ sort $= backgroundListOf x
+  where
+  backgroundListOf x = [ constant "length" $ length  -:> [x]
+                       , constant "filter" $ filter ->:> [x]
+                       ]
+                     +++ backgroundOf x
+
+maybeBackgroundOK :: Generalizable a => a -> Bool
+maybeBackgroundOK x = backgroundOf (mayb x) =$ sort $= backgroundMaybeOf x
+  where
+  backgroundMaybeOf x = [constant "Just" $ Just -:> x] +++ backgroundOf x

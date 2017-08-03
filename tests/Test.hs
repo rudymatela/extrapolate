@@ -2,6 +2,8 @@
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 module Test
   ( module Test.Extrapolate
+  , module Test.Extrapolate.Core
+  , module Test.LeanCheck.Utils.Operators
 
   , reportTests
   , getMaxTestsFromArgs
@@ -26,6 +28,8 @@ import System.Environment (getArgs)
 import Test.Speculate.Expr (typ)
 
 import Test.Extrapolate
+import Test.Extrapolate.Core hiding (false, true)
+import Test.LeanCheck.Utils.Operators
 
 reportTests :: [Bool] -> IO ()
 reportTests tests =
