@@ -13,7 +13,10 @@ module Test
   , zero, one
 
   , false, true
+
   , nothing, nothingBool, just
+
+  , comma
   )
 where
 
@@ -90,3 +93,17 @@ just x  =  justE :$ x
             t      -> error $ "(-:-): unhandled type " ++ t
   justEint   =  constant "Just" (Just -:> int)
   justEbool  =  constant "Just" (Just -:> bool)
+
+comma :: Expr -> Expr -> Expr
+comma x y  =  commaE :$ x :$ y
+  where
+  commaE  =  case (show $ typ x, show $ typ y) of
+               ("Int", "Int")  -> commaEii
+               ("Int", "Bool") -> commaEib
+               ("Bool","Int")  -> commaEbi
+               ("Bool","Bool") -> commaEbb
+               (t,t')          -> error $ "(-:-): unhandled types " ++ t ++ " " ++ t'
+  commaEii  =  constant "," ((,) ->>: (int,int))
+  commaEib  =  constant "," ((,) ->>: (int,bool))
+  commaEbi  =  constant "," ((,) ->>: (bool,int))
+  commaEbb  =  constant "," ((,) ->>: (bool,bool))

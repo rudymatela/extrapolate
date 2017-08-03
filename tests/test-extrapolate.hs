@@ -24,5 +24,7 @@ tests n =
   , holds n $ \x -> expr (Just x) == just (expr (x :: Int))
   , holds n $ \p -> expr (Just p) == just (expr (p :: Bool))
 
-  -- TODO: test transforming of values of other types into Exprs
+  -- Transforming Tuples into Exprs
+  , expr ((0,False) :: (Int,Bool))  ==  zero `comma` false
+  , expr ((True,1)  :: (Bool,Int))  ==  true `comma` one
   ]
