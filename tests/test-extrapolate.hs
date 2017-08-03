@@ -27,4 +27,31 @@ tests n =
   -- Transforming Tuples into Exprs
   , expr ((0,False) :: (Int,Bool))  ==  zero `comma` false
   , expr ((True,1)  :: (Bool,Int))  ==  true `comma` one
+
+  -- Showing of Exprs
+  , holds n $ \x -> show (expr x) == show (x :: ()) ++ " :: ()"
+  , holds n $ \x -> show (expr x) == show (x :: Int) ++ " :: Int"
+  , holds n $ \p -> show (expr p) == show (p :: Bool) ++ " :: Bool"
+  , holds n $ \x -> show (expr x) == show (x :: Integer) ++ " :: Integer"
+
+  , holds 9 $ \xs -> show (expr xs) == show (xs :: [()]) ++ " :: [()]"
+  , holds n $ \xs -> show (expr xs) == show (xs :: [Int]) ++ " :: [Int]"
+  , holds n $ \ps -> show (expr ps) == show (ps :: [Bool]) ++ " :: [Bool]"
+  , holds n $ \xs -> show (expr xs) == show (xs :: [Integer]) ++ " :: [Integer]"
+
+  , holds n $ \mx -> show (expr mx) == show (mx :: Maybe ()) ++ " :: Maybe ()"
+  , holds n $ \mx -> show (expr mx) == show (mx :: Maybe Int) ++ " :: Maybe Int"
+  , holds n $ \mp -> show (expr mp) == show (mp :: Maybe Bool) ++ " :: Maybe Bool"
+  , holds n $ \mx -> show (expr mx) == show (mx :: Maybe Integer) ++ " :: Maybe Integer"
+
+  , holds n $ \xy -> show (expr xy) == show (xy :: ((),Int)) ++ " :: ((),Int)"
+  , holds n $ \xy -> show (expr xy) == show (xy :: (Bool,Integer)) ++ " :: (Bool,Integer)"
+  , holds n $ \xyz -> show (expr xyz) == show (xyz :: ((),Int,Bool)) ++ " :: ((),Int,Bool)"
+-- TODO: implement further tuple instances (4,5,6) and uncomment below
+--, holds n $ \xyzw -> show (expr xyzw)
+--                  == show (xyzw :: ((),Int,Integer,Bool)) ++ " :: ((),Int,Integer,Bool)"
+--, holds n $ \xyzwv -> show (expr xyzwv)
+--                   == show (xyzwv :: ((),Int,Integer,Bool,())) ++ " :: ((),Int,Integer,Bool,())"
+--, holds n $ \xyzwvu -> show (expr xyzwvu)
+--                    == show (xyzwvu :: ((),Int,Integer,Bool,(),Int)) ++ " :: ((),Int,Integer,Bool,(),Int)"
   ]
