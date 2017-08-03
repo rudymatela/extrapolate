@@ -64,3 +64,7 @@ test-suite test
 -- cabal unless the -dynamic flag is present in ghc-options.  I do not know if
 -- this affects other systems, so I am including it by default.
 --           --  Rudy  2017-08-01
+-- NOTE: now, when packages that don't have dynamic but depend on Extrapolate
+-- are compiled, cabal complains about asking for "" and getting "dyn".  Adding
+-- -dynamic to those packages temporarily solves those problems.  A more
+-- definitive fix is to come.
