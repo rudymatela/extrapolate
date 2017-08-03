@@ -8,9 +8,13 @@ main = mainTest tests 10000
 tests :: Int -> [Bool]
 tests n =
   [ True
+
+  -- Transforming lists into Exprs
   , expr ([]::[Int]) == constant "[]" ([]::[Int])
   , expr ([0::Int])  == zero -:- ll
   , expr ([0::Int,1])  == zero -:- one -:- ll
   , holds n $ \xs -> expr xs == foldr (-:-) ll (map expr (xs :: [Int]))
   , holds n $ \xs -> expr xs == foldr (-:-) llb (map expr (xs :: [Bool]))
+
+  -- TODO: test transforming of values of other types into Exprs
   ]
