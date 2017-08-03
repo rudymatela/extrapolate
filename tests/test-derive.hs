@@ -39,6 +39,7 @@ data Leafy a = Branch (Leafy a) (Leafy a) | Leaf a
   deriving (Show, Eq, Ord)
 
 data Dict a b = Meaning a b (Dict a b)
+              | End
   deriving (Show, Eq, Ord)
 
 
@@ -126,7 +127,7 @@ deriveGeneralizable ''Shared
 -- deriveGeneralizable ''Tree         -- TODO: make this work
 deriveGeneralizable ''Leafy
 
-deriveGeneralizable ''Dict
+-- deriveGeneralizable ''Dict         -- TODO: make this work
 
 
 main :: IO ()
@@ -151,8 +152,8 @@ tests n =
 --, holds n $ generalizableOK -:> tree bool -- TODO: make this work
   , holds n $ generalizableOK -:> leafy int
   , holds n $ generalizableOK -:> leafy bool
---, holds n $ generalizableOK -:> dict int bool -- TODO: fix infinite loop
---, holds n $ generalizableOK -:> dict bool int -- TODO: fix infinite loop
+--, holds n $ generalizableOK -:> dict int bool -- TODO: make this work
+--, holds n $ generalizableOK -:> dict bool int -- TODO: make this work
 
 -- TODO: add tests of isomorphicity
   ]
