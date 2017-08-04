@@ -29,6 +29,7 @@ import Test.LeanCheck.Utils.TypeBinding
 import Control.Monad (unless, liftM, liftM2, filterM)
 import Data.List (delete,nub,sort)
 import Data.Char (toLower)
+import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Data.Typeable
 
 -- | Derives a 'Generalizable' instance for a given type 'Name'.
@@ -83,7 +84,12 @@ reallyDeriveGeneralizable t = do
   isEq <- t `isInstanceOf` ''Eq
   isOrd <- t `isInstanceOf` ''Ord
   (nt,vs) <- normalizeType t
+#if __GLASGOW_HASKELL__ >= 710
   cxt <- sequence [ [t| $(conT c) $(return v) |]
+#else
+  -- template-haskell <= 2.9.0.0:
+  cxt <- sequence [ classP c [return v]
+#endif
                   | c <- ''Generalizable:([''Eq | isEq] ++ [''Ord | isOrd])
                   , v <- vs]
   cs <- typeConstructorsArgNames t

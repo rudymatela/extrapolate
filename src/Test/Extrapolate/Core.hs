@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveDataTypeable #-} -- for GHC <= 7.8
 -- |
 -- Module      : Test.Extrapolate.Core
 -- Copyright   : (c) 2017 Rudy Matela
@@ -68,6 +69,7 @@ import Test.Extrapolate.Exprs (fold, unfold)
 import Data.Maybe (listToMaybe, fromJust, isJust)
 import Data.Either (isRight)
 import Data.List (insert)
+import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Test.Extrapolate.Exprs
 import Test.LeanCheck.Error (errorToFalse)
 
@@ -222,7 +224,7 @@ productWith f xs ys = [f x y | x <- xs, y <- ys]
 data Option = MaxTests Int
             | ExtraInstances Instances
             | MaxConditionSize Int
-  deriving Show
+  deriving (Show, Typeable) -- Typeable needed for GHC <= 7.8
 
 data WithOption a = With
                   { property :: a

@@ -1,4 +1,5 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveDataTypeable, StandaloneDeriving, CPP #-} -- for GHC <= 7.8
 
 -- Copied from SmartCheck's examples,
 -- Which in turn was,
@@ -10,6 +11,13 @@ import Data.Typeable
 import Test.Extrapolate
 import qualified Test.LeanCheck as Lean
 import Test.LeanCheck.Utils
+
+#if __GLASGOW_HASKELL__ < 710
+import Data.Typeable (Typeable)
+deriving instance Typeable Heap
+deriving instance Typeable HeapP
+deriving instance Typeable HeapPP
+#endif
 
 
 instance (Ord a, Listable a) => Listable (Heap a) where

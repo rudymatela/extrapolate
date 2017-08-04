@@ -1,8 +1,14 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveDataTypeable, StandaloneDeriving, CPP #-} -- for GHC <= 7.8
 import Test.Extrapolate
 import Test.LeanCheck.Utils
 import qualified Test.LeanCheck as Lean
 import Data.Int
+
+#if __GLASGOW_HASKELL__ < 710
+import Data.Typeable (Typeable)
+deriving instance Typeable T
+#endif
 
 type I  =  [Int16]
 data T  =  T I I I I I

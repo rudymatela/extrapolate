@@ -1,8 +1,23 @@
 {-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveDataTypeable, StandaloneDeriving, CPP #-} -- for GHC <= 7.8
 -- Copyright (c) 2017 Rudy Matela.
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
 import Data.List (isPrefixOf)
+
+#if __GLASGOW_HASKELL__ < 710
+import Data.Typeable (Typeable)
+deriving instance Typeable List
+deriving instance Typeable Perhaps
+deriving instance Typeable Ship
+deriving instance Typeable Arrangement
+deriving instance Typeable NonEmptyList
+deriving instance Typeable Mutual
+deriving instance Typeable Shared
+deriving instance Typeable Tree
+deriving instance Typeable Leafy
+deriving instance Typeable Dict
+#endif
 
 -- List is isomorphic to []
 data List a = Cons a (List a)

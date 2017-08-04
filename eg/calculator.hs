@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveDataTypeable, StandaloneDeriving, CPP #-} -- for GHC <= 7.8
 -- Example taken from Lee Pike's SmartCheck:
 -- https://github.com/leepike/SmartCheck/blob/master/paper/paper.pdf
 -- https://github.com/leepike/smartcheck
@@ -7,6 +8,11 @@ import Control.Monad
 import Test.Extrapolate hiding (eval)
 import Data.Maybe
 import qualified Test.LeanCheck as Lean
+
+#if __GLASGOW_HASKELL__ < 710
+import Data.Typeable (Typeable)
+deriving instance Typeable Exp
+#endif
 
 data Exp = C Int
          | Add Exp Exp

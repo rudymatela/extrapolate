@@ -1,3 +1,4 @@
+{-# LANGUAGE DeriveDataTypeable #-} -- for GHC <= 7.8
 -- |
 -- Module      : Test.Extrapolate.IO
 -- Copyright   : (c) 2017 Rudy Matela
@@ -34,7 +35,7 @@ import Test.Speculate.Expr hiding
 import qualified Test.Speculate.Expr as E
 import qualified Test.Speculate.Engine as E
 import Test.LeanCheck.Error (errorToFalse)
-import Data.Typeable (typeOf, TypeRep)
+import Data.Typeable (typeOf, TypeRep, Typeable)
 import Data.List ((\\))
 
 canonicalizeWith :: Instances -> [Expr] -> [Expr]
@@ -75,6 +76,7 @@ isAssignmentTest is m e = length rs > 1 && length (filter id rs) == 1
   rs = [errorToFalse $ eval False e' | [e'] <- take m $ grounds is [e]]
 
 data MarkerType = MarkerType
+  deriving Typeable -- for GHC <= 7.8
 
 fold :: [Expr] -> Expr
 fold []     = constant "[]" MarkerType
