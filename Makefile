@@ -79,6 +79,7 @@ legacy-test: # needs ghc-7.10 and ghc-7.8 installed as such
 
 legacy-test-via-cabal: # needs similarly named cabal wrappers
 	cabal clean && cabal-ghc-7.10 test
+	cabal clean && cabal-ghc-7.8  test
 	cabal clean && cabal test
 
 prepare-legacy-test: prepare-legacy-test-7.10 prepare-legacy-test-7.8
