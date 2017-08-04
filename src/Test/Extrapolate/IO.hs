@@ -80,7 +80,7 @@ check p = checkResult p >> return ()
 --   returning 'True' on success.
 --
 -- There is no option to silence this function:
--- for silence, you should use 'TestLean.Check.holds'.
+-- for silence, you should use 'Test.LeanCheck.holds'.
 checkResult :: Testable a => a -> IO Bool
 checkResult p = do
   (r,ces) <- resultIO m p
