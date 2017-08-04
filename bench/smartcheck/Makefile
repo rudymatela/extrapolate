@@ -1,4 +1,5 @@
 GHC=ghc-7.10
+GHCI=ghci-7.10
 BENCH= \
   sorting \
   parser \
@@ -74,6 +75,9 @@ overflow: overflow.hs
 
 %: %.hs
 	$(GHC) -dynamic -O2 -package-db .cabal-sandbox/*-$(GHC).*-packages.conf.d $< && touch $@
+
+%.ghci: %.hs
+	$(GHCI) -dynamic -package-db .cabal-sandbox/*-$(GHC).*-packages.conf.d $<
 
 prepare:
 	git clone $(SMARTCHECK) smartcheck
