@@ -4,23 +4,6 @@ TODO
 A non-exhaustive list of things TO DO for Extrapolate.
 
 
-bugs
-----
-
-* `stack-derivation`:
-  the current derivation mechanism cannot handle the following datatype:
-
-    data Stack a = Stack a (Stack a) | Empty
-
-  Change it to use `asTypeOf` instead of `argTypes0`.
-
-* `simplify-derived-instances`:
-  it seems to me that `argTypesN` is too complicated and unreliable and there
-  is a simpler solution.  Maybe using sommething like `stack-derivation` but
-  for all other arities of constructors.  For example, I don't think
-  `argTypesN` can handle the `Either` type.  Test and see.
-
-
 examples
 --------
 
