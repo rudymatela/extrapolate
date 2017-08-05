@@ -188,8 +188,6 @@ tests n =
   , instancesOK (dict int bool)
 
   ,       int  `sameTiersIn` ls int
-  ,       bool `sameTiersIn` ls bool
-  , not $ int  `sameTiersIn` ls bool
   , not $ bool `sameTiersIn` ls int
   ,       ()   `sameTiersIn` perhaps ()
   , not $ ()   `sameTiersIn` perhaps int
