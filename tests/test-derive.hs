@@ -166,41 +166,22 @@ tests n =
   , generalizableOK n (leafy int)
   , generalizableOK n (dict bool int)
 
-  ,       int  `sameTiersIn` ls int
-  , not $ bool `sameTiersIn` ls int
-  ,       ()   `sameTiersIn` perhaps ()
-  , not $ ()   `sameTiersIn` perhaps int
-  ,       char `sameTiersIn` ship char int
-  ,       int  `sameTiersIn` ship char int
-  , not $ bool `sameTiersIn` ship char int
-  ,       int  `sameTiersIn` mutual int
-  ,       int  `sameTiersIn` shared int
-  , shared int `sameTiersIn` mutual int
-  , mutual ()  `sameTiersIn` shared ()
-  ,       bool `sameTiersIn` tree bool
-  ,       int  `sameTiersIn` leafy int
-  ,       int  `sameTiersIn` dict int bool
-  ,       bool `sameTiersIn` dict int bool
-  ,       bool `sameTiersIn` dict int (perhaps (ship char bool))
+  ,       int  `instancesSubset` ls int
+  , not $ bool `instancesSubset` ls int
+  ,       ()   `instancesSubset` perhaps ()
+  , not $ ()   `instancesSubset` perhaps int
+  ,       char `instancesSubset` ship char int
+  ,       int  `instancesSubset` ship char int
+  , not $ bool `instancesSubset` ship char int
+  ,       int  `instancesSubset` mutual int
+  ,       int  `instancesSubset` shared int
+  , shared int `instancesSubset` mutual int
+  , mutual ()  `instancesSubset` shared ()
+  ,       bool `instancesSubset` tree bool
+  ,       int  `instancesSubset` leafy int
+  ,       int  `instancesSubset` dict int bool
+  ,       bool `instancesSubset` dict int bool
+  ,       bool `instancesSubset` dict int (perhaps (ship char bool))
   , shared (ship (ls char) bool)
-    `sameTiersIn` dict int (perhaps (mutual (ship (ls char) bool)))
-
-  ,       int  `bgSubset` ls int
-  , not $ bool `bgSubset` ls int
-  ,       ()   `bgSubset` perhaps ()
-  ,       ()   `bgSubset` perhaps int -- () has no background!
-  ,       char `bgSubset` ship char int
-  ,       int  `bgSubset` ship char int
-  , not $ bool `bgSubset` ship char int
-  ,       int  `bgSubset` mutual int
-  ,       int  `bgSubset` shared int
-  , shared int `bgSubset` mutual int
-  , mutual ()  `bgSubset` shared ()
-  ,       bool `bgSubset` tree bool
-  ,       int  `bgSubset` leafy int
-  ,       int  `bgSubset` dict int bool
-  ,       bool `bgSubset` dict int bool
-  ,       bool `bgSubset` dict int (perhaps (ship char bool))
-  , shared (ship (ls char) bool)
-    `bgSubset` dict int (perhaps (mutual (ship (ls char) bool)))
+    `instancesSubset` dict int (perhaps (mutual (ship (ls char) bool)))
   ]

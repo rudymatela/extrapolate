@@ -28,6 +28,8 @@ module Test
   , tiersOK, sameTiersIn, tiersIn
 
   , subset, bgSubset
+
+  , instancesSubset
   )
 where
 
@@ -192,4 +194,9 @@ subset :: Ord a => [a] -> [a] -> Bool
 xs `subset` ys = sort xs `isSubsequenceOf` sort ys
 
 bgSubset :: (Generalizable a, Generalizable b) => a -> b -> Bool
-bgSubset x y = backgroundOf x `subset` backgroundOf y
+x `bgSubset` y = backgroundOf x `subset` backgroundOf y
+
+instancesSubset :: (Eq a, Eq b, Generalizable a, Generalizable b) => a -> b -> Bool
+x `instancesSubset` y = x `bgSubset` y
+                     && x `sameTiersIn` y
+                     && x `sameNamesIn` y

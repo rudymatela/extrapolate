@@ -86,9 +86,9 @@ tests n =
   , maybeBackgroundOK char
   , maybeBackgroundOK [(int,bool,[mayb (char,())])]
 
-  , int              `bgSubset` [mayb [int]]
-  , bool             `bgSubset` ((),bool,char)
-  , [mayb ((),char)] `bgSubset` [(int,(char,[mayb ((),char)]),bool)]
+  , int              `instancesSubset` [mayb [int]]
+  , bool             `instancesSubset` ((),bool,char)
+  , [mayb ((),char)] `instancesSubset` [(int,(char,[mayb ((),char)]),bool)]
   ]
 
 listBackgroundOK :: Generalizable a => a -> Bool
