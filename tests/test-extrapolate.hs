@@ -129,9 +129,6 @@ tests n =
   , maybeBackgroundOK (mayb char)
   ]
 
-idExprEval :: (Eq a, Generalizable a) => a -> Bool
-idExprEval x = eval (error "idExprEval: could not eval") (expr x) == x
-
 listBackgroundOK :: Generalizable a => a -> Bool
 listBackgroundOK x = backgroundOf [x] =$ sort $= backgroundListOf x
   where
