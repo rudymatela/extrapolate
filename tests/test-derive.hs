@@ -175,6 +175,8 @@ tests n =
   , not $ bool `sameTiersIn` ship char int
   ,       int  `sameTiersIn` mutual int
   ,       int  `sameTiersIn` shared int
+  , shared int `sameTiersIn` mutual int
+  , mutual ()  `sameTiersIn` shared ()
   ,       bool `sameTiersIn` tree bool
   ,       int  `sameTiersIn` leafy int
   ,       int  `sameTiersIn` dict int bool
@@ -182,4 +184,23 @@ tests n =
   ,       bool `sameTiersIn` dict int (perhaps (ship char bool))
   , shared (ship (ls char) bool)
     `sameTiersIn` dict int (perhaps (mutual (ship (ls char) bool)))
+
+  ,       int  `bgSubset` ls int
+  , not $ bool `bgSubset` ls int
+  ,       ()   `bgSubset` perhaps ()
+  ,       ()   `bgSubset` perhaps int -- () has no background!
+  ,       char `bgSubset` ship char int
+  ,       int  `bgSubset` ship char int
+  , not $ bool `bgSubset` ship char int
+  ,       int  `bgSubset` mutual int
+  ,       int  `bgSubset` shared int
+  , shared int `bgSubset` mutual int
+  , mutual ()  `bgSubset` shared ()
+  ,       bool `bgSubset` tree bool
+  ,       int  `bgSubset` leafy int
+  ,       int  `bgSubset` dict int bool
+  ,       bool `bgSubset` dict int bool
+  ,       bool `bgSubset` dict int (perhaps (ship char bool))
+  , shared (ship (ls char) bool)
+    `bgSubset` dict int (perhaps (mutual (ship (ls char) bool)))
   ]
