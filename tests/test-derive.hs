@@ -3,9 +3,6 @@
 -- Copyright (c) 2017 Rudy Matela.
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
-import Data.List (isPrefixOf)
-import Data.Typeable (typeOf)
-import Test.Speculate.Expr.Instance as I
 
 #if __GLASGOW_HASKELL__ < 710
 import Data.Typeable (Typeable)
@@ -196,61 +193,3 @@ tests n =
   , shared (ship (ls char) bool)
     `sameTiersIn` dict int (perhaps (mutual (ship (ls char) bool)))
   ]
-
-
-generalizableOK :: (Eq a, Show a, Generalizable a) => a -> Bool
-generalizableOK = idExprEval &&& showOK
-
-idExprEval :: (Eq a, Generalizable a) => a -> Bool
-idExprEval x = eval (error "idExprEval: could not eval") (expr x) == x
-
-showOK :: (Show a, Generalizable a) => a -> Bool
-showOK x = show x == dropType (show (expr x))
-  where
-  dropType :: String -> String
-  dropType cs     | " :: " `isPrefixOf` cs = ""
-  dropType ""     =  ""
-  dropType (c:cs) =  c : dropType cs
-
-instancesOK :: (Eq a, Generalizable a) => a -> Bool
-instancesOK = namesOK &&& tiersOK
-
-namesOK :: Generalizable a => a -> Bool
-namesOK x =  x `sameNamesIn` [x]
-          && x `sameNamesIn` [[x]]
-          && x `sameNamesIn` mayb x
-          && x `sameNamesIn` (x,x)
-          && x `sameNamesIn` (x,())
-          && x `sameNamesIn` ((),x)
-          && x `sameNamesIn` (x,(),())
-          && x `sameNamesIn` ((),x,())
-          && x `sameNamesIn` ((),(),x)
-
-sameNamesIn :: (Generalizable a, Generalizable b) => a -> b -> Bool
-x `sameNamesIn` c = x `namesIn` x
-           =| 12 |= x `namesIn` c
-
-namesIn :: (Generalizable a, Generalizable b) => a -> b -> [String]
-x `namesIn` c = I.names (instances c []) (typeOf x)
-
-tiersOK :: (Eq a, Generalizable a) => a -> Bool
-tiersOK x =  x `sameTiersIn` x
-          && x `sameTiersIn` [x]
-          && x `sameTiersIn` [[x]]
-          && x `sameTiersIn` (mayb x)
-          && x `sameTiersIn` (x,x)
-          && x `sameTiersIn` (x,())
-          && x `sameTiersIn` ((),x)
-          && x `sameTiersIn` (x,(),())
-          && x `sameTiersIn` ((),x,())
-          && x `sameTiersIn` ((),(),x)
-
-sameTiersIn :: (Eq a, Generalizable a, Generalizable b) => a -> b -> Bool
-x `sameTiersIn` cx = isListable (instances cx []) (typeOf x)
-                  && (tiers -: [[x]]) =| 6 |= tiersIn cx
-
-tiersIn :: (Generalizable a, Generalizable b) => b -> [[a]]
-tiersIn c = ret
-  where
-  ret = mapT (eval . error $ "tiersIn: the imposible happened")
-      $ tiersE (instances c []) (typeOf (head (head ret)))

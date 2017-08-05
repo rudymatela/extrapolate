@@ -19,6 +19,13 @@ module Test
   , nothing, nothingBool, just
 
   , comma
+
+  -- * Properties and Tests
+  , generalizableOK
+  , idExprEval, showOK
+  , instancesOK
+  , namesOK, sameNamesIn, namesIn
+  , tiersOK, sameTiersIn, tiersIn
   )
 where
 
@@ -26,6 +33,9 @@ import System.Exit (exitFailure)
 import Data.List (elemIndices)
 import System.Environment (getArgs)
 import Test.Speculate.Expr (typ)
+import Test.Speculate.Expr.Instance as I
+import Data.Typeable (typeOf)
+import Data.List (isPrefixOf)
 
 import Test.Extrapolate
 import Test.Extrapolate.Core hiding (false, true)
@@ -111,3 +121,63 @@ comma x y  =  commaE :$ x :$ y
   commaEib  =  constant "," ((,) ->>: (int,bool))
   commaEbi  =  constant "," ((,) ->>: (bool,int))
   commaEbb  =  constant "," ((,) ->>: (bool,bool))
+
+
+-- Properties and tests --
+
+generalizableOK :: (Eq a, Show a, Generalizable a) => a -> Bool
+generalizableOK = idExprEval &&& showOK
+
+idExprEval :: (Eq a, Generalizable a) => a -> Bool
+idExprEval x = eval (error "idExprEval: could not eval") (expr x) == x
+
+showOK :: (Show a, Generalizable a) => a -> Bool
+showOK x = show x == dropType (show (expr x))
+  where
+  dropType :: String -> String
+  dropType cs     | " :: " `isPrefixOf` cs = ""
+  dropType ""     =  ""
+  dropType (c:cs) =  c : dropType cs
+
+instancesOK :: (Eq a, Generalizable a) => a -> Bool
+instancesOK = namesOK &&& tiersOK
+
+namesOK :: Generalizable a => a -> Bool
+namesOK x =  x `sameNamesIn` [x]
+          && x `sameNamesIn` [[x]]
+          && x `sameNamesIn` mayb x
+          && x `sameNamesIn` (x,x)
+          && x `sameNamesIn` (x,())
+          && x `sameNamesIn` ((),x)
+          && x `sameNamesIn` (x,(),())
+          && x `sameNamesIn` ((),x,())
+          && x `sameNamesIn` ((),(),x)
+
+sameNamesIn :: (Generalizable a, Generalizable b) => a -> b -> Bool
+x `sameNamesIn` c = x `namesIn` x
+           =| 12 |= x `namesIn` c
+
+namesIn :: (Generalizable a, Generalizable b) => a -> b -> [String]
+x `namesIn` c = I.names (instances c []) (typeOf x)
+
+tiersOK :: (Eq a, Generalizable a) => a -> Bool
+tiersOK x =  x `sameTiersIn` x
+          && x `sameTiersIn` [x]
+          && x `sameTiersIn` [[x]]
+          && x `sameTiersIn` (mayb x)
+          && x `sameTiersIn` (x,x)
+          && x `sameTiersIn` (x,())
+          && x `sameTiersIn` ((),x)
+          && x `sameTiersIn` (x,(),())
+          && x `sameTiersIn` ((),x,())
+          && x `sameTiersIn` ((),(),x)
+
+sameTiersIn :: (Eq a, Generalizable a, Generalizable b) => a -> b -> Bool
+x `sameTiersIn` cx = isListable (instances cx []) (typeOf x)
+                  && (tiers -: [[x]]) =| 6 |= tiersIn cx
+
+tiersIn :: (Generalizable a, Generalizable b) => b -> [[a]]
+tiersIn c = ret
+  where
+  ret = mapT (eval . error $ "tiersIn: the imposible happened")
+      $ tiersE (instances c []) (typeOf (head (head ret)))
