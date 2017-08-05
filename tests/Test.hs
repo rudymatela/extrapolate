@@ -26,6 +26,8 @@ module Test
   , instancesOK
   , namesOK, sameNamesIn, namesIn
   , tiersOK, sameTiersIn, tiersIn
+
+  , subset, bgSubset
   )
 where
 
@@ -35,7 +37,7 @@ import System.Environment (getArgs)
 import Test.Speculate.Expr (typ)
 import Test.Speculate.Expr.Instance as I
 import Data.Typeable (typeOf)
-import Data.List (isPrefixOf)
+import Data.List (isPrefixOf, isSubsequenceOf, sort)
 
 import Test.Extrapolate
 import Test.Extrapolate.Core hiding (false, true)
@@ -181,3 +183,9 @@ tiersIn c = ret
   where
   ret = mapT (eval . error $ "tiersIn: the imposible happened")
       $ tiersE (instances c []) (typeOf (head (head ret)))
+
+subset :: Ord a => [a] -> [a] -> Bool
+xs `subset` ys = sort xs `isSubsequenceOf` sort ys
+
+bgSubset :: (Generalizable a, Generalizable b) => a -> b -> Bool
+bgSubset x y = backgroundOf x `subset` backgroundOf y
