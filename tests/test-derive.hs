@@ -4,6 +4,8 @@
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
 import Data.List (isPrefixOf)
+import Data.Typeable (typeOf)
+import Test.Speculate.Expr.Instance as I
 
 #if __GLASGOW_HASKELL__ < 710
 import Data.Typeable (Typeable)
@@ -174,11 +176,39 @@ tests n =
   , holds n $ generalizableOK -:> leafy bool
   , holds n $ generalizableOK -:> dict int bool
   , holds n $ generalizableOK -:> dict bool int
+
+  , instancesOK (ls int)
+  , instancesOK (perhaps bool)
+  , instancesOK (ship bool ())
+--, instancesOK (arrangement) -- TODO: make this work
+  , instancesOK (mutual int)
+  , instancesOK (shared bool)
+  , instancesOK (tree int)
+  , instancesOK (leafy bool)
+  , instancesOK (dict int bool)
+
+  ,       int  `sameTiersIn` ls int
+  ,       bool `sameTiersIn` ls bool
+  , not $ int  `sameTiersIn` ls bool
+  , not $ bool `sameTiersIn` ls int
+  ,       ()   `sameTiersIn` perhaps ()
+  , not $ ()   `sameTiersIn` perhaps int
+  ,       char `sameTiersIn` ship char int
+  ,       int  `sameTiersIn` ship char int
+  , not $ bool `sameTiersIn` ship char int
+  ,       int  `sameTiersIn` mutual int
+  ,       int  `sameTiersIn` shared int
+  ,       bool `sameTiersIn` tree bool
+  ,       int  `sameTiersIn` leafy int
+  ,       int  `sameTiersIn` dict int bool
+  ,       bool `sameTiersIn` dict int bool
+  ,       bool `sameTiersIn` dict int (perhaps (ship char bool))
+  , ship (ls char) bool `sameTiersIn` dict int (perhaps (ship (ls char) bool))
   ]
 
 
 generalizableOK :: (Eq a, Show a, Generalizable a) => a -> Bool
-generalizableOK x = idExprEval x && showOK x
+generalizableOK = idExprEval &&& showOK
 
 idExprEval :: (Eq a, Generalizable a) => a -> Bool
 idExprEval x = eval (error "idExprEval: could not eval") (expr x) == x
@@ -190,3 +220,53 @@ showOK x = show x == dropType (show (expr x))
   dropType cs     | " :: " `isPrefixOf` cs = ""
   dropType ""     =  ""
   dropType (c:cs) =  c : dropType cs
+
+instancesOK :: (Eq a, Generalizable a) => a -> Bool
+instancesOK = namesOK &&& tiersOK
+
+namesOK :: Generalizable a => a -> Bool
+namesOK x =  names_x === names_xs
+          && names_x === names_xss
+          && names_x === names_mx
+          && names_x === names_xx
+          && names_x === names_xu
+          && names_x === names_ux
+          && names_x === names_xuu
+          && names_x === names_uxu
+          && names_x === names_uux
+  where
+  xs === ys = xs =| 12 |= ys
+  names_x   = getNames $ instances x         []
+  names_xs  = getNames $ instances [x]       []
+  names_xss = getNames $ instances [[x]]     []
+  names_mx  = getNames $ instances (mayb x)  []
+  names_xx  = getNames $ instances (x,x)     []
+  names_xu  = getNames $ instances (x,())    []
+  names_ux  = getNames $ instances ((),x)    []
+  names_xuu = getNames $ instances (x,(),()) []
+  names_uxu = getNames $ instances ((),x,()) []
+  names_uux = getNames $ instances ((),(),x) []
+  getNames :: Instances -> [String]
+  getNames is = I.names is (typeOf x)
+
+tiersOK :: (Eq a, Generalizable a) => a -> Bool
+tiersOK x =  x `sameTiersIn` x
+          && x `sameTiersIn` [x]
+          && x `sameTiersIn` [[x]]
+          && x `sameTiersIn` (mayb x)
+          && x `sameTiersIn` (x,x)
+          && x `sameTiersIn` (x,())
+          && x `sameTiersIn` ((),x)
+          && x `sameTiersIn` (x,(),())
+          && x `sameTiersIn` ((),x,())
+          && x `sameTiersIn` ((),(),x)
+
+sameTiersIn :: (Eq a, Generalizable a, Generalizable b) => a -> b -> Bool
+x `sameTiersIn` cx = isListable (instances cx []) (typeOf x)
+                  && (tiers -: [[x]]) =| 6 |= tiersIn cx
+
+tiersIn :: (Generalizable a, Generalizable b) => b -> [[a]]
+tiersIn c = ret
+  where
+  ret = mapT (eval . error $ "tiersIn: the imposible happened")
+      $ tiersE (instances c []) (typeOf (head (head ret)))
