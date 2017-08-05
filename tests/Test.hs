@@ -127,8 +127,12 @@ comma x y  =  commaE :$ x :$ y
 
 -- Properties and tests --
 
-generalizableOK :: (Eq a, Show a, Generalizable a) => a -> Bool
-generalizableOK = idExprEval &&& showOK
+generalizableOK :: (Eq a, Show a, Generalizable a) => Int -> a -> Bool
+generalizableOK n x = holds n (exprOK -:> x)
+                   && instancesOK x
+
+exprOK :: (Eq a, Show a, Generalizable a) => a -> Bool
+exprOK = idExprEval &&& showOK
 
 idExprEval :: (Eq a, Generalizable a) => a -> Bool
 idExprEval x = eval (error "idExprEval: could not eval") (expr x) == x

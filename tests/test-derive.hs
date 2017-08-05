@@ -156,25 +156,15 @@ tests :: Int -> [Bool]
 tests n =
   [ True
 
-  , holds n $ generalizableOK -:> ls bool
-  , holds n $ generalizableOK -:> perhaps int
-  , holds n $ generalizableOK -:> ship int char
---, holds n $ generalizableOK -:> arrangement -- TODO: make this work
-  , holds n $ generalizableOK -:> mutual bool
-  , holds n $ generalizableOK -:> shared int
-  , holds n $ generalizableOK -:> tree bool
-  , holds n $ generalizableOK -:> leafy int
-  , holds n $ generalizableOK -:> dict bool int
-
-  , instancesOK (ls int)
-  , instancesOK (perhaps bool)
-  , instancesOK (ship bool ())
---, instancesOK (arrangement) -- TODO: make this work
-  , instancesOK (mutual int)
-  , instancesOK (shared bool)
-  , instancesOK (tree int)
-  , instancesOK (leafy bool)
-  , instancesOK (dict int bool)
+  , generalizableOK n (ls bool)
+  , generalizableOK n (perhaps int)
+  , generalizableOK n (ship int char)
+--, generalizableOK n (arrangement) -- TODO: make this work
+  , generalizableOK n (mutual bool)
+  , generalizableOK n (shared int)
+  , generalizableOK n (tree bool)
+  , generalizableOK n (leafy int)
+  , generalizableOK n (dict bool int)
 
   ,       int  `sameTiersIn` ls int
   , not $ bool `sameTiersIn` ls int

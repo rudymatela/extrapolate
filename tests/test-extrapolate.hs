@@ -38,66 +38,35 @@ tests n =
                                         ++ " :: ((),(Maybe Int),[Bool])"
 
   -- Generalizable instance properties
-  , holds n $ generalizableOK -:> ()
-  , holds n $ generalizableOK -:> int
-  , holds n $ generalizableOK -:> integer
-  , holds n $ generalizableOK -:> bool
-  , holds n $ generalizableOK -:> char
-  , holds 9 $ generalizableOK -:> [()]
-  , holds n $ generalizableOK -:> [int]
-  , holds n $ generalizableOK -:> [integer]
-  , holds n $ generalizableOK -:> [bool]
-  , holds n $ generalizableOK -:> [char]
-  , holds n $ generalizableOK -:> (mayb ())
-  , holds n $ generalizableOK -:> (mayb int)
-  , holds n $ generalizableOK -:> (mayb integer)
-  , holds n $ generalizableOK -:> (mayb bool)
-  , holds n $ generalizableOK -:> (mayb char)
-  , holds n $ generalizableOK -:> (int,bool)
-  , holds n $ generalizableOK -:> ((),integer)
-  , holds n $ generalizableOK -:> ((),bool,integer)
+  , generalizableOK n ()
+  , generalizableOK n int
+  , generalizableOK n integer
+  , generalizableOK n bool
+  , generalizableOK n char
+  , generalizableOK 9 [()]
+  , generalizableOK n [int]
+  , generalizableOK n [integer]
+  , generalizableOK n [bool]
+  , generalizableOK n [char]
+  , generalizableOK n (mayb ())
+  , generalizableOK n (mayb int)
+  , generalizableOK n (mayb integer)
+  , generalizableOK n (mayb bool)
+  , generalizableOK n (mayb char)
+  , generalizableOK n (int,bool)
+  , generalizableOK n ((),integer)
+  , generalizableOK n ((),bool,integer)
 -- TODO: implement further tuple instances (4,5,6) and uncomment below
---, holds n $ generalizableOK -:> (int,(),bool,integer)
---, holds n $ generalizableOK -:> (int,(),bool,integer,char)
---, holds n $ generalizableOK -:> (string,int,(),bool,integer,char)
+--, generalizableOK n (int,(),bool,integer)
+--, generalizableOK n (int,(),bool,integer,char)
+--, generalizableOK n (string,int,(),bool,integer,char)
 -- TODO: implement further tuple instances (7,8,9,10,11,12) and uncomment below
---, holds n $ generalizableOK -:> ((),(),(),(),(),(),())
---, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),())
---, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),(),())
---, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),(),(),())
---, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),(),(),(),())
---, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),(),(),(),(),())
-
-  -- Properties about the "instances" function.
-  , instancesOK ()
-  , instancesOK int
-  , instancesOK integer
-  , instancesOK bool
-  , instancesOK char
-  , instancesOK [()]
-  , instancesOK [int]
-  , instancesOK [integer]
-  , instancesOK [bool]
-  , instancesOK [char]
-  , instancesOK (mayb ())
-  , instancesOK (mayb int)
-  , instancesOK (mayb integer)
-  , instancesOK (mayb bool)
-  , instancesOK (mayb char)
-  , instancesOK (int,bool)
-  , instancesOK ((),integer)
-  , instancesOK ((),bool,integer)
--- TODO: implement further tuple instances (4,5,6) and uncomment below
---, instancesOK (int,(),bool,integer)
---, instancesOK (int,(),bool,integer,char)
---, instancesOK (string,int,(),bool,integer,char)
--- TODO: implement further tuple instances (7,8,9,10,11,12) and uncomment below
---, instancesOK ((),(),(),(),(),(),())
---, instancesOK ((),(),(),(),(),(),(),())
---, instancesOK ((),(),(),(),(),(),(),(),())
---, instancesOK ((),(),(),(),(),(),(),(),(),())
---, instancesOK ((),(),(),(),(),(),(),(),(),(),())
---, instancesOK ((),(),(),(),(),(),(),(),(),(),(),())
+--, generalizableOK n ((),(),(),(),(),(),())
+--, generalizableOK n ((),(),(),(),(),(),(),())
+--, generalizableOK n ((),(),(),(),(),(),(),(),())
+--, generalizableOK n ((),(),(),(),(),(),(),(),(),())
+--, generalizableOK n ((),(),(),(),(),(),(),(),(),(),())
+--, generalizableOK n ((),(),(),(),(),(),(),(),(),(),(),())
 
   -- Silly test, as it basically replicates the actual implementation:
   , backgroundOf int =$ sort $= [ constant "==" $ (==) -:> int
