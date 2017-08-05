@@ -78,35 +78,13 @@ tests n =
   -- background tests
   , listBackgroundOK ()
   , listBackgroundOK int
-  , listBackgroundOK integer
   , listBackgroundOK bool
-  , listBackgroundOK char
-  , listBackgroundOK [()]
-  , listBackgroundOK [int]
-  , listBackgroundOK [integer]
-  , listBackgroundOK [bool]
-  , listBackgroundOK [char]
-  , listBackgroundOK (mayb ())
-  , listBackgroundOK (mayb int)
-  , listBackgroundOK (mayb integer)
-  , listBackgroundOK (mayb bool)
-  , listBackgroundOK (mayb char)
+  , listBackgroundOK [(mayb (),integer,mayb char)]
 
   , maybeBackgroundOK ()
-  , maybeBackgroundOK int
   , maybeBackgroundOK integer
-  , maybeBackgroundOK bool
   , maybeBackgroundOK char
-  , maybeBackgroundOK [()]
-  , maybeBackgroundOK [int]
-  , maybeBackgroundOK [integer]
-  , maybeBackgroundOK [bool]
-  , maybeBackgroundOK [char]
-  , maybeBackgroundOK (mayb ())
-  , maybeBackgroundOK (mayb int)
-  , maybeBackgroundOK (mayb integer)
-  , maybeBackgroundOK (mayb bool)
-  , maybeBackgroundOK (mayb char)
+  , maybeBackgroundOK [(int,bool,[mayb (char,())])]
 
   , int              `bgSubset` [mayb [int]]
   , bool             `bgSubset` ((),bool,char)
