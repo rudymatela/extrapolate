@@ -193,7 +193,8 @@ tests n =
   ,       int  `sameTiersIn` dict int bool
   ,       bool `sameTiersIn` dict int bool
   ,       bool `sameTiersIn` dict int (perhaps (ship char bool))
-  , ship (ls char) bool `sameTiersIn` dict int (perhaps (ship (ls char) bool))
+  , shared (ship (ls char) bool)
+    `sameTiersIn` dict int (perhaps (mutual (ship (ls char) bool)))
   ]
 
 
