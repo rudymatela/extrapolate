@@ -106,8 +106,9 @@ reallyDeriveGeneralizable t = do
         ]
   let generalizableInstances = do
         n <- newName "x"
-        let rhs = foldr1 (\e1 e2 -> [| $e1 . $e2 |])
-                         [letin n c ns | (c,ns) <- cs, not (null ns)]
+        let lets = [letin n c ns | (c,ns) <- cs, not (null ns)]
+        let rhs | null lets = [| id |]
+                | otherwise = foldr1 (\e1 e2 -> [| $e1 . $e2 |]) lets
         case (isEq, isOrd) of
           (True, True) ->
                [d| instance Generalizable $(return nt) where

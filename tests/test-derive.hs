@@ -139,7 +139,7 @@ instance (Generalizable a, Generalizable b) => Generalizable (Ship a b) where
   instances s = ...
 -}
 
--- deriveGeneralizable ''Arrangement -- TODO: make this work
+deriveGeneralizable ''Arrangement
 
 deriveGeneralizable ''NonEmptyList
 
@@ -162,7 +162,7 @@ tests n =
   , generalizableOK n (ls bool)
   , generalizableOK n (perhaps int)
   , generalizableOK n (ship int char)
---, generalizableOK n (arrangement) -- TODO: make this work
+  , generalizableOK n (arrangement)
   , generalizableOK n (mutual bool)
   , generalizableOK n (shared int)
   , generalizableOK n (tree bool)
