@@ -216,29 +216,22 @@ instancesOK :: (Eq a, Generalizable a) => a -> Bool
 instancesOK = namesOK &&& tiersOK
 
 namesOK :: Generalizable a => a -> Bool
-namesOK x =  names_x === names_xs
-          && names_x === names_xss
-          && names_x === names_mx
-          && names_x === names_xx
-          && names_x === names_xu
-          && names_x === names_ux
-          && names_x === names_xuu
-          && names_x === names_uxu
-          && names_x === names_uux
-  where
-  xs === ys = xs =| 12 |= ys
-  names_x   = getNames $ instances x         []
-  names_xs  = getNames $ instances [x]       []
-  names_xss = getNames $ instances [[x]]     []
-  names_mx  = getNames $ instances (mayb x)  []
-  names_xx  = getNames $ instances (x,x)     []
-  names_xu  = getNames $ instances (x,())    []
-  names_ux  = getNames $ instances ((),x)    []
-  names_xuu = getNames $ instances (x,(),()) []
-  names_uxu = getNames $ instances ((),x,()) []
-  names_uux = getNames $ instances ((),(),x) []
-  getNames :: Instances -> [String]
-  getNames is = I.names is (typeOf x)
+namesOK x =  x `sameNamesIn` [x]
+          && x `sameNamesIn` [[x]]
+          && x `sameNamesIn` mayb x
+          && x `sameNamesIn` (x,x)
+          && x `sameNamesIn` (x,())
+          && x `sameNamesIn` ((),x)
+          && x `sameNamesIn` (x,(),())
+          && x `sameNamesIn` ((),x,())
+          && x `sameNamesIn` ((),(),x)
+
+sameNamesIn :: (Generalizable a, Generalizable b) => a -> b -> Bool
+x `sameNamesIn` c = x `namesIn` x
+           =| 12 |= x `namesIn` c
+
+namesIn :: (Generalizable a, Generalizable b) => a -> b -> [String]
+x `namesIn` c = I.names (instances c []) (typeOf x)
 
 tiersOK :: (Eq a, Generalizable a) => a -> Bool
 tiersOK x =  x `sameTiersIn` x
