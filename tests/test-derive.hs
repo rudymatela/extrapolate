@@ -170,6 +170,7 @@ tests n =
   , not $ bool `instancesSubset` ls int
   ,       ()   `instancesSubset` perhaps ()
   , not $ ()   `instancesSubset` perhaps int
+  ,       ()   `bgSubset`        perhaps int -- () has no background
   ,       char `instancesSubset` ship char int
   ,       int  `instancesSubset` ship char int
   , not $ bool `instancesSubset` ship char int

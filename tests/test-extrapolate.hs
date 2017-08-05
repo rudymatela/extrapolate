@@ -89,6 +89,14 @@ tests n =
   , int              `instancesSubset` [mayb [int]]
   , bool             `instancesSubset` ((),bool,char)
   , [mayb ((),char)] `instancesSubset` [(int,(char,[mayb ((),char)]),bool)]
+  , not $     bool `instancesSubset` [mayb [int]]
+  , not $     bool `bgSubset`        [mayb [int]]
+  , not $     bool `sameNamesIn`     [mayb [int]]
+  , not $     bool `sameTiersIn`     [mayb [int]]
+  , not $ mayb int `instancesSubset` [mayb [int]]
+  , not $ mayb int `bgSubset`        [mayb [int]]
+  , not $ mayb int `sameNamesIn`     [mayb [int]]
+  , not $ mayb int `sameTiersIn`     [mayb [int]]
   ]
 
 listBackgroundOK :: Generalizable a => a -> Bool
