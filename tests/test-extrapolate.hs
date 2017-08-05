@@ -34,59 +34,70 @@ tests n =
   , holds n $ \x -> show (expr x) == show (x :: ()) ++ " :: ()"
   , holds n $ \x -> show (expr x) == show (x :: Int) ++ " :: Int"
   , holds n $ \p -> show (expr p) == show (p :: Bool) ++ " :: Bool"
-  , holds n $ \x -> show (expr x) == show (x :: Integer) ++ " :: Integer"
+  , holds n $ \x -> show (expr x) == show (x :: ((),Maybe Int,[Bool]))
+                                        ++ " :: ((),(Maybe Int),[Bool])"
 
-  , holds 9 $ \xs -> show (expr xs) == show (xs :: [()]) ++ " :: [()]"
-  , holds n $ \xs -> show (expr xs) == show (xs :: [Int]) ++ " :: [Int]"
-  , holds n $ \ps -> show (expr ps) == show (ps :: [Bool]) ++ " :: [Bool]"
-  , holds n $ \xs -> show (expr xs) == show (xs :: [Integer]) ++ " :: [Integer]"
-
-  , holds n $ \mx -> show (expr mx) == show (mx :: Maybe ()) ++ " :: Maybe ()"
-  , holds n $ \mx -> show (expr mx) == show (mx :: Maybe Int) ++ " :: Maybe Int"
-  , holds n $ \mp -> show (expr mp) == show (mp :: Maybe Bool) ++ " :: Maybe Bool"
-  , holds n $ \mx -> show (expr mx) == show (mx :: Maybe Integer) ++ " :: Maybe Integer"
-
-  , holds n $ \xy -> show (expr xy) == show (xy :: ((),Int)) ++ " :: ((),Int)"
-  , holds n $ \xy -> show (expr xy) == show (xy :: (Bool,Integer)) ++ " :: (Bool,Integer)"
-  , holds n $ \xyz -> show (expr xyz) == show (xyz :: ((),Int,Bool)) ++ " :: ((),Int,Bool)"
+  -- Generalizable instance properties
+  , holds n $ generalizableOK -:> ()
+  , holds n $ generalizableOK -:> int
+  , holds n $ generalizableOK -:> integer
+  , holds n $ generalizableOK -:> bool
+  , holds n $ generalizableOK -:> char
+  , holds 9 $ generalizableOK -:> [()]
+  , holds n $ generalizableOK -:> [int]
+  , holds n $ generalizableOK -:> [integer]
+  , holds n $ generalizableOK -:> [bool]
+  , holds n $ generalizableOK -:> [char]
+  , holds n $ generalizableOK -:> (mayb ())
+  , holds n $ generalizableOK -:> (mayb int)
+  , holds n $ generalizableOK -:> (mayb integer)
+  , holds n $ generalizableOK -:> (mayb bool)
+  , holds n $ generalizableOK -:> (mayb char)
+  , holds n $ generalizableOK -:> (int,bool)
+  , holds n $ generalizableOK -:> ((),integer)
+  , holds n $ generalizableOK -:> ((),bool,integer)
 -- TODO: implement further tuple instances (4,5,6) and uncomment below
---, holds n $ \xyzw -> show (expr xyzw)
---                  == show (xyzw :: ((),Int,Integer,Bool)) ++ " :: ((),Int,Integer,Bool)"
---, holds n $ \xyzwv -> show (expr xyzwv)
---                   == show (xyzwv :: ((),Int,Integer,Bool,())) ++ " :: ((),Int,Integer,Bool,())"
---, holds n $ \xyzwvu -> show (expr xyzwvu)
---                    == show (xyzwvu :: ((),Int,Integer,Bool,(),Int)) ++ " :: ((),Int,Integer,Bool,(),Int)"
-
-  , holds n $ idExprEval -:> ()
-  , holds n $ idExprEval -:> int
-  , holds n $ idExprEval -:> integer
-  , holds n $ idExprEval -:> bool
-  , holds n $ idExprEval -:> char
-  , holds 9 $ idExprEval -:> [()]
-  , holds n $ idExprEval -:> [int]
-  , holds n $ idExprEval -:> [integer]
-  , holds n $ idExprEval -:> [bool]
-  , holds n $ idExprEval -:> [char]
-  , holds n $ idExprEval -:> (mayb ())
-  , holds n $ idExprEval -:> (mayb int)
-  , holds n $ idExprEval -:> (mayb integer)
-  , holds n $ idExprEval -:> (mayb bool)
-  , holds n $ idExprEval -:> (mayb char)
-  , holds n $ idExprEval -:> (int,bool)
-  , holds n $ idExprEval -:> ((),integer)
-  , holds n $ idExprEval -:> ((),bool,integer)
--- TODO: implement further tuple instances (4,5,6) and uncomment below
---, holds n $ idExprEval -:> (int,(),bool,integer)
---, holds n $ idExprEval -:> (int,(),bool,integer,char)
---, holds n $ idExprEval -:> (string,int,(),bool,integer,char)
+--, holds n $ generalizableOK -:> (int,(),bool,integer)
+--, holds n $ generalizableOK -:> (int,(),bool,integer,char)
+--, holds n $ generalizableOK -:> (string,int,(),bool,integer,char)
 -- TODO: implement further tuple instances (7,8,9,10,11,12) and uncomment below
---, holds n $ idExprEval -:> ((),(),(),(),(),(),())
---, holds n $ idExprEval -:> ((),(),(),(),(),(),(),())
---, holds n $ idExprEval -:> ((),(),(),(),(),(),(),(),())
---, holds n $ idExprEval -:> ((),(),(),(),(),(),(),(),(),())
---, holds n $ idExprEval -:> ((),(),(),(),(),(),(),(),(),(),())
---, holds n $ idExprEval -:> ((),(),(),(),(),(),(),(),(),(),(),())
+--, holds n $ generalizableOK -:> ((),(),(),(),(),(),())
+--, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),())
+--, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),(),())
+--, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),(),(),())
+--, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),(),(),(),())
+--, holds n $ generalizableOK -:> ((),(),(),(),(),(),(),(),(),(),(),())
 
+  -- Properties about the "instances" function.
+  , instancesOK ()
+  , instancesOK int
+  , instancesOK integer
+  , instancesOK bool
+  , instancesOK char
+  , instancesOK [()]
+  , instancesOK [int]
+  , instancesOK [integer]
+  , instancesOK [bool]
+  , instancesOK [char]
+  , instancesOK (mayb ())
+  , instancesOK (mayb int)
+  , instancesOK (mayb integer)
+  , instancesOK (mayb bool)
+  , instancesOK (mayb char)
+  , instancesOK (int,bool)
+  , instancesOK ((),integer)
+  , instancesOK ((),bool,integer)
+-- TODO: implement further tuple instances (4,5,6) and uncomment below
+--, instancesOK (int,(),bool,integer)
+--, instancesOK (int,(),bool,integer,char)
+--, instancesOK (string,int,(),bool,integer,char)
+-- TODO: implement further tuple instances (7,8,9,10,11,12) and uncomment below
+--, instancesOK ((),(),(),(),(),(),())
+--, instancesOK ((),(),(),(),(),(),(),())
+--, instancesOK ((),(),(),(),(),(),(),(),())
+--, instancesOK ((),(),(),(),(),(),(),(),(),())
+--, instancesOK ((),(),(),(),(),(),(),(),(),(),())
+--, instancesOK ((),(),(),(),(),(),(),(),(),(),(),())
 
   -- Silly test, as it basically replicates the actual implementation:
   , backgroundOf int =$ sort $= [ constant "==" $ (==) -:> int
