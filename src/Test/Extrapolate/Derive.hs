@@ -31,6 +31,7 @@ import Data.List (delete,nub,sort)
 import Data.Char (toLower)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Data.Typeable
+import Test.Extrapolate.Utils (foldr0)
 
 -- | Derives a 'Generalizable' instance for a given type 'Name'.
 --
@@ -107,8 +108,7 @@ reallyDeriveGeneralizable t = do
   let generalizableInstances = do
         n <- newName "x"
         let lets = [letin n c ns | (c,ns) <- cs, not (null ns)]
-        let rhs | null lets = [| id |]
-                | otherwise = foldr1 (\e1 e2 -> [| $e1 . $e2 |]) lets
+        let rhs = foldr0 (\e1 e2 -> [| $e1 . $e2 |]) [|id|] lets
         case (isEq, isOrd) of
           (True, True) ->
                [d| instance Generalizable $(return nt) where

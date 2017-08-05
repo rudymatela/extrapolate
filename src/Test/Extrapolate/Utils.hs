@@ -13,6 +13,7 @@ module Test.Extrapolate.Utils
   , nubMerge
   , nubMergeOn
   , nubMergeBy
+  , foldr0
   )
 where
 
@@ -34,3 +35,8 @@ nubMerge = nubMergeBy compare
 (+++) :: Ord a => [a] -> [a] -> [a]
 (+++) = nubMerge
 infixr 5 +++
+
+-- variation of foldr that only uses "zero" when the list is empty
+foldr0 :: (a -> a -> a) -> a -> [a] -> a
+foldr0 f z xs | null xs   = z
+              | otherwise = foldr1 f xs
