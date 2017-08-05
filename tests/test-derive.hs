@@ -159,22 +159,14 @@ tests :: Int -> [Bool]
 tests n =
   [ True
 
-  , holds n $ generalizableOK -:> ls int
   , holds n $ generalizableOK -:> ls bool
   , holds n $ generalizableOK -:> perhaps int
-  , holds n $ generalizableOK -:> perhaps bool
-  , holds n $ generalizableOK -:> ship int int
-  , holds n $ generalizableOK -:> ship bool ()
+  , holds n $ generalizableOK -:> ship int char
 --, holds n $ generalizableOK -:> arrangement -- TODO: make this work
-  , holds n $ generalizableOK -:> mutual int
   , holds n $ generalizableOK -:> mutual bool
   , holds n $ generalizableOK -:> shared int
-  , holds n $ generalizableOK -:> shared bool
-  , holds n $ generalizableOK -:> tree int
   , holds n $ generalizableOK -:> tree bool
   , holds n $ generalizableOK -:> leafy int
-  , holds n $ generalizableOK -:> leafy bool
-  , holds n $ generalizableOK -:> dict int bool
   , holds n $ generalizableOK -:> dict bool int
 
   , instancesOK (ls int)
