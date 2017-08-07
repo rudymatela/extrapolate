@@ -3,6 +3,7 @@
 -- Copyright (c) 2017 Rudy Matela.
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
+import Data.List (sort)
 
 #if __GLASGOW_HASKELL__ < 710
 import Data.Typeable (Typeable)
@@ -56,6 +57,10 @@ data Dict a b = Meaning a b (Dict a b)
               | End
   deriving (Show, Eq, Ord)
 
+data Data    = Data    deriving (Show)
+data EqData  = EqData  deriving (Show, Eq)
+data OrdData = OrdData deriving (Show, Eq, Ord)
+
 
 -- Dummy undefined values --
 
@@ -106,6 +111,10 @@ deriveListable ''Leafy
 
 deriveListable ''Dict
 
+deriveListable ''Data
+deriveListable ''EqData
+deriveListable ''OrdData
+
 
 deriveGeneralizable ''List
 {- -- derivation:
@@ -151,6 +160,10 @@ deriveGeneralizable ''Leafy
 
 deriveGeneralizable ''Dict
 
+deriveGeneralizable ''Data
+deriveGeneralizable ''EqData
+deriveGeneralizable ''OrdData
+
 
 main :: IO ()
 main = mainTest tests 2160
@@ -168,6 +181,8 @@ tests n =
   , generalizableOK n (tree bool)
   , generalizableOK n (leafy int)
   , generalizableOK n (dict bool int)
+  , generalizableOK n EqData
+  , generalizableOK n OrdData
 
   ,       int  `instancesSubset` ls int
   , not $ bool `instancesSubset` ls int
@@ -188,4 +203,14 @@ tests n =
   ,       bool `instancesSubset` dict int (perhaps (ship char bool))
   , shared (ship (ls char) bool)
     `instancesSubset` dict int (perhaps (mutual (ship (ls char) bool)))
+
+  , backgroundOf Data    =$ sort $= []
+  , backgroundOf EqData  =$ sort $= [ constant "==" $ (==) -:> EqData
+                                    , constant "/=" $ (/=) -:> EqData
+                                    ]
+  , backgroundOf OrdData =$ sort $= [ constant "==" $ (==) -:> OrdData
+                                    , constant "/=" $ (/=) -:> OrdData
+                                    , constant "<=" $ (<=) -:> OrdData
+                                    , constant "<"  $ (<)  -:> OrdData
+                                    ]
   ]
