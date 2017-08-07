@@ -131,8 +131,8 @@ reallyDeriveGeneralizable t = do
   let generalizableName = do
         [d| instance Generalizable $(return nt) where
               name _ = $(stringE vname) |]
-  cxt |=>| (generalizableExpr `mergeI` generalizableBackground
-                              `mergeI` generalizableName
+  cxt |=>| (generalizableName `mergeI` generalizableExpr
+                              `mergeI` generalizableBackground
                               `mergeI` generalizableInstances)
   where
   showJustName = reverse . takeWhile (/= '.') . reverse . show
