@@ -53,6 +53,8 @@ tests n =
   , generalizableOK n (mayb integer)
   , generalizableOK n (mayb bool)
   , generalizableOK n (mayb char)
+  , generalizableOK n (eith () int)
+  , generalizableOK n (eith integer bool)
   , generalizableOK n (int,bool)
   , generalizableOK n ((),integer)
   , generalizableOK n ((),bool,integer)

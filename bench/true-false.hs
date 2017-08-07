@@ -23,7 +23,11 @@ main = do
   ch (mayb ())
   ch (mayb int)
 
+  ch (eith () bool)
+  ch (eith int char)
+
   ch (integer,mayb (int,(),bool),mayb (char,()))
+  ch (eith (integer,mayb (int,(),bool),mayb (char,())) (int,char))
 
 ch :: (Eq a, Generalizable a) => a -> IO ()
 ch x = do

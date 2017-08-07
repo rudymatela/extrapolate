@@ -126,6 +126,15 @@ instance (Generalizable a) => Generalizable (Maybe a) where
   background mx  =  [ constant "Just"    (Just   ->: mx) ]
   instances mx  =  this mx $ instances (fromJust mx)
 
+instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
+  expr lx@(Left x)   =  constant "Left"  (Left  ->: lx) :$ expr x
+  expr ry@(Right y)  =  constant "Right" (Right ->: ry) :$ expr y
+  name exy = "e" ++ name (fromLeft exy) ++ name (fromRight exy)
+  background exy  =  [ constant "Left"  (Left  ->: exy)
+                     , constant "Right" (Right ->: exy) ]
+  instances exy  =  this exy $ instances (fromLeft  exy)
+                             . instances (fromRight exy)
+
 instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
   name xy  =  name (fst xy) ++ name (snd xy)
   expr (x,y)  =  constant "," ((,) ->>: (x,y))

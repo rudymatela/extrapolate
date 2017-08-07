@@ -14,6 +14,8 @@ module Test.Extrapolate.Utils
   , nubMergeOn
   , nubMergeBy
   , foldr0
+  , fromLeft
+  , fromRight
   )
 where
 
@@ -40,3 +42,13 @@ infixr 5 +++
 foldr0 :: (a -> a -> a) -> a -> [a] -> a
 foldr0 f z xs | null xs   = z
               | otherwise = foldr1 f xs
+
+-- note these versions of fromLeft and fromRight differ from the ones of
+-- Data.Either since 4.10.0.0.
+fromLeft :: Either a b -> a
+fromLeft (Left x) = x
+fromLeft _        = error "fromLeft: not a left"
+
+fromRight :: Either a b -> b
+fromRight (Right x) = x
+fromRight _         = error "fromRight: not a right"

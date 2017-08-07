@@ -303,6 +303,46 @@ Nothing Nothing
 Generalization:
 mx mx
 
++++ OK, passed 3 tests (exhausted).
+
+*** Failed! Falsifiable (after 1 tests):
+Left ()
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+(Left ()) (Right False)
+
+Generalization:
+(Left _) (Right _)
+
+*** Failed! Falsifiable (after 1 tests):
+(Left ()) (Left ())
+
+Generalization:
+eup eup
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+Left 0
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+(Left 0) (Right 'a')
+
+Generalization:
+(Left _) (Right _)
+
+*** Failed! Falsifiable (after 1 tests):
+(Left 0) (Left 0)
+
+Generalization:
+exc exc
+
 +++ OK, passed 360 tests.
 
 *** Failed! Falsifiable (after 1 tests):
@@ -328,4 +368,27 @@ xmxupmcu xmxupmcu
 
 Conditional Generalization:
 (x,mxup,mcu) (y,mxup,mcu)  when  not (x /= y)
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+Left (0,Nothing,Nothing)
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+(Left (0,Nothing,Nothing)) (Right (0,'a'))
+
+Generalization:
+(Left _) (Right _)
+
+*** Failed! Falsifiable (after 1 tests):
+(Left (0,Nothing,Nothing)) (Left (0,Nothing,Nothing))
+
+Generalization:
+exmxupmcuxc exmxupmcuxc
+
+Conditional Generalization:
+(Left (x,mxup,mcu)) (Left (y,mxup,mcu))  when  not (x /= y)
 
