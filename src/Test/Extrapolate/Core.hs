@@ -155,6 +155,8 @@ instance Generalizable a => Generalizable [a] where
                    , constant "filter" (filter ->:> xs) ]
   instances xs  =  this xs $ instances (head xs)
 
+-- TODO: Generalizable Either and Ordering
+
 nameOf :: Generalizable a => a -> String
 nameOf x = head $ names (instances x []) (typeOf x)
 
@@ -168,6 +170,7 @@ this x f is =
   if isListable is (typeOf x)
     then is
     else f (ins x +++ is)
+-- TODO: change type to a -> [Instances -> Instances] -> Instances -> Instances
 
 backgroundWith :: Typeable a => [Expr] -> a -> Instances
 backgroundWith es x = [ Instance "Background" (typeOf x) es ]

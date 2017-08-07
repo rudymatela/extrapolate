@@ -4,6 +4,25 @@ TODO
 A non-exhaustive list of things TO DO for Extrapolate.
 
 
+cleanup
+-------
+
+* `renames1`:
+  rename show functions:
+	- move `showCE` to `Core`;
+	- add and use `Core.showCCE`;
+	- rename `IO.showCEC` to `IO.showCEandGens`;
+
+* `renames2`:
+  rename counterexamples:
+	- rename `counterExamples*` to `counterExamples*E`;
+	- add `counterExamples* :: ... String ...`;
+
+* `cleanup`:
+  cleanup and remove unused functions, like `showCEG`;
+  thighten exports, removing uneeded functions (`backgroundWith`).
+
+
 examples
 --------
 
