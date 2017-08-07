@@ -161,7 +161,7 @@ instance Generalizable a => Generalizable [a] where
   expr (xs@[])      =  showConstant  ([]    -: xs)
   expr (xs@(y:ys))  =  constant ":"  ((:) ->>: xs) :$ expr y :$ expr ys
   background xs  =  [ constant "length" (length -:> xs)
-                   , constant "filter" (filter ->:> xs) ]
+                    , constant "filter" (filter ->:> xs) ]
   instances xs  =  this xs $ instances (head xs)
 
 instance Generalizable Ordering where
