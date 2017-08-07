@@ -105,30 +105,31 @@ reallyDeriveGeneralizable t = do
                    expr $(asP asName $ conP c (map varP ns)) = $rhs |]
         | (c,ns) <- cs
         ]
+  let generalizableBackground = do
+        n <- newName "x"
+        case (isEq, isOrd) of
+          (True, True) ->
+            [d| instance Generalizable $(return nt) where
+                  background $(varP n) = [ constant "==" ((==) -:> $(varE n))
+                                         , constant "/=" ((/=) -:> $(varE n))
+                                         , constant "<"  ((<)  -:> $(varE n))
+                                         , constant "<=" ((<=) -:> $(varE n)) ] |]
+          (True, False) ->
+            [d| instance Generalizable $(return nt) where
+                  background $(varP n) = [ constant "==" ((==) -:> $(varE n))
+                                         , constant "/=" ((/=) -:> $(varE n)) ] |]
+          (False, False) ->
+            [d| instance Generalizable $(return nt) where
+                  background $(varP n) = [] |]
+          _ -> error $ "reallyDeriveGeneralizable " ++ show t ++ ": the impossible happened"
   let generalizableInstances = do
         n <- newName "x"
         let lets = [letin n c ns | (c,ns) <- cs, not (null ns)]
         let rhs = foldr0 (\e1 e2 -> [| $e1 . $e2 |]) [|id|] lets
-        case (isEq, isOrd) of
-          (True, True) ->
-               [d| instance Generalizable $(return nt) where
-                     instances $(varP n) = these $(stringE vname) $(varE n)
-                                         [ constant "==" ((==) -:> $(varE n))
-                                         , constant "/=" ((/=) -:> $(varE n))
-                                         , constant "<"  ((<)  -:> $(varE n))
-                                         , constant "<=" ((<=) -:> $(varE n)) ]
-                                         $ $rhs |]
-          (True, False) ->
-               [d| instance Generalizable $(return nt) where
-                     instances $(varP n) = these $(stringE vname) $(varE n)
-                                         [ constant "==" ((==) -:> $(varE n))
-                                         , constant "/=" ((/=) -:> $(varE n)) ]
-                                         $ $rhs |]
-          (False, False) ->
-               [d| instance Generalizable $(return nt) where
-                     instances $(varP n) = this $(stringE vname) $(varE n) $ $rhs |]
-          _ -> error $ "reallyDeriveGeneralizable " ++ show t ++ ": the impossible happened"
-  cxt |=>| (generalizableExpr `mergeI` generalizableInstances)
+        [d| instance Generalizable $(return nt) where
+              instances $(varP n) = this $(stringE vname) $(varE n) $ $rhs |]
+  cxt |=>| (generalizableExpr `mergeI` generalizableBackground
+                              `mergeI` generalizableInstances)
   where
   showJustName = reverse . takeWhile (/= '.') . reverse . show
   vname = map toLower . take 1 $ showJustName t

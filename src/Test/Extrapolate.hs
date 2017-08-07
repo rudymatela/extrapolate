@@ -50,7 +50,6 @@ module Test.Extrapolate
 --   Expect them to change in the near future.
   , Generalizable (..)
   , this
-  , these
   , usefuns
   , nameOf
   , Expr (..)

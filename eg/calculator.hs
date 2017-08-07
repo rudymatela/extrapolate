@@ -50,10 +50,9 @@ instance Generalizable Exp where
   expr (C i)        =  constant "C" C :$ expr i
   expr (Add e1 e2)  =  constant "Add" Add :$ expr e1 :$ expr e2
   expr (Div e1 e2)  =  constant "Div" Div :$ expr e1 :$ expr e2
-  instances e   = these "e1" e
-                [ constant "eval" eval
-                , constant "divSubTerms" divSubTerms ]
-                $ instances (undefined :: Int)
+  background e  =  [ constant "eval" eval
+                   , constant "divSubTerms" divSubTerms ]
+  instances e   = this "e1" e $ instances (undefined :: Int)
 -- -}
 
 

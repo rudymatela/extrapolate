@@ -139,9 +139,9 @@ instance Generalizable Exp where
   expr (Not e)      =  constant "Not" Not :$ expr e
   expr (And e1 e2)  =  constant "And" And :$ expr e1 :$ expr e2
   expr (Or  e1 e2)  =  constant "Or " Or  :$ expr e1 :$ expr e2
-  instances e  =  these "e" e
-               [ constant "==" ((==) -:> e)
-               , constant "/=" ((/=) -:> e) ]
+  background e = [ constant "==" ((==) -:> e)
+                 , constant "/=" ((/=) -:> e) ]
+  instances  e = this "e" e
                $ instances (undefined :: Var)
                . instances (undefined :: Int)
                . instances (undefined :: Bool)

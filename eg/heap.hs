@@ -25,10 +25,8 @@ instance (Ord a, Listable a) => Listable (Heap a) where
 
 instance (Ord a, Generalizable a) => Generalizable (Heap a) where
   expr h = constant "fromList" (fromList ->: h) :$ expr (toList h)
-  instances h = these "h" h
-              [ constant "size" $ size -:> h
-              ]
-              $ instances (toList h)
+  background h = [ constant "size" $ size -:> h ]
+  instances h = this "h" h $ instances (toList h)
 
 
 data Heap a
@@ -140,10 +138,10 @@ heappp p  =  HeapPP p (heap p)
 
 instance (Ord a, Generalizable a) => Generalizable (HeapPP a) where
   expr (HeapPP p _) = constant "heappp" (heappp -:> p) :$ expr p
-  instances hpp = these "hpp" hpp
-                [ constant "program" $ program -:> hpp
-                , constant "theHeap" $ theHeap -:> hpp
-                ]
+  background hpp = [ constant "program" $ program -:> hpp
+                   , constant "theHeap" $ theHeap -:> hpp
+                   ]
+  instances hpp = this "hpp" hpp
                 $ let HeapPP p h = HeapPP undefined undefined `asTypeOf` hpp
                   in instances p . instances h
 
