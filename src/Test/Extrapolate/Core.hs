@@ -20,6 +20,8 @@ module Test.Extrapolate.Core
   , (+++)
   , nameOf
   , backgroundOf
+  , bgEq
+  , bgOrd
 
   , Option (..)
   , options
@@ -94,29 +96,19 @@ instance Generalizable Bool where
 instance Generalizable Int where
   expr = showConstant
   name _ = "x"
-  background x = [ constant "==" ((==) -:> x)
-                 , constant "/=" ((/=) -:> x)
-                 , constant "<"  ((<)  -:> x)
-                 , constant "<=" ((<=) -:> x)
-                 ]
+  background x = bgOrd x
   instances x = this x id
 
 instance Generalizable Integer where
   expr = showConstant
   name _ = "x"
-  background x = [ constant "==" ((==) -:> x)
-                 , constant "/=" ((/=) -:> x)
-                 , constant "<"  ((<)  -:> x)
-                 , constant "<=" ((<=) -:> x) ]
+  background x = bgOrd x
   instances x = this x id
 
 instance Generalizable Char where
   expr = showConstant
   name _ = "c"
-  background c = [ constant "==" ((==) -:> c)
-                 , constant "/=" ((/=) -:> c)
-                 , constant "<"  ((<)  -:> c)
-                 , constant "<=" ((<=) -:> c) ]
+  background c = bgOrd c
   instances c = this c id
 
 instance (Generalizable a) => Generalizable (Maybe a) where
@@ -167,13 +159,18 @@ instance Generalizable a => Generalizable [a] where
 instance Generalizable Ordering where
   name o  =  "o"
   expr o  =  showConstant o
-  background o  =  [ constant "==" ((==) -:> o)
-                   , constant "/=" ((/=) -:> o)
-                   , constant "<"  ((<)  -:> o)
-                   , constant "<=" ((<=) -:> o) ]
+  background o  =  bgOrd o
   instances o  =  this o id
 
--- TODO: Add bgEq and bgOrd functions with auto Ord
+bgEq :: (Eq a, Generalizable a) => a -> [Expr]
+bgEq x = [ constant "==" ((==) -:> x)
+         , constant "/=" ((/=) -:> x) ]
+
+bgOrd :: (Ord a, Generalizable a) => a -> [Expr]
+bgOrd x = [ constant "==" ((==) -:> x)
+          , constant "/=" ((/=) -:> x)
+          , constant "<"  ((<)  -:> x)
+          , constant "<=" ((<=) -:> x) ]
 
 nameOf :: Generalizable a => a -> String
 nameOf x = head $ names (instances x []) (typeOf x)

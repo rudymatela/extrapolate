@@ -54,6 +54,8 @@ module Test.Extrapolate
   , nameOf
   , Expr (..)
   , constant, showConstant
+  , bgEq
+  , bgOrd
 
 -- * Testable properties
   , Testable
