@@ -122,19 +122,21 @@ instance Generalizable Char where
 instance (Generalizable a) => Generalizable (Maybe a) where
   expr mx@Nothing   =  constant "Nothing" (Nothing -: mx)
   expr mx@(Just x)  =  constant "Just"    (Just   ->: mx) :$ expr x
-  name _ = "mx" -- TODO: use name of inner type
+  name mx = "m" ++ name (fromJust mx)
   background mx  =  [ constant "Just"    (Just   ->: mx) ]
   instances mx  =  this mx $ instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
-  name _  =  "xy" -- TODO: use names of inner types
+  name xy  =  name (fst xy) ++ name (snd xy)
   expr (x,y)  =  constant "," ((,) ->>: (x,y))
               :$ expr x :$ expr y
   instances xy  =  this xy $ instances (fst xy)
                            . instances (snd xy)
 
 instance (Generalizable a, Generalizable b, Generalizable c) => Generalizable (a,b,c) where
-  name _  =  "xyz" -- TODO: use names of inner types
+  name xyz  =  name ((\(x,_,_) -> x) xyz)
+            ++ name ((\(_,y,_) -> y) xyz)
+            ++ name ((\(_,_,z) -> z) xyz)
   expr (x,y,z)  =  constant ",," ((,,) ->>>: (x,y,z))
                 :$ expr x :$ expr y :$ expr z
   instances xyz  =  this xyz $ instances (fst xyz)

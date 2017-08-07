@@ -215,7 +215,7 @@ Conditional Generalization:
 ((),0) ((),0)
 
 Generalization:
-xy xy
+ux ux
 
 +++ OK, passed 194 tests (exhausted).
 
@@ -238,7 +238,7 @@ Conditional Generalization:
 (False,'a') (False,'a')
 
 Generalization:
-xy xy
+pc pc
 
 +++ OK, passed 360 tests.
 
@@ -261,7 +261,7 @@ Conditional Generalization:
 (0,(),False) (0,(),False)
 
 Generalization:
-xyz xyz
+xup xup
 
 +++ OK, passed 2 tests (exhausted).
 
@@ -281,7 +281,7 @@ Nothing (Just _)
 Nothing Nothing
 
 Generalization:
-mx mx
+mu mu
 
 +++ OK, passed 360 tests.
 
@@ -324,8 +324,8 @@ _ (_,_,Just (c,_))  when  'a' < c
 (0,Nothing,Nothing) (0,Nothing,Nothing)
 
 Generalization:
-xyz xyz
+xmxupmcu xmxupmcu
 
 Conditional Generalization:
-(x,mx,mx') (y,mx,mx')  when  not (x /= y)
+(x,mxup,mcu) (y,mxup,mcu)  when  not (x /= y)
 
