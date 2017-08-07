@@ -16,7 +16,7 @@ module Test.Extrapolate.Core
 
   , Generalizable (..)
   , this
-  , usefuns
+  , backgroundWith
   , (+++)
   , nameOf
   , backgroundOf
@@ -160,7 +160,7 @@ nameOf x = head $ names (instances x []) (typeOf x)
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances
-ins x = listable x +++ nameWith (name x) x +++ usefuns x (background x)
+ins x = listable x +++ nameWith (name x) x +++ backgroundWith (background x) x
 
 this :: Generalizable a
      => a -> (Instances -> Instances) -> Instances -> Instances
@@ -169,10 +169,8 @@ this x f is =
     then is
     else f (ins x +++ is)
 
--- bad function naming!
--- TODO: rename to makeBackground
-usefuns :: Typeable a => a -> [Expr] -> Instances
-usefuns x es = [ Instance "Background" (typeOf x) es ]
+backgroundWith :: Typeable a => [Expr] -> a -> Instances
+backgroundWith es x = [ Instance "Background" (typeOf x) es ]
 
 getBackground :: Instances -> [Expr]
 getBackground is = concat [es | Instance "Background" _ es <- is]

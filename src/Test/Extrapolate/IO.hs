@@ -55,7 +55,7 @@ check `withInstances` is  =  \p -> check $ p `With` ExtraInstances is
 -- > Conditional Generalization:
 -- > c:_  when  isSpace c
 withBackground :: Testable a => (WithOption a -> b) -> [Expr] -> a -> b
-check `withBackground` ufs  =  check `withInstances` usefuns (undefined::Option) ufs
+check `withBackground` ufs  =  check `withInstances` backgroundWith ufs (undefined::Option)
 
 -- | Use @`withConditionSize`@ to configure the maximum condition size allowed.
 withConditionSize :: Testable a => (WithOption a -> b) -> Int -> a -> b
