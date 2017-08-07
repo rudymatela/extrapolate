@@ -91,6 +91,23 @@ c d  when  c /= d
 Generalization:
 c c
 
++++ OK, passed 3 tests (exhausted).
+
+*** Failed! Falsifiable (after 1 tests):
+LT
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+LT EQ
+
+*** Failed! Falsifiable (after 1 tests):
+LT LT
+
+Generalization:
+o o
+
 +++ OK, passed 360 tests.
 
 *** Failed! Falsifiable (after 1 tests):
@@ -193,6 +210,26 @@ cs (_:cs)
 
 Generalization:
 cs cs
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+[] [LT]
+
+Generalization:
+os (_:os)
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+os os
 
 +++ OK, passed 360 tests.
 
@@ -346,28 +383,28 @@ exc exc
 +++ OK, passed 360 tests.
 
 *** Failed! Falsifiable (after 1 tests):
-(0,Nothing,Nothing)
+(Left 0,Nothing,Nothing)
 
 Generalization:
 _
 
 *** Failed! Falsifiable (after 2 tests):
-(0,Nothing,Nothing) (0,Nothing,Just ('a',()))
+(Left 0,Nothing,Nothing) (Right LT,Nothing,Nothing)
 
 Generalization:
-(_,_,Nothing) (_,_,Just _)
+(Left _,_,_) (Right _,_,_)
 
 Conditional Generalization:
-_ (_,_,Just (c,_))  when  'a' < c
+(Left x,Nothing,_) (_,Nothing,_)  when  1 < x
 
 *** Failed! Falsifiable (after 1 tests):
-(0,Nothing,Nothing) (0,Nothing,Nothing)
+(Left 0,Nothing,Nothing) (Left 0,Nothing,Nothing)
 
 Generalization:
-xmxupmcu xmxupmcu
+exomxupmcu exomxupmcu
 
 Conditional Generalization:
-(x,mxup,mcu) (y,mxup,mcu)  when  not (x /= y)
+(Left x,mxup,mcu) (Left y,mxup,mcu)  when  not (x /= y)
 
 +++ OK, passed 360 tests.
 

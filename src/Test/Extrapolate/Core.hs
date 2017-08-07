@@ -164,7 +164,16 @@ instance Generalizable a => Generalizable [a] where
                    , constant "filter" (filter ->:> xs) ]
   instances xs  =  this xs $ instances (head xs)
 
--- TODO: Generalizable Ordering
+instance Generalizable Ordering where
+  name o  =  "o"
+  expr o  =  showConstant o
+  background o  =  [ constant "==" ((==) -:> o)
+                   , constant "/=" ((/=) -:> o)
+                   , constant "<"  ((<)  -:> o)
+                   , constant "<=" ((<=) -:> o) ]
+  instances o  =  this o id
+
+-- TODO: Add bgEq and bgOrd functions with auto Ord
 
 nameOf :: Generalizable a => a -> String
 nameOf x = head $ names (instances x []) (typeOf x)

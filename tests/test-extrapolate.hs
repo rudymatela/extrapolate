@@ -43,11 +43,13 @@ tests n =
   , generalizableOK n integer
   , generalizableOK n bool
   , generalizableOK n char
+  , generalizableOK n ordering
   , generalizableOK 9 [()]
   , generalizableOK n [int]
   , generalizableOK n [integer]
   , generalizableOK n [bool]
   , generalizableOK n [char]
+  , generalizableOK n [ordering]
   , generalizableOK n (mayb ())
   , generalizableOK n (mayb int)
   , generalizableOK n (mayb integer)

@@ -8,12 +8,14 @@ main = do
   ch int
   ch integer
   ch char
+  ch ordering
 
   ch [()]
   ch [bool]
   ch [int]
   ch [integer]
   ch [char]
+  ch [ordering]
 
   ch ((),int)
   ch (bool,char)
@@ -26,7 +28,7 @@ main = do
   ch (eith () bool)
   ch (eith int char)
 
-  ch (integer,mayb (int,(),bool),mayb (char,()))
+  ch (eith integer ordering,mayb (int,(),bool),mayb (char,()))
   ch (eith (integer,mayb (int,(),bool),mayb (char,())) (int,char))
 
 ch :: (Eq a, Generalizable a) => a -> IO ()
