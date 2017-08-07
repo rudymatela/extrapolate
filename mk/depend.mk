@@ -1,3 +1,16 @@
+bench/true-false: \
+  bench/true-false.hs \
+  mk/toplibs
+bench/true-false.o: \
+  src/Test/Extrapolate/Utils.hs \
+  src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/IO.hs \
+  src/Test/Extrapolate/Exprs.hs \
+  src/Test/Extrapolate/Derive.hs \
+  src/Test/Extrapolate/Core.hs \
+  src/Test/Extrapolate/Basic.hs \
+  bench/true-false.hs
 eg/calculator: \
   eg/calculator.hs \
   mk/toplibs

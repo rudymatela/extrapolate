@@ -16,9 +16,10 @@ QUICKEG = \
   eg/redblack \
   eg/sorting
 EG = \
+  bench/true-false \
   eg/overflow \
   $(QUICKEG)
-LISTHS   = find src mk tests eg -name \*.hs
+LISTHS   = find src mk tests eg bench/*.hs -name \*.hs
 LISTOBJS = $(LISTHS) | sed -e 's/.hs$$/.o/'
 LISTLIBS = find src -name \*.hs
 ALLHS    = $(shell $(LISTHS))

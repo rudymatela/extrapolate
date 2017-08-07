@@ -1,0 +1,331 @@
++++ OK, passed 1 tests (exhausted).
+
+*** Failed! Falsifiable (after 1 tests):
+()
+
+Generalization:
+_
+
++++ OK, passed 1 tests (exhausted).
+
+*** Failed! Falsifiable (after 1 tests):
+() ()
+
+Generalization:
+_ _
+
++++ OK, passed 2 tests (exhausted).
+
+*** Failed! Falsifiable (after 1 tests):
+False
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+False True
+
+*** Failed! Falsifiable (after 1 tests):
+False False
+
+Generalization:
+p p
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+0
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+0 1
+
+Conditional Generalization:
+x y  when  x /= y
+
+*** Failed! Falsifiable (after 1 tests):
+0 0
+
+Generalization:
+x x
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+0
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+0 1
+
+Conditional Generalization:
+x y  when  x /= y
+
+*** Failed! Falsifiable (after 1 tests):
+0 0
+
+Generalization:
+x x
+
++++ OK, passed 97 tests (exhausted).
+
+*** Failed! Falsifiable (after 1 tests):
+'a'
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+'a' ' '
+
+Conditional Generalization:
+c d  when  c /= d
+
+*** Failed! Falsifiable (after 1 tests):
+'a' 'a'
+
+Generalization:
+c c
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+[] [()]
+
+Generalization:
+us (_:us)
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+us us
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+[] [False]
+
+Generalization:
+ps (_:ps)
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+ps ps
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+[] [0]
+
+Generalization:
+xs (_:xs)
+
+Conditional Generalization:
+xs ys  when  length xs /= length ys
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+xs xs
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+[] [0]
+
+Generalization:
+xs (_:xs)
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+xs xs
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+""
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+"" "a"
+
+Generalization:
+cs (_:cs)
+
+*** Failed! Falsifiable (after 1 tests):
+"" ""
+
+Generalization:
+cs cs
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+((),0)
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+((),0) ((),1)
+
+Generalization:
+(_,0) (_,1)
+
+Conditional Generalization:
+(_,x) (_,y)  when  x /= y
+
+*** Failed! Falsifiable (after 1 tests):
+((),0) ((),0)
+
+Generalization:
+xy xy
+
++++ OK, passed 194 tests (exhausted).
+
+*** Failed! Falsifiable (after 1 tests):
+(False,'a')
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+(False,'a') (True,'a')
+
+Generalization:
+(False,_) (True,_)
+
+Conditional Generalization:
+(_,c) (_,d)  when  c /= d
+
+*** Failed! Falsifiable (after 1 tests):
+(False,'a') (False,'a')
+
+Generalization:
+xy xy
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+(0,(),False)
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+(0,(),False) (0,(),True)
+
+Generalization:
+(_,_,False) (_,_,True)
+
+Conditional Generalization:
+(x,_,_) (y,_,_)  when  x /= y
+
+*** Failed! Falsifiable (after 1 tests):
+(0,(),False) (0,(),False)
+
+Generalization:
+xyz xyz
+
++++ OK, passed 2 tests (exhausted).
+
+*** Failed! Falsifiable (after 1 tests):
+Nothing
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+Nothing (Just ())
+
+Generalization:
+Nothing (Just _)
+
+*** Failed! Falsifiable (after 1 tests):
+Nothing Nothing
+
+Generalization:
+mx mx
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+Nothing
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+Nothing (Just 0)
+
+Generalization:
+Nothing (Just _)
+
+*** Failed! Falsifiable (after 1 tests):
+Nothing Nothing
+
+Generalization:
+mx mx
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+(0,Nothing,Nothing)
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+(0,Nothing,Nothing) (0,Nothing,Just ('a',()))
+
+Generalization:
+(_,_,Nothing) (_,_,Just _)
+
+Conditional Generalization:
+_ (_,_,Just (c,_))  when  'a' < c
+
+*** Failed! Falsifiable (after 1 tests):
+(0,Nothing,Nothing) (0,Nothing,Nothing)
+
+Generalization:
+xyz xyz
+
+Conditional Generalization:
+(x,mx,mx') (y,mx,mx')  when  not (x /= y)
+
