@@ -79,8 +79,6 @@ class (Listable a, Typeable a, Show a) => Generalizable a where
   background :: a -> [Expr]
   background _ = []
   instances :: a -> Instances -> Instances
--- TODO: change Generalizable to include name:
---   name :: a -> String
 
 instance Generalizable () where
   expr = showConstant
