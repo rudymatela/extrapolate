@@ -164,7 +164,7 @@ instance Generalizable a => Generalizable [a] where
                    , constant "filter" (filter ->:> xs) ]
   instances xs  =  this xs $ instances (head xs)
 
--- TODO: Generalizable Either and Ordering
+-- TODO: Generalizable Ordering
 
 nameOf :: Generalizable a => a -> String
 nameOf x = head $ names (instances x []) (typeOf x)
