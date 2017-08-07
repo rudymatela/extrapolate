@@ -127,8 +127,12 @@ reallyDeriveGeneralizable t = do
         let lets = [letin n c ns | (c,ns) <- cs, not (null ns)]
         let rhs = foldr0 (\e1 e2 -> [| $e1 . $e2 |]) [|id|] lets
         [d| instance Generalizable $(return nt) where
-              instances $(varP n) = this $(stringE vname) $(varE n) $ $rhs |]
+              instances $(varP n) = this $(varE n) $ $rhs |]
+  let generalizableName = do
+        [d| instance Generalizable $(return nt) where
+              name _ = $(stringE vname) |]
   cxt |=>| (generalizableExpr `mergeI` generalizableBackground
+                              `mergeI` generalizableName
                               `mergeI` generalizableInstances)
   where
   showJustName = reverse . takeWhile (/= '.') . reverse . show

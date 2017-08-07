@@ -19,6 +19,7 @@ import Data.Ratio
 
 instance (Integral a, Generalizable a) => Generalizable (Ratio a) where
   expr = showConstant
-  instances q = this "q" q id
+  name _ = "q"
+  instances q = this q id
 -- The following would allow zero denominators
 -- expr (n % d) = constant "%" ((%) -:> n) :$ expr n :$ expr d

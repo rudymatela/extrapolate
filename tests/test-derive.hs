@@ -119,14 +119,15 @@ deriveListable ''OrdData
 deriveGeneralizable ''List
 {- -- derivation:
 instance (Generalizable a) => Generalizable (List a) where
+  name _ = "xs"
   expr xs@Nil          =  constant "Nil"  (Nil    -: xs)
   expr xs@(Cons y ys)  =  constant "Cons" (Cons ->>: xs) :$ expr y :$ expr ys
-  instances xs = this "xs" xs
+  instances xs = this xs
                $ (let Cons y ys = Cons undefined undefined -: xs
                   in instances y . instances ys)
 
 -- It may seem like its possible to derive just:
---instances xs = this "xs" xs
+--instances xs = this xs
 --             $ instances (argTy1of1 xs)
 -- However that will restrain us from recursing into non argument types that
 -- need to be present (cf. the Mutual & Shared types).

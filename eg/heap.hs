@@ -24,9 +24,10 @@ instance (Ord a, Listable a) => Listable (Heap a) where
   tiers = cons1 heap
 
 instance (Ord a, Generalizable a) => Generalizable (Heap a) where
+  name _ = "h"
   expr h = constant "fromList" (fromList ->: h) :$ expr (toList h)
   background h = [ constant "size" $ size -:> h ]
-  instances h = this "h" h $ instances (toList h)
+  instances h = this h $ instances (toList h)
 
 
 data Heap a
@@ -114,13 +115,14 @@ instance (Listable a) => Listable (HeapP a) where
          \/ cons1 FromList
 
 instance (Generalizable a, Typeable a) => Generalizable (HeapP a) where
+  name _ = "p"
   expr p@Empty           = constant "Empty"         (Empty `asTypeOf` p)
   expr (Unit x)          = constant "Unit"          (argTypes1 Unit x)          :$ expr x
   expr (Insert x p)      = constant "Insert"        (argTypes2 Insert x p)      :$ expr x :$ expr p
   expr (SafeRemoveMin x) = constant "SafeRemoveMin" (argTypes1 SafeRemoveMin x) :$ expr x
   expr (Merge p q)       = constant "Merge"         (argTypes2 Merge p q)       :$ expr p :$ expr q
   expr (FromList xs)     = constant "FromList"      (argTypes1 FromList xs)     :$ expr xs
-  instances p = this "p" p
+  instances p = this p
               $ let Unit x = Unit undefined `asTypeOf` p
                 in instances x
 
@@ -137,11 +139,12 @@ heappp :: Ord a => HeapP a -> HeapPP a
 heappp p  =  HeapPP p (heap p)
 
 instance (Ord a, Generalizable a) => Generalizable (HeapPP a) where
+  name _ = "hpp"
   expr (HeapPP p _) = constant "heappp" (heappp -:> p) :$ expr p
   background hpp = [ constant "program" $ program -:> hpp
                    , constant "theHeap" $ theHeap -:> hpp
                    ]
-  instances hpp = this "hpp" hpp
+  instances hpp = this hpp
                 $ let HeapPP p h = HeapPP undefined undefined `asTypeOf` hpp
                   in instances p . instances h
 

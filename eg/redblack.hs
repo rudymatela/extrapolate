@@ -125,6 +125,7 @@ instance Listable Color where
   tiers  =  [[R, B], [BB, NB]]
 
 instance (Ord a, Generalizable a) => Generalizable (RBSet a) where
+  name _ = "h"
   expr t = constant "fromList" (fromList ->: t) :$ expr (toAscList t)
-  instances h = this "h" h
+  instances h = this h
               $ instances (toAscList h)

@@ -30,8 +30,9 @@ instance Listable Int16 where
   list = map unX list
 
 instance Generalizable Int16 where
+  name _ = "x"
   expr = showConstant
-  instances x = this "x" x id
+  instances x = this x id
 
 {-
 instance Listable T where

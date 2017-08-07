@@ -20,6 +20,7 @@ module Test.Extrapolate.Exprs
   , fold
   , unfold
   , isAssignmentTest
+  , nameWith
 
   , module Test.Speculate.Expr
   )
@@ -27,6 +28,7 @@ where
 
 import Test.Speculate.Expr hiding
   ( ins
+  , name
   , canonicalizeWith
   , grounds
   , vassignments
@@ -37,6 +39,9 @@ import qualified Test.Speculate.Engine as E
 import Test.LeanCheck.Error (errorToFalse)
 import Data.Typeable (typeOf, TypeRep, Typeable)
 import Data.List ((\\))
+
+nameWith :: Typeable a => String -> a -> Instances
+nameWith = E.name
 
 canonicalizeWith :: Instances -> [Expr] -> [Expr]
 canonicalizeWith is = unfold . canonicalizeWith1 is . unrepeatedToHole1 . fold

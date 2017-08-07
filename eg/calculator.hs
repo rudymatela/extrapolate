@@ -47,12 +47,13 @@ instance Listable Exp where
 -- deriveGeneralizable ''Exp
 -- {-
 instance Generalizable Exp where
+  name _ = "e1"
   expr (C i)        =  constant "C" C :$ expr i
   expr (Add e1 e2)  =  constant "Add" Add :$ expr e1 :$ expr e2
   expr (Div e1 e2)  =  constant "Div" Div :$ expr e1 :$ expr e2
   background e  =  [ constant "eval" eval
                    , constant "divSubTerms" divSubTerms ]
-  instances e   = this "e1" e $ instances (undefined :: Int)
+  instances e   = this e $ instances (undefined :: Int)
 -- -}
 
 

@@ -74,6 +74,8 @@ import Test.LeanCheck.Error (errorToFalse)
 
 class (Listable a, Typeable a, Show a) => Generalizable a where
   expr :: a -> Expr
+  name :: a -> String
+  name _ = "x"
   background :: a -> [Expr]
   background _ = []
   instances :: a -> Instances -> Instances
@@ -82,81 +84,90 @@ class (Listable a, Typeable a, Show a) => Generalizable a where
 
 instance Generalizable () where
   expr = showConstant
-  instances u = this "u" u id
+  name _ = "u"
+  instances u = this u id
 
 instance Generalizable Bool where
   expr = showConstant
+  name _ = "p"
   background _ = [ constant "not" not ]
-  instances p = this "p" p id
+  instances p = this p id
 
 instance Generalizable Int where
   expr = showConstant
+  name _ = "x"
   background x = [ constant "==" ((==) -:> x)
                  , constant "/=" ((/=) -:> x)
                  , constant "<"  ((<)  -:> x)
                  , constant "<=" ((<=) -:> x)
                  ]
-  instances x = this "x" x id
+  instances x = this x id
 
 instance Generalizable Integer where
   expr = showConstant
+  name _ = "x"
   background x = [ constant "==" ((==) -:> x)
                  , constant "/=" ((/=) -:> x)
                  , constant "<"  ((<)  -:> x)
                  , constant "<=" ((<=) -:> x) ]
-  instances x = this "x" x id
+  instances x = this x id
 
 instance Generalizable Char where
   expr = showConstant
+  name _ = "c"
   background c = [ constant "==" ((==) -:> c)
                  , constant "/=" ((/=) -:> c)
                  , constant "<"  ((<)  -:> c)
                  , constant "<=" ((<=) -:> c) ]
-  instances c = this "c" c id
+  instances c = this c id
 
 instance (Generalizable a) => Generalizable (Maybe a) where
   expr mx@Nothing   =  constant "Nothing" (Nothing -: mx)
   expr mx@(Just x)  =  constant "Just"    (Just   ->: mx) :$ expr x
+  name _ = "mx" -- TODO: use name of inner type
   background mx  =  [ constant "Just"    (Just   ->: mx) ]
-  instances mx  =  this "mx" mx $ instances (fromJust mx)
+  instances mx  =  this mx $ instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
+  name _  =  "xy" -- TODO: use names of inner types
   expr (x,y)  =  constant "," ((,) ->>: (x,y))
               :$ expr x :$ expr y
-  instances xy  =  this "xy" xy $ instances (fst xy)
-                                . instances (snd xy)
+  instances xy  =  this xy $ instances (fst xy)
+                           . instances (snd xy)
 
 instance (Generalizable a, Generalizable b, Generalizable c) => Generalizable (a,b,c) where
+  name _  =  "xyz" -- TODO: use names of inner types
   expr (x,y,z)  =  constant ",," ((,,) ->>>: (x,y,z))
                 :$ expr x :$ expr y :$ expr z
-  instances xyz  =  this "xyz" xyz $ instances (fst xyz)
-                                   . instances (snd xyz)
-                                   . instances (trd xyz)
+  instances xyz  =  this xyz $ instances (fst xyz)
+                             . instances (snd xyz)
+                             . instances (trd xyz)
     where
     fst (x,_,_) = x
     snd (_,y,_) = y
     trd (_,_,z) = z
 
 instance Generalizable a => Generalizable [a] where
+  name xs  =  name (head xs) ++ "s"
   expr (xs@[])      =  showConstant  ([]    -: xs)
   expr (xs@(y:ys))  =  constant ":"  ((:) ->>: xs) :$ expr y :$ expr ys
   background xs  =  [ constant "length" (length -:> xs)
                    , constant "filter" (filter ->:> xs) ]
-  instances xs  =  this (nameOf (head xs) ++ "s") xs $ instances (head xs)
+  instances xs  =  this xs $ instances (head xs)
 
 nameOf :: Generalizable a => a -> String
 nameOf x = head $ names (instances x []) (typeOf x)
 
 -- | Usage: @ins "x" (undefined :: Type)@
-ins :: Generalizable a => String -> a -> Instances
-ins n x = listable x +++ name n x +++ usefuns x (background x)
+ins :: Generalizable a => a -> Instances
+ins x = listable x +++ nameWith (name x) x +++ usefuns x (background x)
 
 this :: Generalizable a
-     => String -> a -> (Instances -> Instances) -> Instances -> Instances
-this n x f is =
+     => a -> (Instances -> Instances) -> Instances -> Instances
+this x f is =
   if isListable is (typeOf x)
     then is
-    else f (ins n x +++ is)
+    else f (ins x +++ is)
 
 -- bad function naming!
 -- TODO: rename to makeBackground

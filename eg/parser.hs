@@ -111,25 +111,30 @@ deriveGeneralizable ''Stmt
 -}
 -- {-
 instance Generalizable Var where
+  name _ = "v"
   expr (Var v)  =  constant "Var" Var :$ expr v
-  instances v   =  this "v" v $ instances (undefined :: [String])
+  instances v   =  this v $ instances (undefined :: [String])
 
 instance Generalizable Lang where
+  name _ = "l"
   expr (Lang ms fs)  =  constant "Lang" Lang :$ expr ms :$ expr fs
-  instances l  =  this "l" l $ instances (undefined :: [Mod])
-                             . instances (undefined :: [Func])
+  instances l  =  this l $ instances (undefined :: [Mod])
+                         . instances (undefined :: [Func])
 
 instance Generalizable Mod where
+  name _ = "m"
   expr (Mod is es)  =  constant "Mod" Mod :$ expr is :$ expr es
-  instances m  =  this "m" m $ instances (undefined :: Var)
+  instances m  =  this m $ instances (undefined :: Var)
 
 instance Generalizable Func where
+  name _ = "f"
   expr (Func n as ss)  =  constant "Func" Func :$ expr n :$ expr as :$ expr ss
-  instances f  =  this "f" f $ instances (undefined :: Var)
-                             . instances (undefined :: [Exp])
-                             . instances (undefined :: [Stmt])
+  instances f  =  this f $ instances (undefined :: Var)
+                         . instances (undefined :: [Exp])
+                         . instances (undefined :: [Stmt])
 
 instance Generalizable Exp where
+  name _ = "e"
   expr (Int i)      =  constant "Int" Int :$ expr i
   expr (Bool p)     =  constant "Bool" Bool :$ expr p
   expr (Add e1 e2)  =  constant "Add" Add :$ expr e1 :$ expr e2
@@ -141,17 +146,18 @@ instance Generalizable Exp where
   expr (Or  e1 e2)  =  constant "Or " Or  :$ expr e1 :$ expr e2
   background e = [ constant "==" ((==) -:> e)
                  , constant "/=" ((/=) -:> e) ]
-  instances  e = this "e" e
+  instances  e = this e
                $ instances (undefined :: Var)
                . instances (undefined :: Int)
                . instances (undefined :: Bool)
 
 instance Generalizable Stmt where
+  name _ = "stmt"
   expr (Assign v e)  =  constant "Assign" Assign :$ expr v :$ expr e
   expr (Alloc v e)   =  constant "Alloc"  Alloc  :$ expr v :$ expr e
   expr (Return e)    =  constant "Return" Return :$ expr e
-  instances s  =  this "stmt" s $ instances (undefined :: Var)
-                                . instances (undefined :: Exp)
+  instances s  =  this s $ instances (undefined :: Var)
+                         . instances (undefined :: Exp)
 -- -}
 
 

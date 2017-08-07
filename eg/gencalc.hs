@@ -47,10 +47,11 @@ instance Listable a => Listable (Exp a) where
 -- deriveGeneralizable ''Exp
 -- {-
 instance Generalizable a => Generalizable (Exp a) where
+  name _ = "e1"
   expr (C i)        =  constant "C" (argTypes1 C i) :$ expr i
   expr (Add e1 e2)  =  constant "Add" (argTypes2 Add e1 e2) :$ expr e1 :$ expr e2
   expr (Div e1 e2)  =  constant "Div" (argTypes2 Div e1 e2) :$ expr e1 :$ expr e2
-  instances e  =  this "e1" e $ (let C i = C undefined `asTypeOf` e in instances i)
+  instances e  =  this e $ (let C i = C undefined `asTypeOf` e in instances i)
 -- -}
 
 argTypeOf :: (a -> b) -> a -> (a -> b)
