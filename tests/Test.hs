@@ -43,6 +43,7 @@ import Data.List (isPrefixOf, isSubsequenceOf, sort)
 
 import Test.Extrapolate
 import Test.Extrapolate.Core hiding (false, true)
+import qualified Test.Extrapolate.Core as Core
 import Test.LeanCheck.Utils.Operators
 
 reportTests :: [Bool] -> IO ()
@@ -151,7 +152,8 @@ instancesOK :: (Eq a, Generalizable a) => a -> Bool
 instancesOK = namesOK &&& tiersOK
 
 namesOK :: Generalizable a => a -> Bool
-namesOK x =  x `sameNamesIn` [x]
+namesOK x =  Core.name x == head (x `namesIn` x)
+          && x `sameNamesIn` [x]
           && x `sameNamesIn` [[x]]
           && x `sameNamesIn` mayb x
           && x `sameNamesIn` (x,x)
