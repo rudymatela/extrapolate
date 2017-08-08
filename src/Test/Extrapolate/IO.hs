@@ -137,34 +137,6 @@ showCEC m p es = showCE es ++ "\n\n"
                   ++ showCE es ++ "  when  "
                   ++ showPrecExpr 0 (prettify c) ++ "\n\n"
 
-showCEG :: Testable a => Int -> a -> [[Expr]] -> [Expr] -> String
-showCEG m p ces es = showCE es ++ "\n\n"
-  ++ case mg00 of
-       Nothing -> ""
-       Just es -> "Generalization, 100% failure, "
-               ++ show (count (`areInstancesOf` es) ces * 100 `div` m) ++ "% match:\n"
-               ++ showCE es ++ "\n\n"
-  ++ case (mg10 /= mg00, mg10) of
-       (True, Just es) -> "Generalization, >90% failure, "
-                       ++ show (count (`areInstancesOf` es) ces * 100 `div` m) ++ "% match:\n"
-                       ++ showCE es ++ "\n\n"
-       _               -> ""
-  ++ case (mg10 /= mg00, mg00, mg10) of
-       (True, Just es0, Just es1) -> showCGen es0 es1
-       (True, Nothing,  Just es1) -> showCGen es  es1
-       _ -> ""
-  where
-  gcs = generalizationsCounts m p es
-  mg00 = listToMaybe [es | (es,0) <- gcs]
-  mg10 = listToMaybe [es | (es,n) <- gcs, n <= m `div` 12]
-  count p = length . filter p
-  showCGen es0 es1 = case conditionalGeneralization m p es0 es1 of
-                       Nothing -> ""
-                       Just (cs,es) -> "Generalization, 100% failure:\n"
-                                    ++ showCE es ++ "  when  "
-                                    ++ intercalate ", " [showPrecExpr 0 c | c <- cs]
-                                    ++ "\n\n"
-
 showCE :: [Expr] -> String
 showCE [e] = showPrecExpr 0 e
 showCE es = unwords [showPrecExpr 11 e | e <- es]
