@@ -13,8 +13,8 @@ Installing Extrapolate
 
 To install the latest version of [Extrapolate from Hackage], just:
 
-$ cabal update
-$ cabal install extrapolate
+	$ cabal update
+	$ cabal install extrapolate
 
 To test if it installed correctly, follow through the next section.
 
