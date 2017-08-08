@@ -41,10 +41,6 @@ module Test.Extrapolate
   , withBackground
   , withConditionSize
 
--- * Obtaining generalizations
-  , counterExampleGen
-  , counterExampleGens
-
 -- * Generalizable types
 -- | The following typeclass and functions are currently very hacky.
 --   Expect them to change in the near future.
