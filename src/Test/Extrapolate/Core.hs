@@ -18,7 +18,6 @@ module Test.Extrapolate.Core
   , this
   , backgroundWith
   , (+++)
-  , nameOf
   , backgroundOf
   , bgEq
   , bgOrd
@@ -204,9 +203,6 @@ bgOrd x = [ constant "==" ((==) -:> x)
           , constant "/=" ((/=) -:> x)
           , constant "<"  ((<)  -:> x)
           , constant "<=" ((<=) -:> x) ]
-
-nameOf :: Generalizable a => a -> String
-nameOf x = head $ names (instances x []) (typeOf x)
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances
