@@ -38,6 +38,8 @@ where
 
 -- TODO: reexport LeanCheck's typebinding operators
 
+-- TODO: remove argTypesN and argTysN, unused and uneeded
+
 argTypes0 :: a -> a
 argTypes0 f = f
 
