@@ -1,3 +1,5 @@
+checks :: ()
+
 +++ OK, passed 1 tests (exhausted).
 
 *** Failed! Falsifiable (after 1 tests):
@@ -13,6 +15,9 @@ _
 
 Generalization:
 _ _
+
+
+checks :: Bool
 
 +++ OK, passed 2 tests (exhausted).
 
@@ -31,25 +36,8 @@ False False
 Generalization:
 p p
 
-+++ OK, passed 360 tests.
 
-*** Failed! Falsifiable (after 1 tests):
-0
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 2 tests):
-0 1
-
-Conditional Generalization:
-x y  when  x /= y
-
-*** Failed! Falsifiable (after 1 tests):
-0 0
-
-Generalization:
-x x
+checks :: Int
 
 +++ OK, passed 360 tests.
 
@@ -70,6 +58,32 @@ x y  when  x /= y
 
 Generalization:
 x x
+
+
+checks :: Integer
+
++++ OK, passed 360 tests.
+
+*** Failed! Falsifiable (after 1 tests):
+0
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 2 tests):
+0 1
+
+Conditional Generalization:
+x y  when  x /= y
+
+*** Failed! Falsifiable (after 1 tests):
+0 0
+
+Generalization:
+x x
+
+
+checks :: Char
 
 +++ OK, passed 97 tests (exhausted).
 
@@ -91,6 +105,9 @@ c d  when  c /= d
 Generalization:
 c c
 
+
+checks :: Ordering
+
 +++ OK, passed 3 tests (exhausted).
 
 *** Failed! Falsifiable (after 1 tests):
@@ -107,6 +124,9 @@ LT LT
 
 Generalization:
 o o
+
+
+checks :: [()]
 
 +++ OK, passed 360 tests.
 
@@ -128,6 +148,9 @@ us (_:us)
 Generalization:
 us us
 
+
+checks :: [Bool]
+
 +++ OK, passed 360 tests.
 
 *** Failed! Falsifiable (after 1 tests):
@@ -147,6 +170,9 @@ ps (_:ps)
 
 Generalization:
 ps ps
+
+
+checks :: [Int]
 
 +++ OK, passed 360 tests.
 
@@ -171,6 +197,9 @@ xs ys  when  length xs /= length ys
 Generalization:
 xs xs
 
+
+checks :: [Integer]
+
 +++ OK, passed 360 tests.
 
 *** Failed! Falsifiable (after 1 tests):
@@ -190,6 +219,9 @@ xs (_:xs)
 
 Generalization:
 xs xs
+
+
+checks :: [Char]
 
 +++ OK, passed 360 tests.
 
@@ -211,6 +243,9 @@ cs (_:cs)
 Generalization:
 cs cs
 
+
+checks :: [Ordering]
+
 +++ OK, passed 360 tests.
 
 *** Failed! Falsifiable (after 1 tests):
@@ -230,6 +265,9 @@ os (_:os)
 
 Generalization:
 os os
+
+
+checks :: ((),Int)
 
 +++ OK, passed 360 tests.
 
@@ -254,6 +292,9 @@ Conditional Generalization:
 Generalization:
 ux ux
 
+
+checks :: (Bool,Char)
+
 +++ OK, passed 194 tests (exhausted).
 
 *** Failed! Falsifiable (after 1 tests):
@@ -276,6 +317,9 @@ Conditional Generalization:
 
 Generalization:
 pc pc
+
+
+checks :: (Int,(),Bool)
 
 +++ OK, passed 360 tests.
 
@@ -300,6 +344,9 @@ Conditional Generalization:
 Generalization:
 xup xup
 
+
+checks :: Maybe ()
+
 +++ OK, passed 2 tests (exhausted).
 
 *** Failed! Falsifiable (after 1 tests):
@@ -319,6 +366,9 @@ Nothing Nothing
 
 Generalization:
 mu mu
+
+
+checks :: Maybe Int
 
 +++ OK, passed 360 tests.
 
@@ -340,6 +390,9 @@ Nothing Nothing
 Generalization:
 mx mx
 
+
+checks :: Either () Bool
+
 +++ OK, passed 3 tests (exhausted).
 
 *** Failed! Falsifiable (after 1 tests):
@@ -360,6 +413,9 @@ Generalization:
 Generalization:
 eup eup
 
+
+checks :: Either Int Char
+
 +++ OK, passed 360 tests.
 
 *** Failed! Falsifiable (after 1 tests):
@@ -379,6 +435,9 @@ Generalization:
 
 Generalization:
 exc exc
+
+
+checks :: ((Either Integer Ordering),(Maybe (Int,(),Bool)),(Maybe (Char,())))
 
 +++ OK, passed 360 tests.
 
@@ -406,6 +465,9 @@ exomxupmcu exomxupmcu
 Conditional Generalization:
 (Left x,mxup,mcu) (Left y,mxup,mcu)  when  not (x /= y)
 
+
+checks :: Either (Integer,(Maybe (Int,(),Bool)),(Maybe (Char,()))) (Int,Char)
+
 +++ OK, passed 360 tests.
 
 *** Failed! Falsifiable (after 1 tests):
@@ -428,4 +490,5 @@ exmxupmcuxc exmxupmcuxc
 
 Conditional Generalization:
 (Left (x,mxup,mcu)) (Left (y,mxup,mcu))  when  not (x /= y)
+
 
