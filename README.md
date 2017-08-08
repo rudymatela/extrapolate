@@ -125,6 +125,7 @@ see [Extrapolate's API documentation].
 [`check`]:                         https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html#v:check
 [`for`]:                           https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html#v:for
 [`withBackground`]:                https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html#v:withBackground
+[`$`]:                             https://hackage.haskell.org/package/base-4.10.0.0/docs/Prelude.html#v:-36-
 [`+`]:                             https://hackage.haskell.org/package/base/docs/Prelude.html#v:-43-
 [`nub`]:                           https://hackage.haskell.org/package/base/docs/Data-List.html#v:nub
 [Haskell]:                         https://www.haskell.org/
