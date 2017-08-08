@@ -133,13 +133,15 @@ showCEC m p es = showCE es ++ "\n\n"
               ++ showCE es ++ "\n\n"
   ++ case generalizationsCEC m p es of
        []         -> ""
-       ((c,es):_) -> "Conditional Generalization:\n"
-                  ++ showCE es ++ "  when  "
-                  ++ showPrecExpr 0 (prettify c) ++ "\n\n"
+       (es:_) -> "Conditional Generalization:\n"
+              ++ showCCE es ++ "\n\n"
 
 showCE :: [Expr] -> String
 showCE [e] = showPrecExpr 0 e
 showCE es = unwords [showPrecExpr 11 e | e <- es]
+
+showCCE :: (Expr,[Expr]) -> String
+showCCE (c,es) = showCE es ++ "  when  " ++ showPrecExpr 0 (prettify c)
 
 -- WARNING: expressions are unevaluable after this, just good for printing
 prettify :: Expr -> Expr
