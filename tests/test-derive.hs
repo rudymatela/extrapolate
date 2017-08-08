@@ -17,6 +17,9 @@ deriving instance Typeable Shared
 deriving instance Typeable Tree
 deriving instance Typeable Leafy
 deriving instance Typeable Dict
+deriving instance Typeable Data
+deriving instance Typeable EqData
+deriving instance Typeable OrdData
 #endif
 
 -- List is isomorphic to []
