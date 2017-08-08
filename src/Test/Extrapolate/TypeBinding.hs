@@ -36,6 +36,8 @@ module Test.Extrapolate.TypeBinding
   )
 where
 
+-- TODO: reexport LeanCheck's typebinding operators
+
 argTypes0 :: a -> a
 argTypes0 f = f
 

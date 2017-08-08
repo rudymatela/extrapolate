@@ -42,8 +42,6 @@ module Test.Extrapolate
   , withConditionSize
 
 -- * Generalizable types
--- | The following typeclass and functions are currently very hacky.
---   Expect them to change in the near future.
   , Generalizable (..)
   , this
   , backgroundWith

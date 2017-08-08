@@ -73,14 +73,47 @@ import Data.List (insert)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Test.Extrapolate.Exprs
 import Test.LeanCheck.Error (errorToFalse)
+import Test.Extrapolate.TypeBinding -- for Haddock
 
+-- | Extrapolate can generalize counter-examples of any types that are
+--   'Generalizable'.
+--
+-- The core (and only required functions) of the generalizable typeclass are
+-- the 'expr' and 'instances' functions.
+--
+-- The following example shows a datatype and its instance:
+--
+-- > data Stack a = Stack a (Stack a) | Empty
+--
+-- > instance Generalizable a => Generalizable (Stack a) where
+-- > name _ = "s"
+-- > expr s@(Stack x y) = constant "Stack" (Stack ->>: s) :$ expr x :$ expr y
+-- > expr s@Empty       = constant "Empty" (Empty   -: s)
+-- > instances s = this s $ instances (argTy1of1 s)
+--
+-- To declare 'instances' and 'expr' it may be useful to use:
+--
+-- * LeanCheck's "Test.LeanCheck.Utils.TypeBinding" operators:
+--   '-:', '->:', '->>:', ...;
+-- * Extrapolate's "Test.Extrapolate.TypeBinding" operators:
+--   'argTy1of1', 'argTy1of2', 'argTy2of2', ....
 class (Listable a, Typeable a, Show a) => Generalizable a where
+  -- | Transforms a value into an manipulable expression tree.
+  --   See 'constant' and ':$'.
   expr :: a -> Expr
+
+  -- | Common name for a variable, defaults to @"x"@.
   name :: a -> String
   name _ = "x"
+
+  -- | List of symbols allowed to appear in side-conditions.
+  --   Defaults to @[]@.  See 'constant'.
   background :: a -> [Expr]
   background _ = []
+
+  -- | Computes a list of reified instances.  See 'this'.
   instances :: a -> Instances -> Instances
+
 
 instance Generalizable () where
   expr = showConstant
