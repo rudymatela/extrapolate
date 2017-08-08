@@ -29,6 +29,7 @@ OBJS = src/Test/Extrapolate.o
 GHCIMPORTDIRS = src:tests:eg
 GHCEXTRAFLAGS =
 GHCFLAGS = -dynamic -O2 $(GHCEXTRAFLAGS)
+HADDOCKFLAGS = --no-print-missing-docs
 
 all: $(OBJS)
 
@@ -112,7 +113,7 @@ upload-haddock:
 
 doc/index.html: $(shell $(LISTLIBS))
 	./mk/haddock-i base template-haskell | xargs \
-	haddock --html -odoc $(shell $(LISTLIBS)) --no-print-missing-docs --title=extrapolate
+	haddock --html -odoc $(shell $(LISTLIBS)) $(HADDOCKFLAGS) --title=extrapolate
 
 # NOTE: (very hacky!) the following target allows parallel compilation (-jN) of
 # eg and tests programs so long as they don't share dependencies _not_ stored
