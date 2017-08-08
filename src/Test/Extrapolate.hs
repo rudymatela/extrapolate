@@ -44,8 +44,6 @@ module Test.Extrapolate
 -- * Generalizable types
   , Generalizable (..)
   , this
-  , backgroundWith
-  , nameOf
   , Expr (..)
   , constant, showConstant
   , bgEq
