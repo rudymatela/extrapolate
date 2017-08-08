@@ -39,7 +39,7 @@ import System.Environment (getArgs)
 import Test.Speculate.Expr (typ)
 import Test.Speculate.Expr.Instance as I
 import Data.Typeable (typeOf)
-import Data.List (isPrefixOf, isSubsequenceOf, sort)
+import Data.List (isPrefixOf, sort)
 
 import Test.Extrapolate
 import Test.Extrapolate.Core hiding (false, true)
@@ -202,3 +202,11 @@ instancesSubset :: (Eq a, Eq b, Generalizable a, Generalizable b) => a -> b -> B
 x `instancesSubset` y = x `bgSubset` y
                      && x `sameTiersIn` y
                      && x `sameNamesIn` y
+
+-- available on Data.List since GHC >= 8.0
+isSubsequenceOf :: Eq a => [a] -> [a] -> Bool
+isSubsequenceOf []    _  = True
+isSubsequenceOf (_:_) [] = False
+isSubsequenceOf (x:xs) (y:ys)
+  | x == y    =    xs  `isSubsequenceOf` ys
+  | otherwise = (x:xs) `isSubsequenceOf` ys
