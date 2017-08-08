@@ -40,6 +40,45 @@ Here is how to use Extrapolate after installing with [cabal]:
 The operator `+` is commutative.  The function `nub` is not an identity.
 
 
+### Configuring the number of tests
+
+To increase the number of tests, use the `for` combinator:
+
+	$ ghci
+	> import Test.Extrapolate
+	> check `for` 1000 $ \x y -> x + y == y + (x :: Int)
+	+++ OK, passed 1000 tests.
+
+
+### Customizing the background functions (allowed in side-conditions)
+
+To customize the background functions, use the `withBackground` combinator:
+
+	$ ghci
+	> import Test.Extrapolate
+	> import Data.List (nub)
+	> let hasDups xs  =  nub xs /= (xs :: [Int])
+	> check `withBackground` [constant "hasDups" hasDups] $ \xs -> nub xs == (xs :: [Int])
+	*** Failed! Falsifiable (after 3 tests):
+	[0,0]
+
+	Generalization:
+	x:x:_
+
+	Conditional Generalization:
+	xs  when  hasDups xs
+
+Perhaps the example above is silly (`hasDups` is the negation of the property
+itself!), but it illustrates the use of `withBackground`.
+
+
+The combinators `for` and `withBackground` can be used in conjunction:
+
+	> check `for` 100 `withBackground` [...] $ property
+
+Don't forget the dollar sign `$`.
+
+
 Another Example
 ---------------
 
