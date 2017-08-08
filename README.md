@@ -8,8 +8,40 @@ Extrapolate is a property-based testing library for Haskell
 capable of reporting generalized counter-examples.
 
 
-Example
--------
+Installing Extrapolate
+----------------------
+
+To install the latest version of [Extrapolate from Hackage], just:
+
+$ cabal update
+$ cabal install extrapolate
+
+To test if it installed correctly, follow through the next section.
+
+
+Using Extrapolate
+-----------------
+
+Here is how to use Extrapolate after installing with [cabal]:
+
+	$ ghci
+	> import Test.Extrapolate
+	> check $ \x y -> x + y == y + (x :: Int)
+	+++ OK, passed 360 tests.
+
+	> import Data.List (nub)
+	> check $ \xs -> nub xs == (xs :: [Int])
+	*** Failed! Falsifiable (after 3 tests):
+	[0,0]
+
+	Generalization:
+	x:x:_
+
+The operator `+` is commutative.  The function `nub` is not an identity.
+
+
+Another Example
+---------------
 
 Consider the following (faulty) sort function and a property about it:
 
@@ -33,7 +65,7 @@ along with a generalization:
     0 [0,0]
 
     Generalization:
-    x (x:x:xs)
+    x (x:x:_)
 
 This hopefully makes it easier to find the source of the bug.  In this case,
 the faulty sort function discards repeated elements.
@@ -48,3 +80,4 @@ For more examples, see the [eg](eg) folder.
 [build-log]:    https://travis-ci.org/rudymatela/extrapolate
 [hackage-version]: https://img.shields.io/hackage/v/extrapolate.svg
 [extrapolate-on-hackage]: https://hackage.haskell.org/package/extrapolate
+[Extrapolate from Hackage]: https://hackage.haskell.org/package/extrapolate
