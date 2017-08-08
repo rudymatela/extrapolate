@@ -4,14 +4,14 @@ Extrapolate
 [![Extrapolate Build Status][build-status]][build-log]
 [![Extrapolate on Hackage][hackage-version]][extrapolate-on-hackage]
 
-Extrapolate is a property-based testing library for Haskell
+Extrapolate is a [property-based testing] library for [Haskell]
 capable of reporting generalized counter-examples.
 
 
 Installing Extrapolate
 ----------------------
 
-To install the latest version of [Extrapolate from Hackage], just:
+To install the latest version of [Extrapolate from Hackage] using [cabal], just:
 
 	$ cabal update
 	$ cabal install extrapolate
@@ -22,7 +22,8 @@ To test if it installed correctly, follow through the next section.
 Using Extrapolate
 -----------------
 
-Here is how to use Extrapolate after installing with [cabal]:
+To use Extrapolate, you first import the [`Test.Extrapolate`] module,
+then pass any properties you with to test to the function [`check`]:
 
 	$ ghci
 	> import Test.Extrapolate
@@ -37,12 +38,12 @@ Here is how to use Extrapolate after installing with [cabal]:
 	Generalization:
 	x:x:_
 
-The operator `+` is commutative.  The function `nub` is not an identity.
+The operator [`+`] is commutative.  The function [`nub`] is not an identity.
 
 
 ### Configuring the number of tests
 
-To increase the number of tests, use the `for` combinator:
+To increase the number of tests, use the [`for`] combinator:
 
 	$ ghci
 	> import Test.Extrapolate
@@ -52,7 +53,7 @@ To increase the number of tests, use the `for` combinator:
 
 ### Customizing the background functions (allowed in side-conditions)
 
-To customize the background functions, use the `withBackground` combinator:
+To customize the background functions, use the [`withBackground`] combinator:
 
 	$ ghci
 	> import Test.Extrapolate
@@ -69,14 +70,14 @@ To customize the background functions, use the `withBackground` combinator:
 	xs  when  hasDups xs
 
 Perhaps the example above is silly (`hasDups` is the negation of the property
-itself!), but it illustrates the use of `withBackground`.
+itself!), but it illustrates the use of [`withBackground`].
 
 
-The combinators `for` and `withBackground` can be used in conjunction:
+The combinators [`for`] and [`withBackground`] can be used in conjunction:
 
 	> check `for` 100 `withBackground` [...] $ property
 
-Don't forget the dollar sign `$`.
+Don't forget the dollar sign [`$`].
 
 
 Another Example
@@ -110,13 +111,26 @@ This hopefully makes it easier to find the source of the bug.  In this case,
 the faulty sort function discards repeated elements.
 
 
-More documentation
-------------------
+Further reading
+---------------
 
 For more examples, see the [eg](eg) folder.
+For type signatures, other options and uses,
+see [Extrapolate's API documentation].
 
-[build-status]: https://travis-ci.org/rudymatela/extrapolate.svg?branch=master
-[build-log]:    https://travis-ci.org/rudymatela/extrapolate
+[extrapolate-on-hackage]:          https://hackage.haskell.org/package/extrapolate
+[Extrapolate from Hackage]:        https://hackage.haskell.org/package/extrapolate
+[Extrapolate's API documentation]: https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html
+[`Test.Extrapolate`]:              https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html
+[`check`]:                         https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html#v:check
+[`for`]:                           https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html#v:for
+[`withBackground`]:                https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html#v:withBackground
+[`+`]:                             https://hackage.haskell.org/package/base/docs/Prelude.html#v:-43-
+[`nub`]:                           https://hackage.haskell.org/package/base/docs/Data-List.html#v:nub
+[Haskell]:                         https://www.haskell.org/
+[cabal]:                           https://www.haskell.org/cabal/
+[property-based testing]:          https://github.com/rudymatela/leancheck/blob/master/doc/tutorial.md
+
+[build-status]:    https://travis-ci.org/rudymatela/extrapolate.svg?branch=master
+[build-log]:       https://travis-ci.org/rudymatela/extrapolate
 [hackage-version]: https://img.shields.io/hackage/v/extrapolate.svg
-[extrapolate-on-hackage]: https://hackage.haskell.org/package/extrapolate
-[Extrapolate from Hackage]: https://hackage.haskell.org/package/extrapolate
