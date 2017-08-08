@@ -36,6 +36,7 @@ eg/overflow
 eg/heap
 eg/redblack
 eg/*.runtime
+bench/*.runtime
 bench/true-false
 bench/lazy-sc/list
 bench/lazy-sc/sorting
