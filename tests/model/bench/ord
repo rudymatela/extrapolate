@@ -281,7 +281,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-xs []  when  any (0 ==) xs
+xs []  when  elem 0 xs
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -347,7 +347,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-os []  when  any (LT ==) os
+os []  when  elem LT os
 
 *** Failed! Falsifiable (after 2 tests):
 [] [LT]
@@ -356,7 +356,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-[] os  when  any (LT ==) os
+[] os  when  elem LT os
 
 
 checks :: ((),Int)

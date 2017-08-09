@@ -7,7 +7,7 @@ Generalization:
 xs (x:x:xs)
 
 Conditional Generalization:
-xs (_:xs)  when  0 /= length xs
+xs (_:xs)  when  elem 0 xs
 
 *** Failed! Falsifiable (after 6 tests):
 [0,1]
@@ -22,7 +22,7 @@ Generalization:
 x:x:_
 
 Conditional Generalization:
-x:xs  when  any (x ==) xs
+x:xs  when  elem x xs
 
 *** Failed! Falsifiable (after 2 tests):
 [0]
@@ -31,7 +31,7 @@ Generalization:
 _:_
 
 Conditional Generalization:
-xs  when  0 /= length xs
+xs  when  elem 0 xs
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -40,7 +40,7 @@ Generalization:
 _ (_:_)
 
 Conditional Generalization:
-_ xs  when  0 /= length xs
+_ xs  when  elem 0 xs
 
 +++ OK, passed 360 tests.
 

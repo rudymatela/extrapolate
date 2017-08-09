@@ -190,6 +190,7 @@ instance Generalizable a => Generalizable [a] where
                     , constant "any"    (any    ->:> xs)
                     , constant "all"    (all    ->:> xs)
                     , constant "filter" (filter ->:> xs) ]
+                 ++ [ constant "elem" (elemBy (*==*) ->:> xs) | hasEq (head xs) ]
   instances xs  =  this xs $ instances (head xs)
 
 instance Generalizable Ordering where
