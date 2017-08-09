@@ -5,6 +5,7 @@
 # Maintainer:  Rudy Matela <rudy@matela.com.br>
 TESTS = \
   tests/test-derive \
+  tests/test-utils \
   tests/test-extrapolate
 QUICKEG = \
   eg/int \

@@ -24,6 +24,7 @@ README.html
 
 mk/toplibs
 tests/test-extrapolate
+tests/test-utils
 tests/test-derive
 eg/sorting
 eg/list

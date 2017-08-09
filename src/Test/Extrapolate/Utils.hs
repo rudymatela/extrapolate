@@ -16,6 +16,7 @@ module Test.Extrapolate.Utils
   , foldr0
   , fromLeft
   , fromRight
+  , elemBy
   )
 where
 
@@ -52,3 +53,6 @@ fromLeft _        = error "fromLeft: not a left"
 fromRight :: Either a b -> b
 fromRight (Right x) = x
 fromRight _         = error "fromRight: not a right"
+
+elemBy :: (a -> a -> Bool) -> a -> [a] -> Bool
+elemBy (==) x = any (== x)

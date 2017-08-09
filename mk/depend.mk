@@ -285,3 +285,18 @@ tests/Test.o: \
 tests/Test: \
   tests/Test.hs \
   mk/toplibs
+tests/test-utils.o: \
+  tests/test-utils.hs \
+  tests/Test.hs \
+  src/Test/Extrapolate/Utils.hs \
+  src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/IO.hs \
+  src/Test/Extrapolate/Exprs.hs \
+  src/Test/Extrapolate/Derive.hs \
+  src/Test/Extrapolate/Core.hs \
+  src/Test/Extrapolate/Basic.hs
+tests/test-utils: \
+  tests/test-utils.hs \
+  tests/Test.hs \
+  mk/toplibs
