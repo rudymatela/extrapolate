@@ -4,6 +4,8 @@ checks :: ()
 
 +++ OK, passed 1 tests (exhausted).
 
++++ OK, passed 1 tests (exhausted).
+
 
 checks :: Bool
 
@@ -11,8 +13,12 @@ checks :: Bool
 
 +++ OK, passed 4 tests (exhausted).
 
++++ OK, passed 8 tests (exhausted).
+
 
 checks :: Int
+
++++ OK, passed 360 tests.
 
 +++ OK, passed 360 tests.
 
@@ -25,10 +31,14 @@ checks :: Integer
 
 +++ OK, passed 360 tests.
 
++++ OK, passed 360 tests.
+
 
 checks :: Char
 
 +++ OK, passed 97 tests (exhausted).
+
++++ OK, passed 360 tests.
 
 +++ OK, passed 360 tests.
 
@@ -39,8 +49,12 @@ checks :: Ordering
 
 +++ OK, passed 9 tests (exhausted).
 
++++ OK, passed 27 tests (exhausted).
+
 
 checks :: [()]
+
++++ OK, passed 360 tests.
 
 +++ OK, passed 360 tests.
 
@@ -53,8 +67,12 @@ checks :: [Bool]
 
 +++ OK, passed 360 tests.
 
++++ OK, passed 360 tests.
+
 
 checks :: [Int]
+
++++ OK, passed 360 tests.
 
 +++ OK, passed 360 tests.
 
@@ -67,8 +85,12 @@ checks :: [Integer]
 
 +++ OK, passed 360 tests.
 
++++ OK, passed 360 tests.
+
 
 checks :: [Char]
+
++++ OK, passed 360 tests.
 
 +++ OK, passed 360 tests.
 
@@ -81,8 +103,12 @@ checks :: [Ordering]
 
 +++ OK, passed 360 tests.
 
++++ OK, passed 360 tests.
+
 
 checks :: ((),Int)
+
++++ OK, passed 360 tests.
 
 +++ OK, passed 360 tests.
 
@@ -95,8 +121,12 @@ checks :: (Bool,Char)
 
 +++ OK, passed 360 tests.
 
++++ OK, passed 360 tests.
+
 
 checks :: (Int,(),Bool)
+
++++ OK, passed 360 tests.
 
 +++ OK, passed 360 tests.
 
@@ -109,8 +139,12 @@ checks :: Maybe ()
 
 +++ OK, passed 4 tests (exhausted).
 
++++ OK, passed 8 tests (exhausted).
+
 
 checks :: Maybe Int
+
++++ OK, passed 360 tests.
 
 +++ OK, passed 360 tests.
 
@@ -123,8 +157,12 @@ checks :: Either () Bool
 
 +++ OK, passed 9 tests (exhausted).
 
++++ OK, passed 27 tests (exhausted).
+
 
 checks :: Either Int Char
+
++++ OK, passed 360 tests.
 
 +++ OK, passed 360 tests.
 
