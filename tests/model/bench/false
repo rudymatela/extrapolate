@@ -1,0 +1,171 @@
+checks :: ()
+
+*** Failed! Falsifiable (after 1 tests):
+()
+
+Generalization:
+_
+
+
+checks :: Bool
+
+*** Failed! Falsifiable (after 1 tests):
+False
+
+Generalization:
+_
+
+
+checks :: Int
+
+*** Failed! Falsifiable (after 1 tests):
+0
+
+Generalization:
+_
+
+
+checks :: Integer
+
+*** Failed! Falsifiable (after 1 tests):
+0
+
+Generalization:
+_
+
+
+checks :: Char
+
+*** Failed! Falsifiable (after 1 tests):
+'a'
+
+Generalization:
+_
+
+
+checks :: Ordering
+
+*** Failed! Falsifiable (after 1 tests):
+LT
+
+Generalization:
+_
+
+
+checks :: [()]
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+
+checks :: [Bool]
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+
+checks :: [Int]
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+
+checks :: [Integer]
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+
+checks :: [Char]
+
+*** Failed! Falsifiable (after 1 tests):
+""
+
+Generalization:
+_
+
+
+checks :: [Ordering]
+
+*** Failed! Falsifiable (after 1 tests):
+[]
+
+Generalization:
+_
+
+
+checks :: ((),Int)
+
+*** Failed! Falsifiable (after 1 tests):
+((),0)
+
+Generalization:
+_
+
+
+checks :: (Bool,Char)
+
+*** Failed! Falsifiable (after 1 tests):
+(False,'a')
+
+Generalization:
+_
+
+
+checks :: (Int,(),Bool)
+
+*** Failed! Falsifiable (after 1 tests):
+(0,(),False)
+
+Generalization:
+_
+
+
+checks :: Maybe ()
+
+*** Failed! Falsifiable (after 1 tests):
+Nothing
+
+Generalization:
+_
+
+
+checks :: Maybe Int
+
+*** Failed! Falsifiable (after 1 tests):
+Nothing
+
+Generalization:
+_
+
+
+checks :: Either () Bool
+
+*** Failed! Falsifiable (after 1 tests):
+Left ()
+
+Generalization:
+_
+
+
+checks :: Either Int Char
+
+*** Failed! Falsifiable (after 1 tests):
+Left 0
+
+Generalization:
+_
+
+

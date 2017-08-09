@@ -1,0 +1,171 @@
+checks :: ()
+
+*** Failed! Falsifiable (after 1 tests):
+() ()
+
+Generalization:
+_ _
+
+
+checks :: Bool
+
+*** Failed! Falsifiable (after 1 tests):
+False False
+
+Generalization:
+p p
+
+
+checks :: Int
+
+*** Failed! Falsifiable (after 1 tests):
+0 0
+
+Generalization:
+x x
+
+
+checks :: Integer
+
+*** Failed! Falsifiable (after 1 tests):
+0 0
+
+Generalization:
+x x
+
+
+checks :: Char
+
+*** Failed! Falsifiable (after 1 tests):
+'a' 'a'
+
+Generalization:
+c c
+
+
+checks :: Ordering
+
+*** Failed! Falsifiable (after 1 tests):
+LT LT
+
+Generalization:
+o o
+
+
+checks :: [()]
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+us us
+
+
+checks :: [Bool]
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+ps ps
+
+
+checks :: [Int]
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+xs xs
+
+
+checks :: [Integer]
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+xs xs
+
+
+checks :: [Char]
+
+*** Failed! Falsifiable (after 1 tests):
+"" ""
+
+Generalization:
+cs cs
+
+
+checks :: [Ordering]
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+os os
+
+
+checks :: ((),Int)
+
+*** Failed! Falsifiable (after 1 tests):
+((),0) ((),0)
+
+Generalization:
+ux ux
+
+
+checks :: (Bool,Char)
+
+*** Failed! Falsifiable (after 1 tests):
+(False,'a') (False,'a')
+
+Generalization:
+pc pc
+
+
+checks :: (Int,(),Bool)
+
+*** Failed! Falsifiable (after 1 tests):
+(0,(),False) (0,(),False)
+
+Generalization:
+xup xup
+
+
+checks :: Maybe ()
+
+*** Failed! Falsifiable (after 1 tests):
+Nothing Nothing
+
+Generalization:
+mu mu
+
+
+checks :: Maybe Int
+
+*** Failed! Falsifiable (after 1 tests):
+Nothing Nothing
+
+Generalization:
+mx mx
+
+
+checks :: Either () Bool
+
+*** Failed! Falsifiable (after 1 tests):
+(Left ()) (Left ())
+
+Generalization:
+eup eup
+
+
+checks :: Either Int Char
+
+*** Failed! Falsifiable (after 1 tests):
+(Left 0) (Left 0)
+
+Generalization:
+exc exc
+
+

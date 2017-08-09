@@ -40,13 +40,5 @@ main = do
 ch :: (Eq a, Generalizable a) => a -> IO ()
 ch x = do
   putStrLn $ "checks :: " ++ show (typeOf x) ++ "\n"
-  check $ const True  -:> x
   check $ const False -:> x
-  check $ (==) -:> x
-  check $ (/=) -:> x
   putStrLn ""
--- The following makes everything too slow
---check $ (\x y z -> x == y && y == z) -:> x
---check $ (\x y z -> x /= y && y /= z && z /= x) -:> x
---check $ (\x y z w -> x == y || z == w) -:> x ->>:> x
--- maybe in a future faster version we can uncomment those above.

@@ -1,0 +1,173 @@
+checks :: ()
+
++++ OK, passed 1 tests (exhausted).
+
+
+checks :: Bool
+
+*** Failed! Falsifiable (after 2 tests):
+False True
+
+
+checks :: Int
+
+*** Failed! Falsifiable (after 2 tests):
+0 1
+
+Conditional Generalization:
+x y  when  x /= y
+
+
+checks :: Integer
+
+*** Failed! Falsifiable (after 2 tests):
+0 1
+
+Conditional Generalization:
+x y  when  x /= y
+
+
+checks :: Char
+
+*** Failed! Falsifiable (after 2 tests):
+'a' ' '
+
+Conditional Generalization:
+c d  when  c /= d
+
+
+checks :: Ordering
+
+*** Failed! Falsifiable (after 2 tests):
+LT EQ
+
+
+checks :: [()]
+
+*** Failed! Falsifiable (after 2 tests):
+[] [()]
+
+Generalization:
+us (_:us)
+
+
+checks :: [Bool]
+
+*** Failed! Falsifiable (after 2 tests):
+[] [False]
+
+Generalization:
+ps (_:ps)
+
+
+checks :: [Int]
+
+*** Failed! Falsifiable (after 2 tests):
+[] [0]
+
+Generalization:
+xs (_:xs)
+
+Conditional Generalization:
+xs ys  when  length xs /= length ys
+
+
+checks :: [Integer]
+
+*** Failed! Falsifiable (after 2 tests):
+[] [0]
+
+Generalization:
+xs (_:xs)
+
+
+checks :: [Char]
+
+*** Failed! Falsifiable (after 2 tests):
+"" "a"
+
+Generalization:
+cs (_:cs)
+
+
+checks :: [Ordering]
+
+*** Failed! Falsifiable (after 2 tests):
+[] [LT]
+
+Generalization:
+os (_:os)
+
+
+checks :: ((),Int)
+
+*** Failed! Falsifiable (after 2 tests):
+((),0) ((),1)
+
+Generalization:
+(_,0) (_,1)
+
+Conditional Generalization:
+(_,x) (_,y)  when  x /= y
+
+
+checks :: (Bool,Char)
+
+*** Failed! Falsifiable (after 2 tests):
+(False,'a') (True,'a')
+
+Generalization:
+(False,_) (True,_)
+
+Conditional Generalization:
+(_,c) (_,d)  when  c /= d
+
+
+checks :: (Int,(),Bool)
+
+*** Failed! Falsifiable (after 2 tests):
+(0,(),False) (0,(),True)
+
+Generalization:
+(_,_,False) (_,_,True)
+
+Conditional Generalization:
+(x,_,_) (y,_,_)  when  x /= y
+
+
+checks :: Maybe ()
+
+*** Failed! Falsifiable (after 2 tests):
+Nothing (Just ())
+
+Generalization:
+Nothing (Just _)
+
+
+checks :: Maybe Int
+
+*** Failed! Falsifiable (after 2 tests):
+Nothing (Just 0)
+
+Generalization:
+Nothing (Just _)
+
+
+checks :: Either () Bool
+
+*** Failed! Falsifiable (after 2 tests):
+(Left ()) (Right False)
+
+Generalization:
+(Left _) (Right _)
+
+
+checks :: Either Int Char
+
+*** Failed! Falsifiable (after 2 tests):
+(Left 0) (Right 'a')
+
+Generalization:
+(Left _) (Right _)
+
+

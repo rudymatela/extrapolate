@@ -38,6 +38,10 @@ eg/redblack
 eg/*.runtime
 bench/*.runtime
 bench/true-false
+bench/true
+bench/false
+bench/eq
+bench/diff
 bench/lazy-sc/list
 bench/lazy-sc/sorting
 bench/lazy-sc/int

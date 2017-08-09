@@ -16,7 +16,10 @@ QUICKEG = \
   eg/redblack \
   eg/sorting
 EG = \
-  bench/true-false \
+  bench/true  \
+  bench/false \
+  bench/eq    \
+  bench/diff  \
   eg/overflow \
   $(QUICKEG)
 LISTHS   = find src mk tests eg bench/*.hs -name \*.hs
