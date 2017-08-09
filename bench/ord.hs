@@ -45,6 +45,3 @@ ch x = do
   check $ (<=) -:> x
   check $ (>=) -:> x
   putStrLn ""
--- The following makes everything too slow
---check $ (\x y z -> x /= y && y /= z && z /= x) -:> x
--- maybe in a future faster version we can uncomment those above.
