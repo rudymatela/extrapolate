@@ -107,6 +107,8 @@ listBackgroundOK :: Generalizable a => a -> Bool
 listBackgroundOK x = backgroundOf [x] =$ sort $= backgroundListOf x
   where
   backgroundListOf x = [ constant "length" $ length  -:> [x]
+                       , constant "any"    $ any    ->:> [x]
+                       , constant "all"    $ all    ->:> [x]
                        , constant "filter" $ filter ->:> [x]
                        ]
                      +++ backgroundOf x
