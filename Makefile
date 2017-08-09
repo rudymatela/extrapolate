@@ -58,7 +58,9 @@ bench: $(patsubst %,%.bench,$(EG))
 
 .PHONY: %.bench
 %.bench: %
-	/usr/bin/time -f%e ./$< 2>&1 >/dev/null | tee $<.runtime
+	@mkdir -p `dirname bench/runtime/$$HOSTNAME/$<`
+	@printf "%-18s " $<
+	@/usr/bin/time -f%e ./$< 2>&1 >/dev/null | tee bench/runtime/$$HOSTNAME/$<
 
 clean: clean-hi-o clean-haddock
 	rm -f $(TESTS) $(EG) mk/toplibs
