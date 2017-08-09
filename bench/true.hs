@@ -41,4 +41,6 @@ ch :: (Eq a, Generalizable a) => a -> IO ()
 ch x = do
   putStrLn $ "checks :: " ++ show (typeOf x) ++ "\n"
   check $ const True  -:> x
+  check $ (\x y -> True) -:> x ->:> x
+  check $ (\x y z -> True) -:> x ->:> x ->>:> x
   putStrLn ""

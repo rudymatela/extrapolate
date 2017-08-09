@@ -6,6 +6,12 @@ checks :: ()
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+() ()
+
+Generalization:
+_ _
+
 
 checks :: Bool
 
@@ -14,6 +20,12 @@ False
 
 Generalization:
 _
+
+*** Failed! Falsifiable (after 1 tests):
+False False
+
+Generalization:
+_ _
 
 
 checks :: Int
@@ -24,6 +36,12 @@ checks :: Int
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+0 0
+
+Generalization:
+_ _
+
 
 checks :: Integer
 
@@ -32,6 +50,12 @@ checks :: Integer
 
 Generalization:
 _
+
+*** Failed! Falsifiable (after 1 tests):
+0 0
+
+Generalization:
+_ _
 
 
 checks :: Char
@@ -42,6 +66,12 @@ checks :: Char
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+'a' 'a'
+
+Generalization:
+_ _
+
 
 checks :: Ordering
 
@@ -50,6 +80,12 @@ LT
 
 Generalization:
 _
+
+*** Failed! Falsifiable (after 1 tests):
+LT LT
+
+Generalization:
+_ _
 
 
 checks :: [()]
@@ -60,6 +96,12 @@ checks :: [()]
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+_ _
+
 
 checks :: [Bool]
 
@@ -68,6 +110,12 @@ checks :: [Bool]
 
 Generalization:
 _
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+_ _
 
 
 checks :: [Int]
@@ -78,6 +126,12 @@ checks :: [Int]
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+_ _
+
 
 checks :: [Integer]
 
@@ -86,6 +140,12 @@ checks :: [Integer]
 
 Generalization:
 _
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+_ _
 
 
 checks :: [Char]
@@ -96,6 +156,12 @@ checks :: [Char]
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+"" ""
+
+Generalization:
+_ _
+
 
 checks :: [Ordering]
 
@@ -104,6 +170,12 @@ checks :: [Ordering]
 
 Generalization:
 _
+
+*** Failed! Falsifiable (after 1 tests):
+[] []
+
+Generalization:
+_ _
 
 
 checks :: ((),Int)
@@ -114,6 +186,12 @@ checks :: ((),Int)
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+((),0) ((),0)
+
+Generalization:
+_ _
+
 
 checks :: (Bool,Char)
 
@@ -122,6 +200,12 @@ checks :: (Bool,Char)
 
 Generalization:
 _
+
+*** Failed! Falsifiable (after 1 tests):
+(False,'a') (False,'a')
+
+Generalization:
+_ _
 
 
 checks :: (Int,(),Bool)
@@ -132,6 +216,12 @@ checks :: (Int,(),Bool)
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+(0,(),False) (0,(),False)
+
+Generalization:
+_ _
+
 
 checks :: Maybe ()
 
@@ -140,6 +230,12 @@ Nothing
 
 Generalization:
 _
+
+*** Failed! Falsifiable (after 1 tests):
+Nothing Nothing
+
+Generalization:
+_ _
 
 
 checks :: Maybe Int
@@ -150,6 +246,12 @@ Nothing
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+Nothing Nothing
+
+Generalization:
+_ _
+
 
 checks :: Either () Bool
 
@@ -159,6 +261,12 @@ Left ()
 Generalization:
 _
 
+*** Failed! Falsifiable (after 1 tests):
+(Left ()) (Left ())
+
+Generalization:
+_ _
+
 
 checks :: Either Int Char
 
@@ -167,5 +275,11 @@ Left 0
 
 Generalization:
 _
+
+*** Failed! Falsifiable (after 1 tests):
+(Left 0) (Left 0)
+
+Generalization:
+_ _
 
 
