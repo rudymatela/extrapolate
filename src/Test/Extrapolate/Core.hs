@@ -28,6 +28,8 @@ module Test.Extrapolate.Core
   , maxTests
   , extraInstances
   , maxConditionSize
+  , hasEq
+  , (*==*)
 
   , counterExampleGen
   , counterExampleGens
@@ -66,7 +68,7 @@ import Test.LeanCheck hiding
   , checkResultFor
   )
 import Test.Extrapolate.Exprs (fold, unfold)
-import Data.Maybe (listToMaybe, fromJust, isJust)
+import Data.Maybe (listToMaybe, fromJust, fromMaybe, isJust, listToMaybe, catMaybes)
 import Data.Either (isRight)
 import Data.List (insert)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
@@ -452,3 +454,19 @@ isCounterExampleUnder m p c es = and'
 isVar :: Expr -> Bool
 isVar (Var _ _) = True
 isVar _         = False
+
+hasEq :: Generalizable a => a -> Bool
+hasEq x = isJust $ "==" `fromBackgroundOf` x -: mayb (x >- x >- bool)
+
+(*==*) :: Generalizable a => a -> a -> Bool
+x *==* y = x == y
+  where
+  (==) = fromMaybe (error "(*==*): no (==) operator in background")
+       $ "==" `fromBackgroundOf` x
+
+fromBackgroundOf :: (Generalizable a, Typeable b) => String -> a -> Maybe b
+fromBackgroundOf nm = listToMaybe
+                    . catMaybes
+                    . map evaluate
+                    . filter (`isConstantNamed` nm)
+                    . background
