@@ -33,6 +33,14 @@ instance Generalizable Int16 where
   name _ = "x"
   expr = showConstant
   instances x = this x id
+--background x = bgOrd x
+-- TODO: make overflow work nicely with a background
+-- with the above line is uncommented, even withConditionSize 3, Extrapolate
+-- takes 7 minutes to print its results and does not find any generalization.
+-- try again after improving the algorithm.  Somehow include -10000 or other
+-- negative number in the background.
+-- TODO: it would be also nice to print a counter-example as it is found (not
+-- wait for everything to generate output).
 
 {-
 instance Listable T where
