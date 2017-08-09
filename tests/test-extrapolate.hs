@@ -104,7 +104,7 @@ tests n =
   ]
 
 listBackgroundOK :: Generalizable a => a -> Bool
-listBackgroundOK x = backgroundOf [x] =$ sort $= backgroundListOf x
+listBackgroundOK x = backgroundListOf x `subset` backgroundOf [x]
   where
   backgroundListOf x = [ constant "length" $ length  -:> [x]
                        , constant "any"    $ any    ->:> [x]
