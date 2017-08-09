@@ -20,6 +20,7 @@ EG = \
   bench/false \
   bench/eq    \
   bench/diff  \
+  bench/ord   \
   eg/overflow \
   $(QUICKEG)
 LISTHS   = find src mk tests eg bench/*.hs -name \*.hs

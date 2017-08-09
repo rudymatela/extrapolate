@@ -42,6 +42,7 @@ bench/true
 bench/false
 bench/eq
 bench/diff
+bench/ord
 bench/lazy-sc/list
 bench/lazy-sc/sorting
 bench/lazy-sc/int

@@ -37,6 +37,19 @@ bench/false.o: \
   src/Test/Extrapolate/Core.hs \
   src/Test/Extrapolate/Basic.hs \
   bench/false.hs
+bench/ord: \
+  bench/ord.hs \
+  mk/toplibs
+bench/ord.o: \
+  src/Test/Extrapolate/Utils.hs \
+  src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/IO.hs \
+  src/Test/Extrapolate/Exprs.hs \
+  src/Test/Extrapolate/Derive.hs \
+  src/Test/Extrapolate/Core.hs \
+  src/Test/Extrapolate/Basic.hs \
+  bench/ord.hs
 bench/true: \
   bench/true.hs \
   mk/toplibs
