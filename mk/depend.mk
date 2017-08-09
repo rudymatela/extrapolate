@@ -128,6 +128,19 @@ eg/list.o: \
   src/Test/Extrapolate/Core.hs \
   src/Test/Extrapolate/Basic.hs \
   eg/list.hs
+eg/overflow8: \
+  eg/overflow8.hs \
+  mk/toplibs
+eg/overflow8.o: \
+  src/Test/Extrapolate/Utils.hs \
+  src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/IO.hs \
+  src/Test/Extrapolate/Exprs.hs \
+  src/Test/Extrapolate/Derive.hs \
+  src/Test/Extrapolate/Core.hs \
+  src/Test/Extrapolate/Basic.hs \
+  eg/overflow8.hs
 eg/overflow: \
   eg/overflow.hs \
   mk/toplibs

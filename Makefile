@@ -23,6 +23,7 @@ EG = \
   bench/diff  \
   bench/ord   \
   eg/overflow \
+  eg/overflow8 \
   $(QUICKEG)
 LISTHS   = find src mk tests eg bench/*.hs -name \*.hs
 LISTOBJS = $(LISTHS) | sed -e 's/.hs$$/.o/'
