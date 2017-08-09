@@ -466,6 +466,7 @@ x *==* y = x == y
   where
   (==) = fromMaybe (error "(*==*): no (==) operator in background")
        $ "==" `fromBackgroundOf` x
+-- TODO: rename (*==*) to (-==-), use it in the Test module.
 
 fromBackgroundOf :: (Generalizable a, Typeable b) => String -> a -> Maybe b
 fromBackgroundOf nm = listToMaybe
