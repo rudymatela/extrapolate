@@ -21,6 +21,9 @@ Conditional Generalization:
 Generalization:
 x:x:_
 
+Conditional Generalization:
+x:xs  when  any (x ==) xs
+
 *** Failed! Falsifiable (after 2 tests):
 [0]
 

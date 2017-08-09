@@ -59,6 +59,9 @@ checks :: [Bool]
 Generalization:
 ps (_:ps)
 
+Conditional Generalization:
+ps (False:_)  when  not (any not ps)
+
 
 checks :: [Int]
 
@@ -80,6 +83,9 @@ checks :: [Integer]
 Generalization:
 xs (_:xs)
 
+Conditional Generalization:
+_ xs  when  any (1 <) xs
+
 
 checks :: [Char]
 
@@ -89,6 +95,9 @@ checks :: [Char]
 Generalization:
 cs (_:cs)
 
+Conditional Generalization:
+_ (_:cs)  when  any ('a' <) cs
+
 
 checks :: [Ordering]
 
@@ -97,6 +106,9 @@ checks :: [Ordering]
 
 Generalization:
 os (_:os)
+
+Conditional Generalization:
+os (o:_)  when  all (o /=) os
 
 
 checks :: ((),Int)

@@ -205,11 +205,17 @@ ps ps
 Generalization:
 (_:_) []
 
+Conditional Generalization:
+ps []  when  any not ps
+
 *** Failed! Falsifiable (after 2 tests):
 [] [False]
 
 Generalization:
 [] (_:_)
+
+Conditional Generalization:
+[] ps  when  any not ps
 
 
 checks :: [Int]
@@ -220,11 +226,17 @@ checks :: [Int]
 Generalization:
 xs xs
 
+Conditional Generalization:
+ys xs  when  any (length xs <) ys
+
 *** Failed! Falsifiable (after 1 tests):
 [] []
 
 Generalization:
 xs xs
+
+Conditional Generalization:
+_ xs  when  any (1 <) xs
 
 *** Failed! Falsifiable (after 3 tests):
 [0] []
@@ -233,7 +245,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-(x:_) xs  when  length xs < x
+ys xs  when  any (length xs <) ys
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -242,7 +254,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-xs (x:_)  when  length xs < x
+_ xs  when  any (1 <) xs
 
 
 checks :: [Integer]
@@ -259,17 +271,26 @@ xs xs
 Generalization:
 xs xs
 
+Conditional Generalization:
+_ xs  when  any (1 <) xs
+
 *** Failed! Falsifiable (after 3 tests):
 [0] []
 
 Generalization:
 (_:_) []
 
+Conditional Generalization:
+xs []  when  any (0 ==) xs
+
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
 
 Generalization:
 [] (_:_)
+
+Conditional Generalization:
+_ xs  when  any (1 <) xs
 
 
 checks :: [Char]
@@ -292,11 +313,17 @@ cs cs
 Generalization:
 (_:_) ""
 
+Conditional Generalization:
+('a':_) cs  when  all (' ' ==) cs
+
 *** Failed! Falsifiable (after 2 tests):
 "" "a"
 
 Generalization:
 "" (_:_)
+
+Conditional Generalization:
+cs ('a':_)  when  all (' ' ==) cs
 
 
 checks :: [Ordering]
@@ -319,11 +346,17 @@ os os
 Generalization:
 (_:_) []
 
+Conditional Generalization:
+os []  when  any (LT ==) os
+
 *** Failed! Falsifiable (after 2 tests):
 [] [LT]
 
 Generalization:
 [] (_:_)
+
+Conditional Generalization:
+[] os  when  any (LT ==) os
 
 
 checks :: ((),Int)
