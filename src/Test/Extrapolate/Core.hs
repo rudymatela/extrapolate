@@ -192,6 +192,8 @@ instance Generalizable a => Generalizable [a] where
                     , constant "filter" (filter ->:> xs) ]
                  ++ [ constant "elem" (elemBy (*==*) ->:> xs) | hasEq (head xs) ]
   instances xs  =  this xs $ instances (head xs)
+-- TODO: add (==) and (/=) when list element type has (==) and (/=)
+-- TODO: add (<=) and (<)  when list element type has (<=) and (<)
 
 instance Generalizable Ordering where
   name o  =  "o"
