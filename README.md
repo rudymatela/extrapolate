@@ -3,6 +3,8 @@ Extrapolate
 
 [![Extrapolate Build Status][build-status]][build-log]
 [![Extrapolate on Hackage][hackage-version]][extrapolate-on-hackage]
+[![Extrapolate on Stackage LTS][stackage-lts-badge]][extrapolate-on-stackage-lts]
+[![Extrapolate on Stackage Nightly][stackage-nightly-badge]][extrapolate-on-stackage-nightly]
 
 Extrapolate is a [property-based testing] library for [Haskell]
 capable of reporting generalized counter-examples.
@@ -135,3 +137,8 @@ see [Extrapolate's API documentation].
 [build-status]:    https://travis-ci.org/rudymatela/extrapolate.svg?branch=master
 [build-log]:       https://travis-ci.org/rudymatela/extrapolate
 [hackage-version]: https://img.shields.io/hackage/v/extrapolate.svg
+[stackage-lts-badge]:            http://stackage.org/package/extrapolate/badge/lts
+[stackage-nightly-badge]:        http://stackage.org/package/extrapolate/badge/nightly
+[extrapolate-on-stackage]:         http://stackage.org/package/extrapolate
+[extrapolate-on-stackage-lts]:     http://stackage.org/lts/package/extrapolate
+[extrapolate-on-stackage-nightly]: http://stackage.org/nightly/package/extrapolate
