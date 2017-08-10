@@ -1,3 +1,6 @@
 *** Failed! Falsifiable (after 2016 tests):
 T [] [-1] [-128]
 
+Conditional Generalization:
+T xs ((-1):xs) ((-128):xs)  when  0 == sum xs
+

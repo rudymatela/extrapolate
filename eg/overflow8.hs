@@ -33,12 +33,15 @@ instance Generalizable Int8 where
   name _ = "x"
   expr = showConstant
   instances x = this x id
---background x = bgOrd x -- TODO: make this work (performance issue)
+  background x = bgOrd x
 
 deriveListable ''T
 deriveGeneralizable ''T
 
 main :: IO ()
 main = do
-  check `for` 2500 $ prop
---print $ take 1000 (list :: [T])
+  check `for` 2160
+        `withBackground` [constant "sum" (sum :: [Int8] -> Int8)]
+        `withConditionSize` 4
+        $ prop
+-- TODO: somehow make overflow8 run faster
