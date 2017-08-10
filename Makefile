@@ -60,6 +60,9 @@ update-diff-test: $(patsubst %,%.update-diff-test,$(EG))
 %.update-diff-test: %
 	./$< >           tests/model/$<
 
+test-sdist:
+	./tests/test-sdist
+
 bench: $(patsubst %,%.bench,$(EG))
 
 .PHONY: %.bench
