@@ -21,7 +21,7 @@ pre :: T -> Bool
 pre t  =  all ((< 16) . sum) (toList t)
 
 post :: T -> Bool
-post t  =  (sum . concat) (toList t) < 5 * 16
+post t  =  (sum . concat) (toList t) < 3 * 16
 
 prop :: T -> Bool
 prop t  =  pre t ==> post t
