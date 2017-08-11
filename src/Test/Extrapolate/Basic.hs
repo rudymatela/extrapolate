@@ -40,3 +40,22 @@ instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
                   . instances ((\(_,_,z,_,_) -> z) xyzwv)
                   . instances ((\(_,_,_,w,_) -> w) xyzwv)
                   . instances ((\(_,_,_,_,v) -> v) xyzwv)
+
+instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
+         , Generalizable e, Generalizable f )
+      => Generalizable (a,b,c,d,e,f) where
+  name xyzwvu = name ((\(x,_,_,_,_,_) -> x) xyzwvu)
+             ++ name ((\(_,y,_,_,_,_) -> y) xyzwvu)
+             ++ name ((\(_,_,z,_,_,_) -> z) xyzwvu)
+             ++ name ((\(_,_,_,w,_,_) -> w) xyzwvu)
+             ++ name ((\(_,_,_,_,v,_) -> v) xyzwvu)
+             ++ name ((\(_,_,_,_,_,u) -> u) xyzwvu)
+  expr (x,y,z,w,v,u) = constant ",,,,," ((,,,,,) ->>>>>>: (x,y,z,w,v,u))
+                    :$ expr x :$ expr y :$ expr z :$ expr w :$ expr v :$ expr u
+  instances xyzwvu = this xyzwvu
+                   $ instances ((\(x,_,_,_,_,_) -> x) xyzwvu)
+                   . instances ((\(_,y,_,_,_,_) -> y) xyzwvu)
+                   . instances ((\(_,_,z,_,_,_) -> z) xyzwvu)
+                   . instances ((\(_,_,_,w,_,_) -> w) xyzwvu)
+                   . instances ((\(_,_,_,_,v,_) -> v) xyzwvu)
+                   . instances ((\(_,_,_,_,_,u) -> u) xyzwvu)
