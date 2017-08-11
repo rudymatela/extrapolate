@@ -23,3 +23,20 @@ instance (Integral a, Generalizable a) => Generalizable (Ratio a) where
   instances q = this q id
 -- The following would allow zero denominators
 -- expr (n % d) = constant "%" ((%) -:> n) :$ expr n :$ expr d
+
+instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
+         , Generalizable e )
+      => Generalizable (a,b,c,d,e) where
+  name xyzwv = name ((\(x,_,_,_,_) -> x) xyzwv)
+            ++ name ((\(_,y,_,_,_) -> y) xyzwv)
+            ++ name ((\(_,_,z,_,_) -> z) xyzwv)
+            ++ name ((\(_,_,_,w,_) -> w) xyzwv)
+            ++ name ((\(_,_,_,_,v) -> v) xyzwv)
+  expr (x,y,z,w,v) = constant ",,,," ((,,,,) ->>>>>: (x,y,z,w,v))
+                  :$ expr x :$ expr y :$ expr z :$ expr w :$ expr v
+  instances xyzwv = this xyzwv
+                  $ instances ((\(x,_,_,_,_) -> x) xyzwv)
+                  . instances ((\(_,y,_,_,_) -> y) xyzwv)
+                  . instances ((\(_,_,z,_,_) -> z) xyzwv)
+                  . instances ((\(_,_,_,w,_) -> w) xyzwv)
+                  . instances ((\(_,_,_,_,v) -> v) xyzwv)

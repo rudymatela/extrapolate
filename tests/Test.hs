@@ -22,6 +22,7 @@ module Test
 
   -- * Properties and Tests
   , generalizableOK
+  , exprOK
   , idExprEval, showOK
   , instancesOK
   , namesOK, sameNamesIn, namesIn
