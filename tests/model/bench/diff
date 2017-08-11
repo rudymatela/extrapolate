@@ -133,18 +133,6 @@ Generalization:
 xup xup
 
 
-checks :: (Char,Int,Bool,Ordering)
-
-*** Failed! Falsifiable (after 1 tests):
-('a',0,False,LT) ('a',0,False,LT)
-
-Generalization:
-cxpo cxpo
-
-Conditional Generalization:
-(c,x,p,o) (d,x,p,o)  when  not (c /= d)
-
-
 checks :: Maybe ()
 
 *** Failed! Falsifiable (after 1 tests):

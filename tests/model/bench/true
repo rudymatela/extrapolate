@@ -133,15 +133,6 @@ checks :: (Int,(),Bool)
 +++ OK, passed 360 tests.
 
 
-checks :: (Char,Int,Bool,Ordering)
-
-+++ OK, passed 360 tests.
-
-+++ OK, passed 360 tests.
-
-+++ OK, passed 360 tests.
-
-
 checks :: Maybe ()
 
 +++ OK, passed 2 tests (exhausted).

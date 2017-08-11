@@ -147,18 +147,6 @@ Conditional Generalization:
 (x,_,_) (y,_,_)  when  x /= y
 
 
-checks :: (Char,Int,Bool,Ordering)
-
-*** Failed! Falsifiable (after 2 tests):
-('a',0,False,LT) ('a',0,False,EQ)
-
-Generalization:
-(_,_,_,LT) (_,_,_,EQ)
-
-Conditional Generalization:
-_ (c,0,_,_)  when  'a' < c
-
-
 checks :: Maybe ()
 
 *** Failed! Falsifiable (after 2 tests):
