@@ -20,8 +20,8 @@ main = do
 
   ch ((),int)
   ch (bool,char)
-
   ch (int,(),bool)
+  ch (char,int,bool,ordering)
 
   ch (mayb ())
   ch (mayb int)

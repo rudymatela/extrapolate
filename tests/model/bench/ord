@@ -476,6 +476,45 @@ Conditional Generalization:
 (x,_,_) (y,_,_)  when  x < y
 
 
+checks :: (Char,Int,Bool,Ordering)
+
+*** Failed! Falsifiable (after 1 tests):
+('a',0,False,LT) ('a',0,False,LT)
+
+Generalization:
+cxpo cxpo
+
+Conditional Generalization:
+_ ('a',x,_,_)  when  x < 0
+
+*** Failed! Falsifiable (after 1 tests):
+('a',0,False,LT) ('a',0,False,LT)
+
+Generalization:
+cxpo cxpo
+
+Conditional Generalization:
+_ (c,0,_,_)  when  'a' < c
+
+*** Failed! Falsifiable (after 7 tests):
+('a',0,False,EQ) ('a',0,False,LT)
+
+Generalization:
+(c,x,p,EQ) (c,x,p,LT)
+
+Conditional Generalization:
+_ ('a',x,_,_)  when  x < 0
+
+*** Failed! Falsifiable (after 2 tests):
+('a',0,False,LT) ('a',0,False,EQ)
+
+Generalization:
+(c,x,p,LT) (c,x,p,EQ)
+
+Conditional Generalization:
+_ (c,0,_,_)  when  'a' < c
+
+
 checks :: Maybe ()
 
 *** Failed! Falsifiable (after 1 tests):

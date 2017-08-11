@@ -313,6 +313,27 @@ Generalization:
 _ _ _
 
 
+checks :: (Char,Int,Bool,Ordering)
+
+*** Failed! Falsifiable (after 1 tests):
+('a',0,False,LT)
+
+Generalization:
+_
+
+*** Failed! Falsifiable (after 1 tests):
+('a',0,False,LT) ('a',0,False,LT)
+
+Generalization:
+_ _
+
+*** Failed! Falsifiable (after 1 tests):
+('a',0,False,LT) ('a',0,False,LT) ('a',0,False,LT)
+
+Generalization:
+_ _ _
+
+
 checks :: Maybe ()
 
 *** Failed! Falsifiable (after 1 tests):

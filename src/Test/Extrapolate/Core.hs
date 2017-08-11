@@ -168,7 +168,8 @@ instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
   instances xy  =  this xy $ instances (fst xy)
                            . instances (snd xy)
 
-instance (Generalizable a, Generalizable b, Generalizable c) => Generalizable (a,b,c) where
+instance (Generalizable a, Generalizable b, Generalizable c)
+      => Generalizable (a,b,c) where
   name xyz  =  name ((\(x,_,_) -> x) xyz)
             ++ name ((\(_,y,_) -> y) xyz)
             ++ name ((\(_,_,z) -> z) xyz)
@@ -181,6 +182,24 @@ instance (Generalizable a, Generalizable b, Generalizable c) => Generalizable (a
     fst (x,_,_) = x
     snd (_,y,_) = y
     trd (_,_,z) = z
+
+instance (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
+      => Generalizable (a,b,c,d) where
+  name xyzw  =  name ((\(x,_,_,_) -> x) xyzw)
+             ++ name ((\(_,y,_,_) -> y) xyzw)
+             ++ name ((\(_,_,z,_) -> z) xyzw)
+             ++ name ((\(_,_,_,w) -> w) xyzw)
+  expr (x,y,z,w)  =  constant ",,," ((,,,) ->>>>: (x,y,z,w))
+                  :$ expr x :$ expr y :$ expr z :$ expr w
+  instances xyzw  =  this xyzw $ instances (fst xyzw)
+                               . instances (snd xyzw)
+                               . instances (trd xyzw)
+                               . instances (fth xyzw)
+    where
+    fst (x,_,_,_) = x
+    snd (_,y,_,_) = y
+    trd (_,_,z,_) = z
+    fth (_,_,_,w) = w
 
 instance Generalizable a => Generalizable [a] where
   name xs  =  name (head xs) ++ "s"
