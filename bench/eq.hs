@@ -21,13 +21,16 @@ main = do
   ch ((),int)
   ch (bool,char)
   ch (int,(),bool)
-  ch (char,int,bool,ordering)
 
   ch (mayb ())
   ch (mayb int)
 
   ch (eith () bool)
   ch (eith int char)
+
+-- TODO: find out why output for the following is different across diff GHCs
+-- see: https://travis-ci.org/rudymatela/extrapolate/jobs/263425540
+-- ch (char,int,bool,ordering)
 
 -- For some reason, output for the following funky types is different across
 -- different versions of GHC, see:
