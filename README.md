@@ -123,6 +123,9 @@ see [Extrapolate's API documentation].
 There are two other tools for [Haskell] capable of producing generalized
 counter-examples: [SmartCheck] and [Lazy SmallCheck 2012].
 
+Extrapolate was accepted for presentation at [IFL 2017], a link to a
+pre-symposium proceedings draft paper will be listed here soon.
+
 [extrapolate-on-hackage]:          https://hackage.haskell.org/package/extrapolate
 [Extrapolate from Hackage]:        https://hackage.haskell.org/package/extrapolate
 [Extrapolate's API documentation]: https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html
@@ -137,6 +140,7 @@ counter-examples: [SmartCheck] and [Lazy SmallCheck 2012].
 [cabal]:                           https://www.haskell.org/cabal/
 [property-based testing]:          https://github.com/rudymatela/leancheck/blob/master/doc/tutorial.md
 
+[IFL 2017]:             http://iflconference.org/
 [SmartCheck]:           https://github.com/leepike/SmartCheck
 [Lazy SmallCheck 2012]: https://github.com/UoYCS-plasma/lazysmallcheck2012
 
