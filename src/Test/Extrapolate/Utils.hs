@@ -7,7 +7,11 @@
 -- This module is part of Extrapolate,
 -- a library for generalization of counter-examples.
 --
--- Misc. utilities.
+-- Miscellaneous utility functions.
+--
+-- This is not intended to be used by users of Extrapolate, only by modules of
+-- Extrapolate itself.  Expect symbols exported here to come and go with every
+-- minor version.
 module Test.Extrapolate.Utils
   ( (+++)
   , nubMerge
