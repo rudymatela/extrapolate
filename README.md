@@ -120,6 +120,9 @@ For more examples, see the [eg](eg) folder.
 For type signatures, other options and uses,
 see [Extrapolate's API documentation].
 
+There are two other tools for [Haskell] capable of producing generalized
+counter-examples: [SmartCheck] and [Lazy SmallCheck 2012].
+
 [extrapolate-on-hackage]:          https://hackage.haskell.org/package/extrapolate
 [Extrapolate from Hackage]:        https://hackage.haskell.org/package/extrapolate
 [Extrapolate's API documentation]: https://hackage.haskell.org/package/extrapolate/docs/Test-Extrapolate.html
@@ -133,6 +136,9 @@ see [Extrapolate's API documentation].
 [Haskell]:                         https://www.haskell.org/
 [cabal]:                           https://www.haskell.org/cabal/
 [property-based testing]:          https://github.com/rudymatela/leancheck/blob/master/doc/tutorial.md
+
+[SmartCheck]:           https://github.com/leepike/SmartCheck
+[Lazy SmallCheck 2012]: https://github.com/UoYCS-plasma/lazysmallcheck2012
 
 [build-status]:    https://travis-ci.org/rudymatela/extrapolate.svg?branch=master
 [build-log]:       https://travis-ci.org/rudymatela/extrapolate
