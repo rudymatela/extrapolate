@@ -120,6 +120,24 @@ tests n =
        , zero -:- _i -:- ll
        , zero -:- zero -:- _is
        ]
+
+  , [ canonicalizeWith (instances (undefined :: [Int]) []) g'
+    | g <- generalizations (instances (undefined :: [Int]) []) [expr [0,0::Int]]
+    , g' <- vassignments g ]
+    == map (:[])
+       [ _is
+       , _i -:- _is
+       , _i -:- _i -:- _is
+       , xx -:- xx -:- _is
+       , _i -:- _i -:- ll
+       , xx -:- xx -:- ll
+       , _i -:- zero -:- _is
+       , _i -:- zero -:- ll
+       , zero -:- _is
+       , zero -:- _i -:- _is
+       , zero -:- _i -:- ll
+       , zero -:- zero -:- _is
+       ]
   ]
 
 listBackgroundOK :: Generalizable a => a -> Bool
