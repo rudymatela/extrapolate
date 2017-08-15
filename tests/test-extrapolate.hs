@@ -139,8 +139,8 @@ tests n =
        , zero -:- zero -:- _is
        ]
 
-  , candidateConditions (([int] >- bool) `With` MaxConditionSize 3) [xxs] !! 2
-    == elem' zero xxs
+  , candidateConditions (([int] >- bool) `With` MaxConditionSize 3) [xxs]
+    == [ true, elem' zero xxs ]
   ]
 
 listBackgroundOK :: Generalizable a => a -> Bool

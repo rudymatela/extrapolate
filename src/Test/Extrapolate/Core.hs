@@ -461,6 +461,7 @@ candidateConditions p es = expr True :
   [ c
   | c <- candidateExpressions p es
   , typ c == boolTy
+  , hasVar c
   , not (isAssignment c)
   , not (isAssignmentTest is (maxTests p) c)
   ]
