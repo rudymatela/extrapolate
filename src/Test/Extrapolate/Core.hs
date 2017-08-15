@@ -451,18 +451,25 @@ conditionalGeneralization m p es0 es1 = listToMaybe
 
 weakestCondition :: Testable a => Int -> a -> [Expr] -> Expr
 weakestCondition m p es = head $
+  [ c | c <- candidateConditions p es
+      , isCounterExampleUnder m p c es
+      ] ++ [ constant "False" False ]
+  where
+
+candidateConditions :: Testable a => a -> [Expr] -> [Expr]
+candidateConditions p es =
   [ c
-  | c <- constant "True" True : candidateConditions p es
+  | c <- constant "True" True : candidateExpressions p es
   , typ c == boolTy
   , not (isAssignment c)
-  , not (isAssignmentTest is m c)
-  , isCounterExampleUnder m p c es
-  ] ++ [ constant "False" False ]
+  , not (isAssignmentTest is (maxTests p) c)
+  ]
   where
   is = tinstances p
 
-candidateConditions :: Testable a => a -> [Expr] -> [Expr]
-candidateConditions p es = concat . take (maxConditionSize p) . expressionsTT
+-- | Canditate expressions to appear in conditions
+candidateExpressions :: Testable a => a -> [Expr] -> [Expr]
+candidateExpressions p es = concat . take (maxConditionSize p) . expressionsTT
                          . foldr (\/) [vs ++ esU]
                          $ [ eval (error msg :: [[Expr]]) ess
                            | Instance "Listable" _ [ess] <- is ]
