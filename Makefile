@@ -51,6 +51,9 @@ quick-diff-test: $(patsubst %,%.diff-test,$(QUICKEG))
 
 update-diff-test: $(patsubst %,%.update-diff-test,$(EG))
 
+%.test: tests/test-%
+	./$<
+
 %.test: %
 	./$<
 
