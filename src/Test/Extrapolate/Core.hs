@@ -449,7 +449,7 @@ conditionalGeneralization m p es0 es1 = listToMaybe
 weakestCondition :: Testable a => Int -> a -> [Expr] -> Expr
 weakestCondition m p es = head $
   [ c
-  | c <- constant "True" True : candidates
+  | c <- constant "True" True : candidateConditions p es
   , typ c == boolTy
   , not (isAssignment c)
   , not (isAssignmentTest is m c)
@@ -457,13 +457,17 @@ weakestCondition m p es = head $
   ] ++ [ constant "False" False ]
   where
   is = tinstances p
-  candidates = concat . take (maxConditionSize p) . expressionsTT
-             . foldr (\/) [vs ++ esU]
-             $ [ eval (error msg :: [[Expr]]) ess
-               | Instance "Listable" _ [ess] <- tinstances p ]
+
+candidateConditions :: Testable a => a -> [Expr] -> [Expr]
+candidateConditions p es = concat . take (maxConditionSize p) . expressionsTT
+                         . foldr (\/) [vs ++ esU]
+                         $ [ eval (error msg :: [[Expr]]) ess
+                           | Instance "Listable" _ [ess] <- is ]
+  where
   vs = [Var n t | (t,n) <- vars es]
-  esU = concat [es | Instance "Background" _ es <- tinstances p]
-  msg = "weakestCondition: wrong type, not [[Expr]]"
+  esU = concat [es | Instance "Background" _ es <- is]
+  msg = "canditateConditions: wrong type, not [[Expr]]"
+  is = tinstances p
 
 isCounterExampleUnder :: Testable a => Int -> a -> Expr -> [Expr] -> Bool
 isCounterExampleUnder m p c es = and'
