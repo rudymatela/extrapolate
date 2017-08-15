@@ -5,7 +5,7 @@ description:
   Extrapolate is a tool able to provide generalized counter-examples of test
   properties where irrelevant sub-expressions are replaces with variables.
   .
-  For the incorrect property @\xs -> nub xs == (xs::[Int])@:
+  For the incorrect property @\\xs -> nub xs == (xs::[Int])@:
   .
   * @[0,0]@ is a counter-example;
   .
