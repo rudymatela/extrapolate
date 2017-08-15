@@ -106,6 +106,20 @@ tests n =
   , not $ mayb int `bgSubset`        [mayb [int]]
   , not $ mayb int `sameNamesIn`     [mayb [int]]
   , not $ mayb int `sameTiersIn`     [mayb [int]]
+
+  , generalizations (instances (undefined :: [Int]) []) [expr [0,0::Int]]
+    == map (:[])
+       [ _is
+       , _i -:- _is
+       , _i -:- _i -:- _is
+       , _i -:- _i -:- ll
+       , _i -:- zero -:- _is
+       , _i -:- zero -:- ll
+       , zero -:- _is
+       , zero -:- _i -:- _is
+       , zero -:- _i -:- ll
+       , zero -:- zero -:- _is
+       ]
   ]
 
 listBackgroundOK :: Generalizable a => a -> Bool

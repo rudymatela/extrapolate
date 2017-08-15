@@ -12,6 +12,8 @@ module Test
 
   , (-:-), ll, llb
 
+  , _i, xx, yy
+  , _is, xxs, yys
   , zero, one
 
   , false, true
@@ -82,6 +84,16 @@ infixr 5 -:-
 
 ll :: Expr
 ll  =  expr ([] :: [Int])
+
+_i, xx, yy :: Expr
+_i  =  var ""  int
+xx  =  var "x" int
+yy  =  var "y" int
+
+_is, xxs, yys :: Expr
+_is  =  var ""   [int]
+xxs  =  var "xs" [int]
+yys  =  var "ys" [int]
 
 zero :: Expr
 zero  =  expr (0 :: Int)
