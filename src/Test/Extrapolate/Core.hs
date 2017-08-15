@@ -453,13 +453,13 @@ weakestCondition :: Testable a => Int -> a -> [Expr] -> Expr
 weakestCondition m p es = head $
   [ c | c <- candidateConditions p es
       , isCounterExampleUnder m p c es
-      ] ++ [ constant "False" False ]
+      ] ++ [expr False]
   where
 
 candidateConditions :: Testable a => a -> [Expr] -> [Expr]
-candidateConditions p es =
+candidateConditions p es = expr True :
   [ c
-  | c <- constant "True" True : candidateExpressions p es
+  | c <- candidateExpressions p es
   , typ c == boolTy
   , not (isAssignment c)
   , not (isAssignmentTest is (maxTests p) c)
