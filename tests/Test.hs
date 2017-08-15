@@ -18,6 +18,8 @@ module Test
 
   , false, true
 
+  , elem'
+
   , nothing, nothingBool, just
 
   , comma
@@ -115,6 +117,11 @@ nothing  =  constant "Nothing" (Nothing :: Maybe Int)
 
 nothingBool :: Expr
 nothingBool  =  constant "Nothing" (Nothing :: Maybe Bool)
+
+elem' :: Expr -> Expr -> Expr
+elem' x xs  =  elemE :$ x :$ xs
+  where
+  elemE  =  constant "elem" (elem :: Int -> [Int] -> Bool)
 
 just :: Expr -> Expr
 just x  =  justE :$ x

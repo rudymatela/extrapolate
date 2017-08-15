@@ -138,6 +138,9 @@ tests n =
        , zero -:- _i -:- ll
        , zero -:- zero -:- _is
        ]
+
+  , candidateConditions (([int] >- bool) `With` MaxConditionSize 3) [xxs] !! 2
+    == elem' zero xxs
   ]
 
 listBackgroundOK :: Generalizable a => a -> Bool
