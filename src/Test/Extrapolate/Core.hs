@@ -39,6 +39,9 @@ module Test.Extrapolate.Core
   , generalizationsCEC
   , generalizationsCounts
 
+  , weakestCondition
+  , candidateConditions
+
   , conditionalGeneralization
   , matchList
   , newMatches
