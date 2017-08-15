@@ -34,6 +34,7 @@ module Test.Extrapolate.Core
   , counterExampleGen
   , counterExampleGens
 
+  , generalizations
   , generalizationsCE
   , generalizationsCEC
   , generalizationsCounts
