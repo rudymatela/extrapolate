@@ -141,6 +141,22 @@ tests n =
 
   , candidateConditions (([int] >- bool) `With` MaxConditionSize 3) [xxs]
     == [ true, elem' zero xxs ]
+
+  , candidateConditions (([int] >- bool) `With` MaxConditionSize 3) [xx -:- xxs]
+    == [ true
+       , elem' zero xxs
+       , elem' xx ll
+       , elem' xx xxs
+       , zero -/=- xx
+       , xx   -/=- zero
+       , xx   -/=- xx
+       , zero -<- xx
+       , xx   -<- zero
+       , xx   -<- xx
+       , zero -<=- xx
+       , xx   -<=- zero
+       , xx   -<=- xx
+       ]
   ]
 
 listBackgroundOK :: Generalizable a => a -> Bool

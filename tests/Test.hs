@@ -24,6 +24,11 @@ module Test
 
   , comma
 
+  , (-==-)
+  , (-/=-)
+  , (-<-)
+  , (-<=-)
+
   -- * Properties and Tests
   , generalizableOK
   , exprOK
@@ -45,6 +50,7 @@ import Test.Speculate.Expr (typ)
 import Test.Speculate.Expr.Instance as I
 import Data.Typeable (typeOf)
 import Data.List (isPrefixOf, sort)
+import Data.Maybe (fromMaybe)
 
 import Test.Extrapolate
 import Test.Extrapolate.Core hiding (false, true)
@@ -146,6 +152,30 @@ comma x y  =  commaE :$ x :$ y
   commaEib  =  constant "," ((,) ->>: (int,bool))
   commaEbi  =  constant "," ((,) ->>: (bool,int))
   commaEbb  =  constant "," ((,) ->>: (bool,bool))
+
+(-==-) :: Expr -> Expr -> Expr
+e1 -==- e2 =
+  fromMaybe (error $ "(-==-): cannot equate " ++ show e1 ++ " and " ++ show e2)
+            (equation preludeInstances e1 e2)
+infix 4 -==-
+
+(-/=-) :: Expr -> Expr -> Expr
+e1 -/=- e2 = constant "/=" ((/=) :: Int -> Int -> Bool) :$ e1 :$ e2
+infix 4 -/=-
+-- TODO: improve above after changing Speculate
+
+(-<=-) :: Expr -> Expr -> Expr
+e1 -<=- e2 =
+  fromMaybe (error $ "(-<=-): cannot lessEq " ++ show e1 ++ " and " ++ show e2)
+            (comparisonLE preludeInstances e1 e2)
+infix 4 -<=-
+
+(-<-) :: Expr -> Expr -> Expr
+e1 -<- e2 =
+  fromMaybe (error $ "(-<-): cannot less " ++ show e1 ++ " and " ++ show e2)
+            (comparisonLT preludeInstances e1 e2)
+infix 4 -<-
+
 
 
 -- Properties and tests --
