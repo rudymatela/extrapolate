@@ -143,7 +143,8 @@ tests n =
     == [ true, elem' zero xxs ]
 
   , candidateConditions (([int] >- bool) `With` MaxConditionSize 3) [xx -:- xxs]
-    == [ true
+    =$ sort
+    $= [ true
        , elem' zero xxs
        , elem' xx ll
        , elem' xx xxs
