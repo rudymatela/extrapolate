@@ -116,12 +116,12 @@ instance (Listable a) => Listable (HeapP a) where
 
 instance (Generalizable a, Typeable a) => Generalizable (HeapP a) where
   name _ = "p"
-  expr p@Empty           = constant "Empty"         (Empty `asTypeOf` p)
-  expr (Unit x)          = constant "Unit"          (argTypes1 Unit x)          :$ expr x
-  expr (Insert x p)      = constant "Insert"        (argTypes2 Insert x p)      :$ expr x :$ expr p
-  expr (SafeRemoveMin x) = constant "SafeRemoveMin" (argTypes1 SafeRemoveMin x) :$ expr x
-  expr (Merge p q)       = constant "Merge"         (argTypes2 Merge p q)       :$ expr p :$ expr q
-  expr (FromList xs)     = constant "FromList"      (argTypes1 FromList xs)     :$ expr xs
+  expr p'@Empty             = constant "Empty"    (Empty     -: p')
+  expr p'@(Unit x)          = constant "Unit"     (Unit     ->: p') :$ expr x
+  expr p'@(Insert x p)      = constant "Insert"   (Insert  ->>: p') :$ expr x :$ expr p
+  expr p'@(SafeRemoveMin x) = constant "SafeRemoveMin" (SafeRemoveMin ->: p') :$ expr x
+  expr p'@(Merge p q)       = constant "Merge"    (Merge   ->>: p') :$ expr p :$ expr q
+  expr p'@(FromList xs)     = constant "FromList" (FromList ->: p') :$ expr xs
   instances p = this p
               $ let Unit x = Unit undefined `asTypeOf` p
                 in instances x
