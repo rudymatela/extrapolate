@@ -1,0 +1,4 @@
+#!/bin/bash
+#
+# stats for sort
+tail -qn -1 sorting-uncurry-out/* | sed -e "s/[^:]//g" | sort
