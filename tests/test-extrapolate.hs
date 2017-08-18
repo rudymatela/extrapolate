@@ -64,8 +64,8 @@ tests n =
   , generalizableOK n (int,(),bool,integer,char)
   , generalizableOK n (string,int,(),bool,integer,char)
 -- TODO: implement further tuple instances (7,8,9,10,11,12) and uncomment below
---, generalizableOK n ((),(),(),(),(),(),())
---, generalizableOK n ((),(),(),(),(),(),(),())
+  , generalizableOK n ((),(),(),(),(),(),())
+  , generalizableOK n ((),(),(),(),(),(),(),())
 --, generalizableOK n ((),(),(),(),(),(),(),(),())
 --, generalizableOK n ((),(),(),(),(),(),(),(),(),())
 --, generalizableOK n ((),(),(),(),(),(),(),(),(),(),())

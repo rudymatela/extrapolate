@@ -59,3 +59,49 @@ instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
                    . instances ((\(_,_,_,w,_,_) -> w) xyzwvu)
                    . instances ((\(_,_,_,_,v,_) -> v) xyzwvu)
                    . instances ((\(_,_,_,_,_,u) -> u) xyzwvu)
+
+instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
+         , Generalizable e, Generalizable f, Generalizable g )
+      => Generalizable (a,b,c,d,e,f,g) where
+  name xyzwvut = name ((\(x,_,_,_,_,_,_) -> x) xyzwvut)
+              ++ name ((\(_,y,_,_,_,_,_) -> y) xyzwvut)
+              ++ name ((\(_,_,z,_,_,_,_) -> z) xyzwvut)
+              ++ name ((\(_,_,_,w,_,_,_) -> w) xyzwvut)
+              ++ name ((\(_,_,_,_,v,_,_) -> v) xyzwvut)
+              ++ name ((\(_,_,_,_,_,u,_) -> u) xyzwvut)
+              ++ name ((\(_,_,_,_,_,_,t) -> t) xyzwvut)
+  expr (x,y,z,w,v,u,t) = constant ",,,,,," ((,,,,,,) ->>>>>>>: (x,y,z,w,v,u,t))
+                      :$ expr x :$ expr y :$ expr z :$ expr w
+                      :$ expr v :$ expr u :$ expr t
+  instances xyzwvut = this xyzwvut
+                    $ instances ((\(x,_,_,_,_,_,_) -> x) xyzwvut)
+                    . instances ((\(_,y,_,_,_,_,_) -> y) xyzwvut)
+                    . instances ((\(_,_,z,_,_,_,_) -> z) xyzwvut)
+                    . instances ((\(_,_,_,w,_,_,_) -> w) xyzwvut)
+                    . instances ((\(_,_,_,_,v,_,_) -> v) xyzwvut)
+                    . instances ((\(_,_,_,_,_,u,_) -> u) xyzwvut)
+                    . instances ((\(_,_,_,_,_,_,t) -> t) xyzwvut)
+
+instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
+         , Generalizable e, Generalizable f, Generalizable g, Generalizable h )
+      => Generalizable (a,b,c,d,e,f,g,h) where
+  name xyzwvuts = name ((\(x,_,_,_,_,_,_,_) -> x) xyzwvuts)
+               ++ name ((\(_,y,_,_,_,_,_,_) -> y) xyzwvuts)
+               ++ name ((\(_,_,z,_,_,_,_,_) -> z) xyzwvuts)
+               ++ name ((\(_,_,_,w,_,_,_,_) -> w) xyzwvuts)
+               ++ name ((\(_,_,_,_,v,_,_,_) -> v) xyzwvuts)
+               ++ name ((\(_,_,_,_,_,u,_,_) -> u) xyzwvuts)
+               ++ name ((\(_,_,_,_,_,_,t,_) -> t) xyzwvuts)
+               ++ name ((\(_,_,_,_,_,_,_,s) -> s) xyzwvuts)
+  expr (x,y,z,w,v,u,t,s) = constant ",,,,,,," ((,,,,,,,) ->>>>>>>>: (x,y,z,w,v,u,t,s))
+                        :$ expr x :$ expr y :$ expr z :$ expr w
+                        :$ expr v :$ expr u :$ expr t :$ expr s
+  instances xyzwvuts = this xyzwvuts
+                     $ instances ((\(x,_,_,_,_,_,_,_) -> x) xyzwvuts)
+                     . instances ((\(_,y,_,_,_,_,_,_) -> y) xyzwvuts)
+                     . instances ((\(_,_,z,_,_,_,_,_) -> z) xyzwvuts)
+                     . instances ((\(_,_,_,w,_,_,_,_) -> w) xyzwvuts)
+                     . instances ((\(_,_,_,_,v,_,_,_) -> v) xyzwvuts)
+                     . instances ((\(_,_,_,_,_,u,_,_) -> u) xyzwvuts)
+                     . instances ((\(_,_,_,_,_,_,t,_) -> t) xyzwvuts)
+                     . instances ((\(_,_,_,_,_,_,_,s) -> s) xyzwvuts)
