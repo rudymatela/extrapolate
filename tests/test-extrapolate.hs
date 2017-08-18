@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 -- Copyright (c) 2017 Rudy Matela.
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
@@ -65,11 +66,15 @@ tests n =
   , generalizableOK n (string,int,(),bool,integer,char)
 -- TODO: implement further tuple instances (7,8,9,10,11,12) and uncomment below
   , generalizableOK n ((),(),(),(),(),(),())
+#if __GLASGOW_HASKELL__ < 710
+-- no 8-tuples for you
+#else
   , generalizableOK n ((),(),(),(),(),(),(),())
 --, generalizableOK n ((),(),(),(),(),(),(),(),())
 --, generalizableOK n ((),(),(),(),(),(),(),(),(),())
 --, generalizableOK n ((),(),(),(),(),(),(),(),(),(),())
 --, generalizableOK n ((),(),(),(),(),(),(),(),(),(),(),())
+#endif
 
   -- Silly test, as it basically replicates the actual implementation:
   , backgroundOf int =$ sort $= [ constant "==" $ (==) -:> int

@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-} -- for GHC <= 7.8
 -- |
 -- Module      : Test.Extrapolate.Basic
 -- Copyright   : (c) 2017 Rudy Matela
@@ -82,6 +83,13 @@ instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
                     . instances ((\(_,_,_,_,_,u,_) -> u) xyzwvut)
                     . instances ((\(_,_,_,_,_,_,t) -> t) xyzwvut)
 
+#if __GLASGOW_HASKELL__ < 710
+-- No 8-tuples for you:
+-- On GHC 7.8, 8-tuples are not Typeable instances.  We could add a standalone
+-- deriving clause, but that may cause trouble if some other library does the
+-- same.  User should declare Generalizable 8-tuples manually when using GHC <=
+-- 7.8.
+#else
 instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
          , Generalizable e, Generalizable f, Generalizable g, Generalizable h )
       => Generalizable (a,b,c,d,e,f,g,h) where
@@ -105,3 +113,4 @@ instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
                      . instances ((\(_,_,_,_,_,u,_,_) -> u) xyzwvuts)
                      . instances ((\(_,_,_,_,_,_,t,_) -> t) xyzwvuts)
                      . instances ((\(_,_,_,_,_,_,_,s) -> s) xyzwvuts)
+#endif
