@@ -36,7 +36,7 @@ bench-sorting-swap: sorting
 
 bench-sorting-uncurry: sorting
 	mkdir -p $<-uncurry-out
-	for i in {00..99}; do \
+	for i in {000..999}; do \
 	  yes | \
 	  /usr/bin/time "-f%e %M" ./$< uncurry | \
 	  grep -A2 -E "(^forall values|OK, passed)" > $<-uncurry-out/$$i; \
@@ -44,7 +44,7 @@ bench-sorting-uncurry: sorting
 
 bench-parser: parser
 	mkdir -p $<-out
-	for i in {00..99}; do \
+	for i in {000..999}; do \
 	  yes | \
 	  /usr/bin/time "-f%e %M" ./$< | \
 	  grep "^Lang" > $<-out/$$i; \
@@ -52,7 +52,7 @@ bench-parser: parser
 
 bench-overflow: overflow
 	mkdir -p $<-out
-	for i in {00..99}; do \
+	for i in {000..999}; do \
 	  yes | \
 	  /usr/bin/time "-f%e %M" ./$< | \
 	  grep -A2 "^forall values" > $<-out/$$i; \
@@ -60,7 +60,7 @@ bench-overflow: overflow
 
 bench-div0: div0
 	mkdir -p div0-out
-	for i in {01..60}; do yes | /usr/bin/time "-f%e %M" ./div0 | grep -A3 forall > div0-out/$$i; done 2> div0.runtime
+	for i in {000..999}; do yes | /usr/bin/time "-f%e %M" ./div0 | grep -A3 forall > div0-out/$$i; done 2> div0.runtime
 
 div0.hs: div0-main.hs smartcheck/regression/Div0/Div0.hs
 	cat smartcheck/regression/Div0/Div0.hs div0-main.hs > div0.hs
