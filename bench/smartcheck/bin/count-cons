@@ -2,7 +2,7 @@
 #
 # counts the number of constructors for the parser eg
 cat parser-out/* |
-sed "s/[{,][^=]*=//g;s/}//g"       | # remove record notation
+sed "s/[{,][a-zA-Z ]*=//g;s/}//g"       | # remove record notation
 # cat; exit # for things without record notation
 sed "s/[()]//g"                    | # remove parentheses
 sed "s/\[]/Nil/g"                  | # [] becomes Nil
