@@ -61,14 +61,8 @@ tests n =
   , generalizableOK n ((),integer)
   , generalizableOK n ((),bool,integer)
   , generalizableOK n (int,(),bool,integer)
---, generalizableOK n (int,(),bool,integer,char)
--- TODO: fix show of 5-uples on Speculate, then replace following for previous
-  , holds n $ idExprEval -:> (int,(),bool,integer,char)
-  , instancesOK              (int,(),bool,integer,char)
---, generalizableOK n (string,int,(),bool,integer,char)
--- TODO: fix show of 6-uples on Speculate, then replace following for previous
-  , holds n $ idExprEval -:> (string,int,(),bool,integer,char)
-  , instancesOK              (string,int,(),bool,integer,char)
+  , generalizableOK n (int,(),bool,integer,char)
+  , generalizableOK n (string,int,(),bool,integer,char)
 -- TODO: implement further tuple instances (7,8,9,10,11,12) and uncomment below
 --, generalizableOK n ((),(),(),(),(),(),())
 --, generalizableOK n ((),(),(),(),(),(),(),())
