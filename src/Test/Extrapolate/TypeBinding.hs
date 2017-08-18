@@ -24,9 +24,6 @@ module Test.Extrapolate.TypeBinding
   , argTypes11
   , argTypes12
 
-  , argTys1
-  , argTys2
-
   , argTy1of1
   , argTy1of2, argTy2of2
   , argTy1of3, argTy2of3, argTy3of3
@@ -100,13 +97,6 @@ argTypes12 :: (a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k -> l -> m)
            ->  a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k -> l
            -> (a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k -> l -> m)
 argTypes12 f _ _ _ _ _ _ _ _ _ _ _ _ = f
-
-
-argTys1 :: con a -> a -> con a
-argTys1 x _ = x
-
-argTys2 :: con a b -> a -> b -> con a b
-argTys2 x _ _ = x
 
 
 argTy1of1 :: con a -> a
