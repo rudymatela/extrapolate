@@ -1,5 +1,5 @@
-GHC=ghc-7.10
-GHCI=ghci-7.10
+GHC=ghc
+GHCI=ghci
 BENCH= \
   sorting \
   parser \
@@ -8,8 +8,8 @@ BENCH= \
   div0
 TYM= \
   /usr/bin/time "-f%e %M"
-SMARTCHECK=https://github.com/leepike/SmartCheck
-#SMARTCHECK=$(HOME)/prj/smartcheck
+#SMARTCHECK=https://github.com/leepike/SmartCheck
+SMARTCHECK=$(HOME)/prj/smartcheck
 
 all: $(BENCH)
 
@@ -74,21 +74,17 @@ overflow.hs: overflow-main.hs smartcheck/regression/PaperExample1/PaperExample1.
 overflow: overflow.hs
 
 %: %.hs
-	$(GHC) -dynamic -O2 -package-db .cabal-sandbox/*-$(GHC).*-packages.conf.d $< && touch $@
+	$(GHC) -dynamic -O2 -ignore-package QuickCheck-2.10.0.1 -package-db .cabal-sandbox/*-$(GHC)*-packages.conf.d $< && touch $@
 
 %.ghci: %.hs
-	$(GHCI) -dynamic -package-db .cabal-sandbox/*-$(GHC).*-packages.conf.d $<
+	$(GHCI) -dynamic -package-db .cabal-sandbox/*-$(GHC)*-packages.conf.d $<
 
 prepare:
 	git clone $(SMARTCHECK) smartcheck
-	# patch SmartCheck
-	# 1st, disable compilation of sc-qc
-	cat smartcheck/smartcheck.cabal | grep -B100 "QuickCheck some basic properties about SmartCheck" > smartcheck/smartcheck.cabal.2
-	mv smartcheck/smartcheck.cabal.2 smartcheck/smartcheck.cabal
 	git -C smartcheck show -s --format="%H%n%ci" | tee revision.txt
 	cabal sandbox init
 	cabal sandbox add-source smartcheck
-	cabal-$(GHC) install smartcheck --constraint 'QuickCheck < 2.9'
+	cabal install smartcheck
 
 clean:
 	rm -f $(BENCH) *.hi *.o div0.hs parser.hs overflow.hs

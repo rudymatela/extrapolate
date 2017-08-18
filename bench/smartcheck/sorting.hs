@@ -29,6 +29,7 @@ main = do
     ("swap":_) -> smartCheck scStdArgs { format = PrintString
                                        , runExists = False }
                     (flip prop_sortCount :: [Int] -> Int -> Bool)
-    _          -> smartCheck scStdArgs { format = PrintString
-                                       , runExists = False }
-                    (prop_sortCount :: Int -> [Int] -> Bool)
+    _ -> putStrLn "no longer works... (see source)"
+--  _          -> smartCheck scStdArgs { format = PrintString
+--                                     , runExists = False }
+--                  (prop_sortCount :: Int -> [Int] -> Bool)
