@@ -10,21 +10,7 @@
 -- Some type binding operators that are useful when defining Generalizable
 -- instances.
 module Test.Extrapolate.TypeBinding
-  ( argTypes0
-  , argTypes1
-  , argTypes2
-  , argTypes3
-  , argTypes4
-  , argTypes5
-  , argTypes6
-  , argTypes7
-  , argTypes8
-  , argTypes9
-  , argTypes10
-  , argTypes11
-  , argTypes12
-
-  , argTy1of1
+  ( argTy1of1
   , argTy1of2, argTy2of2
   , argTy1of3, argTy2of3, argTy3of3
   , argTy1of4, argTy2of4, argTy3of4, argTy4of4
@@ -34,8 +20,6 @@ module Test.Extrapolate.TypeBinding
 where
 
 -- TODO: reexport LeanCheck's typebinding operators
-
--- TODO: remove argTypesN and argTysN, unused and uneeded
 
 argTypes0 :: a -> a
 argTypes0 f = f
