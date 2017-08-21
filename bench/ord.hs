@@ -15,8 +15,7 @@ main = do
   ch [bool]
   -- TODO: make the following work on GHC >= 8.2
   -- see https://travis-ci.org/rudymatela/extrapolate/jobs/266773179
-  -- possible solutions:
-  --   * Expr ordering on Specualte stable across different GHCs;
+  -- possible less temporary solution:
   --   * Add (==) (/=) (<=) (<) (>=) (>) to list background.
   -- ch [int]
   putStrLn $ "checks :: " ++ show (typeOf [int]) ++ "\n"
