@@ -143,3 +143,39 @@ mk/toplibs: mk/Toplibs.o
 	touch mk/toplibs
 
 include mk/haskell.mk
+
+
+eg/RedBlackSetRemoveBug.hspp: eg/RedBlackSet.hs
+	$(GHCCMD) -DREMOVE_BUG -E $< -o $@
+
+eg/RedBlackSetRemoveBug.hs: eg/RedBlackSetRemoveBug.hspp
+	sed -e "s/module RedBlackSet/&RemoveBug/" $< > $@
+
+eg/redblack-remove-bug.hs: eg/redblack.hs
+	sed -e "s/import RedBlackSet/&RemoveBug/" $< > $@
+
+eg/redblack-remove-bug: eg/redblack-remove-bug.hs eg/RedBlackSetRemoveBug.hs mk/toplibs
+
+
+eg/RedBlackSetDeleteBug.hspp: eg/RedBlackSet.hs
+	$(GHCCMD) -DDELETE_BUG -E $< -o $@
+
+eg/RedBlackSetDeleteBug.hs: eg/RedBlackSetDeleteBug.hspp
+	sed -e "s/module RedBlackSet/&DeleteBug/" $< > $@
+
+eg/redblack-delete-bug.hs: eg/redblack.hs
+	sed -e "s/import RedBlackSet/&DeleteBug/" $< > $@
+
+eg/redblack-delete-bug: eg/redblack-delete-bug.hs eg/RedBlackSetDeleteBug.hs mk/toplibs
+
+
+eg/RedBlackSetBalanceBug.hspp: eg/RedBlackSet.hs
+	$(GHCCMD) -DBALANCE_BUG -E $< -o $@
+
+eg/RedBlackSetBalanceBug.hs: eg/RedBlackSetBalanceBug.hspp
+	sed -e "s/module RedBlackSet/&BalanceBug/" $< > $@
+
+eg/redblack-balance-bug.hs: eg/redblack.hs
+	sed -e "s/import RedBlackSet/&BalanceBug/" $< > $@
+
+eg/redblack-balance-bug: eg/redblack-balance-bug.hs eg/RedBlackSetBalanceBug.hs mk/toplibs

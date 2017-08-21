@@ -6,6 +6,7 @@
 **/log/
 .stack-work
 
+**.hspp
 **.swp
 **.hi
 **.o
@@ -67,3 +68,12 @@ bench/smartcheck/overflow.hs
 bench/smartcheck/list
 bench/smartcheck/*-out
 bench/smartcheck/*.runtime
+eg/RedBlackSetBalanceBug.hs
+eg/RedBlackSetDeleteBug.hs
+eg/RedBlackSetRemoveBug.hs
+eg/redblack-balance-bug
+eg/redblack-balance-bug.hs
+eg/redblack-delete-bug
+eg/redblack-delete-bug.hs
+eg/redblack-remove-bug
+eg/redblack-remove-bug.hs
