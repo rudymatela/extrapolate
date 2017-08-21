@@ -61,7 +61,6 @@ module Test.Extrapolate
   , module Test.Extrapolate.TypeBinding
   , module Test.LeanCheck
   , module Test.LeanCheck.Utils.TypeBinding
-  , ordering
   )
 where
 
@@ -83,8 +82,3 @@ import Test.LeanCheck hiding
   , checkResultFor
   )
 import Test.LeanCheck.Utils.TypeBinding
--- TODO: add the following function `ordering` into LeanCheck's TypeBinding
---       module; release a new LeanCheck; remove it from here and bump version
---       requirement.
-ordering :: Ordering
-ordering = undefined
