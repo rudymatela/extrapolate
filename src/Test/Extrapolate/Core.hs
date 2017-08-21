@@ -23,7 +23,6 @@ module Test.Extrapolate.Core
   , bgOrd
 
   , Option (..)
-  , options
   , WithOption (..)
   , maxTests
   , extraInstances
@@ -46,7 +45,7 @@ module Test.Extrapolate.Core
   , matchList
   , newMatches
 
-  , Testable
+  , Testable (..)
   , results
 
   , areInstancesOf
