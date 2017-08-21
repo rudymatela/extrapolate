@@ -182,7 +182,9 @@ infix 4 -<-
 
 generalizableOK :: (Eq a, Show a, Generalizable a) => Int -> a -> Bool
 generalizableOK n x = holds n (exprOK -:> x)
-                   && instancesOK x
+                   && instancesOK (und -: x)
+  where
+  und = error "generalizableOK: this should not get evaluated"
 
 exprOK :: (Eq a, Show a, Generalizable a) => a -> Bool
 exprOK = idExprEval &&& showOK
