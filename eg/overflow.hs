@@ -54,5 +54,8 @@ deriveGeneralizable ''T
 
 main :: IO ()
 main = do
-  check `for` 10000 $ prop
+  check `for` 10000
+--      `withBackground` [constant "sum" (sum :: [Int16] -> Int16)]
+--      `withConditionSize` 4
+    $ prop
 --print $ take 1000 (list :: [T])
