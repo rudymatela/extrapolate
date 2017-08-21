@@ -205,17 +205,11 @@ ps ps
 Generalization:
 (_:_) []
 
-Conditional Generalization:
-ps []  when  any not ps
-
 *** Failed! Falsifiable (after 2 tests):
 [] [False]
 
 Generalization:
 [] (_:_)
-
-Conditional Generalization:
-[] ps  when  any not ps
 
 
 checks :: [Int]
@@ -226,17 +220,11 @@ checks :: [Int]
 Generalization:
 xs xs
 
-Conditional Generalization:
-ys xs  when  any (length xs <) ys
-
 *** Failed! Falsifiable (after 1 tests):
 [] []
 
 Generalization:
 xs xs
-
-Conditional Generalization:
-_ xs  when  any (1 <) xs
 
 *** Failed! Falsifiable (after 3 tests):
 [0] []
@@ -245,7 +233,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-ys xs  when  any (length xs <) ys
+(x:_) xs  when  length xs < x
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -254,7 +242,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-_ xs  when  any (1 <) xs
+xs (x:_)  when  length xs < x
 
 
 checks :: [Integer]
@@ -270,9 +258,6 @@ xs xs
 
 Generalization:
 xs xs
-
-Conditional Generalization:
-_ xs  when  any (1 <) xs
 
 *** Failed! Falsifiable (after 3 tests):
 [0] []
@@ -290,7 +275,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-_ xs  when  any (1 <) xs
+[] xs  when  elem 0 xs
 
 
 checks :: [Char]
@@ -314,7 +299,7 @@ Generalization:
 (_:_) ""
 
 Conditional Generalization:
-('a':_) cs  when  all (' ' ==) cs
+cs ""  when  elem 'a' cs
 
 *** Failed! Falsifiable (after 2 tests):
 "" "a"
@@ -323,7 +308,7 @@ Generalization:
 "" (_:_)
 
 Conditional Generalization:
-cs ('a':_)  when  all (' ' ==) cs
+"" cs  when  elem 'a' cs
 
 
 checks :: [Ordering]

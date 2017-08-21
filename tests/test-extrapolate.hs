@@ -162,11 +162,7 @@ tests n =
 listBackgroundOK :: Generalizable a => a -> Bool
 listBackgroundOK x = backgroundListOf x `subset` backgroundOf [x]
   where
-  backgroundListOf x = [ constant "length" $ length  -:> [x]
-                       , constant "any"    $ any    ->:> [x]
-                       , constant "all"    $ all    ->:> [x]
-                       , constant "filter" $ filter ->:> [x]
-                       ]
+  backgroundListOf x = [ constant "length" $ length  -:> [x] ]
                      +++ backgroundOf x
 
 maybeBackgroundOK :: Generalizable a => a -> Bool

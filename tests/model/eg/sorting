@@ -16,7 +16,7 @@ Generalization:
 x (x:x:_)
 
 Conditional Generalization:
-x xs  when  length (filter (x ==) xs) > 1
+x (x:xs)  when  elem x xs
 
 +++ OK, passed 99 tests.
 
@@ -25,7 +25,4 @@ False [False,False]
 
 Generalization:
 p (p:p:_)
-
-Conditional Generalization:
-p (p:False:ps)  when  not (all not ps)
 
