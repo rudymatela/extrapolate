@@ -79,6 +79,12 @@ clean: clean-hi-o clean-haddock
 
 ghci: mk/All.ghci
 
+ghci-7.10: GHC=ghc-7.10
+ghci-7.10: mk/All.ghci
+
+ghci-7.8: GHC=ghc-7.8
+ghci-7.8: mk/All.ghci
+
 install:
 	@echo "use \`cabal install' instead"
 
