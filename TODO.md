@@ -4,25 +4,6 @@ TODO
 A non-exhaustive list of things TO DO for Extrapolate.
 
 
-cleanup
--------
-
-* `renames1`:
-  rename show functions:
-	- move `showCE` to `Core`;
-	- add and use `Core.showCCE`;
-	- rename `IO.showCEC` to `IO.showCEandGens`;
-
-* `renames2`:
-  rename counterexamples:
-	- rename `counterExamples*` to `counterExamples*E`;
-	- add `counterExamples* :: ... String ...`;
-
-* `cleanup`:
-  cleanup and remove unused functions, like `showCEG`;
-  thighten exports, removing uneeded functions (`backgroundWith`).
-
-
 examples
 --------
 
@@ -79,14 +60,6 @@ feature
 
   the above is for the last property of the list example
 
-* `add-derive-tests`:
-  add tests of derivation;
-
-* `show-and-expr-display`:
-  display counterExamples both as Show and Expr, I don't know how easy is to
-  use show since counterExamples are represented as Exprs, I don't think I can
-  eval because I am not bound in a type context.
-
 * `renaming`:
   possibly print          `(Div (C 0) (Add (C x) (C (negate x))))`
   which is equivalent to  `(Div (C 0) (Add (C x) (C y))) when y == negate x`
@@ -134,11 +107,6 @@ performance and improvements in the algorithm (only later)
 * `single-then-multi`:
   only do vassignments *after* finding a failing single variable instance.
   I'll have to re-test, but the time I save may pay off.
-
-* `no-listable-tuples`:
-  there is no need to include listable tuples in the instances list (or at
-  least no need to use it).  Instead of having `xy` we would get `(x,y)`.
-  However, maybe it is fine as it is.
 
 won't fix
 ---------
