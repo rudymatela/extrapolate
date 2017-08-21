@@ -28,16 +28,15 @@ eval (Div e0 e1) =
   if e == Just 0 then Nothing
     else liftM2 div (eval e0) e
 
-divSubTerms :: Exp -> Bool
-divSubTerms (C _)         = True
-divSubTerms (Div _ (C 0)) = False
-divSubTerms (Add e0 e1)   =  divSubTerms e0
-                          && divSubTerms e1
-divSubTerms (Div e0 e1)   =  divSubTerms e0
-                          && divSubTerms e1
+-- originally called divSubTerms by Pike
+noDiv0 :: Exp -> Bool
+noDiv0 (C _)         = True
+noDiv0 (Div _ (C 0)) = False
+noDiv0 (Add e0 e1)   =  noDiv0 e0 && noDiv0 e1
+noDiv0 (Div e0 e1)   =  noDiv0 e0 && noDiv0 e1
 
 prop_div :: Exp -> Bool
-prop_div e = divSubTerms e ==> eval e /= Nothing
+prop_div e = noDiv0 e ==> eval e /= Nothing
 
 instance Listable Exp where
   tiers  =  cons1 C
@@ -52,7 +51,7 @@ instance Generalizable Exp where
   expr (Add e1 e2)  =  constant "Add" Add :$ expr e1 :$ expr e2
   expr (Div e1 e2)  =  constant "Div" Div :$ expr e1 :$ expr e2
   background e  =  [ constant "eval" eval
-                   , constant "divSubTerms" divSubTerms ]
+                   , constant "noDiv0" noDiv0 ]
   instances e   = this e $ instances (undefined :: Int)
 -- -}
 

@@ -5,7 +5,7 @@ Generalization:
 Div (C _) (Add (C 0) (C 0))
 
 Conditional Generalization:
-Div e1 (Add (C 0) (C 0))  when  divSubTerms e1
+Div e1 (Add (C 0) (C 0))  when  noDiv0 e1
 
 *** Failed! Falsifiable (after 5 tests):
 Div (C 0) (C 0)
