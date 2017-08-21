@@ -129,3 +129,9 @@ instance (Ord a, Generalizable a) => Generalizable (RBSet a) where
   expr t = constant "fromList" (fromList ->: t) :$ expr (toAscList t)
   instances h = this h
               $ instances (toAscList h)
+
+-- TODO: make LeanCheck find a counter-example to prop_BlackBalanced
+--       when -DBALANCE_BUG is active or find out why it cannot find it.
+
+-- TODO: somehow make "./eg/redblack-remove-bug" run faster.
+--       (currently, it takes 2 minutes to run)

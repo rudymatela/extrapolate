@@ -7,15 +7,6 @@ A non-exhaustive list of things TO DO for Extrapolate.
 examples
 --------
 
-* `add-redblack-eg`:
-  add the redblacktree example from Small/SmartCheck/Okasaki.
-  see `ideal-generalization`.
-  Also described on: http://matt.might.net/articles/quick-quickcheck/
-
-  It has been added, but cannot generalize the counter-examples found:  during
-  generalization, the very exceptions that cause the error, make the
-  generalization fail.  Somehow catch those errors on generalization.
-
 * `ideal-generalizations`:
   Add examples of ideal generalizations as described in past paper by human
   experts.  The counter example is `blah` because the property fails for every
