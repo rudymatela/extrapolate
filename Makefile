@@ -76,6 +76,7 @@ bench: $(patsubst %,%.bench,$(EG))
 
 clean: clean-hi-o clean-haddock
 	rm -f $(TESTS) $(EG) mk/toplibs
+	rm -f eg/redblack-*-bug* eg/RedBlackSet*Bug.*
 
 ghci: mk/All.ghci
 
