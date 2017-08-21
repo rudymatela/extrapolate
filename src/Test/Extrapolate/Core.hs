@@ -174,36 +174,24 @@ instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
 
 instance (Generalizable a, Generalizable b, Generalizable c)
       => Generalizable (a,b,c) where
-  name xyz  =  name ((\(x,_,_) -> x) xyz)
-            ++ name ((\(_,y,_) -> y) xyz)
-            ++ name ((\(_,_,z) -> z) xyz)
+  name xyz  =  name x ++ name y ++ name z
+               where  (x,y,z) = xyz
   expr (x,y,z)  =  constant ",," ((,,) ->>>: (x,y,z))
                 :$ expr x :$ expr y :$ expr z
-  instances xyz  =  this xyz $ instances (fst xyz)
-                             . instances (snd xyz)
-                             . instances (trd xyz)
-    where
-    fst (x,_,_) = x
-    snd (_,y,_) = y
-    trd (_,_,z) = z
+  instances xyz  =  this xyz $ instances x . instances y . instances z
+                    where (x,y,z) = xyz
 
 instance (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
       => Generalizable (a,b,c,d) where
-  name xyzw  =  name ((\(x,_,_,_) -> x) xyzw)
-             ++ name ((\(_,y,_,_) -> y) xyzw)
-             ++ name ((\(_,_,z,_) -> z) xyzw)
-             ++ name ((\(_,_,_,w) -> w) xyzw)
+  name xyzw  =  name x ++ name y ++ name z ++ name w
+                where (x,y,z,w) = xyzw
   expr (x,y,z,w)  =  constant ",,," ((,,,) ->>>>: (x,y,z,w))
                   :$ expr x :$ expr y :$ expr z :$ expr w
-  instances xyzw  =  this xyzw $ instances (fst xyzw)
-                               . instances (snd xyzw)
-                               . instances (trd xyzw)
-                               . instances (fth xyzw)
-    where
-    fst (x,_,_,_) = x
-    snd (_,y,_,_) = y
-    trd (_,_,z,_) = z
-    fth (_,_,_,w) = w
+  instances xyzw  =  this xyzw $ instances x
+                               . instances y
+                               . instances z
+                               . instances w
+                     where (x,y,z,w) = xyzw
 
 instance Generalizable a => Generalizable [a] where
   name xs  =  name (head xs) ++ "s"
