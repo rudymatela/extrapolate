@@ -13,7 +13,18 @@ main = do
 
   ch [()]
   ch [bool]
-  ch [int]
+  -- TODO: make the following work on GHC >= 8.2
+  -- see https://travis-ci.org/rudymatela/extrapolate/jobs/266773179
+  -- possible solutions:
+  --   * Expr ordering on Specualte stable across different GHCs;
+  --   * Add (==) (/=) (<=) (<) (>=) (>) to list background.
+  -- ch [int]
+  putStrLn $ "checks :: " ++ show (typeOf [int]) ++ "\n"
+  check $ (<)  -:> [int]
+  check $ (>)  -:> [int]
+  check $ (>=) -:> [int]
+  putStrLn ""
+
   ch [integer]
   ch [char]
   ch [ordering]

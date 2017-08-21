@@ -226,15 +226,6 @@ xs xs
 Generalization:
 xs xs
 
-*** Failed! Falsifiable (after 3 tests):
-[0] []
-
-Generalization:
-(_:_) []
-
-Conditional Generalization:
-(x:_) xs  when  length xs < x
-
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
 
