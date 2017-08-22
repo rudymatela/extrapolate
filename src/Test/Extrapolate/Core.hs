@@ -347,6 +347,7 @@ generalizationsCE n p es =
   is = tinstances p
 
 generalizationsCEC :: Testable a => Int -> a -> [Expr] -> [(Expr,[Expr])]
+generalizationsCEC n p es | maxConditionSize p <= 0 = []
 generalizationsCEC n p es =
   [ (wc'', gs'')
   | gs <- generalizations is es
