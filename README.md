@@ -123,8 +123,9 @@ see [Extrapolate's API documentation].
 There are two other tools for [Haskell] capable of producing generalized
 counter-examples: [SmartCheck] and [Lazy SmallCheck 2012].
 
-Extrapolate was accepted for presentation at [IFL 2017], a link to a
-pre-symposium proceedings draft paper will be listed here soon.
+Extrapolate was accepted for presentation at [IFL 2017],
+see the pre-symposium proceedings
+[paper about Extrapolate](https://matela.com.br/paper/extrapolate.pdf).
 
 [extrapolate-on-hackage]:          https://hackage.haskell.org/package/extrapolate
 [Extrapolate from Hackage]:        https://hackage.haskell.org/package/extrapolate
