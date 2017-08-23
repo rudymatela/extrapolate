@@ -197,7 +197,10 @@ instance Generalizable a => Generalizable [a] where
   expr (xs@[])      =  showConstant  ([]    -: xs)
   expr (xs@(y:ys))  =  constant ":"  ((:) ->>: xs) :$ expr y :$ expr ys
   background xs  =  [ constant "length" (length -:> xs) ]
-                 ++ [ constant "elem" (elemBy (*==*) ->:> xs) | hasEq (head xs) ]
+                 ++ takeWhile (\_ -> hasEq $ head xs)
+                    [ constant "elem"      (elemBy (*==*) ->:> xs)
+                    , constant "=="        (listEq (*==*) ->:> xs)
+                    , constant "/=" (not .: listEq (*==*) ->:> xs) ]
   instances xs  =  this xs $ instances (head xs)
 -- TODO: add (==) and (/=) when list element type has (==) and (/=)
 -- TODO: add (<=) and (<)  when list element type has (<=) and (<)

@@ -69,7 +69,7 @@ Generalization:
 xs (_:xs)
 
 Conditional Generalization:
-xs ys  when  length xs /= length ys
+xs ys  when  xs /= ys
 
 
 checks :: [Integer]
@@ -81,7 +81,7 @@ Generalization:
 xs (_:xs)
 
 Conditional Generalization:
-_ (_:xs)  when  elem (-1) xs
+xs ys  when  xs /= ys
 
 
 checks :: [Char]
@@ -93,7 +93,7 @@ Generalization:
 cs (_:cs)
 
 Conditional Generalization:
-_ (_:cs)  when  elem 'b' cs
+cs ds  when  cs /= ds
 
 
 checks :: [Ordering]
@@ -105,7 +105,7 @@ Generalization:
 os (_:os)
 
 Conditional Generalization:
-os [LT]  when  elem EQ os
+os ps  when  os /= ps
 
 
 checks :: ((),Int)

@@ -21,6 +21,8 @@ module Test.Extrapolate.Utils
   , fromLeft
   , fromRight
   , elemBy
+  , listEq
+  , (.:)
   )
 where
 
@@ -60,3 +62,12 @@ fromRight _         = error "fromRight: not a right"
 
 elemBy :: (a -> a -> Bool) -> a -> [a] -> Bool
 elemBy (==) x = any (== x)
+
+listEq :: (a -> a -> Bool) -> [a] -> [a] -> Bool
+listEq (==) []     []     = True
+listEq (==) (x:xs) []     = False
+listEq (==) []     (y:ys) = False
+listEq (==) (x:xs) (y:ys) = x == y && listEq (==) xs ys
+
+(.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
+(.:) = (.) . (.)
