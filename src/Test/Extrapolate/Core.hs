@@ -202,7 +202,6 @@ instance Generalizable a => Generalizable [a] where
                     , constant "=="        (listEq (*==*) ->:> xs)
                     , constant "/=" (not .: listEq (*==*) ->:> xs) ]
   instances xs  =  this xs $ instances (head xs)
--- TODO: add (==) and (/=) when list element type has (==) and (/=)
 -- TODO: add (<=) and (<)  when list element type has (<=) and (<)
 
 instance Generalizable Ordering where
