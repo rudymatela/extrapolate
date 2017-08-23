@@ -182,4 +182,7 @@ checks :: Either Int Char
 Generalization:
 (Left _) (Right _)
 
+Conditional Generalization:
+exc exc'  when  exc /= exc'
+
 

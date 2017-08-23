@@ -23,6 +23,7 @@ module Test.Extrapolate.Utils
   , elemBy
   , listEq
   , maybeEq
+  , eitherEq
   , (.:)
   )
 where
@@ -78,3 +79,8 @@ maybeEq (==) Nothing  Nothing  = True
 maybeEq (==) Nothing  (Just y) = False
 maybeEq (==) (Just x) Nothing  = False
 maybeEq (==) (Just x) (Just y) = x == y
+
+eitherEq :: (a -> a -> Bool) -> (b -> b -> Bool) -> Either a b -> Either a b -> Bool
+eitherEq (==) _ (Left  x) (Left  y) = x == y
+eitherEq _ (==) (Right x) (Right y) = x == y
+eitherEq _ _ _ _ = False

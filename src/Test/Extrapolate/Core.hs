@@ -163,6 +163,8 @@ instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
   name exy = "e" ++ name (fromLeft exy) ++ name (fromRight exy)
   background exy  =  [ constant "Left"  (Left  ->: exy)
                      , constant "Right" (Right ->: exy) ]
+                  ++ [ constant "==" (       eitherEq (*==*) (*==*) -:> exy) | hasEq (fromLeft exy) && hasEq (fromRight exy) ]
+                  ++ [ constant "/=" (not .: eitherEq (*==*) (*==*) -:> exy) | hasEq (fromLeft exy) && hasEq (fromRight exy) ]
   instances exy  =  this exy $ instances (fromLeft  exy)
                              . instances (fromRight exy)
 
