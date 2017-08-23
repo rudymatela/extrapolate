@@ -152,7 +152,9 @@ instance (Generalizable a) => Generalizable (Maybe a) where
   expr mx@Nothing   =  constant "Nothing" (Nothing -: mx)
   expr mx@(Just x)  =  constant "Just"    (Just   ->: mx) :$ expr x
   name mx = "m" ++ name (fromJust mx)
-  background mx  =  [ constant "Just"    (Just   ->: mx) ]
+  background mx  =  [ constant "Just" (Just ->: mx) ]
+                 ++ [ constant "==" (       maybeEq (*==*) -:> mx) | hasEq (fromJust mx) ]
+                 ++ [ constant "/=" (not .: maybeEq (*==*) -:> mx) | hasEq (fromJust mx) ]
   instances mx  =  this mx $ instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
@@ -199,8 +201,8 @@ instance Generalizable a => Generalizable [a] where
   background xs  =  [ constant "length" (length -:> xs) ]
                  ++ takeWhile (\_ -> hasEq $ head xs)
                     [ constant "elem"      (elemBy (*==*) ->:> xs)
-                    , constant "=="        (listEq (*==*) ->:> xs)
-                    , constant "/=" (not .: listEq (*==*) ->:> xs) ]
+                    , constant "=="        (listEq (*==*)  -:> xs)
+                    , constant "/=" (not .: listEq (*==*)  -:> xs) ]
   instances xs  =  this xs $ instances (head xs)
 -- TODO: add (<=) and (<)  when list element type has (<=) and (<)
 

@@ -499,11 +499,17 @@ mx mx
 Generalization:
 (Just _) Nothing
 
+Conditional Generalization:
+mx Nothing  when  Nothing /= mx
+
 *** Failed! Falsifiable (after 2 tests):
 Nothing (Just 0)
 
 Generalization:
 Nothing (Just _)
+
+Conditional Generalization:
+Nothing mx  when  Nothing /= mx
 
 
 checks :: Either () Bool

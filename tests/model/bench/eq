@@ -161,6 +161,9 @@ Nothing (Just 0)
 Generalization:
 Nothing (Just _)
 
+Conditional Generalization:
+mx mx'  when  mx /= mx'
+
 
 checks :: Either () Bool
 
