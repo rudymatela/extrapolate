@@ -8,8 +8,8 @@ BENCH= \
   div0
 TYM= \
   /usr/bin/time "-f%e %M"
-#SMARTCHECK=https://github.com/leepike/SmartCheck
-SMARTCHECK=$(HOME)/prj/smartcheck
+SMARTCHECK=https://github.com/leepike/SmartCheck
+#SMARTCHECK=$(HOME)/prj/smartcheck
 
 all: $(BENCH)
 
