@@ -25,7 +25,7 @@ EG = \
   eg/overflow \
   eg/overflow8 \
   $(QUICKEG)
-LISTHS   = find src mk tests eg bench/*.hs -name \*.hs
+LISTHS   = find src mk tests eg/*.hs bench/*.hs -name \*.hs
 LISTOBJS = $(LISTHS) | sed -e 's/.hs$$/.o/'
 LISTLIBS = find src -name \*.hs
 ALLHS    = $(shell $(LISTHS))

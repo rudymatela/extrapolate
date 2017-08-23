@@ -68,6 +68,7 @@ bench/smartcheck/overflow.hs
 bench/smartcheck/list
 bench/smartcheck/*-out
 bench/smartcheck/*.runtime
+eg/xmonad/xmonad
 eg/RedBlackSetBalanceBug.hs
 eg/RedBlackSetDeleteBug.hs
 eg/RedBlackSetRemoveBug.hs

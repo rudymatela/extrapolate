@@ -1,0 +1,12 @@
+
+-- to be appended to xmonad.cabal
+test-suite extrapolate
+    type: exitcode-stdio-1.0
+    hs-source-dirs: tests
+    build-depends:  base,
+                    containers,
+                    leancheck,
+                    extrapolate,
+                    X11,
+                    xmonad
+    main-is: extrapolate.hs
