@@ -1,5 +1,5 @@
-#XMONAD=https://github.com/xmonad/xmonad
-XMONAD=$(HOME)/prj/xmonad
+XMONAD=https://github.com/xmonad/xmonad
+#XMONAD=$(HOME)/prj/xmonad
 
 all: xmonad/dist/build/extrapolate/extrapolate
 
