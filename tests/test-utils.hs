@@ -34,6 +34,12 @@ tests n =
   , holds n $ maybeEq (==) ==== (==) -:> mayb [int]
   , holds n $ maybeEq (==) ==== (==) -:> mayb [bool]
 
+  , holds n $ maybeOrd (<=) ==== (<=) -:> mayb ()
+  , holds n $ maybeOrd (<=) ==== (<=) -:> mayb int
+  , holds n $ maybeOrd (<=) ==== (<=) -:> mayb bool
+  , holds n $ maybeOrd (<=) ==== (<=) -:> mayb [int]
+  , holds n $ maybeOrd (<=) ==== (<=) -:> mayb [bool]
+
   , holds n $ eitherEq (==) (==) ==== (==) -:> eith () ()
   , holds n $ eitherEq (==) (==) ==== (==) -:> eith int int
   , holds n $ eitherEq (==) (==) ==== (==) -:> eith int bool

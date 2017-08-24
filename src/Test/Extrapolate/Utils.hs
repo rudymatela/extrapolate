@@ -22,7 +22,7 @@ module Test.Extrapolate.Utils
   , fromRight
   , elemBy
   , listEq   , listOrd
-  , maybeEq
+  , maybeEq  , maybeOrd
   , eitherEq
   , (.:)
   )
@@ -86,6 +86,12 @@ maybeEq (==) Nothing  Nothing  = True
 maybeEq (==) Nothing  (Just y) = False
 maybeEq (==) (Just x) Nothing  = False
 maybeEq (==) (Just x) (Just y) = x == y
+
+maybeOrd :: (a -> a -> Bool) -> Maybe a -> Maybe a -> Bool
+maybeOrd (<=) Nothing  Nothing  = True
+maybeOrd (<=) Nothing  (Just y) = True
+maybeOrd (<=) (Just x) Nothing  = False
+maybeOrd (<=) (Just x) (Just y) = x <= y
 
 eitherEq :: (a -> a -> Bool) -> (b -> b -> Bool) -> Either a b -> Either a b -> Bool
 eitherEq (==) _ (Left  x) (Left  y) = x == y
