@@ -196,34 +196,34 @@ tests n =
        ]
   -}
 
-  , holds n $ (-==-) ==== (==) -:> int
-  , holds n $ (-==-) ==== (==) -:> char
-  , holds n $ (-==-) ==== (==) -:> [int]
-  , holds n $ (-==-) ==== (==) -:> mayb int
-  , holds n $ (-==-) ==== (==) -:> mayb char
-  , holds n $ (-==-) ==== (==) -:> eith int char
+  , holds n $ (*==*) ==== (==) -:> int
+  , holds n $ (*==*) ==== (==) -:> char
+  , holds n $ (*==*) ==== (==) -:> [int]
+  , holds n $ (*==*) ==== (==) -:> mayb int
+  , holds n $ (*==*) ==== (==) -:> mayb char
+  , holds n $ (*==*) ==== (==) -:> eith int char
 
-  , holds n $ (-/=-) ==== (/=) -:> int
-  , holds n $ (-/=-) ==== (/=) -:> char
-  , holds n $ (-/=-) ==== (/=) -:> [int]
-  , holds n $ (-/=-) ==== (/=) -:> mayb int
-  , holds n $ (-/=-) ==== (/=) -:> mayb char
-  , holds n $ (-/=-) ==== (/=) -:> eith int char
+  , holds n $ (*/=*) ==== (/=) -:> int
+  , holds n $ (*/=*) ==== (/=) -:> char
+  , holds n $ (*/=*) ==== (/=) -:> [int]
+  , holds n $ (*/=*) ==== (/=) -:> mayb int
+  , holds n $ (*/=*) ==== (/=) -:> mayb char
+  , holds n $ (*/=*) ==== (/=) -:> eith int char
 
   {-
-  , holds n $ (-<=-) ==== (<=) -:> int
-  , holds n $ (-<=-) ==== (<=) -:> char
-  , holds n $ (-<=-) ==== (<=) -:> [int]
-  , holds n $ (-<=-) ==== (<=) -:> mayb int
-  , holds n $ (-<=-) ==== (<=) -:> mayb char
-  , holds n $ (-<=-) ==== (<=) -:> eith int char
+  , holds n $ (*<=*) ==== (<=) -:> int
+  , holds n $ (*<=*) ==== (<=) -:> char
+  , holds n $ (*<=*) ==== (<=) -:> [int]
+  , holds n $ (*<=*) ==== (<=) -:> mayb int
+  , holds n $ (*<=*) ==== (<=) -:> mayb char
+  , holds n $ (*<=*) ==== (<=) -:> eith int char
 
-  , holds n $ (-<-) ==== (<) -:> int
-  , holds n $ (-<-) ==== (<) -:> char
-  , holds n $ (-<-) ==== (<) -:> [int]
-  , holds n $ (-<-) ==== (<) -:> mayb int
-  , holds n $ (-<-) ==== (<) -:> mayb char
-  , holds n $ (-<-) ==== (<) -:> eith int char
+  , holds n $ (*<*) ==== (<) -:> int
+  , holds n $ (*<*) ==== (<) -:> char
+  , holds n $ (*<*) ==== (<) -:> [int]
+  , holds n $ (*<*) ==== (<) -:> mayb int
+  , holds n $ (*<*) ==== (<) -:> mayb char
+  , holds n $ (*<*) ==== (<) -:> eith int char
   -}
   ]
 

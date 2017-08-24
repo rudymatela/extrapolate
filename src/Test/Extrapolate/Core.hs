@@ -30,8 +30,8 @@ module Test.Extrapolate.Core
   , extraInstances
   , maxConditionSize
   , hasEq
-  , (-==-)
-  , (-/=-)
+  , (*==*)
+  , (*/=*)
 
   , counterExampleGen
   , counterExampleGens
@@ -202,7 +202,7 @@ instance Generalizable a => Generalizable [a] where
   expr (xs@[])      =  showConstant  ([]    -: xs)
   expr (xs@(y:ys))  =  constant ":"  ((:) ->>: xs) :$ expr y :$ expr ys
   background xs  =  [ constant "length" (length -:> xs) ]
-                 ++ [ constant "elem"      (elemBy (-==-) ->:> xs) | hasEq $ head xs ]
+                 ++ [ constant "elem"      (elemBy (*==*) ->:> xs) | hasEq $ head xs ]
                  ++ bgEqWith1 (listEq ->:> xs)
   instances xs  =  this xs $ instances (head xs)
 -- TODO: add (<=) and (<)  when list element type has (<=) and (<)
@@ -226,16 +226,16 @@ bgOrd x = [ constant "==" ((==) -:> x)
 bgEqWith1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
 bgEqWith1 makeEq = takeWhile (\_ -> hasEq x)
-                 [ constant "==" (       makeEq (-==-))
-                 , constant "/=" (not .: makeEq (-==-)) ]
+                 [ constant "==" (       makeEq (*==*))
+                 , constant "/=" (not .: makeEq (*==*)) ]
   where
   x = argTy1of2 $ argTy1of2 makeEq
 
 bgEqWith2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
 bgEqWith2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
-                 [ constant "==" (       makeEq (-==-) (-==-))
-                 , constant "/=" (not .: makeEq (-==-) (-==-)) ]
+                 [ constant "==" (       makeEq (*==*) (*==*))
+                 , constant "/=" (not .: makeEq (*==*) (*==*)) ]
   where
   x = argTy1of2 $ argTy1of2 makeEq
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
@@ -510,14 +510,14 @@ fromBackgroundOf nm = listToMaybe
 hasEq :: Generalizable a => a -> Bool
 hasEq x = isJust $ "==" `fromBackgroundOf` x -: mayb (x >- x >- bool)
 
-(-==-) :: Generalizable a => a -> a -> Bool
-x -==- y = x == y
+(*==*) :: Generalizable a => a -> a -> Bool
+x *==* y = x == y
   where
-  (==) = fromMaybe (error "(-==-): no (==) operator in background")
+  (==) = fromMaybe (error "(*==*): no (==) operator in background")
        $ "==" `fromBackgroundOf` x
 
-(-/=-) :: Generalizable a => a -> a -> Bool
-x -/=- y = x /= y
+(*/=*) :: Generalizable a => a -> a -> Bool
+x */=* y = x /= y
   where
-  (/=) = fromMaybe (error "(-/=-): no (/=) operator in background")
+  (/=) = fromMaybe (error "(*/=*): no (/=) operator in background")
        $ "/=" `fromBackgroundOf` x
