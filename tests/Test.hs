@@ -53,6 +53,7 @@ import Data.List (isPrefixOf, sort)
 import Data.Maybe (fromMaybe)
 
 import Test.Extrapolate
+import Test.Extrapolate.Utils
 import Test.Extrapolate.Core hiding (false, true)
 import qualified Test.Extrapolate.Core as Core
 import Test.LeanCheck.Utils.Operators

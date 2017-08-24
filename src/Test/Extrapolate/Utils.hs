@@ -21,7 +21,7 @@ module Test.Extrapolate.Utils
   , fromLeft
   , fromRight
   , elemBy
-  , listEq
+  , listEq   , listOrd
   , maybeEq
   , eitherEq
   , (.:)
@@ -70,6 +70,16 @@ listEq (==) []     []     = True
 listEq (==) (x:xs) []     = False
 listEq (==) []     (y:ys) = False
 listEq (==) (x:xs) (y:ys) = x == y && listEq (==) xs ys
+
+listOrd :: (a -> a -> Bool) -> [a] -> [a] -> Bool
+listOrd (<=) []     []     = True
+listOrd (<=) (x:xs) []     = False
+listOrd (<=) []     (y:ys) = True
+listOrd (<=) (x:xs) (y:ys) = x <  y
+                          || x == y && listOrd (<=) xs ys
+  where
+  x <  y = x <= y && not (y <= x)
+  x == y = x <= y &&      y <= x
 
 maybeEq :: (a -> a -> Bool) -> Maybe a -> Maybe a -> Bool
 maybeEq (==) Nothing  Nothing  = True

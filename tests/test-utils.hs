@@ -22,6 +22,12 @@ tests n =
   , holds n $ listEq (==) ==== (==) -:> [[int]]
   , holds n $ listEq (==) ==== (==) -:> [[bool]]
 
+  , holds n $ listOrd (<=) ==== (<=) -:> [()]
+  , holds n $ listOrd (<=) ==== (<=) -:> [int]
+  , holds n $ listOrd (<=) ==== (<=) -:> [bool]
+  , holds n $ listOrd (<=) ==== (<=) -:> [[int]]
+  , holds n $ listOrd (<=) ==== (<=) -:> [[bool]]
+
   , holds n $ maybeEq (==) ==== (==) -:> mayb ()
   , holds n $ maybeEq (==) ==== (==) -:> mayb int
   , holds n $ maybeEq (==) ==== (==) -:> mayb bool
