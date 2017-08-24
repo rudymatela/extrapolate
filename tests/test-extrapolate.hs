@@ -1,9 +1,15 @@
-{-# LANGUAGE CPP, TemplateHaskell #-}
+{-# LANGUAGE TemplateHaskell #-}
+{-# LANGUAGE DeriveDataTypeable, StandaloneDeriving, CPP #-} -- for GHC <= 7.8
 -- Copyright (c) 2017 Rudy Matela.
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
 
 import Data.List (sort)
+
+#if __GLASGOW_HASKELL__ < 710
+import Data.Typeable (Typeable)
+deriving instance Typeable NOrd
+#endif
 
 data NOrd = NOrd
   deriving Show
