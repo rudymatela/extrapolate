@@ -500,6 +500,13 @@ isVar :: Expr -> Bool
 isVar (Var _ _) = True
 isVar _         = False
 
+fromBackgroundOf :: (Generalizable a, Typeable b) => String -> a -> Maybe b
+fromBackgroundOf nm = listToMaybe
+                    . catMaybes
+                    . map evaluate
+                    . filter (`isConstantNamed` nm)
+                    . background
+
 hasEq :: Generalizable a => a -> Bool
 hasEq x = isJust $ "==" `fromBackgroundOf` x -: mayb (x >- x >- bool)
 
@@ -514,10 +521,3 @@ x -/=- y = x /= y
   where
   (/=) = fromMaybe (error "(-/=-): no (/=) operator in background")
        $ "/=" `fromBackgroundOf` x
-
-fromBackgroundOf :: (Generalizable a, Typeable b) => String -> a -> Maybe b
-fromBackgroundOf nm = listToMaybe
-                    . catMaybes
-                    . map evaluate
-                    . filter (`isConstantNamed` nm)
-                    . background
