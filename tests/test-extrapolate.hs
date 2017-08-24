@@ -1,9 +1,18 @@
-{-# LANGUAGE CPP #-}
+{-# LANGUAGE CPP, TemplateHaskell #-}
 -- Copyright (c) 2017 Rudy Matela.
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
 
 import Data.List (sort)
+
+data NOrd = NOrd
+  deriving Show
+
+deriveListable ''NOrd
+deriveGeneralizable ''NOrd
+
+nord :: NOrd
+nord = undefined
 
 main :: IO ()
 main = mainTest tests 10000
@@ -99,6 +108,16 @@ tests n =
        , constant "elem"   (elem  ->:> [int])
        , constant "=="     ((==)   -:> [int])
        , constant "/="     ((/=)   -:> [int]) ]
+
+  , background (mayb nord)
+    == [ constant "Just" (Just ->: mayb nord) ]
+
+  , background (eith nord nord)
+    == [ constant "Left"  (Left  ->: eith nord nord)
+       , constant "Right" (Right ->: eith nord nord) ]
+
+  , background [nord]
+    == [ constant "length" (length -:> [nord]) ]
 
   -- background tests
   , listBackgroundOK ()
