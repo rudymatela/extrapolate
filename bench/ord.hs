@@ -17,6 +17,9 @@ main = do
   -- see https://travis-ci.org/rudymatela/extrapolate/jobs/266773179
   -- possible less temporary solution:
   --   * Add (==) (/=) (<=) (<) (>=) (>) to list background.
+  -- update, adding the above on background does not seem to solve the problem.
+  -- maybe after improving the algorithm to generate the *weakest* condition,
+  -- instead of just the first with 10% truth.
   -- ch [int]
   putStrLn $ "checks :: " ++ show (typeOf [int]) ++ "\n"
   check $ (<)  -:> [int]
