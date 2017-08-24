@@ -21,6 +21,8 @@ module Test.Extrapolate.Core
   , backgroundOf
   , bgEq
   , bgOrd
+  , bgEqWith1
+  , bgEqWith2
 
   , Option (..)
   , WithOption (..)
