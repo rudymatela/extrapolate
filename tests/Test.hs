@@ -10,10 +10,11 @@ module Test
   , mainTest
   , printLines
 
-  , (-:-), ll, llb
+  , (-:-), ll, llb, llmi
 
   , _i, xx, yy
   , _is, xxs, yys
+  , _mi, mxx
   , zero, one
 
   , false, true
@@ -84,11 +85,13 @@ printLines = putStrLn . unlines . map show
 x -:- xs  =  consE :$ x :$ xs
   where
   consE = case show $ typ x of
-            "Int"  -> consEint
-            "Bool" -> consEbool
-            t      -> error $ "(-:-): unhandled type " ++ t
+            "Int"       -> consEint
+            "Bool"      -> consEbool
+            "Maybe Int" -> consEmint
+            t           -> error $ "(-:-): unhandled type " ++ t
   consEint   =  constant ":" ((:) -:> int)
   consEbool  =  constant ":" ((:) -:> bool)
+  consEmint  =  constant ":" ((:) -:> mayb int)
 infixr 5 -:-
 
 ll :: Expr
@@ -104,6 +107,10 @@ _is  =  var ""   [int]
 xxs  =  var "xs" [int]
 yys  =  var "ys" [int]
 
+_mi, mxx :: Expr
+_mi  =  var ""   (mayb int)
+mxx  =  var "mx" (mayb int)
+
 zero :: Expr
 zero  =  expr (0 :: Int)
 
@@ -112,6 +119,9 @@ one  =  expr (1 :: Int)
 
 llb :: Expr
 llb  =  expr ([] :: [Bool])
+
+llmi :: Expr
+llmi  =  expr ([] :: [Maybe Int])
 
 false :: Expr
 false  =  expr False

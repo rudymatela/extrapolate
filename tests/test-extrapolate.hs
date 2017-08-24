@@ -235,7 +235,25 @@ tests n =
 --, holds n $ (*<*) ==== (<) -:> mayb int
 --, holds n $ (*<*) ==== (<) -:> mayb char
 --, holds n $ (*<*) ==== (<) -:> eith int char
+
+  -- tests about lgg
+  , holds n $ lggCommutative -:> int
+  , holds n $ lggCommutative -:> [int]
+  , holds n $ lggCommutative -:> [[int]]
+  , holds n $ lggCommutative -:> [([int],eith int char)]
+  , lgg (expr [0,0::Int]) (expr [1,1::Int])    ==  _i -:- _i -:- ll
+  , lgg (expr [0,1::Int]) (expr [1,0::Int])    ==  _i -:- _i -:- ll
+  , lgg (expr [0,0::Int]) (expr [0,0,1::Int])  ==  zero -:- zero -:- _is
+  , lgg (expr [1,1::Int]) (expr [2,2,2::Int])  ==  _i -:- _i -:- _is
+  , lgg (expr (Just (0::Int))) (expr (Nothing :: Maybe Int)) == _mi
+  , lgg (expr (Just (0::Int))) (expr (Just (1 :: Int)))      == just _i
+-- TODO: find out why the following does not pass:
+  , lgg (expr [Just 1, Just (0::Int)]) (expr [Nothing, Just (1::Int)])
+    ==  _mi -:- just _i -:- llmi
   ]
+
+lggCommutative :: Generalizable a => a -> a -> Bool
+lggCommutative x y = lgg (expr x) (expr y) == lgg (expr y) (expr x)
 
 listBackgroundOK :: Generalizable a => a -> Bool
 listBackgroundOK x = backgroundListOf x `subset` backgroundOf [x]
