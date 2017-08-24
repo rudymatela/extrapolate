@@ -71,9 +71,6 @@ listEq (==) (x:xs) []     = False
 listEq (==) []     (y:ys) = False
 listEq (==) (x:xs) (y:ys) = x == y && listEq (==) xs ys
 
-(.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
-(.:) = (.) . (.)
-
 maybeEq :: (a -> a -> Bool) -> Maybe a -> Maybe a -> Bool
 maybeEq (==) Nothing  Nothing  = True
 maybeEq (==) Nothing  (Just y) = False
@@ -84,3 +81,6 @@ eitherEq :: (a -> a -> Bool) -> (b -> b -> Bool) -> Either a b -> Either a b -> 
 eitherEq (==) _ (Left  x) (Left  y) = x == y
 eitherEq _ (==) (Right x) (Right y) = x == y
 eitherEq _ _ _ _ = False
+
+(.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
+(.:) = (.) . (.)
