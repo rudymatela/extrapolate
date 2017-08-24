@@ -161,9 +161,10 @@ e1 -==- e2 =
 infix 4 -==-
 
 (-/=-) :: Expr -> Expr -> Expr
-e1 -/=- e2 = constant "/=" ((/=) :: Int -> Int -> Bool) :$ e1 :$ e2
+e1 -/=- e2 =
+  fromMaybe (error $ "(-/=-): cannot inequate " ++ show e1 ++ " and " ++ show e2)
+            (inequality preludeInstances e1 e2)
 infix 4 -/=-
--- TODO: improve above after changing Speculate
 
 (-<=-) :: Expr -> Expr -> Expr
 e1 -<=- e2 =
