@@ -153,8 +153,7 @@ instance (Generalizable a) => Generalizable (Maybe a) where
   expr mx@(Just x)  =  constant "Just"    (Just   ->: mx) :$ expr x
   name mx = "m" ++ name (fromJust mx)
   background mx  =  [ constant "Just" (Just ->: mx) ]
-                 ++ [ constant "==" (       maybeEq (*==*) -:> mx) | hasEq (fromJust mx) ]
-                 ++ [ constant "/=" (not .: maybeEq (*==*) -:> mx) | hasEq (fromJust mx) ]
+                 ++ bgEqWith1 (maybeEq ->:> mx)
   instances mx  =  this mx $ instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
@@ -163,8 +162,7 @@ instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
   name exy = "e" ++ name (fromLeft exy) ++ name (fromRight exy)
   background exy  =  [ constant "Left"  (Left  ->: exy)
                      , constant "Right" (Right ->: exy) ]
-                  ++ [ constant "==" (       eitherEq (*==*) (*==*) -:> exy) | hasEq (fromLeft exy) && hasEq (fromRight exy) ]
-                  ++ [ constant "/=" (not .: eitherEq (*==*) (*==*) -:> exy) | hasEq (fromLeft exy) && hasEq (fromRight exy) ]
+                  ++ bgEqWith2 (eitherEq ->>:> exy)
   instances exy  =  this exy $ instances (fromLeft  exy)
                              . instances (fromRight exy)
 
@@ -201,10 +199,8 @@ instance Generalizable a => Generalizable [a] where
   expr (xs@[])      =  showConstant  ([]    -: xs)
   expr (xs@(y:ys))  =  constant ":"  ((:) ->>: xs) :$ expr y :$ expr ys
   background xs  =  [ constant "length" (length -:> xs) ]
-                 ++ takeWhile (\_ -> hasEq $ head xs)
-                    [ constant "elem"      (elemBy (*==*) ->:> xs)
-                    , constant "=="        (listEq (*==*)  -:> xs)
-                    , constant "/=" (not .: listEq (*==*)  -:> xs) ]
+                 ++ [ constant "elem"      (elemBy (*==*) ->:> xs) | hasEq $ head xs ]
+                 ++ bgEqWith1 (listEq ->:> xs)
   instances xs  =  this xs $ instances (head xs)
 -- TODO: add (<=) and (<)  when list element type has (<=) and (<)
 
@@ -223,6 +219,23 @@ bgOrd x = [ constant "==" ((==) -:> x)
           , constant "/=" ((/=) -:> x)
           , constant "<"  ((<)  -:> x)
           , constant "<=" ((<=) -:> x) ]
+
+bgEqWith1 :: (Generalizable a, Generalizable b)
+          => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
+bgEqWith1 makeEq = takeWhile (\_ -> hasEq x)
+                 [ constant "==" (       makeEq (*==*))
+                 , constant "/=" (not .: makeEq (*==*)) ]
+  where
+  x = argTy1of2 $ argTy1of2 makeEq
+
+bgEqWith2 :: (Generalizable a, Generalizable b, Generalizable c)
+          => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
+bgEqWith2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
+                 [ constant "==" (       makeEq (*==*) (*==*))
+                 , constant "/=" (not .: makeEq (*==*) (*==*)) ]
+  where
+  x = argTy1of2 $ argTy1of2 makeEq
+  y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances
