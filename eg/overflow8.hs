@@ -11,17 +11,17 @@ deriving instance Typeable T
 #endif
 
 type I  =  [Int8]
-data T  =  T I I I
+data T  =  T I I{- I-}
   deriving Show
 
 toList :: T -> [[Int8]]
-toList (T i j k) = [i,j,k]
+toList (T i j{- k-}) = [i,j{-,k-}]
 
 pre :: T -> Bool
 pre t  =  all ((< 16) . sum) (toList t)
 
 post :: T -> Bool
-post t  =  (sum . concat) (toList t) < 3 * 16
+post t  =  (sum . concat) (toList t) < 2 * 16 -- 3 * 16
 
 prop :: T -> Bool
 prop t  =  pre t ==> post t
@@ -40,7 +40,7 @@ deriveGeneralizable ''T
 
 main :: IO ()
 main = do
-  check `for` 2160
+  check `for` 1080 -- 2160
         `withBackground` [constant "sum" (sum :: [Int8] -> Int8)]
         `withConditionSize` 4
         $ prop
