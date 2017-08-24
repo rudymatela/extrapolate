@@ -15,4 +15,22 @@ tests n =
   , holds n $ elemBy (==) ==== elem -:> bool
   , holds n $ elemBy (==) ==== elem -:> [int]
   , holds n $ elemBy (==) ==== elem -:> [bool]
+
+  , holds n $ listEq (==) ==== (==) -:> [()]
+  , holds n $ listEq (==) ==== (==) -:> [int]
+  , holds n $ listEq (==) ==== (==) -:> [bool]
+  , holds n $ listEq (==) ==== (==) -:> [[int]]
+  , holds n $ listEq (==) ==== (==) -:> [[bool]]
+
+  , holds n $ maybeEq (==) ==== (==) -:> mayb ()
+  , holds n $ maybeEq (==) ==== (==) -:> mayb int
+  , holds n $ maybeEq (==) ==== (==) -:> mayb bool
+  , holds n $ maybeEq (==) ==== (==) -:> mayb [int]
+  , holds n $ maybeEq (==) ==== (==) -:> mayb [bool]
+
+  , holds n $ eitherEq (==) (==) ==== (==) -:> eith () ()
+  , holds n $ eitherEq (==) (==) ==== (==) -:> eith int int
+  , holds n $ eitherEq (==) (==) ==== (==) -:> eith int bool
+  , holds n $ eitherEq (==) (==) ==== (==) -:> eith bool int
+  , holds n $ eitherEq (==) (==) ==== (==) -:> eith bool bool
   ]
