@@ -24,7 +24,6 @@ module Test
 
   , comma
 
-  , (-/=-)
   , (-<-)
   , (-<=-)
 
@@ -152,11 +151,6 @@ comma x y  =  commaE :$ x :$ y
   commaEib  =  constant "," ((,) ->>: (int,bool))
   commaEbi  =  constant "," ((,) ->>: (bool,int))
   commaEbb  =  constant "," ((,) ->>: (bool,bool))
-
-(-/=-) :: Expr -> Expr -> Expr
-e1 -/=- e2 = constant "/=" ((/=) :: Int -> Int -> Bool) :$ e1 :$ e2
-infix 4 -/=-
--- TODO: improve above after changing Speculate
 
 (-<=-) :: Expr -> Expr -> Expr
 e1 -<=- e2 =

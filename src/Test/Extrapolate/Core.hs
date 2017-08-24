@@ -31,6 +31,7 @@ module Test.Extrapolate.Core
   , maxConditionSize
   , hasEq
   , (-==-)
+  , (-/=-)
 
   , counterExampleGen
   , counterExampleGens
@@ -507,6 +508,12 @@ x -==- y = x == y
   where
   (==) = fromMaybe (error "(-==-): no (==) operator in background")
        $ "==" `fromBackgroundOf` x
+
+(-/=-) :: Generalizable a => a -> a -> Bool
+x -/=- y = x /= y
+  where
+  (/=) = fromMaybe (error "(-/=-): no (/=) operator in background")
+       $ "/=" `fromBackgroundOf` x
 
 fromBackgroundOf :: (Generalizable a, Typeable b) => String -> a -> Maybe b
 fromBackgroundOf nm = listToMaybe
