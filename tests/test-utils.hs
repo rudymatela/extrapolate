@@ -45,4 +45,10 @@ tests n =
   , holds n $ eitherEq (==) (==) ==== (==) -:> eith int bool
   , holds n $ eitherEq (==) (==) ==== (==) -:> eith bool int
   , holds n $ eitherEq (==) (==) ==== (==) -:> eith bool bool
+
+  , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith () ()
+  , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith int int
+  , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith int bool
+  , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith bool int
+  , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith bool bool
   ]

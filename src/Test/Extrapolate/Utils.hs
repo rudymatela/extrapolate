@@ -21,9 +21,9 @@ module Test.Extrapolate.Utils
   , fromLeft
   , fromRight
   , elemBy
-  , listEq   , listOrd
-  , maybeEq  , maybeOrd
-  , eitherEq
+  , listEq,   listOrd
+  , maybeEq,  maybeOrd
+  , eitherEq, eitherOrd
   , (.:)
   )
 where
@@ -97,6 +97,12 @@ eitherEq :: (a -> a -> Bool) -> (b -> b -> Bool) -> Either a b -> Either a b -> 
 eitherEq (==) _ (Left  x) (Left  y) = x == y
 eitherEq _ (==) (Right x) (Right y) = x == y
 eitherEq _ _ _ _ = False
+
+eitherOrd :: (a -> a -> Bool) -> (b -> b -> Bool) -> Either a b -> Either a b -> Bool
+eitherOrd (<=) _ (Left  x) (Left  y) = x <= y
+eitherOrd _ (<=) (Right x) (Right y) = x <= y
+eitherOrd _    _ (Left  _) (Right _) = True
+eitherOrd _    _ (Right _) (Left  _) = False
 
 (.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
 (.:) = (.) . (.)
