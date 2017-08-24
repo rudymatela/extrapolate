@@ -32,6 +32,8 @@ module Test.Extrapolate.Core
   , hasEq
   , (*==*)
   , (*/=*)
+  , (*<=*)
+  , (*<*)
 
   , counterExampleGen
   , counterExampleGens
@@ -521,3 +523,15 @@ x */=* y = x /= y
   where
   (/=) = fromMaybe (error "(*/=*): no (/=) operator in background")
        $ "/=" `fromBackgroundOf` x
+
+(*<=*) :: Generalizable a => a -> a -> Bool
+x *<=* y = x <= y
+  where
+  (<=) = fromMaybe (error "(*<=*): no (<=) operator in background")
+       $ "<=" `fromBackgroundOf` x
+
+(*<*) :: Generalizable a => a -> a -> Bool
+x *<* y = x < y
+  where
+  (<) = fromMaybe (error "(*<*): no (<) operator in background")
+       $ "<" `fromBackgroundOf` x
