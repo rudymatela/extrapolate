@@ -158,7 +158,8 @@ instance (Generalizable a) => Generalizable (Maybe a) where
   expr mx@(Just x)  =  constant "Just"    (Just   ->: mx) :$ expr x
   name mx = "m" ++ name (fromJust mx)
   background mx  =  [ constant "Just" (Just ->: mx) ]
-                 ++ bgEqWith1 (maybeEq ->:> mx)
+                 ++ bgEqWith1  (maybeEq  ->:> mx)
+                 ++ bgOrdWith1 (maybeOrd ->:> mx)
   instances mx  =  this mx $ instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
@@ -167,7 +168,8 @@ instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
   name exy = "e" ++ name (fromLeft exy) ++ name (fromRight exy)
   background exy  =  [ constant "Left"  (Left  ->: exy)
                      , constant "Right" (Right ->: exy) ]
-                  ++ bgEqWith2 (eitherEq ->>:> exy)
+                  ++ bgEqWith2  (eitherEq  ->>:> exy)
+                  ++ bgOrdWith2 (eitherOrd ->>:> exy)
   instances exy  =  this exy $ instances (fromLeft  exy)
                              . instances (fromRight exy)
 
@@ -205,7 +207,8 @@ instance Generalizable a => Generalizable [a] where
   expr (xs@(y:ys))  =  constant ":"  ((:) ->>: xs) :$ expr y :$ expr ys
   background xs  =  [ constant "length" (length -:> xs) ]
                  ++ [ constant "elem"      (elemBy (*==*) ->:> xs) | hasEq $ head xs ]
-                 ++ bgEqWith1 (listEq ->:> xs)
+                 ++ bgEqWith1  (listEq  ->:> xs)
+                 ++ bgOrdWith1 (listOrd ->:> xs)
   instances xs  =  this xs $ instances (head xs)
 -- TODO: add (<=) and (<)  when list element type has (<=) and (<)
 
@@ -241,6 +244,23 @@ bgEqWith2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
   where
   x = argTy1of2 $ argTy1of2 makeEq
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
+
+bgOrdWith1 :: (Generalizable a, Generalizable b)
+          => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
+bgOrdWith1 makeOrd = takeWhile (\_ -> hasOrd x)
+                   [ constant "<=" (             makeOrd (*<=*))
+                   , constant "<"  (not .: flip (makeOrd (*<*))) ]
+  where
+  x = argTy1of2 $ argTy1of2 makeOrd
+
+bgOrdWith2 :: (Generalizable a, Generalizable b, Generalizable c)
+          => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
+bgOrdWith2 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y)
+                   [ constant "<=" (             makeOrd (*<=*) (*<=*))
+                   , constant "<"  (not .: flip (makeOrd (*<=*) (*<=*))) ]
+  where
+  x = argTy1of2 $ argTy1of2 makeOrd
+  y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances
@@ -511,6 +531,9 @@ fromBackgroundOf nm = listToMaybe
 
 hasEq :: Generalizable a => a -> Bool
 hasEq x = isJust $ "==" `fromBackgroundOf` x -: mayb (x >- x >- bool)
+
+hasOrd :: Generalizable a => a -> Bool
+hasOrd x = isJust $ "<=" `fromBackgroundOf` x -: mayb (x >- x >- bool)
 
 (*==*) :: Generalizable a => a -> a -> Bool
 x *==* y = x == y

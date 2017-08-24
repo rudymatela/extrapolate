@@ -101,19 +101,25 @@ tests n =
   , background (mayb int)
     == [ constant "Just" (Just ->: mayb int)
        , constant "=="   ((==) -:> mayb int)
-       , constant "/="   ((/=) -:> mayb int) ]
+       , constant "/="   ((/=) -:> mayb int)
+       , constant "<="   ((<=) -:> mayb int)
+       , constant "<"    ((<)  -:> mayb int) ]
 
   , background (eith int char)
     == [ constant "Left"  (Left  ->: eith int char)
        , constant "Right" (Right ->: eith int char)
        , constant "=="    ((==)  -:> eith int char)
-       , constant "/="    ((/=)  -:> eith int char) ]
+       , constant "/="    ((/=)  -:> eith int char)
+       , constant "<="    ((<=)  -:> eith int char)
+       , constant "<"     ((<)   -:> eith int char) ]
 
   , background [int]
     == [ constant "length" (length -:> [int])
        , constant "elem"   (elem  ->:> [int])
        , constant "=="     ((==)   -:> [int])
-       , constant "/="     ((/=)   -:> [int]) ]
+       , constant "/="     ((/=)   -:> [int])
+       , constant "<="     ((<=)   -:> [int])
+       , constant "<"      ((<)    -:> [int]) ]
 
   , background (mayb nord)
     == [ constant "Just" (Just ->: mayb nord) ]

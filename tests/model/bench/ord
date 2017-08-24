@@ -220,11 +220,17 @@ checks :: [Int]
 Generalization:
 xs xs
 
+Conditional Generalization:
+ys xs  when  xs <= ys
+
 *** Failed! Falsifiable (after 1 tests):
 [] []
 
 Generalization:
 xs xs
+
+Conditional Generalization:
+xs ys  when  xs <= ys
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -244,11 +250,17 @@ checks :: [Integer]
 Generalization:
 xs xs
 
+Conditional Generalization:
+ys xs  when  xs <= ys
+
 *** Failed! Falsifiable (after 1 tests):
 [] []
 
 Generalization:
 xs xs
+
+Conditional Generalization:
+xs ys  when  xs <= ys
 
 *** Failed! Falsifiable (after 3 tests):
 [0] []
@@ -257,7 +269,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-xs []  when  elem 0 xs
+(0:xs) xs  when  xs <= [0]
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -266,7 +278,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-[] xs  when  elem 0 xs
+xs (0:xs)  when  xs <= [0]
 
 
 checks :: [Char]
@@ -277,11 +289,17 @@ checks :: [Char]
 Generalization:
 cs cs
 
+Conditional Generalization:
+ds cs  when  cs <= ds
+
 *** Failed! Falsifiable (after 1 tests):
 "" ""
 
 Generalization:
 cs cs
+
+Conditional Generalization:
+cs ds  when  cs <= ds
 
 *** Failed! Falsifiable (after 3 tests):
 "a" ""
@@ -290,7 +308,7 @@ Generalization:
 (_:_) ""
 
 Conditional Generalization:
-cs ""  when  elem 'a' cs
+('a':_) cs  when  cs <= " "
 
 *** Failed! Falsifiable (after 2 tests):
 "" "a"
@@ -299,7 +317,7 @@ Generalization:
 "" (_:_)
 
 Conditional Generalization:
-"" cs  when  elem 'a' cs
+cs ('a':_)  when  cs <= " "
 
 
 checks :: [Ordering]
@@ -310,11 +328,17 @@ checks :: [Ordering]
 Generalization:
 os os
 
+Conditional Generalization:
+ps os  when  os <= ps
+
 *** Failed! Falsifiable (after 1 tests):
 [] []
 
 Generalization:
 os os
+
+Conditional Generalization:
+os ps  when  os <= ps
 
 *** Failed! Falsifiable (after 5 tests):
 [LT] []
@@ -332,7 +356,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-[] os  when  elem LT os
+_ os  when  [GT,LT] <= os
 
 
 checks :: ((),Int)
@@ -487,11 +511,17 @@ Nothing Nothing
 Generalization:
 mx mx
 
+Conditional Generalization:
+mx' mx  when  mx <= mx'
+
 *** Failed! Falsifiable (after 1 tests):
 Nothing Nothing
 
 Generalization:
 mx mx
+
+Conditional Generalization:
+mx mx'  when  mx <= mx'
 
 *** Failed! Falsifiable (after 3 tests):
 (Just 0) Nothing
@@ -548,7 +578,7 @@ Generalization:
 exc exc
 
 Conditional Generalization:
-(Left y) (Left x)  when  x < y
+exc' exc  when  exc <= exc'
 
 *** Failed! Falsifiable (after 1 tests):
 (Left 0) (Left 0)
@@ -557,7 +587,7 @@ Generalization:
 exc exc
 
 Conditional Generalization:
-(Left x) (Left y)  when  x < y
+exc exc'  when  exc <= exc'
 
 *** Failed! Falsifiable (after 3 tests):
 (Right 'a') (Left 0)
@@ -565,10 +595,16 @@ Conditional Generalization:
 Generalization:
 (Right _) (Left _)
 
+Conditional Generalization:
+exc' exc  when  exc < exc'
+
 *** Failed! Falsifiable (after 2 tests):
 (Left 0) (Right 'a')
 
 Generalization:
 (Left _) (Right _)
+
+Conditional Generalization:
+exc exc'  when  exc < exc'
 
 
