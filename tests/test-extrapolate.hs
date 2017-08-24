@@ -237,10 +237,10 @@ tests n =
 --, holds n $ (*<*) ==== (<) -:> eith int char
 
   -- tests about lgg
-  , holds n $ lggCommutative -:> int
-  , holds n $ lggCommutative -:> [int]
-  , holds n $ lggCommutative -:> [[int]]
-  , holds n $ lggCommutative -:> [([int],eith int char)]
+  , lggOK n int
+  , lggOK n [int]
+  , lggOK n [[int]]
+  , lggOK n [([int],eith int char)]
   , lgg (expr [0,0::Int]) (expr [1,1::Int])    ==  _i -:- _i -:- ll
   , lgg (expr [0,1::Int]) (expr [1,0::Int])    ==  _i -:- _i -:- ll
   , lgg (expr [0,0::Int]) (expr [0,0,1::Int])  ==  zero -:- zero -:- _is
@@ -252,8 +252,20 @@ tests n =
     ==  _mi -:- just _i -:- llmi
   ]
 
+lggOK :: Generalizable a => Int -> a -> Bool
+lggOK n x = holds n (lggCommutative -:> x)
+         && holds n (lggAssociative -:> x)
+         && holds n (lggIdempotent -:> x)
+
 lggCommutative :: Generalizable a => a -> a -> Bool
 lggCommutative x y = lgg (expr x) (expr y) == lgg (expr y) (expr x)
+
+lggAssociative :: Generalizable a => a -> a -> a -> Bool
+lggAssociative x y z = (associative lgg) (expr x) (expr y) (expr z)
+
+lggIdempotent :: Generalizable a => a -> a -> Bool
+lggIdempotent x y = let z = expr x `lgg` expr y
+                    in  z == (z `lgg` expr y)
 
 listBackgroundOK :: Generalizable a => a -> Bool
 listBackgroundOK x = backgroundListOf x `subset` backgroundOf [x]
