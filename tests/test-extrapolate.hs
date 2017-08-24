@@ -195,6 +195,36 @@ tests n =
        , xx   -<=- xx
        ]
   -}
+
+  , holds n $ (-==-) ==== (==) -:> int
+  , holds n $ (-==-) ==== (==) -:> char
+  , holds n $ (-==-) ==== (==) -:> [int]
+  , holds n $ (-==-) ==== (==) -:> mayb int
+  , holds n $ (-==-) ==== (==) -:> mayb char
+  , holds n $ (-==-) ==== (==) -:> eith int char
+
+  , holds n $ (-/=-) ==== (/=) -:> int
+  , holds n $ (-/=-) ==== (/=) -:> char
+  , holds n $ (-/=-) ==== (/=) -:> [int]
+  , holds n $ (-/=-) ==== (/=) -:> mayb int
+  , holds n $ (-/=-) ==== (/=) -:> mayb char
+  , holds n $ (-/=-) ==== (/=) -:> eith int char
+
+  {-
+  , holds n $ (-<=-) ==== (<=) -:> int
+  , holds n $ (-<=-) ==== (<=) -:> char
+  , holds n $ (-<=-) ==== (<=) -:> [int]
+  , holds n $ (-<=-) ==== (<=) -:> mayb int
+  , holds n $ (-<=-) ==== (<=) -:> mayb char
+  , holds n $ (-<=-) ==== (<=) -:> eith int char
+
+  , holds n $ (-<-) ==== (<) -:> int
+  , holds n $ (-<-) ==== (<) -:> char
+  , holds n $ (-<-) ==== (<) -:> [int]
+  , holds n $ (-<-) ==== (<) -:> mayb int
+  , holds n $ (-<-) ==== (<) -:> mayb char
+  , holds n $ (-<-) ==== (<) -:> eith int char
+  -}
   ]
 
 listBackgroundOK :: Generalizable a => a -> Bool
