@@ -101,6 +101,8 @@ performance and improvements in the algorithm (only later)
 
 * `new-lgg-algorithm`:
 
+  This is just a sketch:
+
   1. test and keep all tests that pass and fail
 
   2. pick first counter-example, note that it does not match any of the passing
@@ -125,6 +127,13 @@ performance and improvements in the algorithm (only later)
 
   The variation may have trouble when dealing with multiple variables,
   maybe there should be a multi-lgg, or start with all vars different
+
+  After some tests, I see that this does not quite work as expected.  c.f.
+  `union xs ys == union ys xs`. When incorporating a counterExampe, sometimes
+  the generalization will temporarily match some passing tests, only to be
+  later weeded out by some other counter-example.  There are many many more
+  combinations of counterexamples 2^#nce then there are candidate
+  generalizations of the smallest counter-example.
 
 
 
