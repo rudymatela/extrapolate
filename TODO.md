@@ -133,7 +133,8 @@ performance and improvements in the algorithm (only later)
   the generalization will temporarily match some passing tests, only to be
   later weeded out by some other counter-example.  There are many many more
   combinations of counterexamples 2^#nce then there are candidate
-  generalizations of the smallest counter-example.
+  generalizations of the smallest counter-example (at least in the worst case,
+  maybe there is a property here that I am not seeing).
 
 
 
