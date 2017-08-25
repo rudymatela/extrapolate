@@ -247,7 +247,6 @@ tests n =
   , lgg1 (expr [1,1::Int]) (expr [2,2,2::Int])  ==  _i -:- _i -:- _is
   , lgg1 (expr (Just (0::Int))) (expr (Nothing :: Maybe Int)) == _mi
   , lgg1 (expr (Just (0::Int))) (expr (Just (1 :: Int)))      == just _i
--- TODO: find out why the following does not pass:
   , lgg1 (expr [Just 1, Just (0::Int)]) (expr [Nothing, Just (1::Int)])
     ==  _mi -:- just _i -:- llmi
 
