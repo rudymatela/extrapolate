@@ -57,7 +57,7 @@ module Test.Extrapolate.Core
 
   , expressionsT
 
-  , lgg
+  , lgg, lgg1
   )
 where
 
@@ -562,17 +562,20 @@ x *<* y = x < y
 
 -- | Computes the least general generalization of two expressions
 --
--- > lgg (expr [0,0]) (expr [1,1])
+-- > lgg1 (expr [0,0]) (expr [1,1])
 -- [_,_] :: [Int]  (holes: Int, Int)
--- > lgg (expr [1,1::Int]) (expr [2,2,2::Int])
+-- > lgg1 (expr [1,1::Int]) (expr [2,2,2::Int])
 -- _:_:_ :: [Int]  (holes: Int, Int, [Int])
-lgg :: Expr -> Expr -> Expr
-lgg e1 e2 | typ e1 /= typ e2  =
-  error $ "lgg: type mismatch: " ++ show e1 ++ ", " ++ show e2
-lgg (e1f :$ e1x) (e2f :$ e2x)  |  typ e1f == typ e2f
-                               && typ e1x == typ e2x
-                               =  lgg e1f e2f :$ lgg e1x e2x
-lgg e1@(Var _ _) _  =  e1
-lgg _ e2@(Var _ _)  =  e2
-lgg e1 e2 | e1 == e2   =  e1
-          | otherwise  =  holeOfTy $ typ e1
+lgg1 :: Expr -> Expr -> Expr
+lgg1 e1 e2 | typ e1 /= typ e2  =
+  error $ "lgg1: type mismatch: " ++ show e1 ++ ", " ++ show e2
+lgg1 (e1f :$ e1x) (e2f :$ e2x)  |  typ e1f == typ e2f
+                                && typ e1x == typ e2x
+                                =  lgg1 e1f e2f :$ lgg1 e1x e2x
+lgg1 e1@(Var _ _) _  =  e1
+lgg1 _ e2@(Var _ _)  =  e2
+lgg1 e1 e2 | e1 == e2   =  e1
+           | otherwise  =  holeOfTy $ typ e1
+
+lgg :: Exprs -> Exprs -> Exprs
+lgg = zipWith lgg1
