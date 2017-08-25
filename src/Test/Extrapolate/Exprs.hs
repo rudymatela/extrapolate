@@ -12,7 +12,8 @@
 -- instead of working on single expressions it works in lists of expressions
 -- (the choosen representation for counter-examples).
 module Test.Extrapolate.Exprs
-  ( canonicalizeWith
+  ( Exprs
+  , canonicalizeWith
   , grounds
   , groundsAndBinds
   , vassignments
@@ -39,6 +40,8 @@ import qualified Test.Speculate.Engine as E
 import Test.LeanCheck.Error (errorToFalse)
 import Data.Typeable (typeOf, TypeRep, Typeable)
 import Data.List ((\\))
+
+type Exprs = [Expr]
 
 nameWith :: Typeable a => String -> a -> Instances
 nameWith = E.name
