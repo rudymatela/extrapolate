@@ -4,7 +4,7 @@
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
 
-import Data.List (sort)
+import Data.List (sort, nub, union)
 
 #if __GLASGOW_HASKELL__ < 710
 import Data.Typeable (Typeable)
@@ -250,6 +250,13 @@ tests n =
 -- TODO: find out why the following does not pass:
   , lgg1 (expr [Just 1, Just (0::Int)]) (expr [Nothing, Just (1::Int)])
     ==  _mi -:- just _i -:- llmi
+
+  , head (generalizedCounterExamples 360 $ \xs -> nub xs == (xs::[Int]))
+    == [_i -:- _i -:- _is]
+  , head (generalizedCounterExamples 360 $ \xs ys -> xs `union` ys == ys `union` (xs::[Int]))
+    == [ll, zero -:- zero -:- ll]
+-- but should be:
+--  == [_is, _i -:- _i -:- _is]
   ]
 
 lggOK :: Generalizable a => Int -> a -> Bool
