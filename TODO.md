@@ -99,6 +99,35 @@ performance and improvements in the algorithm (only later)
   only do vassignments *after* finding a failing single variable instance.
   I'll have to re-test, but the time I save may pay off.
 
+* `new-lgg-algorithm`:
+
+  1. test and keep all tests that pass and fail
+
+  2. pick first counter-example, note that it does not match any of the passing
+     tests
+
+  3. first counter-example is current generalization
+
+  4. compute lgg of current generalization with the next counter-example
+
+  5. if it does not matches any of the passing tests, update current generalization
+
+  6. go to 4
+
+  7. generalize to several variables
+
+  Variation of steps 4 and 5 with conditions:
+
+  4. compute lgg of current generaliation with the next counter-example,
+     find weakest condition for it to hold
+
+  5. if lgg matches 10% of failing tests, update current generalization.
+
+  The variation may have trouble when dealing with multiple variables,
+  maybe there should be a multi-lgg, or start with all vars different
+
+
+
 won't fix
 ---------
 
