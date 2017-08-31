@@ -27,6 +27,7 @@ mk/toplibs
 tests/test-extrapolate
 tests/test-utils
 tests/test-derive
+tests/test-new
 eg/sorting
 eg/list
 eg/int

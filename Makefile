@@ -6,6 +6,7 @@
 TESTS = \
   tests/test-derive \
   tests/test-utils \
+  tests/test-new \
   tests/test-extrapolate
 QUICKEG = \
   eg/int \

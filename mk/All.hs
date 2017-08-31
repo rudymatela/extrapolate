@@ -7,6 +7,7 @@ module All
   , module Test.Extrapolate.IO
   , module Test.Extrapolate.TypeBinding
   , module Test.Extrapolate.Utils
+  , module Test.Extrapolate.New
   )
 where
 
@@ -18,3 +19,4 @@ import Test.Extrapolate.Exprs
 import Test.Extrapolate.IO
 import Test.Extrapolate.TypeBinding
 import Test.Extrapolate.Utils
+import Test.Extrapolate.New

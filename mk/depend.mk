@@ -5,6 +5,7 @@ bench/diff.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -18,6 +19,7 @@ bench/eq.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -31,6 +33,7 @@ bench/false.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -44,6 +47,7 @@ bench/ord.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -57,6 +61,7 @@ bench/true.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -70,6 +75,7 @@ eg/calculator.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -83,6 +89,7 @@ eg/gencalc.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -96,6 +103,7 @@ eg/heap.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -109,6 +117,7 @@ eg/int.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -122,6 +131,7 @@ eg/list.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -135,6 +145,7 @@ eg/overflow8.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -148,6 +159,7 @@ eg/overflow.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -161,6 +173,7 @@ eg/parser.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -175,6 +188,7 @@ eg/redblack.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -191,6 +205,7 @@ eg/sorting.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -201,6 +216,7 @@ mk/All.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -211,6 +227,7 @@ mk/Toplibs.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -220,6 +237,7 @@ mk/Toplibs.o: \
 src/Test/Extrapolate/Basic.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Core.hs \
   src/Test/Extrapolate/Basic.hs
@@ -242,10 +260,17 @@ src/Test/Extrapolate/IO.o: \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Core.hs
+src/Test/Extrapolate/New.o: \
+  src/Test/Extrapolate/Utils.hs \
+  src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate/New.hs \
+  src/Test/Extrapolate/Exprs.hs \
+  src/Test/Extrapolate/Core.hs
 src/Test/Extrapolate.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -261,6 +286,7 @@ tests/test-derive.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -276,6 +302,7 @@ tests/test-extrapolate.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -285,11 +312,28 @@ tests/test-extrapolate: \
   tests/Test.hs \
   tests/test-extrapolate.hs \
   mk/toplibs
+tests/test-new.o: \
+  tests/Test.hs \
+  tests/test-new.hs \
+  src/Test/Extrapolate/Utils.hs \
+  src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
+  src/Test/Extrapolate/IO.hs \
+  src/Test/Extrapolate/Exprs.hs \
+  src/Test/Extrapolate/Derive.hs \
+  src/Test/Extrapolate/Core.hs \
+  src/Test/Extrapolate/Basic.hs
+tests/test-new: \
+  tests/Test.hs \
+  tests/test-new.hs \
+  mk/toplibs
 tests/Test.o: \
   tests/Test.hs \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
@@ -304,6 +348,7 @@ tests/test-utils.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
   src/Test/Extrapolate/IO.hs \
   src/Test/Extrapolate/Exprs.hs \
   src/Test/Extrapolate/Derive.hs \
