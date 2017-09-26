@@ -99,7 +99,7 @@ list-objs:
 legacy-test: # needs ghc-7.10 and ghc-7.8 installed as such
 	make clean && make test -j8 GHC=ghc-7.10 GHCFLAGS="-Werror -dynamic"
 	make clean && make test -j8 GHC=ghc-7.8  GHCFLAGS="-Werror -dynamic"
-	make clean && make test
+	make clean && make test -j8
 
 legacy-test-via-cabal: # needs similarly named cabal wrappers
 	cabal clean && cabal-ghc-7.10 configure --ghc-option=-dynamic && cabal-ghc-7.10 test
