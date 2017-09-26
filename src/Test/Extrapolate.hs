@@ -40,6 +40,7 @@ module Test.Extrapolate
   , for
   , withBackground
   , withConditionSize
+  , minFailures
 
 -- * Generalizable types
   , Generalizable (..)

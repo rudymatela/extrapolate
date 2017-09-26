@@ -17,6 +17,7 @@ module Test.Extrapolate.IO
   , withInstances
   , withBackground
   , withConditionSize
+  , minFailures
   )
 where
 
