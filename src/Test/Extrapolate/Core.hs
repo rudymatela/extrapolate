@@ -342,7 +342,7 @@ maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [5]
 computeMinFailures :: Testable a => a -> Int
 computeMinFailures p = max 2 $ m * numerator r `div` denominator r
   where
-  r = head $ [r | MinFailures r <- options p] ++ [1/12]
+  r = head $ [r | MinFailures r <- options p] ++ [1/20]
   m = maxTests p
 
 class Testable a where

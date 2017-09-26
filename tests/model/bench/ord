@@ -239,7 +239,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-xs (x:_)  when  length xs < x
+_ (x:_)  when  1 < x
 
 
 checks :: [Integer]
@@ -269,7 +269,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-(0:xs) xs  when  xs <= [0]
+(x:xs) xs  when  1 < x
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -278,7 +278,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-xs (0:xs)  when  xs <= [0]
+xs (x:xs)  when  1 < x
 
 
 checks :: [Char]
@@ -407,7 +407,7 @@ Generalization:
 pc pc
 
 Conditional Generalization:
-(p,d) (p,c)  when  c < d
+_ (False,c)  when  c < ' '
 
 *** Failed! Falsifiable (after 1 tests):
 (False,'a') (False,'a')
