@@ -330,7 +330,7 @@ data WithOption a = With
 type Options = [Option]
 
 maxTests :: Testable a => a -> Int
-maxTests p = head $ [m | MaxTests m <- options p] ++ [360]
+maxTests p = head $ [m | MaxTests m <- options p] ++ [500]
 
 extraInstances :: Testable a => a -> Instances
 extraInstances p = concat [is | ExtraInstances is <- options p]

@@ -18,29 +18,29 @@ checks :: Bool
 
 checks :: Int
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: Integer
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: Char
 
 +++ OK, passed 97 tests (exhausted).
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: Ordering
@@ -54,83 +54,83 @@ checks :: Ordering
 
 checks :: [()]
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: [Bool]
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: [Int]
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: [Integer]
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: [Char]
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: [Ordering]
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: ((),Int)
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: (Bool,Char)
 
 +++ OK, passed 194 tests (exhausted).
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: (Int,(),Bool)
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: Maybe ()
@@ -144,11 +144,11 @@ checks :: Maybe ()
 
 checks :: Maybe Int
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 
 checks :: Either () Bool
@@ -162,10 +162,10 @@ checks :: Either () Bool
 
 checks :: Either Int Char
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 

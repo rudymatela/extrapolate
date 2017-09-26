@@ -1,4 +1,4 @@
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 
 *** Failed! Falsifiable (after 4 tests):
 [] [0,0]
@@ -42,5 +42,5 @@ _ (_:_)
 Conditional Generalization:
 _ xs  when  elem 0 xs
 
-+++ OK, passed 360 tests.
++++ OK, passed 500 tests.
 

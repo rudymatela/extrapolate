@@ -356,7 +356,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-_ os  when  [GT,LT] <= os
+[] os  when  elem LT os
 
 
 checks :: ((),Int)
