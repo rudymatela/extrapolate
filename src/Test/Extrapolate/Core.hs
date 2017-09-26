@@ -83,6 +83,7 @@ import Data.List (insert)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Test.Extrapolate.Exprs
 import Test.LeanCheck.Error (errorToFalse)
+import Data.Ratio (Ratio, numerator, denominator)
 import Test.Extrapolate.TypeBinding -- for Haddock
 
 -- | Extrapolate can generalize counter-examples of any types that are
@@ -319,6 +320,7 @@ productWith f xs ys = [f x y | x <- xs, y <- ys]
 data Option = MaxTests Int
             | ExtraInstances Instances
             | MaxConditionSize Int
+            | MinFailures (Ratio Int)
   deriving (Show, Typeable) -- Typeable needed for GHC <= 7.8
 
 data WithOption a = With
@@ -335,6 +337,13 @@ extraInstances p = concat [is | ExtraInstances is <- options p]
 
 maxConditionSize :: Testable a => a -> Int
 maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [5]
+
+-- minimum number of failures for a conditional generalization
+computeMinFailures :: Testable a => a -> Int
+computeMinFailures p = max 2 $ m * numerator r `div` denominator r
+  where
+  r = head $ [r | MinFailures r <- options p] ++ [1/12]
+  m = maxTests p
 
 class Testable a where
   resultiers :: a -> [[([Expr],Bool)]]
@@ -516,7 +525,7 @@ isCounterExampleUnder m p c es = and'
   , errorToFalse $ eval False (c `assigning` bs)
   ]
   where
-  and' ps = and ps && length ps > m `div` 12 -- poor workaround
+  and' ps = and ps && length ps > computeMinFailures p
 
 isVar :: Expr -> Bool
 isVar (Var _ _) = True
