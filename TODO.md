@@ -3,9 +3,9 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
-
 examples
 --------
+
 
 * `ideal-generalizations`:
   Add examples of ideal generalizations as described in past paper by human
@@ -35,6 +35,9 @@ examples
 
 feature
 -------
+
+* `background-exclusion`:
+  add a mechanism to exclude functions from the background.
 
 * `report-multiple-generalizations`:
   when there is more than one generalization and they don't encompass
