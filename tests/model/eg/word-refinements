@@ -1,0 +1,32 @@
+*** Failed! Falsifiable (after 4 tests):
+" "
+
+Generalization:
+' ':_
+
+Conditional Generalization:
+c:_  when  c <= ' '
+
+*** Failed! Falsifiable (after 4 tests):
+" "
+
+Generalization:
+' ':_
+
+Conditional Generalization:
+c:_  when  isSpace c
+
+*** Failed! Falsifiable (after 43 tests):
+"a  a"
+
+Conditional Generalization:
+c:' ':' ':c:""  when  'a' < c
+
+*** Failed! Falsifiable (after 43 tests):
+"a  a"
+
+Conditional Generalization:
+c:' ':' ':c:""  when  'a' < c
+
++++ OK, passed 500 tests.
+

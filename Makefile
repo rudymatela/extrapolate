@@ -16,6 +16,7 @@ QUICKEG = \
   eg/parser \
   eg/heap \
   eg/redblack \
+  eg/word-refinements \
   eg/sorting
 EG = \
   bench/true  \

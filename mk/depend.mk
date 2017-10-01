@@ -212,6 +212,20 @@ eg/sorting.o: \
   src/Test/Extrapolate/Core.hs \
   src/Test/Extrapolate/Basic.hs \
   eg/sorting.hs
+eg/word-refinements: \
+  eg/word-refinements.hs \
+  mk/toplibs
+eg/word-refinements.o: \
+  src/Test/Extrapolate/Utils.hs \
+  src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/New.hs \
+  src/Test/Extrapolate/IO.hs \
+  src/Test/Extrapolate/Exprs.hs \
+  src/Test/Extrapolate/Derive.hs \
+  src/Test/Extrapolate/Core.hs \
+  src/Test/Extrapolate/Basic.hs \
+  eg/word-refinements.hs
 mk/All.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \

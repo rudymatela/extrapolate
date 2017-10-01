@@ -39,6 +39,7 @@ eg/overflow
 eg/overflow8
 eg/heap
 eg/redblack
+eg/word-refinements
 eg/*.runtime
 bench/*.runtime
 bench/true-false
