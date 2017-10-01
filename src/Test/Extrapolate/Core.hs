@@ -362,7 +362,7 @@ instance Testable Bool where
   resultiers p = [[([],p)]]
   p $-| []  =  p
   p $-| _   =  error "($-|): too many arguments"
-  tinstances _ = []
+  tinstances _ = instances bool . instances int $ []
 
 instance (Testable b, Generalizable a, Listable a) => Testable (a->b) where
   resultiers p = concatMapT resultiersFor tiers

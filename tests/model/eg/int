@@ -33,6 +33,9 @@ x x
 Generalization:
 _ x x
 
+Conditional Generalization:
+x y _  when  not (x /= y)
+
 *** Failed! Falsifiable (after 1 tests):
 (0,0)
 
@@ -44,4 +47,7 @@ Generalization:
 
 Generalization:
 (_,x,x)
+
+Conditional Generalization:
+(x,y,_)  when  not (x /= y)
 

@@ -13,5 +13,8 @@ Div (C 0) (C 0)
 Generalization:
 Div _ (C 0)
 
+Conditional Generalization:
+e1  when  not (noDiv0 e1)
+
 False
 True

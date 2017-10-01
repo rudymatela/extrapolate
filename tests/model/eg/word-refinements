@@ -20,7 +20,7 @@ c:_  when  isSpace c
 "a  a"
 
 Conditional Generalization:
-c:' ':' ':c:""  when  'a' < c
+c:' ':' ':c:""  when  not (isSpace c)
 
 *** Failed! Falsifiable (after 43 tests):
 "a  a"

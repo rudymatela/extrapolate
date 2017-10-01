@@ -50,6 +50,9 @@ checks :: [()]
 Generalization:
 us (_:us)
 
+Conditional Generalization:
+us vs  when  length us /= length vs
+
 
 checks :: [Bool]
 
@@ -58,6 +61,9 @@ checks :: [Bool]
 
 Generalization:
 ps (_:ps)
+
+Conditional Generalization:
+ps qs  when  length ps /= length qs
 
 
 checks :: [Int]

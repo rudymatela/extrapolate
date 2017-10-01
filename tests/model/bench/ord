@@ -166,11 +166,17 @@ checks :: [()]
 Generalization:
 us us
 
+Conditional Generalization:
+vs us  when  length us < length vs
+
 *** Failed! Falsifiable (after 1 tests):
 [] []
 
 Generalization:
 us us
+
+Conditional Generalization:
+us vs  when  length us < length vs
 
 *** Failed! Falsifiable (after 3 tests):
 [()] []
@@ -178,11 +184,17 @@ us us
 Generalization:
 (_:us) us
 
+Conditional Generalization:
+vs us  when  length us < length vs
+
 *** Failed! Falsifiable (after 2 tests):
 [] [()]
 
 Generalization:
 us (_:us)
+
+Conditional Generalization:
+us vs  when  length us < length vs
 
 
 checks :: [Bool]
@@ -205,11 +217,17 @@ ps ps
 Generalization:
 (_:_) []
 
+Conditional Generalization:
+ps []  when  0 /= length ps
+
 *** Failed! Falsifiable (after 2 tests):
 [] [False]
 
 Generalization:
 [] (_:_)
+
+Conditional Generalization:
+[] ps  when  0 /= length ps
 
 
 checks :: [Int]
@@ -239,7 +257,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-_ (x:_)  when  1 < x
+ys xs  when  not (xs <= ys)
 
 
 checks :: [Integer]
@@ -269,7 +287,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-(x:xs) xs  when  1 < x
+xs ys  when  not (xs <= ys)
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -278,7 +296,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-xs (x:xs)  when  1 < x
+ys xs  when  not (xs <= ys)
 
 
 checks :: [Char]
@@ -308,7 +326,7 @@ Generalization:
 (_:_) ""
 
 Conditional Generalization:
-('a':_) cs  when  cs <= " "
+cs ds  when  not (cs <= ds)
 
 *** Failed! Falsifiable (after 2 tests):
 "" "a"
@@ -317,7 +335,7 @@ Generalization:
 "" (_:_)
 
 Conditional Generalization:
-cs ('a':_)  when  cs <= " "
+ds cs  when  not (cs <= ds)
 
 
 checks :: [Ordering]
@@ -347,7 +365,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-os []  when  elem LT os
+os ps  when  not (os <= ps)
 
 *** Failed! Falsifiable (after 2 tests):
 [] [LT]
@@ -356,7 +374,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-[] os  when  elem LT os
+ps os  when  not (os <= ps)
 
 
 checks :: ((),Int)
@@ -530,7 +548,7 @@ Generalization:
 (Just _) Nothing
 
 Conditional Generalization:
-mx Nothing  when  Nothing /= mx
+mx mx'  when  not (mx <= mx')
 
 *** Failed! Falsifiable (after 2 tests):
 Nothing (Just 0)
@@ -539,7 +557,7 @@ Generalization:
 Nothing (Just _)
 
 Conditional Generalization:
-Nothing mx  when  Nothing /= mx
+mx' mx  when  not (mx <= mx')
 
 
 checks :: Either () Bool
