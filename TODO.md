@@ -3,6 +3,8 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
+* `deriveGeneralizable` should `deriveListableIfNeeded`.
+
 examples
 --------
 
