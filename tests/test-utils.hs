@@ -51,4 +51,7 @@ tests n =
   , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith int bool
   , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith bool int
   , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith bool bool
+
+  , minimumOn fst [(1,6),(2,5),(3,4)] == (1,6)
+  , minimumOn snd [(1,6),(2,5),(3,4)] == (3,4)
   ]

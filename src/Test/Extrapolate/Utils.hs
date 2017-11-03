@@ -24,11 +24,13 @@ module Test.Extrapolate.Utils
   , listEq,   listOrd
   , maybeEq,  maybeOrd
   , eitherEq, eitherOrd
+  , minimumOn
   , (.:)
   )
 where
 
 import Data.Function (on)
+import Data.List (minimumBy)
 
 nubMergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 nubMergeBy cmp (x:xs) (y:ys) = case x `cmp` y of
@@ -103,6 +105,9 @@ eitherOrd (<=) _ (Left  x) (Left  y) = x <= y
 eitherOrd _ (<=) (Right x) (Right y) = x <= y
 eitherOrd _    _ (Left  _) (Right _) = True
 eitherOrd _    _ (Right _) (Left  _) = False
+
+minimumOn :: Ord b => (a -> b) -> [a] -> a
+minimumOn f = minimumBy (compare `on` f)
 
 (.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
 (.:) = (.) . (.)
