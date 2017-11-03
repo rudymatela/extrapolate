@@ -47,7 +47,6 @@ module Test.Extrapolate.Core
   , weakestCondition
   , candidateConditions
 
-  , conditionalGeneralization
   , matchList
   , newMatches
 
@@ -470,22 +469,6 @@ expressionsTT :: [[Expr]] -> [[Expr]]
 expressionsTT dss = dss \/ productMaybeWith ($$) ess ess `addWeight` 1
   where
   ess = expressionsTT dss
-
--- given a 100% generalization, >90% generalization, returns a conditional generalization
-conditionalGeneralization :: Testable a => Int -> a -> [Expr] -> [Expr] -> Maybe ([Expr],[Expr])
-conditionalGeneralization m p es0 es1 = listToMaybe
-  [ ([c],es1)
-  | isJust $ es0 `newMatches` es1
-  , c <- candidates
-  , typ c == boolTy
-  , any (`elem` vars [c]) [(t,x) | Var x t <- vs]
-  , isCounterExampleUnder m p c es1
-  ]
-  where
-  Just esM = es0 `newMatches` es1
-  candidates = concat . take (maxConditionSize p) . expressionsT $ vs ++ esU
-  vs = reverse [Var x (typ e) | (x,e) <- esM]
-  esU = concat [es | Instance "Background" _ es <- tinstances p]
 
 weakestCondition :: Testable a => Int -> a -> [Expr] -> Expr
 weakestCondition m p es = head $
