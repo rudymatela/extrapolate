@@ -25,12 +25,14 @@ module Test.Extrapolate.Utils
   , maybeEq,  maybeOrd
   , eitherEq, eitherOrd
   , minimumOn
+  , maximumOn
+  , takeBound
   , (.:)
   )
 where
 
 import Data.Function (on)
-import Data.List (minimumBy)
+import Data.List (minimumBy, maximumBy)
 
 nubMergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 nubMergeBy cmp (x:xs) (y:ys) = case x `cmp` y of
@@ -108,6 +110,19 @@ eitherOrd _    _ (Right _) (Left  _) = False
 
 minimumOn :: Ord b => (a -> b) -> [a] -> a
 minimumOn f = minimumBy (compare `on` f)
+
+-- left/head-biased, which is different from Prelude's maximum
+maximumOn :: Ord b => (a -> b) -> [a] -> a
+maximumOn f []     = error "maximumOn: empty list"
+maximumOn f [x]    = x
+maximumOn f (x:xs) = let y = maximumOn f xs
+                     in if f x < f y
+                          then y
+                          else x
+
+takeBound :: Maybe Int -> [a] -> [a]
+takeBound Nothing  xs  =  xs
+takeBound (Just n) xs  =  take n xs
 
 (.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
 (.:) = (.) . (.)

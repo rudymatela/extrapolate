@@ -318,6 +318,7 @@ data Option = MaxTests Int
             | ExtraInstances Instances
             | MaxConditionSize Int
             | MinFailures (Ratio Int)
+            | ConditionBound (Maybe Int)
   deriving (Show, Typeable) -- Typeable needed for GHC <= 7.8
 
 data WithOption a = With
@@ -341,6 +342,9 @@ computeMinFailures p = max 2 $ m * numerator r `div` denominator r
   where
   r = head $ [r | MinFailures r <- options p] ++ [1/20]
   m = maxTests p
+
+computeConditionBound :: Testable a => a -> Maybe Int
+computeConditionBound p = head $ [b | ConditionBound b <- options p] ++ [Just 1]
 
 class Testable a where
   resultiers :: a -> [[([Expr],Bool)]]
@@ -464,10 +468,13 @@ expressionsTT dss = dss \/ productMaybeWith ($$) ess ess `addWeight` 1
   ess = expressionsTT dss
 
 weakestCondition :: Testable a => Int -> a -> [Expr] -> Expr
-weakestCondition m p es = head $
-  [ c | c <- candidateConditions p es
-      , isCounterExampleUnder m p c es
-      ] ++ [expr False]
+weakestCondition m p es = fst
+                        . maximumOn snd
+                        . takeBound (computeConditionBound p) $
+  [ (c,n) | c <- candidateConditions p es
+          , let (is,n) = isCounterExampleUnder m p c es
+          , is
+          ] ++ [(expr False,0)]
   where
 
 candidateConditions :: Testable a => a -> [Expr] -> [Expr]
@@ -494,14 +501,14 @@ candidateExpressions p es = concat . take (maxConditionSize p) . expressionsTT
   msg = "canditateConditions: wrong type, not [[Expr]]"
   is = tinstances p
 
-isCounterExampleUnder :: Testable a => Int -> a -> Expr -> [Expr] -> Bool
+isCounterExampleUnder :: Testable a => Int -> a -> Expr -> [Expr] -> (Bool, Int)
 isCounterExampleUnder m p c es = and'
   [ not . errorToFalse $ p $-| es'
   | (bs,es') <- take m $ groundsAndBinds (tinstances p) es
   , errorToFalse $ eval False (c `assigning` bs)
   ]
   where
-  and' ps = and ps && length ps > computeMinFailures p
+  and' ps = (and ps && length ps > computeMinFailures p, length ps)
 
 isVar :: Expr -> Bool
 isVar (Var _ _) = True

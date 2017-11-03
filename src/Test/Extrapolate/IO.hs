@@ -18,6 +18,7 @@ module Test.Extrapolate.IO
   , withBackground
   , withConditionSize
   , minFailures
+  , conditionBound
   )
 where
 
@@ -73,6 +74,9 @@ check `withConditionSize` s  =   \p -> check $ p `With` MaxConditionSize s
 -- > check `minFailures` (`div` 20) $ prop
 minFailures :: Testable a => (WithOption a -> b) -> Ratio Int -> a -> b
 check `minFailures` s =  \p -> check $ p `With` MinFailures s
+
+conditionBound :: Testable a => (WithOption a -> b) -> Maybe Int -> a -> b
+check `conditionBound` mi =  \p -> check $ p `With` ConditionBound mi
 
 -- | Checks a property printing results on 'stdout'
 --
