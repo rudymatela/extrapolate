@@ -82,6 +82,7 @@ import Test.Extrapolate.Exprs
 import Test.LeanCheck.Error (errorToFalse)
 import Data.Ratio (Ratio, numerator, denominator)
 import Test.Extrapolate.TypeBinding -- for Haddock
+import Test.Speculate.Engine (representativesFromAtoms)
 
 -- | Extrapolate can generalize counter-examples of any types that are
 --   'Generalizable'.
@@ -466,6 +467,14 @@ expressionsTT :: [[Expr]] -> [[Expr]]
 expressionsTT dss = dss \/ productMaybeWith ($$) ess ess `addWeight` 1
   where
   ess = expressionsTT dss
+
+expressionsS :: Testable a => a -> [[Expr]] -> [[Expr]]
+expressionsS p =
+  representativesFromAtoms
+    (maxConditionSize p) compareComplexity (const True) (equal is m)
+  where
+  is = tinstances p
+  m  = maxTests p
 
 weakestCondition :: Testable a => Int -> a -> [Expr] -> Expr
 weakestCondition m p es = fst
