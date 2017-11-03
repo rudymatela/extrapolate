@@ -54,8 +54,6 @@ module Test.Extrapolate.Core
   , results
 
   , areInstancesOf
-
-  , expressionsT
   )
 where
 
@@ -459,11 +457,6 @@ matchList = m []
 newMatches :: [Expr] -> [Expr] -> Maybe Binds
 e1 `newMatches` e2 = filter (not . isVar . snd) <$> e1 `matchList` e2
 
-
-expressionsT :: [Expr] -> [[Expr]]
-expressionsT ds = [ds] \/ productMaybeWith ($$) es es `addWeight` 1
-  where
-  es = expressionsT ds
 
 expressionsTT :: [[Expr]] -> [[Expr]]
 expressionsTT dss = dss \/ productMaybeWith ($$) ess ess `addWeight` 1
