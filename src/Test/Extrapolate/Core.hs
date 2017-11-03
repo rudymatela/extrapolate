@@ -475,7 +475,6 @@ weakestCondition m p es = fst
           , let (is,n) = isCounterExampleUnder m p c es
           , is
           ] ++ [(expr False,0)]
-  where
 
 candidateConditions :: Testable a => a -> [Expr] -> [Expr]
 candidateConditions p es = expr True :
