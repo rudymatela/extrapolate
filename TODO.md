@@ -134,7 +134,7 @@ performance and improvements in the algorithm (only later)
   maybe there should be a multi-lgg, or start with all vars different
 
   After some tests, I see that this does not quite work as expected.  c.f.
-  `union xs ys == union ys xs`. When incorporating a counterExampe, sometimes
+  `union xs ys == union ys xs`. When incorporating a counterExample, sometimes
   the generalization will temporarily match some passing tests, only to be
   later weeded out by some other counter-example.  There are many many more
   combinations of counterexamples 2^#nce then there are candidate
