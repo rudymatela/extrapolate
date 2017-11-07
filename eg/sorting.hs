@@ -24,8 +24,7 @@ main :: IO ()
 main  =  do
   chk $ prop_sortOrdered -:> [int]
   chk $ prop_sortCount   -:>  int
-  check  `withConditionSize` 9  $
-    prop_sortCount -:> int
+  check $ prop_sortCount -:>  int
   chk `for` 99 $ prop_sortOrdered -:> [bool]
   chk `for` 99 $ prop_sortCount   -:>  bool
   where

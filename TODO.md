@@ -96,13 +96,6 @@ feature
 performance and improvements in the algorithm (only later)
 ----------------------------------------------------------
 
-* `speculate`:
-  use Speculate to list candidate conditions (so we avoid redundant testing).
-  Share the computation: first compute the candidate single-variable
-  expressions (schemas) for testing a property.  Then, for each candidate
-  postcondition, generate multi-variable expressions containing _only_ the
-  variables present in this postcondition.
-
 * `type-after-type`:
   to improve performance, instead of working with all types at once, perform
   the algorithm type after type

@@ -51,7 +51,7 @@ Generalization:
 us (_:us)
 
 Conditional Generalization:
-us vs  when  length us /= length vs
+[] us  when  0 /= length us
 
 
 checks :: [Bool]
@@ -63,7 +63,7 @@ Generalization:
 ps (_:ps)
 
 Conditional Generalization:
-ps qs  when  length ps /= length qs
+ps qs  when  ps /= qs
 
 
 checks :: [Int]

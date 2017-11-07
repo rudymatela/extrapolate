@@ -26,3 +26,6 @@ False [False,False]
 Generalization:
 p (p:p:_)
 
+Conditional Generalization:
+p (p:ps)  when  elem p ps
+

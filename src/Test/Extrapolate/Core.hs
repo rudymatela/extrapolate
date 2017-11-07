@@ -45,7 +45,6 @@ module Test.Extrapolate.Core
   , generalizationsCounts
 
   , weakestCondition
-  , candidateConditions
 
   , matchList
   , newMatches
@@ -76,13 +75,14 @@ import Test.LeanCheck hiding
 import Test.Extrapolate.Exprs (fold, unfold)
 import Data.Maybe (listToMaybe, fromJust, fromMaybe, isJust, listToMaybe, catMaybes)
 import Data.Either (isRight)
-import Data.List (insert)
+import Data.List (insert, nub, sort)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Test.Extrapolate.Exprs
 import Test.LeanCheck.Error (errorToFalse)
 import Data.Ratio (Ratio, numerator, denominator)
 import Test.Extrapolate.TypeBinding -- for Haddock
-import Test.Speculate.Engine (representativesFromAtoms)
+import Test.Speculate.Reason (Thy)
+import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
 
 -- | Extrapolate can generalize counter-examples of any types that are
 --   'Generalizable'.
@@ -132,7 +132,8 @@ instance Generalizable () where
 instance Generalizable Bool where
   expr = showConstant
   name _ = "p"
-  background _ = [ constant "not" not ]
+  background p = [ constant "not" not ]
+              ++ bgEq p
   instances p = this p id
 
 instance Generalizable Int where
@@ -279,6 +280,14 @@ backgroundWith es x = [ Instance "Background" (typeOf x) es ]
 getBackground :: Instances -> [Expr]
 getBackground is = concat [es | Instance "Background" _ es <- is]
 
+getEqInstancesFromBackground :: Instances -> Instances
+getEqInstancesFromBackground is =
+  [Instance "Eq" (argumentTy $ typ eq) [eq, iq] | eq <- eqs, iq <- iqs, typ eq == typ iq]
+  where
+  eqs = [Constant "==" e | Constant "==" e <- bg]
+  iqs = [Constant "/=" e | Constant "/=" e <- bg]
+  bg = getBackground is
+
 backgroundOf :: Generalizable a => a -> [Expr]
 backgroundOf x = getBackground $ instances x []
 
@@ -335,7 +344,7 @@ extraInstances :: Testable a => a -> Instances
 extraInstances p = concat [is | ExtraInstances is <- options p]
 
 maxConditionSize :: Testable a => a -> Int
-maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [5]
+maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [4]
 
 -- minimum number of failures for a conditional generalization
 computeMinFailures :: Testable a => a -> Int
@@ -345,7 +354,7 @@ computeMinFailures p = max 2 $ m * numerator r `div` denominator r
   m = maxTests p
 
 computeConditionBound :: Testable a => a -> Maybe Int
-computeConditionBound p = head $ [b | ConditionBound b <- options p] ++ [Just 1]
+computeConditionBound p = head $ [b | ConditionBound b <- options p] ++ [Just 3]
 
 class Testable a where
   resultiers :: a -> [[([Expr],Bool)]]
@@ -407,7 +416,8 @@ generalizationsCEC n p es =
   [ (wc'', gs'')
   | gs <- generalizations is es
   , gs' <- vassignments gs
-  , let wc = weakestCondition n p gs'
+  , let thycs = theoryAndReprConds p
+  , let wc = weakestCondition n thycs p gs'
   , wc /= constant "False" False
   , wc /= constant "True"  True
   , let (wc'':gs'') = canonicalizeWith is (wc:gs')
@@ -463,50 +473,65 @@ newMatches :: [Expr] -> [Expr] -> Maybe Binds
 e1 `newMatches` e2 = filter (not . isVar . snd) <$> e1 `matchList` e2
 
 
+-- | Given tiers of atomic expressions, generates tiers of expressions combined
+--   by function application.  This is done blindly so redundant expressions
+--   are generated: like x + y and y + x.
 expressionsTT :: [[Expr]] -> [[Expr]]
 expressionsTT dss = dss \/ productMaybeWith ($$) ess ess `addWeight` 1
   where
   ess = expressionsTT dss
 
-expressionsS :: Testable a => a -> [[Expr]] -> [[Expr]]
-expressionsS p =
-  representativesFromAtoms
-    (maxConditionSize p) compareComplexity (const True) (equal is m)
+-- Generates expression schemas and a theory
+theoryAndReprsFromPropAndAtoms :: Testable a => a -> [[Expr]] -> (Thy,[[Expr]])
+theoryAndReprsFromPropAndAtoms p =
+  theoryAndRepresentativesFromAtoms
+    (maxConditionSize p) compareComplexity (const True) (===)
   where
-  is = tinstances p
+  -- the following uses of keep make Speculate run faster by defaulting to
+  -- "these things are not equal" even in cases that they are.  Despite
+  -- failing to detect some equalities, Speculte will still be useful as a
+  -- generator of quasi-canonical expressions.
+  e1 === e2 = keep e1 && keep e2 && equal is m e1 e2
+  keep e = length (consts e) <= 2
+        && depthE e <= 3
+  is = fullInstances p
   m  = maxTests p
 
-weakestCondition :: Testable a => Int -> a -> [Expr] -> Expr
-weakestCondition m p es = fst
-                        . maximumOn snd
-                        . takeBound (computeConditionBound p) $
-  [ (c,n) | c <- candidateConditions p es
+-- tinstances including auto generated Eq instances (based on background)
+fullInstances :: Testable a => a -> Instances
+fullInstances p = is +++ getEqInstancesFromBackground is
+  where
+  is = tinstances p
+
+theoryAndReprExprs :: Testable a => a -> (Thy,[Expr])
+theoryAndReprExprs p =
+    (\(thy,ess) -> (thy, concat $ take (maxConditionSize p) ess))
+  . theoryAndReprsFromPropAndAtoms p
+  . foldr (\/) [vs ++ esU]
+  $ [ eval (error msg :: [[Expr]]) ess
+    | Instance "Listable" _ [ess] <- is ]
+  where
+  vs = sort . map holeOfTy . filter (isListable is) . nubMergeMap (typesIn . typ) $ esU
+  esU = getBackground is
+  msg = "canditateConditions: wrong type, not [[Expr]]"
+  is = tinstances p
+
+theoryAndReprConds :: Testable a => a -> (Thy, [Expr])
+theoryAndReprConds p = (thy, expr True : filter (\c -> typ c == boolTy && hasVar c) es)
+  where
+  (thy,es) = theoryAndReprExprs p
+
+weakestCondition :: Testable a => Int -> (Thy,[Expr]) -> a -> [Expr] -> Expr
+weakestCondition m (thy,cs) p es = fst
+                                 . maximumOn snd
+                                 . takeBound (computeConditionBound p) $
+  [ (c,n) | c <- map fst $ classesFromSchemasAndVariables thy (uncurry (flip Var) <$> vars es) cs
+          , not (isAssignment c)
+          , not (isAssignmentTest is (maxTests p) c)
           , let (is,n) = isCounterExampleUnder m p c es
           , is
           ] ++ [(expr False,0)]
-
-candidateConditions :: Testable a => a -> [Expr] -> [Expr]
-candidateConditions p es = expr True :
-  [ c
-  | c <- candidateExpressions p es
-  , typ c == boolTy
-  , hasVar c
-  , not (isAssignment c)
-  , not (isAssignmentTest is (maxTests p) c)
-  ]
   where
-  is = tinstances p
-
--- | Canditate expressions to appear in conditions
-candidateExpressions :: Testable a => a -> [Expr] -> [Expr]
-candidateExpressions p es = concat . take (maxConditionSize p) . expressionsTT
-                         . foldr (\/) [vs ++ esU]
-                         $ [ eval (error msg :: [[Expr]]) ess
-                           | Instance "Listable" _ [ess] <- is ]
-  where
-  vs = [Var n t | (t,n) <- vars es]
-  esU = concat [es | Instance "Background" _ es <- is]
-  msg = "canditateConditions: wrong type, not [[Expr]]"
   is = tinstances p
 
 isCounterExampleUnder :: Testable a => Int -> a -> Expr -> [Expr] -> (Bool, Int)

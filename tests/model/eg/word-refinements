@@ -26,7 +26,7 @@ c:' ':' ':c:""  when  not (isSpace c)
 "a  a"
 
 Conditional Generalization:
-c:' ':' ':c:""  when  'a' < c
+c:' ':' ':c:""  when  ' ' < c
 
 +++ OK, passed 500 tests.
 
