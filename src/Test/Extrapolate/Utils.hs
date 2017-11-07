@@ -27,12 +27,15 @@ module Test.Extrapolate.Utils
   , minimumOn
   , maximumOn
   , takeBound
+  , nubMergeMap
+  , typesIn
   , (.:)
   )
 where
 
 import Data.Function (on)
-import Data.List (minimumBy, maximumBy)
+import Data.List (minimumBy, maximumBy, nub)
+import Data.Typeable
 
 nubMergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 nubMergeBy cmp (x:xs) (y:ys) = case x `cmp` y of
@@ -123,6 +126,51 @@ maximumOn f (x:xs) = let y = maximumOn f xs
 takeBound :: Maybe Int -> [a] -> [a]
 takeBound Nothing  xs  =  xs
 takeBound (Just n) xs  =  take n xs
+
+nubMerges :: Ord a => [[a]] -> [a]
+nubMerges = nubMergesBy compare
+
+nubMergesBy :: Ord a => (a -> a -> Ordering) -> [[a]] -> [a]
+nubMergesBy cmp [] = []
+nubMergesBy cmp [xs] = xs
+nubMergesBy cmp xss = nubMergeBy cmp (nubMerges yss) (nubMerges zss)
+  where
+  (yss,zss) = splitHalf xss
+  splitHalf xs = splitAt (length xs `div` 2) xs
+
+nubMergeMap :: Ord b => (a -> [b]) -> [a] -> [b]
+nubMergeMap f = nubMerges . map f
+
+funTyCon :: TyCon
+funTyCon = typeRepTyCon $ typeOf (undefined :: () -> ())
+
+isFunTy :: TypeRep -> Bool
+isFunTy t =
+  case splitTyConApp t of
+    (con,[_,_]) | con == funTyCon -> True
+    _ -> False
+
+-- | For a given type, return all *-kinded types.
+--   (all non-function types)
+--
+-- > typesIn (typeOf (undefined :: (Int -> Int) -> Int -> Bool))
+-- >   == [Bool,Int]
+typesIn :: TypeRep -> [TypeRep]
+typesIn t
+  | isFunTy t = typesIn (argumentTy t)
+            +++ typesIn (resultTy   t)
+  | otherwise = [t]
+
+unFunTy :: TypeRep -> (TypeRep,TypeRep)
+unFunTy t
+  | isFunTy t = let (f,[a,b]) = splitTyConApp t in (a,b)
+  | otherwise = error $ "error (unFunTy): `" ++ show t ++ "` is not a function type"
+
+argumentTy :: TypeRep -> TypeRep
+argumentTy = fst . unFunTy
+
+resultTy :: TypeRep -> TypeRep
+resultTy = snd . unFunTy
 
 (.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
 (.:) = (.) . (.)
