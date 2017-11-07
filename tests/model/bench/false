@@ -124,112 +124,7 @@ Generalization:
 _ _ _
 
 
-checks :: [()]
-
-*** Failed! Falsifiable (after 1 tests):
-[]
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-[] [] []
-
-Generalization:
-_ _ _
-
-
-checks :: [Bool]
-
-*** Failed! Falsifiable (after 1 tests):
-[]
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-[] [] []
-
-Generalization:
-_ _ _
-
-
-checks :: [Int]
-
-*** Failed! Falsifiable (after 1 tests):
-[]
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-[] [] []
-
-Generalization:
-_ _ _
-
-
 checks :: [Integer]
-
-*** Failed! Falsifiable (after 1 tests):
-[]
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-[] [] []
-
-Generalization:
-_ _ _
-
-
-checks :: [Char]
-
-*** Failed! Falsifiable (after 1 tests):
-""
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-"" ""
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-"" "" ""
-
-Generalization:
-_ _ _
-
-
-checks :: [Ordering]
 
 *** Failed! Falsifiable (after 1 tests):
 []
@@ -271,69 +166,6 @@ Generalization:
 _ _ _
 
 
-checks :: (Bool,Char)
-
-*** Failed! Falsifiable (after 1 tests):
-(False,'a')
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-(False,'a') (False,'a')
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-(False,'a') (False,'a') (False,'a')
-
-Generalization:
-_ _ _
-
-
-checks :: (Int,(),Bool)
-
-*** Failed! Falsifiable (after 1 tests):
-(0,(),False)
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-(0,(),False) (0,(),False)
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-(0,(),False) (0,(),False) (0,(),False)
-
-Generalization:
-_ _ _
-
-
-checks :: Maybe ()
-
-*** Failed! Falsifiable (after 1 tests):
-Nothing
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-Nothing Nothing
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-Nothing Nothing Nothing
-
-Generalization:
-_ _ _
-
-
 checks :: Maybe Int
 
 *** Failed! Falsifiable (after 1 tests):
@@ -350,27 +182,6 @@ _ _
 
 *** Failed! Falsifiable (after 1 tests):
 Nothing Nothing Nothing
-
-Generalization:
-_ _ _
-
-
-checks :: Either () Bool
-
-*** Failed! Falsifiable (after 1 tests):
-Left ()
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-(Left ()) (Left ())
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-(Left ()) (Left ()) (Left ())
 
 Generalization:
 _ _ _

@@ -158,102 +158,6 @@ EQ LT
 LT EQ
 
 
-checks :: [()]
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-us us
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-us us
-
-*** Failed! Falsifiable (after 3 tests):
-[()] []
-
-Generalization:
-(_:us) us
-
-Conditional Generalization:
-us []  when  0 /= length us
-
-*** Failed! Falsifiable (after 2 tests):
-[] [()]
-
-Generalization:
-us (_:us)
-
-Conditional Generalization:
-[] us  when  0 /= length us
-
-
-checks :: [Bool]
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-ps ps
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-ps ps
-
-*** Failed! Falsifiable (after 4 tests):
-[False] []
-
-Generalization:
-(_:_) []
-
-Conditional Generalization:
-ps []  when  [] /= ps
-
-*** Failed! Falsifiable (after 2 tests):
-[] [False]
-
-Generalization:
-[] (_:_)
-
-Conditional Generalization:
-[] ps  when  [] /= ps
-
-
-checks :: [Int]
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-xs xs
-
-Conditional Generalization:
-ys xs  when  xs <= ys
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-xs xs
-
-Conditional Generalization:
-xs ys  when  xs <= ys
-
-*** Failed! Falsifiable (after 2 tests):
-[] [0]
-
-Generalization:
-[] (_:_)
-
-Conditional Generalization:
-ys xs  when  not (xs <= ys)
-
-
 checks :: [Integer]
 
 *** Failed! Falsifiable (after 1 tests):
@@ -281,7 +185,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-xs ys  when  not (xs <= ys)
+xs []  when  [] /= xs
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -290,85 +194,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-ys xs  when  not (xs <= ys)
-
-
-checks :: [Char]
-
-*** Failed! Falsifiable (after 1 tests):
-"" ""
-
-Generalization:
-cs cs
-
-Conditional Generalization:
-ds cs  when  cs <= ds
-
-*** Failed! Falsifiable (after 1 tests):
-"" ""
-
-Generalization:
-cs cs
-
-Conditional Generalization:
-cs ds  when  cs <= ds
-
-*** Failed! Falsifiable (after 3 tests):
-"a" ""
-
-Generalization:
-(_:_) ""
-
-Conditional Generalization:
-cs ds  when  not (cs <= ds)
-
-*** Failed! Falsifiable (after 2 tests):
-"" "a"
-
-Generalization:
-"" (_:_)
-
-Conditional Generalization:
-ds cs  when  not (cs <= ds)
-
-
-checks :: [Ordering]
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-os os
-
-Conditional Generalization:
-ps os  when  os <= ps
-
-*** Failed! Falsifiable (after 1 tests):
-[] []
-
-Generalization:
-os os
-
-Conditional Generalization:
-os ps  when  os <= ps
-
-*** Failed! Falsifiable (after 5 tests):
-[LT] []
-
-Generalization:
-(_:_) []
-
-Conditional Generalization:
-os ps  when  not (os <= ps)
-
-*** Failed! Falsifiable (after 2 tests):
-[] [LT]
-
-Generalization:
-[] (_:_)
-
-Conditional Generalization:
-ps os  when  not (os <= ps)
+[] xs  when  [] /= xs
 
 
 checks :: ((),Int)
@@ -410,111 +236,6 @@ Conditional Generalization:
 (_,x) (_,y)  when  x < y
 
 
-checks :: (Bool,Char)
-
-*** Failed! Falsifiable (after 1 tests):
-(False,'a') (False,'a')
-
-Generalization:
-pc pc
-
-Conditional Generalization:
-_ (False,c)  when  c < ' '
-
-*** Failed! Falsifiable (after 1 tests):
-(False,'a') (False,'a')
-
-Generalization:
-pc pc
-
-Conditional Generalization:
-(p,c) (p,d)  when  c <= d
-
-*** Failed! Falsifiable (after 3 tests):
-(True,'a') (False,'a')
-
-Generalization:
-(True,_) (False,_)
-
-Conditional Generalization:
-(p,d) (p,c)  when  c < d
-
-*** Failed! Falsifiable (after 2 tests):
-(False,'a') (True,'a')
-
-Generalization:
-(False,_) (True,_)
-
-Conditional Generalization:
-(p,c) (p,d)  when  c < d
-
-
-checks :: (Int,(),Bool)
-
-*** Failed! Falsifiable (after 1 tests):
-(0,(),False) (0,(),False)
-
-Generalization:
-xup xup
-
-Conditional Generalization:
-(y,_,_) (x,_,_)  when  x < y
-
-*** Failed! Falsifiable (after 1 tests):
-(0,(),False) (0,(),False)
-
-Generalization:
-xup xup
-
-Conditional Generalization:
-(x,_,_) (y,_,_)  when  x < y
-
-*** Failed! Falsifiable (after 3 tests):
-(0,(),True) (0,(),False)
-
-Generalization:
-(x,_,True) (x,_,False)
-
-Conditional Generalization:
-(y,_,_) (x,_,_)  when  x < y
-
-*** Failed! Falsifiable (after 2 tests):
-(0,(),False) (0,(),True)
-
-Generalization:
-(x,_,False) (x,_,True)
-
-Conditional Generalization:
-(x,_,_) (y,_,_)  when  x < y
-
-
-checks :: Maybe ()
-
-*** Failed! Falsifiable (after 1 tests):
-Nothing Nothing
-
-Generalization:
-mu mu
-
-*** Failed! Falsifiable (after 1 tests):
-Nothing Nothing
-
-Generalization:
-mu mu
-
-*** Failed! Falsifiable (after 3 tests):
-(Just ()) Nothing
-
-Generalization:
-(Just _) Nothing
-
-*** Failed! Falsifiable (after 2 tests):
-Nothing (Just ())
-
-Generalization:
-Nothing (Just _)
-
-
 checks :: Maybe Int
 
 *** Failed! Falsifiable (after 1 tests):
@@ -542,7 +263,7 @@ Generalization:
 (Just _) Nothing
 
 Conditional Generalization:
-mx mx'  when  not (mx <= mx')
+mx Nothing  when  Nothing /= mx
 
 *** Failed! Falsifiable (after 2 tests):
 Nothing (Just 0)
@@ -551,34 +272,7 @@ Generalization:
 Nothing (Just _)
 
 Conditional Generalization:
-mx' mx  when  not (mx <= mx')
-
-
-checks :: Either () Bool
-
-*** Failed! Falsifiable (after 1 tests):
-(Left ()) (Left ())
-
-Generalization:
-eup eup
-
-*** Failed! Falsifiable (after 1 tests):
-(Left ()) (Left ())
-
-Generalization:
-eup eup
-
-*** Failed! Falsifiable (after 4 tests):
-(Right False) (Left ())
-
-Generalization:
-(Right _) (Left _)
-
-*** Failed! Falsifiable (after 2 tests):
-(Left ()) (Right False)
-
-Generalization:
-(Left _) (Right _)
+Nothing mx  when  Nothing /= mx
 
 
 checks :: Either Int Char

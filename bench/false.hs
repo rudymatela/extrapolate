@@ -11,21 +11,21 @@ main = do
   ch char
   ch ordering
 
-  ch [()]
-  ch [bool]
-  ch [int]
+--ch [()]
+--ch [bool]
+--ch [int]
   ch [integer]
-  ch [char]
-  ch [ordering]
+--ch [char]
+--ch [ordering]
 
   ch ((),int)
-  ch (bool,char)
-  ch (int,(),bool)
+--ch (bool,char)
+--ch (int,(),bool)
 
-  ch (mayb ())
+--ch (mayb ())
   ch (mayb int)
 
-  ch (eith () bool)
+--ch (eith () bool)
   ch (eith int char)
 
 -- TODO: find out why output for the following is different across diff GHCs
@@ -43,7 +43,7 @@ main = do
 ch :: (Eq a, Generalizable a) => a -> IO ()
 ch x = do
   putStrLn $ "checks :: " ++ show (typeOf x) ++ "\n"
-  check $ const False -:> x
-  check $ (\x y -> False) -:> x ->:> x
-  check $ (\x y z -> False) -:> x ->:> x ->>:> x
+  check `withConditionSize` 3 $ const False -:> x
+  check `withConditionSize` 3 $ (\x y -> False) -:> x ->:> x
+  check `withConditionSize` 3 $ (\x y z -> False) -:> x ->:> x ->>:> x
   putStrLn ""

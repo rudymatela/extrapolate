@@ -43,7 +43,7 @@ main = do
 ch :: (Eq a, Generalizable a) => a -> IO ()
 ch x = do
   putStrLn $ "checks :: " ++ show (typeOf x) ++ "\n"
-  check $ (/=) -:> x
+  check `withConditionSize` 3 $ (/=) -:> x
   putStrLn ""
 -- The following makes everything too slow
 --check $ (\x y z -> x /= y && y /= z && z /= x) -:> x

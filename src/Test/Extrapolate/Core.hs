@@ -132,8 +132,8 @@ instance Generalizable () where
 instance Generalizable Bool where
   expr = showConstant
   name _ = "p"
-  background p = [ constant "not" not ]
-              ++ bgEq p
+  background p = bgEq p
+              ++ [ constant "not" not ]
   instances p = this p id
 
 instance Generalizable Int where
