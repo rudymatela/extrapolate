@@ -29,6 +29,8 @@ module Test.Extrapolate.Utils
   , takeBound
   , nubMergeMap
   , typesIn
+  , argumentTy
+  , resultTy
   , (.:)
   )
 where
