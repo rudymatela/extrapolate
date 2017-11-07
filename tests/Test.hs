@@ -12,6 +12,8 @@ module Test
 
   , (-:-), ll, llb, llmi
 
+  , (-+-)
+
   , _i, xx, yy
   , _is, xxs, yys
   , _mi, mxx
@@ -163,6 +165,13 @@ comma x y  =  commaE :$ x :$ y
   commaEib  =  constant "," ((,) ->>: (int,bool))
   commaEbi  =  constant "," ((,) ->>: (bool,int))
   commaEbb  =  constant "," ((,) ->>: (bool,bool))
+
+(-+-) :: Expr -> Expr -> Expr
+e1 -+- e2 = plusE :$ e1 :$ e2
+infixl 6 -+-
+
+plusE :: Expr
+plusE = constant "+" ((+) :: Int -> Int -> Int)
 
 (-==-) :: Expr -> Expr -> Expr
 e1 -==- e2 =
