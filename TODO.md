@@ -105,6 +105,8 @@ performance and improvements in the algorithm (only later)
 
   I have sketched the code without the sharing and runtime did not change
   significantly.  Seem like if the sharing is used the runtime can reduce.
+  (Nevermind this comment, the runtime did not change because Speculate was not
+  being used as it did not find Eq instances.)
 
 * `type-after-type`:
   to improve performance, instead of working with all types at once, perform
