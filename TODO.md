@@ -103,11 +103,6 @@ performance and improvements in the algorithm (only later)
   postcondition, generate multi-variable expressions containing _only_ the
   variables present in this postcondition.
 
-  I have sketched the code without the sharing and runtime did not change
-  significantly.  Seem like if the sharing is used the runtime can reduce.
-  (Nevermind this comment, the runtime did not change because Speculate was not
-  being used as it did not find Eq instances.)
-
 * `type-after-type`:
   to improve performance, instead of working with all types at once, perform
   the algorithm type after type
