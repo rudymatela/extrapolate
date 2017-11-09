@@ -52,6 +52,18 @@ tests n =
   , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith bool int
   , holds n $ eitherOrd (<=) (<=) ==== (<=) -:> eith bool bool
 
+  , holds n $ pairEq (==) (==) ==== (==) -:> ((),())
+  , holds n $ pairEq (==) (==) ==== (==) -:> (int,int)
+  , holds n $ pairEq (==) (==) ==== (==) -:> (int,bool)
+  , holds n $ pairEq (==) (==) ==== (==) -:> (bool,int)
+  , holds n $ pairEq (==) (==) ==== (==) -:> (bool,bool)
+
+  , holds n $ pairOrd (<=) (<=) ==== (<=) -:> ((),())
+  , holds n $ pairOrd (<=) (<=) ==== (<=) -:> (int,int)
+  , holds n $ pairOrd (<=) (<=) ==== (<=) -:> (int,bool)
+  , holds n $ pairOrd (<=) (<=) ==== (<=) -:> (bool,int)
+  , holds n $ pairOrd (<=) (<=) ==== (<=) -:> (bool,bool)
+
   , minimumOn fst [(1,6),(2,5),(3,4)] == (1,6)
   , minimumOn snd [(1,6),(2,5),(3,4)] == (3,4)
   , maximumOn fst [(1,6),(2,5),(3,4)] == (3,4)

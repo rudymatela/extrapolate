@@ -178,6 +178,8 @@ instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
   name xy  =  name (fst xy) ++ name (snd xy)
   expr (x,y)  =  constant "," ((,) ->>: (x,y))
               :$ expr x :$ expr y
+  background xy  =  bgEqWith2  (pairEq  ->>:> xy)
+                 ++ bgOrdWith2 (pairOrd ->>:> xy)
   instances xy  =  this xy $ instances (fst xy)
                            . instances (snd xy)
 

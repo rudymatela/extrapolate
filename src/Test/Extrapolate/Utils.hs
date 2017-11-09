@@ -24,6 +24,7 @@ module Test.Extrapolate.Utils
   , listEq,   listOrd
   , maybeEq,  maybeOrd
   , eitherEq, eitherOrd
+  , pairEq,   pairOrd
   , minimumOn
   , maximumOn
   , takeBound
@@ -112,6 +113,16 @@ eitherOrd (<=) _ (Left  x) (Left  y) = x <= y
 eitherOrd _ (<=) (Right x) (Right y) = x <= y
 eitherOrd _    _ (Left  _) (Right _) = True
 eitherOrd _    _ (Right _) (Left  _) = False
+
+pairEq :: (a -> a -> Bool) -> (b -> b -> Bool) -> (a,b) -> (a,b) -> Bool
+pairEq (==.) (.==) (x1,y1) (x2,y2) = x1 ==. x2 && y1 .== y2
+
+pairOrd :: (a -> a -> Bool) -> (b -> b -> Bool) -> (a,b) -> (a,b) -> Bool
+pairOrd (<=.) (.<=) (x1,y1) (x2,y2) = x1 <. x2
+                                   || x1 ==. x2 && y1 .<= y2
+  where
+  x <.  y = x <=. y && not (y <=. x)
+  x ==. y = x <=. y &&      y <=. x
 
 minimumOn :: Ord b => (a -> b) -> [a] -> a
 minimumOn f = minimumBy (compare `on` f)

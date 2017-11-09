@@ -135,7 +135,7 @@ Generalization:
 (False,_) (True,_)
 
 Conditional Generalization:
-(_,c) (_,d)  when  c /= d
+pc pc'  when  pc /= pc'
 
 
 checks :: (Int,(),Bool)
