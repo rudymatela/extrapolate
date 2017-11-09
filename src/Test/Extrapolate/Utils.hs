@@ -26,6 +26,7 @@ module Test.Extrapolate.Utils
   , eitherEq, eitherOrd
   , pairEq,   pairOrd
   , tripleEq, tripleOrd
+  , quadrupleEq, quadrupleOrd
   , minimumOn
   , maximumOn
   , takeBound
@@ -137,6 +138,19 @@ tripleOrd (<=..) (.<=.) (..<=) (x1,y1,z1) (x2,y2,z2) =
   where
   x <..  y = x <=.. y && not (y <=.. x)
   x ==.. y = x <=.. y &&      y <=.. x
+
+quadrupleEq :: (a->a->Bool) -> (b->b->Bool) -> (c->c->Bool) -> (d->d->Bool)
+            -> (a,b,c,d) -> (a,b,c,d) -> Bool
+quadrupleEq (==...) (.==..) (..==.) (...==) (x1,y1,z1,w1) (x2,y2,z2,w2) =
+  x1 ==... x2 && y1 .==.. y2 && z1 ..==. z2 && w1 ...== w2
+
+quadrupleOrd :: (a->a->Bool) -> (b->b->Bool) -> (c->c->Bool) -> (d->d->Bool)
+             -> (a,b,c,d) -> (a,b,c,d) -> Bool
+quadrupleOrd (<=...) (.<=..) (..<=.) (...<=) (x1,y1,z1,w1) (x2,y2,z2,w2) =
+  x1 <... x2 || x1 ==... x2 && tripleOrd (.<=..) (..<=.) (...<=) (y1,z1,w1) (y2,z2,w2)
+  where
+  x <...  y = x <=... y && not (y <=... x)
+  x ==... y = x <=... y &&      y <=... x
 
 minimumOn :: Ord b => (a -> b) -> [a] -> a
 minimumOn f = minimumBy (compare `on` f)
