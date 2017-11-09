@@ -231,6 +231,10 @@ tests n =
   , holds n $ bgEqOK    -:> (bool,bool,bool)
   , holds n $ bgEqOrdOK -:> (integer,char,ordering)
 
+  , holds n $ bgEqOrdOK -:> (int,int,int,int)
+  , holds n $ bgEqOrdOK -:> (integer,char,ordering,int)
+  , holds n $ bgEqOK    -:> (bool,bool,bool,bool)
+
   , holds n $ bgEqOrdOK -:> [int]
   , holds n $ bgEqOK    -:> [bool]
   , holds n $ bgEqOrdOK -:> [char]

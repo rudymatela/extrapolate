@@ -200,6 +200,8 @@ instance (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
                 where (x,y,z,w) = xyzw
   expr (x,y,z,w)  =  constant ",,," ((,,,) ->>>>: (x,y,z,w))
                   :$ expr x :$ expr y :$ expr z :$ expr w
+  background xyzw  =  bgEqWith4  (quadrupleEq  ->>>>:> xyzw)
+                   ++ bgOrdWith4 (quadrupleOrd ->>>>:> xyzw)
   instances xyzw  =  this xyzw $ instances x
                                . instances y
                                . instances z
@@ -260,6 +262,18 @@ bgEqWith3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z)
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
   z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeEq
 
+bgEqWith4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
+          => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
+          -> [Expr]
+bgEqWith4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w)
+                 [ constant "=="        (makeEq (*==*) (*==*) (*==*) (*==*))
+                 , constant "/=" (not .: makeEq (*==*) (*==*) (*==*) (*==*)) ]
+  where
+  x = argTy1of2 $ argTy1of2 makeEq
+  y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
+  z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeEq
+  w = argTy1of2 . argTy1of2 . argTy2of2 . argTy2of2 $ argTy2of2 makeEq
+
 bgOrdWith1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
 bgOrdWith1 makeOrd = takeWhile (\_ -> hasOrd x)
@@ -287,6 +301,18 @@ bgOrdWith3 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z)
   x = argTy1of2 $ argTy1of2 makeOrd
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
   z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeOrd
+
+bgOrdWith4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
+          => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
+          -> [Expr]
+bgOrdWith4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd w)
+                   [ constant "<="              (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))
+                   , constant "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))) ]
+  where
+  x = argTy1of2 $ argTy1of2 makeOrd
+  y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
+  z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeOrd
+  w = argTy1of2 . argTy1of2 . argTy2of2 . argTy2of2 $ argTy2of2 makeOrd
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances
