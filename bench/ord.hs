@@ -12,20 +12,21 @@ main = do
   ch ordering
 
 --ch [()]
---ch [bool]
+  ch [bool]
 --chint
   ch [integer]
 --ch [char]
 --ch [ordering]
 
-  ch ((),int)
---ch (bool,char)
+--ch ((),int)
+  ch (bool,char)
 --ch (int,(),bool)
+  ch (bool,char,integer)
 
---ch (mayb ())
+  ch (mayb ())
   ch (mayb int)
 
---ch (eith () bool)
+  ch (eith () bool)
   ch (eith int char)
 
 -- TODO: find out why output for the following is different across diff GHCs

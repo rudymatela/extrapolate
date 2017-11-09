@@ -150,6 +150,18 @@ Conditional Generalization:
 (x,_,_) (y,_,_)  when  x /= y
 
 
+checks :: (Bool,Char,Integer)
+
+*** Failed! Falsifiable (after 2 tests):
+(False,'a',0) (True,'a',0)
+
+Generalization:
+(False,_,_) (True,_,_)
+
+Conditional Generalization:
+_ (_,_,x)  when  1 < x
+
+
 checks :: Maybe ()
 
 *** Failed! Falsifiable (after 2 tests):

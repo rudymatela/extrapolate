@@ -145,27 +145,6 @@ Generalization:
 _ _ _
 
 
-checks :: ((),Int)
-
-*** Failed! Falsifiable (after 1 tests):
-((),0)
-
-Generalization:
-_
-
-*** Failed! Falsifiable (after 1 tests):
-((),0) ((),0)
-
-Generalization:
-_ _
-
-*** Failed! Falsifiable (after 1 tests):
-((),0) ((),0) ((),0)
-
-Generalization:
-_ _ _
-
-
 checks :: Maybe Int
 
 *** Failed! Falsifiable (after 1 tests):

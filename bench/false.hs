@@ -18,9 +18,10 @@ main = do
 --ch [char]
 --ch [ordering]
 
-  ch ((),int)
+--ch ((),int)
 --ch (bool,char)
 --ch (int,(),bool)
+--ch (bool,char,integer)
 
 --ch (mayb ())
   ch (mayb int)

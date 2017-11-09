@@ -21,6 +21,7 @@ main = do
   ch ((),int)
   ch (bool,char)
   ch (int,(),bool)
+  ch (bool,char,integer)
 
   ch (mayb ())
   ch (mayb int)

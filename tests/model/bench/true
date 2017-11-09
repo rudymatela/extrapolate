@@ -133,6 +133,15 @@ checks :: (Int,(),Bool)
 +++ OK, passed 500 tests.
 
 
+checks :: (Bool,Char,Integer)
+
++++ OK, passed 500 tests.
+
++++ OK, passed 500 tests.
+
++++ OK, passed 500 tests.
+
+
 checks :: Maybe ()
 
 +++ OK, passed 2 tests (exhausted).

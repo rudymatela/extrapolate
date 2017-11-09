@@ -133,6 +133,15 @@ Generalization:
 xup xup
 
 
+checks :: (Bool,Char,Integer)
+
+*** Failed! Falsifiable (after 1 tests):
+(False,'a',0) (False,'a',0)
+
+Generalization:
+pcx pcx
+
+
 checks :: Maybe ()
 
 *** Failed! Falsifiable (after 1 tests):
