@@ -329,6 +329,8 @@ data Option = MaxTests Int
             | MaxConditionSize Int
             | MinFailures (Ratio Int)
             | ConditionBound (Maybe Int)
+            | ConstantBound (Maybe Int)
+            | DepthBound (Maybe Int)
   deriving (Show, Typeable) -- Typeable needed for GHC <= 7.8
 
 data WithOption a = With
@@ -355,6 +357,12 @@ computeMinFailures p = max 2 $ m * numerator r `div` denominator r
 
 computeConditionBound :: Testable a => a -> Maybe Int
 computeConditionBound p = head $ [b | ConditionBound b <- options p] ++ [Just 3]
+
+computeConstantBound :: Testable a => a -> Maybe Int
+computeConstantBound p = head $ [b | ConstantBound b <- options p] ++ [Just 2]
+
+computeDepthBound :: Testable a => a -> Maybe Int
+computeDepthBound p = head $ [b | DepthBound b <- options p] ++ [Just 3]
 
 class Testable a where
   resultiers :: a -> [[([Expr],Bool)]]
@@ -492,8 +500,10 @@ theoryAndReprsFromPropAndAtoms p =
   -- failing to detect some equalities, Speculte will still be useful as a
   -- generator of quasi-canonical expressions.
   e1 === e2 = keep e1 && keep e2 && equal is m e1 e2
-  keep e = length (consts e) <= 2
-        && depthE e <= 3
+  keep e = maybe False (\b -> length (consts e) <= b) constBound
+        && maybe False (\b ->         depthE e  <= b) depthBound
+  constBound = computeConstantBound p
+  depthBound = computeDepthBound p
   is = fullInstances p
   m  = maxTests p
 
