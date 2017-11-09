@@ -189,6 +189,8 @@ instance (Generalizable a, Generalizable b, Generalizable c)
                where  (x,y,z) = xyz
   expr (x,y,z)  =  constant ",," ((,,) ->>>: (x,y,z))
                 :$ expr x :$ expr y :$ expr z
+  background xyz  =  bgEqWith3  (tripleEq  ->>>:> xyz)
+                  ++ bgOrdWith3 (tripleOrd ->>>:> xyz)
   instances xyz  =  this xyz $ instances x . instances y . instances z
                     where (x,y,z) = xyz
 
@@ -247,6 +249,17 @@ bgEqWith2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
   x = argTy1of2 $ argTy1of2 makeEq
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
 
+bgEqWith3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
+          => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
+          -> [Expr]
+bgEqWith3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z)
+                 [ constant "=="        (makeEq (*==*) (*==*) (*==*))
+                 , constant "/=" (not .: makeEq (*==*) (*==*) (*==*)) ]
+  where
+  x = argTy1of2 $ argTy1of2 makeEq
+  y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
+  z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeEq
+
 bgOrdWith1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
 bgOrdWith1 makeOrd = takeWhile (\_ -> hasOrd x)
@@ -263,6 +276,17 @@ bgOrdWith2 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y)
   where
   x = argTy1of2 $ argTy1of2 makeOrd
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
+
+bgOrdWith3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
+          => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
+          -> [Expr]
+bgOrdWith3 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z)
+                 [ constant "<="              (makeOrd (*<=*) (*<=*) (*<=*))
+                 , constant "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*))) ]
+  where
+  x = argTy1of2 $ argTy1of2 makeOrd
+  y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
+  z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeOrd
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances

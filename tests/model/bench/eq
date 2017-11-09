@@ -159,7 +159,7 @@ Generalization:
 (False,_,_) (True,_,_)
 
 Conditional Generalization:
-_ (_,_,x)  when  1 < x
+pcx pcx'  when  pcx /= pcx'
 
 
 checks :: Maybe ()

@@ -214,11 +214,13 @@ tests n =
   , holds n $ bgEqOrdOK -:> char
   , holds n $ bgEqOrdOK -:> integer
   , holds n $ bgEqOrdOK -:> ordering
+
   , holds n $ bgEqOrdOK -:> (int,int)
   , holds n $ bgEqOK    -:> (int,bool)
   , holds n $ bgEqOK    -:> (bool,int)
   , holds n $ bgEqOK    -:> (bool,bool)
-  {- TODO: add Eq Ord to background of triples and uncomment
+  , holds n $ bgEqOrdOK -:> (char,ordering)
+
   , holds n $ bgEqOrdOK -:> (int,int,int)
   , holds n $ bgEqOK    -:> (int,int,bool)
   , holds n $ bgEqOK    -:> (int,bool,int)
@@ -227,14 +229,17 @@ tests n =
   , holds n $ bgEqOK    -:> (bool,int,bool)
   , holds n $ bgEqOK    -:> (bool,bool,int)
   , holds n $ bgEqOK    -:> (bool,bool,bool)
-  -}
+  , holds n $ bgEqOrdOK -:> (integer,char,ordering)
+
   , holds n $ bgEqOrdOK -:> [int]
   , holds n $ bgEqOK    -:> [bool]
   , holds n $ bgEqOrdOK -:> [char]
   , holds n $ bgEqOrdOK -:> [integer]
+
   , holds n $ bgEqOrdOK -:> mayb int
   , holds n $ bgEqOK    -:> mayb bool
   , holds n $ bgEqOrdOK -:> mayb char
+
   , holds n $ bgEqOrdOK -:> eith int int
   , holds n $ bgEqOK    -:> eith int bool
   , holds n $ bgEqOK    -:> eith bool int
