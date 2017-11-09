@@ -168,3 +168,13 @@ won't fix
 
   Thinking again, maybe it is a good idea to use this.  It is a real library
   with real bugs in the git history.
+
+* `enlarge-default-background`:
+  I tried enlarging the default background by including (&&) and (||).  Not
+  only there is no effect in the output of the build-in examples, runtime
+  increases for up to 33%.
+
+  I also tried enlarging the default background by including functions over
+  lists from the prelude, such as: (:), last, reverse, init.  Runtime increases
+  by 10x, with no interesting effect on output (most changes are just
+  rewritings of the unconditional generalization.
