@@ -39,6 +39,7 @@ module Test
   , instancesOK
   , namesOK, sameNamesIn, namesIn
   , tiersOK, sameTiersIn, tiersIn
+  , bgEqOK, bgEqOrdOK
 
   , subset, bgSubset
 
@@ -254,6 +255,14 @@ tiersOK x =  x `sameTiersIn` x
           && x `sameTiersIn` (x,(),())
           && x `sameTiersIn` ((),x,())
           && x `sameTiersIn` ((),(),x)
+
+bgEqOK :: (Eq a, Generalizable a) => a -> a -> Bool
+bgEqOK = (*==*) ==== (==)
+    &&&& (*/=*) ==== (/=)
+
+bgEqOrdOK :: (Eq a, Ord a, Generalizable a) => a -> a -> Bool
+bgEqOrdOK = bgEqOK &&&& (*<=*) ==== (<=)
+                   &&&& (*<*)  ==== (<)
 
 sameTiersIn :: (Eq a, Generalizable a, Generalizable b) => a -> b -> Bool
 x `sameTiersIn` cx = isListable (instances cx []) (typeOf x)
