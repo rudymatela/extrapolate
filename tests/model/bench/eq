@@ -150,16 +150,16 @@ Conditional Generalization:
 (x,_,_) (y,_,_)  when  x /= y
 
 
-checks :: (Bool,Char,Integer)
+checks :: (Ordering,Char,Integer)
 
 *** Failed! Falsifiable (after 2 tests):
-(False,'a',0) (True,'a',0)
+(LT,'a',0) (EQ,'a',0)
 
 Generalization:
-(False,_,_) (True,_,_)
+(LT,_,_) (EQ,_,_)
 
 Conditional Generalization:
-pcx pcx'  when  pcx /= pcx'
+ocx ocx'  when  ocx /= ocx'
 
 
 checks :: Maybe ()

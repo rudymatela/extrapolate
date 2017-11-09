@@ -133,7 +133,7 @@ checks :: (Int,(),Bool)
 +++ OK, passed 500 tests.
 
 
-checks :: (Bool,Char,Integer)
+checks :: (Ordering,Char,Integer)
 
 +++ OK, passed 500 tests.
 

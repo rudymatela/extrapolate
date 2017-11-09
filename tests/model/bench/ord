@@ -269,43 +269,43 @@ Conditional Generalization:
 (p,c) (p,d)  when  c < d
 
 
-checks :: (Bool,Char,Integer)
+checks :: (Ordering,Char,Integer)
 
 *** Failed! Falsifiable (after 1 tests):
-(False,'a',0) (False,'a',0)
+(LT,'a',0) (LT,'a',0)
 
 Generalization:
-pcx pcx
+ocx ocx
 
 Conditional Generalization:
-(p,d,_) (p,c,_)  when  c < d
+ocx' ocx  when  ocx <= ocx'
 
 *** Failed! Falsifiable (after 1 tests):
-(False,'a',0) (False,'a',0)
+(LT,'a',0) (LT,'a',0)
 
 Generalization:
-pcx pcx
+ocx ocx
 
 Conditional Generalization:
-(p,c,_) (p,d,_)  when  c < d
+ocx ocx'  when  ocx <= ocx'
 
-*** Failed! Falsifiable (after 3 tests):
-(True,'a',0) (False,'a',0)
+*** Failed! Falsifiable (after 4 tests):
+(EQ,'a',0) (LT,'a',0)
 
 Generalization:
-(True,_,_) (False,_,_)
+(EQ,_,_) (LT,_,_)
 
 Conditional Generalization:
-(p,d,_) (p,c,_)  when  c < d
+ocx' ocx  when  ocx < ocx'
 
 *** Failed! Falsifiable (after 2 tests):
-(False,'a',0) (True,'a',0)
+(LT,'a',0) (EQ,'a',0)
 
 Generalization:
-(False,_,_) (True,_,_)
+(LT,_,_) (EQ,_,_)
 
 Conditional Generalization:
-(p,c,_) (p,d,_)  when  c < d
+ocx ocx'  when  ocx < ocx'
 
 
 checks :: Maybe ()
