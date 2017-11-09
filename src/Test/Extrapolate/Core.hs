@@ -251,7 +251,7 @@ bgOrdWith1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
 bgOrdWith1 makeOrd = takeWhile (\_ -> hasOrd x)
                    [ constant "<=" (             makeOrd (*<=*))
-                   , constant "<"  (not .: flip (makeOrd (*<*))) ]
+                   , constant "<"  (not .: flip (makeOrd (*<=*))) ]
   where
   x = argTy1of2 $ argTy1of2 makeOrd
 

@@ -218,7 +218,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-xs []  when  [] /= xs
+ys xs  when  xs < ys
 
 *** Failed! Falsifiable (after 2 tests):
 [] [0]
@@ -227,7 +227,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-[] xs  when  [] /= xs
+xs ys  when  xs < ys
 
 
 checks :: (Bool,Char)
@@ -362,7 +362,7 @@ Generalization:
 (Just _) Nothing
 
 Conditional Generalization:
-mx Nothing  when  Nothing /= mx
+mx' mx  when  mx < mx'
 
 *** Failed! Falsifiable (after 2 tests):
 Nothing (Just 0)
@@ -371,7 +371,7 @@ Generalization:
 Nothing (Just _)
 
 Conditional Generalization:
-Nothing mx  when  Nothing /= mx
+mx mx'  when  mx < mx'
 
 
 checks :: Either () Bool
