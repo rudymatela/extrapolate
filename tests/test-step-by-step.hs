@@ -60,7 +60,7 @@ tests n =
        ]
 
   , validConditions thyes prop [xx -:- xxs]
-    == [ (elem' zero xxs, 323)
+    == [ (elem' xx xxs, 323)
        , (false, 0)
        ]
   ]
