@@ -45,6 +45,8 @@ module Test.Extrapolate.Core
   , generalizationsCounts
 
   , theoryAndReprConds
+  , candidateConditions
+  , validConditions
   , weakestCondition
 
   , matchList
@@ -593,14 +595,18 @@ candidateConditions (thy,cs) p es =
   where
   is = tinstances p
 
-weakestCondition :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> Expr
-weakestCondition thyes p es = fst
-                              . maximumOn snd
-                              . takeBound (computeConditionBound p) $
+validConditions :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> [(Expr,Int)]
+validConditions thyes p es =
   [ (c,n) | c <- candidateConditions thyes p es
           , let (is,n) = isCounterExampleUnder p c es
           , is
           ] ++ [(expr False,0)]
+
+weakestCondition :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> Expr
+weakestCondition thyes p es = fst
+                            . maximumOn snd
+                            . takeBound (computeConditionBound p)
+                            $ validConditions thyes p es
 
 isCounterExampleUnder :: Testable a => a -> Expr -> [Expr] -> (Bool, Int)
 isCounterExampleUnder p c es = and'
