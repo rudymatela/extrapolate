@@ -471,14 +471,14 @@ generalizationsCE n p es =
   where
   is = tinstances p
 
-generalizationsCEC :: Testable a => Int -> a -> [Expr] -> [(Expr,[Expr])]
-generalizationsCEC n p es | maxConditionSize p <= 0 = []
-generalizationsCEC n p es =
+generalizationsCEC :: Testable a => a -> [Expr] -> [(Expr,[Expr])]
+generalizationsCEC p es | maxConditionSize p <= 0 = []
+generalizationsCEC p es =
   [ (wc'', gs'')
   | gs <- generalizations is es
   , gs' <- vassignments gs
   , let thycs = theoryAndReprConds p
-  , let wc = weakestCondition n thycs p gs'
+  , let wc = weakestCondition thycs p gs'
   , wc /= constant "False" False
   , wc /= constant "True"  True
   , let (wc'':gs'') = canonicalizeWith is (wc:gs')
@@ -593,19 +593,19 @@ candidateConditions (thy,cs) p es =
   where
   is = tinstances p
 
-weakestCondition :: Testable a => Int -> (Thy,[Expr]) -> a -> [Expr] -> Expr
-weakestCondition m thyes p es = fst
+weakestCondition :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> Expr
+weakestCondition thyes p es = fst
                               . maximumOn snd
                               . takeBound (computeConditionBound p) $
   [ (c,n) | c <- candidateConditions thyes p es
-          , let (is,n) = isCounterExampleUnder m p c es
+          , let (is,n) = isCounterExampleUnder p c es
           , is
           ] ++ [(expr False,0)]
 
-isCounterExampleUnder :: Testable a => Int -> a -> Expr -> [Expr] -> (Bool, Int)
-isCounterExampleUnder m p c es = and'
+isCounterExampleUnder :: Testable a => a -> Expr -> [Expr] -> (Bool, Int)
+isCounterExampleUnder p c es = and'
   [ not . errorToFalse $ p $-| es'
-  | (bs,es') <- take m $ groundsAndBinds (tinstances p) es
+  | (bs,es') <- take (maxTests p) $ groundsAndBinds (tinstances p) es
   , errorToFalse $ eval False (c `assigning` bs)
   ]
   where

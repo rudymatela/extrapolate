@@ -164,7 +164,7 @@ showCEandGens m p es = showCE es ++ "\n\n"
        []     -> ""
        (es:_) -> "Generalization:\n"
               ++ showCE es ++ "\n\n"
-  ++ case generalizationsCEC m p es of
+  ++ case generalizationsCEC p es of
        []         -> ""
        (es:_) -> "Conditional Generalization:\n"
               ++ showCCE es ++ "\n\n"
