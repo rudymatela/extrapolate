@@ -584,18 +584,23 @@ theoryAndReprConds p = (thy, expr True : filter (\c -> typ c == boolTy && hasVar
   where
   (thy,es) = theoryAndReprExprs p
 
+candidateConditions :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> [Expr]
+candidateConditions (thy,cs) p es =
+  [ c | (c,_) <- classesFromSchemasAndVariables thy (uncurry (flip Var) <$> vars es) cs
+      , not (isAssignment c)
+      , not (isAssignmentTest is (maxTests p) c)
+      ]
+  where
+  is = tinstances p
+
 weakestCondition :: Testable a => Int -> (Thy,[Expr]) -> a -> [Expr] -> Expr
-weakestCondition m (thy,cs) p es = fst
-                                 . maximumOn snd
-                                 . takeBound (computeConditionBound p) $
-  [ (c,n) | c <- map fst $ classesFromSchemasAndVariables thy (uncurry (flip Var) <$> vars es) cs
-          , not (isAssignment c)
-          , not (isAssignmentTest is (maxTests p) c)
+weakestCondition m thyes p es = fst
+                              . maximumOn snd
+                              . takeBound (computeConditionBound p) $
+  [ (c,n) | c <- candidateConditions thyes p es
           , let (is,n) = isCounterExampleUnder m p c es
           , is
           ] ++ [(expr False,0)]
-  where
-  is = tinstances p
 
 isCounterExampleUnder :: Testable a => Int -> a -> Expr -> [Expr] -> (Bool, Int)
 isCounterExampleUnder m p c es = and'
