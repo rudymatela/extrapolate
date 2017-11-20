@@ -44,6 +44,7 @@ module Test.Extrapolate.Core
   , generalizationsCEC
   , generalizationsCounts
 
+  , theoryAndReprConds
   , weakestCondition
 
   , matchList

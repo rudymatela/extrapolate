@@ -186,27 +186,31 @@ tests n =
        , zero -:- zero -:- _is
        ]
 
-  {- TODO: fix the following tests
-  , candidateConditions (([int] >- bool) `With` MaxConditionSize 3) [xxs]
-    == [ true, elem' zero xxs ]
-
-  , candidateConditions (([int] >- bool) `With` MaxConditionSize 3) [xx -:- xxs]
-    =$ sort
-    $= [ true
-       , elem' zero xxs
-       , elem' xx ll
-       , elem' xx xxs
-       , zero -/=- xx
-       , xx   -/=- zero
-       , xx   -/=- xx
-       , zero -<- xx
-       , xx   -<- zero
-       , xx   -<- xx
-       , zero -<=- xx
-       , xx   -<=- zero
-       , xx   -<=- xx
+  , candidateConditions (([int] >- bool) `With` MaxConditionSize 3)
+    == [ true
+       , _b
+       , not' _b
+       , zero -==- _i
+       , _i   -==- _i
+       , zero -/=- _i
+       , _i   -/=- _i
+       , zero -<-  _i
+       , _i   -<-  zero
+       , _i   -<-  _i
+       , zero -<=- _i
+       , _i   -<=- zero
+       , _i   -<=- _i
+       , _b   -==- _b
+       , _b   -/=- _b
+       , elem' zero _is
+       , elem' _i _is
+       , ll   -==- _is
+       , _is  -==- _is
+       , ll   -/=- _is
+       , _is  -/=- _is
+       , _is  -<=- _is
+       , _is  -<-  _is
        ]
-  -}
 
 --, holds n $ bgEqOrdOK -:> () -- no Eq or Ord instance on background
   , holds n $ bgEqOrdOK -:> int
@@ -261,3 +265,6 @@ maybeBackgroundOK :: Generalizable a => a -> Bool
 maybeBackgroundOK x = backgroundMaybeOf x `subset` backgroundOf (mayb x)
   where
   backgroundMaybeOf x = [constant "Just" $ Just -:> x] +++ backgroundOf x
+
+candidateConditions :: Testable a => a -> [Expr]
+candidateConditions = snd . theoryAndReprConds

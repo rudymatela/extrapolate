@@ -16,10 +16,12 @@ module Test
 
   , _i, xx, yy
   , _is, xxs, yys
+  , _b, pp, qq
   , _mi, mxx
   , zero, one
 
   , false, true
+  , not'
 
   , elem'
 
@@ -55,6 +57,8 @@ import Test.Speculate.Expr.Instance as I
 import Data.Typeable (typeOf)
 import Data.List (isPrefixOf, sort)
 import Data.Maybe (fromMaybe)
+import Test.Speculate.Reason
+import Test.Speculate.Reason.Order
 
 import Test.Extrapolate
 import Test.Extrapolate.Utils
@@ -114,6 +118,11 @@ _mi, mxx :: Expr
 _mi  =  var ""   (mayb int)
 mxx  =  var "mx" (mayb int)
 
+_b, pp, qq :: Expr
+_b  =  var ""  bool
+pp  =  var "p" bool
+qq  =  var "q" bool
+
 zero :: Expr
 zero  =  expr (0 :: Int)
 
@@ -142,6 +151,11 @@ elem' :: Expr -> Expr -> Expr
 elem' x xs  =  elemE :$ x :$ xs
   where
   elemE  =  constant "elem" (elem :: Int -> [Int] -> Bool)
+
+not' :: Expr -> Expr
+not' p  =  notE :$ p
+  where
+  notE  =  constant "not" not
 
 just :: Expr -> Expr
 just x  =  justE :$ x
@@ -292,3 +306,30 @@ isSubsequenceOf (_:_) [] = False
 isSubsequenceOf (x:xs) (y:ys)
   | x == y    =    xs  `isSubsequenceOf` ys
   | otherwise = (x:xs) `isSubsequenceOf` ys
+
+-- Quick and Dirty!
+instance Show Thy where
+  show Thy { rules = rs
+           , equations = eqs
+           , canReduceTo = (->-)
+           , closureLimit = cl
+           , keepE = keep
+           }
+    = "Thy { rules = "
+   ++ drop 14 (indent 14 . listLines $ map showEquation rs)
+   ++ "    , equations = "
+   ++ drop 18 (indent 18 . listLines $ map showEquation eqs)
+   ++ "    , canReduceTo = " ++ showCanReduceTo (->-) ++ "\n"
+   ++ "    , closureLimit = " ++ show cl ++ "\n"
+   ++ "    , keepE = " ++ showKeepE keep ++ "\n"
+   ++ "    }"
+    where
+    showEquation (e1,e2) = showExpr e1 ++ " == " ++ showExpr e2
+    listLines [] = "[]"
+    listLines ss = '[':(tail . unlines $ map (", " ++) ss) ++ "]"
+    showCanReduceTo (->-) = "(??)"
+    showKeepE keep = "\\e -> ??"
+    indent :: Int -> String -> String
+    indent n = unlines . map (replicate n ' ' ++) . lines
+
+
