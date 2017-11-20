@@ -1,6 +1,7 @@
 -- Copyright (c) 2017 Rudy Matela.
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
+import Data.List (nub)
 
 main :: IO ()
 main = mainTest tests 10000
@@ -9,7 +10,7 @@ tests :: Int -> [Bool]
 tests n =
   [ True
 
-  , representativeConditions (([int] >- bool) `With` MaxConditionSize 3)
+  , snd thyes
     == [ true
        , _b
        , not' _b
@@ -35,6 +36,9 @@ tests n =
        , _is  -<-  _is
        ]
   ]
+  where
+  thyes  =  theoryAndReprConds prop
+  prop   =  prop_nubid `With` MaxConditionSize 3
 
-representativeConditions :: Testable a => a -> [Expr]
-representativeConditions = snd . theoryAndReprConds
+prop_nubid :: [Int] -> Bool
+prop_nubid xs  =  nub xs == xs
