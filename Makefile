@@ -84,6 +84,8 @@ clean: clean-hi-o clean-haddock
 
 ghci: mk/All.ghci
 
+ghci-test: tests/Test.ghci
+
 ghci-7.10: GHC=ghc-7.10
 ghci-7.10: mk/All.ghci
 
