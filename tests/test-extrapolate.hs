@@ -186,32 +186,6 @@ tests n =
        , zero -:- zero -:- _is
        ]
 
-  , representativeConditions (([int] >- bool) `With` MaxConditionSize 3)
-    == [ true
-       , _b
-       , not' _b
-       , zero -==- _i
-       , _i   -==- _i
-       , zero -/=- _i
-       , _i   -/=- _i
-       , zero -<-  _i
-       , _i   -<-  zero
-       , _i   -<-  _i
-       , zero -<=- _i
-       , _i   -<=- zero
-       , _i   -<=- _i
-       , _b   -==- _b
-       , _b   -/=- _b
-       , elem' zero _is
-       , elem' _i _is
-       , ll   -==- _is
-       , _is  -==- _is
-       , ll   -/=- _is
-       , _is  -/=- _is
-       , _is  -<=- _is
-       , _is  -<-  _is
-       ]
-
 --, holds n $ bgEqOrdOK -:> () -- no Eq or Ord instance on background
   , holds n $ bgEqOrdOK -:> int
   , holds n $ bgEqOK    -:> bool
@@ -265,6 +239,3 @@ maybeBackgroundOK :: Generalizable a => a -> Bool
 maybeBackgroundOK x = backgroundMaybeOf x `subset` backgroundOf (mayb x)
   where
   backgroundMaybeOf x = [constant "Just" $ Just -:> x] +++ backgroundOf x
-
-representativeConditions :: Testable a => a -> [Expr]
-representativeConditions = snd . theoryAndReprConds
