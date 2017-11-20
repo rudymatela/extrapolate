@@ -34,6 +34,7 @@ module Test.Extrapolate.Utils
   , typesIn
   , argumentTy
   , resultTy
+  , discard
   , (.:)
   )
 where
@@ -212,6 +213,9 @@ argumentTy = fst . unFunTy
 
 resultTy :: TypeRep -> TypeRep
 resultTy = snd . unFunTy
+
+discard :: (a -> Bool) -> [a] -> [a]
+discard p = filter (not . p)
 
 (.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
 (.:) = (.) . (.)
