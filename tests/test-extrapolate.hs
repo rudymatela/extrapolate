@@ -186,7 +186,7 @@ tests n =
        , zero -:- zero -:- _is
        ]
 
-  , candidateConditions (([int] >- bool) `With` MaxConditionSize 3)
+  , representativeConditions (([int] >- bool) `With` MaxConditionSize 3)
     == [ true
        , _b
        , not' _b
@@ -266,5 +266,5 @@ maybeBackgroundOK x = backgroundMaybeOf x `subset` backgroundOf (mayb x)
   where
   backgroundMaybeOf x = [constant "Just" $ Just -:> x] +++ backgroundOf x
 
-candidateConditions :: Testable a => a -> [Expr]
-candidateConditions = snd . theoryAndReprConds
+representativeConditions :: Testable a => a -> [Expr]
+representativeConditions = snd . theoryAndReprConds
