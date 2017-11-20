@@ -35,10 +35,38 @@ tests n =
        , _is  -<=- _is
        , _is  -<-  _is
        ]
+
+  , candidateConditions thyes prop [xxs]
+    == [ true
+       , elem' zero xxs
+       , ll  -/=- xxs
+       , xxs -/=- xxs -- TODO: this should not be here as it rewrites to false
+       ]
+
+  , validConditions thyes prop [xxs]
+    == [(false, 0)]
+
+  , candidateConditions thyes prop [xx -:- xxs]
+    == [ true
+       , zero -/=- xx
+       , xx -/=- xx -- TODO: this should not be here as it rewrites to false
+       , zero -<- xx
+       , xx -<- zero
+       , zero -<=- xx
+       , xx -<=- zero
+       , elem' zero xxs
+       , elem' xx xxs
+       , ll -/=- xxs
+       ]
+
+  , validConditions thyes prop [xx -:- xxs]
+    == [ (elem' zero xxs, 323)
+       , (false, 0)
+       ]
   ]
-  where
-  thyes  =  theoryAndReprConds prop
-  prop   =  prop_nubid `With` MaxConditionSize 3
+
+thyes  =  theoryAndReprConds prop
+prop   =  prop_nubid `With` MaxConditionSize 3
 
 prop_nubid :: [Int] -> Bool
 prop_nubid xs  =  nub xs == xs
