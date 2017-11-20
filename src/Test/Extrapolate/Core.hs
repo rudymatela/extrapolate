@@ -44,6 +44,7 @@ module Test.Extrapolate.Core
   , generalizationsCEC
   , generalizationsCounts
 
+  , atoms
   , theoryAndReprConds
   , candidateConditions
   , validConditions
@@ -568,19 +569,23 @@ fullInstances p = is +++ getEqInstancesFromBackground is
   where
   is = tinstances p
 
-theoryAndReprExprs :: Testable a => a -> (Thy,[Expr])
-theoryAndReprExprs p =
-    (\(thy,ess) -> (thy, concat $ take (maxConditionSize p) ess))
-  . theoryAndReprsFromPropAndAtoms p
-  . ([vs ++ esU] \/)
-  . foldr (\/) []
-  $ [ eval (error msg :: [[Expr]]) ess
-    | Instance "Listable" _ [ess] <- is ]
+-- Given a property, returns the atoms to be passed to Speculate
+atoms :: Testable a => a -> [[Expr]]
+atoms p = ([vs] \/)
+        . foldr (\/) [esU]
+        $ [ eval (error msg :: [[Expr]]) ess
+          | Instance "Listable" _ [ess] <- is ]
   where
   vs = sort . map holeOfTy . filter (isListable is) . nubMergeMap (typesIn . typ) $ esU
   esU = getBackground is
   msg = "canditateConditions: wrong type, not [[Expr]]"
   is = tinstances p
+
+theoryAndReprExprs :: Testable a => a -> (Thy,[Expr])
+theoryAndReprExprs p =
+    (\(thy,ess) -> (thy, concat $ take (maxConditionSize p) ess))
+  . theoryAndReprsFromPropAndAtoms p
+  $ atoms p
 
 theoryAndReprConds :: Testable a => a -> (Thy, [Expr])
 theoryAndReprConds p = (thy, expr True : filter (\c -> typ c == boolTy && hasVar c) es)

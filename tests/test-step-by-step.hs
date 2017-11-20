@@ -14,24 +14,24 @@ tests n =
     == [ true
        , _b
        , not' _b
-       , zero -==- _i
        , _i   -==- _i
-       , zero -/=- _i
+       , _i   -==- zero
        , _i   -/=- _i
-       , zero -<-  _i
-       , _i   -<-  zero
+       , _i   -/=- zero
        , _i   -<-  _i
-       , zero -<=- _i
-       , _i   -<=- zero
+       , _i   -<-  zero
+       , zero -<-  _i
        , _i   -<=- _i
+       , _i   -<=- zero
+       , zero -<=- _i
        , _b   -==- _b
        , _b   -/=- _b
-       , elem' zero _is
        , elem' _i _is
-       , ll   -==- _is
+       , elem' zero _is
        , _is  -==- _is
-       , ll   -/=- _is
+       , _is  -==- ll
        , _is  -/=- _is
+       , _is  -/=- ll
        , _is  -<=- _is
        , _is  -<-  _is
        ]
@@ -39,8 +39,8 @@ tests n =
   , candidateConditions thyes prop [xxs]
     == [ true
        , elem' zero xxs
-       , ll  -/=- xxs
        , xxs -/=- xxs -- TODO: this should not be here as it rewrites to false
+       , xxs -/=- ll
        ]
 
   , validConditions thyes prop [xxs]
@@ -48,15 +48,15 @@ tests n =
 
   , candidateConditions thyes prop [xx -:- xxs]
     == [ true
-       , zero -/=- xx
        , xx -/=- xx -- TODO: this should not be here as it rewrites to false
-       , zero -<- xx
+       , xx -/=- zero
        , xx -<- zero
-       , zero -<=- xx
+       , zero -<- xx
        , xx -<=- zero
-       , elem' zero xxs
+       , zero -<=- xx
        , elem' xx xxs
-       , ll -/=- xxs
+       , elem' zero xxs
+       ,  xxs -/=- ll
        ]
 
   , validConditions thyes prop [xx -:- xxs]
