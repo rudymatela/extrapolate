@@ -179,7 +179,7 @@ Generalization:
 (_:_) []
 
 Conditional Generalization:
-ps []  when  [] /= ps
+ps []  when  ps /= []
 
 *** Failed! Falsifiable (after 2 tests):
 [] [False]
@@ -188,7 +188,7 @@ Generalization:
 [] (_:_)
 
 Conditional Generalization:
-[] ps  when  [] /= ps
+[] ps  when  ps /= []
 
 
 checks :: [Integer]

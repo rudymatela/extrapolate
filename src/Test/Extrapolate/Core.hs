@@ -572,7 +572,8 @@ theoryAndReprExprs :: Testable a => a -> (Thy,[Expr])
 theoryAndReprExprs p =
     (\(thy,ess) -> (thy, concat $ take (maxConditionSize p) ess))
   . theoryAndReprsFromPropAndAtoms p
-  . foldr (\/) [vs ++ esU]
+  . ([vs ++ esU] \/)
+  . foldr (\/) []
   $ [ eval (error msg :: [[Expr]]) ess
     | Instance "Listable" _ [ess] <- is ]
   where
