@@ -593,13 +593,18 @@ theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
   (thy,es) = theoryAndReprExprs p
 
 candidateConditions :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> [Expr]
-candidateConditions (thy,cs) p es =
+candidateConditions (thy,cs) p es = expr True :
   [ c | (c,_) <- classesFromSchemasAndVariables thy (uncurry (flip Var) <$> vars es) cs
+      , hasVar c
       , not (isAssignment c)
       , not (isAssignmentTest is (maxTests p) c)
       ]
   where
   is = tinstances p
+-- 'expr True' is expected by the functions that call candidateConditions.  It
+-- is always useful to check if a generalization without any conditions still
+-- passes (that means we should skip as there is an already reported
+-- unconditional generalization).
 
 validConditions :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> [(Expr,Int)]
 validConditions thyes p es =

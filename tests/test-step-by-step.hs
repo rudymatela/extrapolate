@@ -38,8 +38,7 @@ tests n =
        ]
 
   , candidateConditions thyes prop [xxs]
-    == [ false
-       , true
+    == [ true
        , elem' zero xxs
        , xxs -/=- ll
        ]
@@ -48,8 +47,7 @@ tests n =
     == [(false, 0)]
 
   , candidateConditions thyes prop [xx -:- xxs]
-    == [ false
-       , true
+    == [ true
        , xx -/=- zero
        , xx -<- zero
        , zero -<- xx
