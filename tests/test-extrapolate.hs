@@ -227,7 +227,34 @@ tests n =
   , holds n $ bgEqOK    -:> eith bool int
   , holds n $ bgEqOK    -:> eith bool bool
   , holds n $ bgEqOrdOK -:> eith char ordering
+
+  , tinstancesUnrepeated $ bool
+  , tinstancesUnrepeated $ bool >- bool
+  , tinstancesUnrepeated $ int  >- bool
+  , tinstancesUnrepeated $ char >- bool
+  , tinstancesUnrepeated $ bool >- bool >- bool
+  , tinstancesUnrepeated $ int  >- int  >- bool
+  , tinstancesUnrepeated $ char >- char >- bool
+  , tinstancesUnrepeated $ [bool] >- bool
+  , tinstancesUnrepeated $ [int]  >- bool
+  , tinstancesUnrepeated $ [char] >- bool
+  , tinstancesUnrepeated $ mayb bool >- bool
+  , tinstancesUnrepeated $ mayb int  >- bool
+  , tinstancesUnrepeated $ mayb char >- bool
+  , tinstancesUnrepeated $ eith bool bool >- bool
+  , tinstancesUnrepeated $ eith int  int  >- bool
+  , tinstancesUnrepeated $ eith char char >- bool
+  , tinstancesUnrepeated $ eith char ()   >- bool
+  , tinstancesUnrepeated $ ([bool],[bool]) >- bool
+  , tinstancesUnrepeated $ ([int], [int])  >- bool
+  , tinstancesUnrepeated $ ([char],[char]) >- bool
+  , tinstancesUnrepeated $ eith [bool] [bool] >- ([bool],[bool]) >- bool
   ]
+
+tinstancesUnrepeated :: Testable a => a -> Bool
+tinstancesUnrepeated p = nub is == is
+  where
+  is = tinstances p
 
 listBackgroundOK :: Generalizable a => a -> Bool
 listBackgroundOK x = backgroundListOf x `subset` backgroundOf [x]
