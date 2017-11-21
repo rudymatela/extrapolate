@@ -50,6 +50,7 @@ module Test.Extrapolate.Core
   , validConditions
   , weakestCondition
   , getBackground
+  , fullInstances
 
   , matchList
   , newMatches
@@ -575,7 +576,7 @@ theoryAndReprsFromPropAndAtoms p ess =
 
 -- tinstances including auto generated Eq instances (based on background)
 fullInstances :: Testable a => a -> Instances
-fullInstances p = nub $ is ++ getEqInstancesFromBackground is
+fullInstances p = is ++ getEqInstancesFromBackground is
   where
   is = tinstances p
 

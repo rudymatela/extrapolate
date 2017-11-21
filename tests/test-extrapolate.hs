@@ -253,8 +253,10 @@ tests n =
 
 tinstancesUnrepeated :: Testable a => a -> Bool
 tinstancesUnrepeated p = nub is == is
+                      && nub is' == is'
   where
   is = tinstances p
+  is' = fullInstances p
 
 listBackgroundOK :: Generalizable a => a -> Bool
 listBackgroundOK x = backgroundListOf x `subset` backgroundOf [x]
