@@ -49,6 +49,7 @@ module Test.Extrapolate.Core
   , candidateConditions
   , validConditions
   , weakestCondition
+  , getBackground
 
   , matchList
   , newMatches
@@ -163,19 +164,19 @@ instance (Generalizable a) => Generalizable (Maybe a) where
   expr mx@Nothing   =  constant "Nothing" (Nothing -: mx)
   expr mx@(Just x)  =  constant "Just"    (Just   ->: mx) :$ expr x
   name mx = "m" ++ name (fromJust mx)
-  background mx  =  [ constant "Just" (Just ->: mx) ]
-                 ++ bgEqWith1  (maybeEq  ->:> mx)
+  background mx  =  bgEqWith1  (maybeEq  ->:> mx)
                  ++ bgOrdWith1 (maybeOrd ->:> mx)
+                 ++ [ constant "Just" (Just ->: mx) ]
   instances mx  =  this mx $ instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
   expr lx@(Left x)   =  constant "Left"  (Left  ->: lx) :$ expr x
   expr ry@(Right y)  =  constant "Right" (Right ->: ry) :$ expr y
   name exy = "e" ++ name (fromLeft exy) ++ name (fromRight exy)
-  background exy  =  [ constant "Left"  (Left  ->: exy)
-                     , constant "Right" (Right ->: exy) ]
-                  ++ bgEqWith2  (eitherEq  ->>:> exy)
+  background exy  =  bgEqWith2  (eitherEq  ->>:> exy)
                   ++ bgOrdWith2 (eitherOrd ->>:> exy)
+                  ++ [ constant "Left"  (Left  ->: exy)
+                     , constant "Right" (Right ->: exy) ]
   instances exy  =  this exy $ instances (fromLeft  exy)
                              . instances (fromRight exy)
 
@@ -217,10 +218,10 @@ instance Generalizable a => Generalizable [a] where
   name xs  =  name (head xs) ++ "s"
   expr (xs@[])      =  showConstant  ([]    -: xs)
   expr (xs@(y:ys))  =  constant ":"  ((:) ->>: xs) :$ expr y :$ expr ys
-  background xs  =  [ constant "length" (length -:> xs) ]
-                 ++ [ constant "elem"      (elemBy (*==*) ->:> xs) | hasEq $ head xs ]
-                 ++ bgEqWith1  (listEq  ->:> xs)
+  background xs  =  bgEqWith1  (listEq  ->:> xs)
                  ++ bgOrdWith1 (listOrd ->:> xs)
+                 ++ [ constant "length" (length -:> xs) ]
+                 ++ [ constant "elem"      (elemBy (*==*) ->:> xs) | hasEq $ head xs ]
   instances xs  =  this xs $ instances (head xs)
 
 instance Generalizable Ordering where
@@ -321,14 +322,14 @@ bgOrdWith4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances
-ins x = listable x +++ nameWith (name x) x +++ backgroundWith (background x) x
+ins x = listable x ++ nameWith (name x) x ++ backgroundWith (background x) x
 
 this :: Generalizable a
      => a -> (Instances -> Instances) -> Instances -> Instances
 this x f is =
   if isListable is (typeOf x)
     then is
-    else f (ins x +++ is)
+    else f (ins x ++ is)
 -- TODO: change type to a -> [Instances -> Instances] -> Instances -> Instances
 
 backgroundWith :: Typeable a => [Expr] -> a -> Instances
@@ -574,7 +575,7 @@ theoryAndReprsFromPropAndAtoms p ess =
 
 -- tinstances including auto generated Eq instances (based on background)
 fullInstances :: Testable a => a -> Instances
-fullInstances p = is +++ getEqInstancesFromBackground is
+fullInstances p = nub $ is ++ getEqInstancesFromBackground is
   where
   is = tinstances p
 
