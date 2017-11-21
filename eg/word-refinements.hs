@@ -29,7 +29,7 @@ main = do
   let check1 = check `withBackground` [constant "isSpace" isSpace]
   check1 prop_lengthWords0
   check1 prop_lengthWords1
-  let check2 = check `withBackground` [ constant "isInfixOf" $ isInfixOf -:> string
+  let check2 = check `withBackground` [ constant "`isInfixOf`" $ isInfixOf -:> string
                                       , showConstant "  " ]
-  check2 prop_lengthWords1
-  check2 prop_lengthWords2
+  check2 prop_lengthWords0 -- a step back, note the *zero*
+  check  prop_lengthWords2

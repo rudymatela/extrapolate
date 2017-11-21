@@ -22,11 +22,14 @@ c:_  when  isSpace c
 Conditional Generalization:
 c:' ':' ':c:""  when  not (isSpace c)
 
-*** Failed! Falsifiable (after 43 tests):
-"a  a"
+*** Failed! Falsifiable (after 4 tests):
+" "
+
+Generalization:
+' ':_
 
 Conditional Generalization:
-c:' ':' ':c:""  when  'a' <= c
+cs  when  "  " `isInfixOf` cs
 
 +++ OK, passed 500 tests.
 
