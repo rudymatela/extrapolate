@@ -22,12 +22,16 @@ module Test
 
   , false, true
   , not'
+  , notE
 
-  , elem'
+  , elem', length'
+  , elemE, lengthE
 
   , nothing, nothingBool, just
 
   , comma
+
+  , operatorE
 
   , (-==-)
   , (-/=-)
@@ -62,7 +66,7 @@ import Test.Speculate.Reason.Order
 
 import Test.Extrapolate
 import Test.Extrapolate.Utils
-import Test.Extrapolate.Core hiding (false, true)
+import Test.Extrapolate.Core hiding (false, true, lengthE)
 import qualified Test.Extrapolate.Core as Core
 import Test.LeanCheck.Utils.Operators
 
@@ -149,13 +153,20 @@ nothingBool  =  constant "Nothing" (Nothing :: Maybe Bool)
 
 elem' :: Expr -> Expr -> Expr
 elem' x xs  =  elemE :$ x :$ xs
-  where
-  elemE  =  constant "elem" (elem :: Int -> [Int] -> Bool)
+
+elemE :: Expr
+elemE  =  constant "elem" (elem :: Int -> [Int] -> Bool)
+
+length' :: Expr -> Expr
+length' xs  =  lengthE :$ xs
+
+lengthE  =  constant "length" (length :: [Int] -> Int)
 
 not' :: Expr -> Expr
 not' p  =  notE :$ p
-  where
-  notE  =  constant "not" not
+
+notE :: Expr
+notE  =  constant "not" not
 
 just :: Expr -> Expr
 just x  =  justE :$ x
@@ -187,6 +198,9 @@ infixl 6 -+-
 
 plusE :: Expr
 plusE = constant "+" ((+) :: Int -> Int -> Int)
+
+operatorE :: Expr -> Expr
+operatorE ((opE :$ _) :$ _) = opE
 
 (-==-) :: Expr -> Expr -> Expr
 e1 -==- e2 =

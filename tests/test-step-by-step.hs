@@ -10,6 +10,31 @@ tests :: Int -> [Bool]
 tests n =
   [ True
 
+  , concat (take 2 $ atoms prop)
+    == [ _b
+       , _i
+       , _is
+       , zero
+       , false
+       , true
+       , ll
+       , operatorE (_i -==- _i)
+       , operatorE (_i -/=- _i)
+       , operatorE (_i -<-  _i)
+       , operatorE (_i -<=- _i)
+       , operatorE (_b -==- _b)
+       , operatorE (_b -/=- _b)
+       , notE
+       , lengthE
+       , elemE
+       , operatorE (_is -==- _is)
+       , operatorE (_is -/=- _is)
+       , operatorE (_is -<=- _is)
+       , operatorE (_is -<-  _is)
+       , one
+       , showConstant [0::Int]
+       ]
+
   , snd thyes
     == [ _b
        , false
