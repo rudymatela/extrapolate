@@ -35,6 +35,7 @@ module Test.Extrapolate.Utils
   , argumentTy
   , resultTy
   , discard
+  , compareIndex
   , (.:)
   )
 where
@@ -42,6 +43,7 @@ where
 import Data.Function (on)
 import Data.List (minimumBy, maximumBy, nub)
 import Data.Typeable
+import Data.List (elemIndex)
 
 nubMergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 nubMergeBy cmp (x:xs) (y:ys) = case x `cmp` y of
@@ -219,3 +221,11 @@ discard p = filter (not . p)
 
 (.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
 (.:) = (.) . (.)
+
+compareIndex :: Eq a => [a] -> a -> a -> Ordering
+compareIndex xs x y =
+  case (elemIndex x xs, elemIndex y xs) of
+    (Just  i, Just  j) -> i `compare` j
+    (Nothing, Just  _) -> GT
+    (Just  _, Nothing) -> LT
+    _                  -> EQ

@@ -87,6 +87,7 @@ import Data.Ratio (Ratio, numerator, denominator)
 import Test.Extrapolate.TypeBinding -- for Haddock
 import Test.Speculate.Reason (Thy)
 import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
+import Data.Monoid ((<>))
 
 -- | Extrapolate can generalize counter-examples of any types that are
 --   'Generalizable'.
@@ -547,9 +548,9 @@ expressionsTT dss = dss \/ productMaybeWith ($$) ess ess `addWeight` 1
 
 -- Generates expression schemas and a theory
 theoryAndReprsFromPropAndAtoms :: Testable a => a -> [[Expr]] -> (Thy,[[Expr]])
-theoryAndReprsFromPropAndAtoms p =
+theoryAndReprsFromPropAndAtoms p ess =
   theoryAndRepresentativesFromAtoms
-    (maxConditionSize p) compareComplexity (const True) (===)
+    (maxConditionSize p) compareExpr (const True) (===) ess
   where
   -- the following uses of keep make Speculate run faster by defaulting to
   -- "these things are not equal" even in cases that they are.  Despite
@@ -562,6 +563,14 @@ theoryAndReprsFromPropAndAtoms p =
   depthBound = computeDepthBound p
   is = fullInstances p
   m  = maxTests p
+  compareExpr :: Expr -> Expr -> Ordering
+  compareExpr = compareComplexityThen (lexicompareBy cmp)
+  e1 `cmp` e2 | arity e1 == 0 && arity e2 /= 0 = LT
+  e1 `cmp` e2 | arity e1 /= 0 && arity e2 == 0 = GT
+  e1 `cmp` e2 = compareIndex (concat ess) e1 e2 <> e1 `compare` e2
+-- NOTE: "concat $ atoms args" may be an infinite list.  This function assumes
+-- that the symbols will appear on the list eventually for termination.  If I
+-- am correct this ivariant is assured by the rest of the code.
 
 -- tinstances including auto generated Eq instances (based on background)
 fullInstances :: Testable a => a -> Instances
