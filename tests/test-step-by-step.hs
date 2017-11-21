@@ -11,8 +11,9 @@ tests n =
   [ True
 
   , snd thyes
-    == [ true
-       , _b
+    == [ _b
+       , false
+       , true
        , not' _b
        , _i   -==- _i
        , _i   -==- zero
@@ -37,9 +38,9 @@ tests n =
        ]
 
   , candidateConditions thyes prop [xxs]
-    == [ true
+    == [ false
+       , true
        , elem' zero xxs
-       , xxs -/=- xxs -- TODO: this should not be here as it rewrites to false
        , xxs -/=- ll
        ]
 
@@ -47,8 +48,8 @@ tests n =
     == [(false, 0)]
 
   , candidateConditions thyes prop [xx -:- xxs]
-    == [ true
-       , xx -/=- xx -- TODO: this should not be here as it rewrites to false
+    == [ false
+       , true
        , xx -/=- zero
        , xx -<- zero
        , zero -<- xx
@@ -66,7 +67,7 @@ tests n =
   ]
 
 thyes  =  theoryAndReprConds prop
-prop   =  prop_nubid `With` MaxConditionSize 3
+prop   =  prop_nubid `With` MaxConditionSize 3 `With` ConstantBound Nothing
 
 prop_nubid :: [Int] -> Bool
 prop_nubid xs  =  nub xs == xs

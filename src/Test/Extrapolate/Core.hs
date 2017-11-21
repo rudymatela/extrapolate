@@ -556,8 +556,8 @@ theoryAndReprsFromPropAndAtoms p =
   -- failing to detect some equalities, Speculte will still be useful as a
   -- generator of quasi-canonical expressions.
   e1 === e2 = keep e1 && keep e2 && equal is m e1 e2
-  keep e = maybe False (\b -> length (consts e) <= b) constBound
-        && maybe False (\b ->         depthE e  <= b) depthBound
+  keep e = maybe True (\b -> length (consts e) <= b) constBound
+        && maybe True (\b ->         depthE e  <= b) depthBound
   constBound = computeConstantBound p
   depthBound = computeDepthBound p
   is = fullInstances p
@@ -588,7 +588,7 @@ theoryAndReprExprs p =
   $ atoms p
 
 theoryAndReprConds :: Testable a => a -> (Thy, [Expr])
-theoryAndReprConds p = (thy, expr True : filter (\c -> typ c == boolTy && hasVar c) es)
+theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
   where
   (thy,es) = theoryAndReprExprs p
 
