@@ -4,6 +4,7 @@
 **/idx/
 **/dist/
 **/log/
+etc
 .stack-work
 
 **.hspp
