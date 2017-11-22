@@ -422,10 +422,10 @@ computeConditionBound :: Testable a => a -> Maybe Int
 computeConditionBound p = head $ [b | ConditionBound b <- options p] ++ [Just 3]
 
 computeConstantBound :: Testable a => a -> Maybe Int
-computeConstantBound p = head $ [b | ConstantBound b <- options p] ++ [Just 2]
+computeConstantBound p = head $ [b | ConstantBound b <- options p] ++ [Nothing]
 
 computeDepthBound :: Testable a => a -> Maybe Int
-computeDepthBound p = head $ [b | DepthBound b <- options p] ++ [Just 3]
+computeDepthBound p = head $ [b | DepthBound b <- options p] ++ [Nothing]
 
 class Testable a where
   resultiers :: a -> [[([Expr],Bool)]]
