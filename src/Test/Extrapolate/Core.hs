@@ -387,6 +387,7 @@ data Option = MaxTests Int
             | ExtraInstances Instances
             | MaxConditionSize Int
             | MinFailures (Ratio Int)
+            | MaxSpeculateSize (Maybe Int)
             | ConditionBound (Maybe Int)
             | ConstantBound (Maybe Int)
             | DepthBound (Maybe Int)
@@ -413,6 +414,9 @@ computeMinFailures p = max 2 $ m * numerator r `div` denominator r
   where
   r = head $ [r | MinFailures r <- options p] ++ [1/20]
   m = maxTests p
+
+computeMaxSpeculateSize :: Testable a => a -> Maybe Int
+computeMaxSpeculateSize p = head $ [b | MaxSpeculateSize b <- options p] ++ [Just 4]
 
 computeConditionBound :: Testable a => a -> Maybe Int
 computeConditionBound p = head $ [b | ConditionBound b <- options p] ++ [Just 3]
@@ -561,6 +565,10 @@ theoryAndReprsFromPropAndAtoms p ess =
   e1 === e2 = keep e1 && keep e2 && equal is m e1 e2
   keep e = maybe True (\b -> length (consts e) <= b) constBound
         && maybe True (\b ->         depthE e  <= b) depthBound
+        && maybe True (\b ->        lengthE e  <= b) (computeMaxSpeculateSize p)
+-- NOTE: MaxSpeculateSize here should not be confused with the size
+-- considering sizes of atoms (as per tier enumeration), this regards only the
+-- size in number of symbols
   constBound = computeConstantBound p
   depthBound = computeDepthBound p
   is = fullInstances p

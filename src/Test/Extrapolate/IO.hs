@@ -18,6 +18,7 @@ module Test.Extrapolate.IO
   , withBackground
   , withConditionSize
   , minFailures
+  , maxSpeculateSize
   , conditionBound
   , constantBound
   , depthBound
@@ -79,6 +80,9 @@ check `minFailures` s =  \p -> check $ p `With` MinFailures s
 
 conditionBound :: Testable a => (WithOption a -> b) -> Maybe Int -> a -> b
 check `conditionBound` mi =  \p -> check $ p `With` ConditionBound mi
+
+maxSpeculateSize :: Testable a => (WithOption a -> b) -> Maybe Int -> a -> b
+check `maxSpeculateSize` mi =  \p -> check $ p `With` MaxSpeculateSize mi
 
 -- | Configures a bound on the number of constants allowed in expressions that
 --   are considered when testing for equality in Speculate.
