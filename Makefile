@@ -36,7 +36,10 @@ HSS      = $(shell $(LISTHS))
 ALLOBJS  = $(shell $(LISTOBJS))
 OBJS = src/Test/Extrapolate.o
 GHCIMPORTDIRS = src:tests:eg
-GHCEXTRAFLAGS =
+GHCEXTRAFLAGS = #-prof -fprof-auto #-caf-all
+# When profiling is enabled, to get the cost centres with more than 6% time:
+#   $ ./eg/sorting +RTS -p -RTS
+#   $ cat sorting.prof | grep -v ' [0-5].[0-9] ......$'
 GHCFLAGS = -dynamic -O2 $(GHCEXTRAFLAGS)
 HADDOCKFLAGS = --no-print-missing-docs
 
