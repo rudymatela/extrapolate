@@ -67,6 +67,7 @@ bench/smartcheck/div0.hs
 bench/smartcheck/parser
 bench/smartcheck/parser.hs
 bench/smartcheck/sorting
+bench/smartcheck/word-refinements
 bench/smartcheck/overflow
 bench/smartcheck/overflow.hs
 bench/smartcheck/list

@@ -5,6 +5,7 @@ BENCH= \
   parser \
   list \
   overflow \
+  word-refinements \
   div0
 TYM= \
   /usr/bin/time "-f%e %M"
@@ -19,6 +20,7 @@ bench: all
 	@- yes | $(TYM) ./sorting
 	@- yes | $(TYM) ./list
 	@- yes | $(TYM) ./overflow
+	@- yes | $(TYM) ./word-refinements
 
 bench-sorting: sorting
 	mkdir -p $<-out
@@ -62,6 +64,13 @@ bench-div0: div0
 	mkdir -p div0-out
 	for i in {000..999}; do yes | /usr/bin/time "-f%e %M" ./div0 | grep -A3 forall > div0-out/$$i; done 2> div0.runtime
 
+bench-word-refinements: word-refinements
+	mkdir -p $<-out
+	for i in {000..999}; do \
+	  yes | /usr/bin/time "-f%e %M" ./$< | \
+	  grep -A2 -E "(^forall values|OK, passed)" > $<-out/$$i; \
+	done 2> $<.runtime
+
 div0.hs: div0-main.hs smartcheck/regression/Div0/Div0.hs
 	cat smartcheck/regression/Div0/Div0.hs div0-main.hs > div0.hs
 
@@ -74,7 +83,7 @@ overflow.hs: overflow-main.hs smartcheck/regression/PaperExample1/PaperExample1.
 overflow: overflow.hs
 
 %: %.hs
-	$(GHC) -dynamic -O2 -ignore-package QuickCheck-2.10.0.1 -package-db .cabal-sandbox/*-$(GHC)*-packages.conf.d $< && touch $@
+	$(GHC) -dynamic -O2 -ignore-package QuickCheck-2.10.1 -package-db .cabal-sandbox/*-$(GHC)*-packages.conf.d $< && touch $@
 
 %.ghci: %.hs
 	$(GHCI) -dynamic -package-db .cabal-sandbox/*-$(GHC)*-packages.conf.d $<
