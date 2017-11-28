@@ -4,6 +4,7 @@ BENCH= \
   calculator \
   parser \
   overflow \
+  word-refinements \
   list
 TYM= \
   /usr/bin/time "-f%e %M"
@@ -15,6 +16,7 @@ bench: all
 	@- $(TYM) ./sorting
 	@- $(TYM) ./calculator
 	@- $(TYM) ./parser
+	#@- $(TYM) ./word-refinements
 
 %: %.hs
 	$(GHC) -dynamic -O2 -package-db .cabal-sandbox/*-$(GHC).*-packages.conf.d $< && touch $@

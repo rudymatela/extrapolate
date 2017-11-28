@@ -57,6 +57,7 @@ bench/lazy-sc/arith
 bench/lazy-sc/calculator
 bench/lazy-sc/parser
 bench/lazy-sc/gencalc
+bench/lazy-sc/word-refinements
 bench/lazy-sc/overflow
 bench/lazy-sc/heap
 bench/lazy-sc/redblack
