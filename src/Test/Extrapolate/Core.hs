@@ -419,7 +419,7 @@ computeMaxSpeculateSize :: Testable a => a -> Maybe Int
 computeMaxSpeculateSize p = head $ [b | MaxSpeculateSize b <- options p] ++ [Just 4]
 
 computeConditionBound :: Testable a => a -> Maybe Int
-computeConditionBound p = head $ [b | ConditionBound b <- options p] ++ [Just 3]
+computeConditionBound p = head $ [b | ConditionBound b <- options p] ++ [Nothing]
 
 computeConstantBound :: Testable a => a -> Maybe Int
 computeConstantBound p = head $ [b | ConstantBound b <- options p] ++ [Nothing]
