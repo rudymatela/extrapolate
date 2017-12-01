@@ -411,7 +411,7 @@ maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [4]
 computeMinFailures :: Testable a => a -> Int
 computeMinFailures p = max 2 $ m * numerator r `div` denominator r
   where
-  r = head $ [r | MinFailures r <- options p] ++ [1/20]
+  r = head $ [r | MinFailures r <- options p] ++ [0]
   m = maxTests p
 
 computeMaxSpeculateSize :: Testable a => a -> Maybe Int
@@ -644,7 +644,8 @@ isCounterExampleUnder p c es = and'
   , errorToFalse $ eval False (c `assigning` bs)
   ]
   where
-  and' ps = (and ps && length ps > computeMinFailures p, length ps)
+  and' ps = let len = length ps
+            in  (and ps && len > computeMinFailures p && len > 0, len)
 
 isVar :: Expr -> Bool
 isVar (Var _ _) = True

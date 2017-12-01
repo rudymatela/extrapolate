@@ -41,6 +41,9 @@ checks :: Ordering
 *** Failed! Falsifiable (after 2 tests):
 LT EQ
 
+Conditional Generalization:
+o p  when  o /= p
+
 
 checks :: [()]
 

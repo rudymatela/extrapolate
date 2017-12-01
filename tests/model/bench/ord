@@ -145,17 +145,29 @@ LT LT
 Generalization:
 o o
 
+Conditional Generalization:
+p o  when  o <= p
+
 *** Failed! Falsifiable (after 1 tests):
 LT LT
 
 Generalization:
 o o
 
+Conditional Generalization:
+o p  when  o <= p
+
 *** Failed! Falsifiable (after 4 tests):
 EQ LT
 
+Conditional Generalization:
+p o  when  o < p
+
 *** Failed! Falsifiable (after 2 tests):
 LT EQ
+
+Conditional Generalization:
+o p  when  o < p
 
 
 checks :: [Bool]
