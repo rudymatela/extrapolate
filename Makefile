@@ -132,7 +132,7 @@ hlint:
 	hlint \
 	  --ignore "Use import/export shortcut" \
 	  --ignore "Redundant bracket" \
-	  .
+	  src eg/sorting.hs eg/list.hs eg/word-refinements.hs
 
 markdown:
 	pandoc README.md -o README.html

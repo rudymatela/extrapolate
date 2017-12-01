@@ -78,8 +78,7 @@ import Test.LeanCheck hiding
   , checkResult
   , checkResultFor
   )
-import Test.Extrapolate.Exprs (fold, unfold)
-import Data.Maybe (listToMaybe, fromJust, fromMaybe, isJust, listToMaybe, catMaybes)
+import Data.Maybe
 import Data.Either (isRight)
 import Data.List (insert, nub, sort)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
@@ -653,8 +652,7 @@ isVar _         = False
 
 fromBackgroundOf :: (Generalizable a, Typeable b) => String -> a -> Maybe b
 fromBackgroundOf nm = listToMaybe
-                    . catMaybes
-                    . map evaluate
+                    . mapMaybe evaluate
                     . filter (`isConstantNamed` nm)
                     . background
 

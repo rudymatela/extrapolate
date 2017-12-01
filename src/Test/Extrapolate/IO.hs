@@ -30,9 +30,10 @@ import Prelude hiding (catch)
 #endif
 
 import Test.Extrapolate.Core
-import Data.Maybe (listToMaybe, mapMaybe)
+import Data.Maybe (listToMaybe, mapMaybe, fromMaybe)
 import Data.List (find, intercalate)
 import Data.Ratio (Ratio)
+import Control.Monad
 import Control.Exception as E (SomeException, catch, evaluate)
 
 -- | Use @`for`@ to configure the number of tests performed by @check@.
@@ -110,7 +111,7 @@ check `depthBound` mi =  \p -> check $ p `With` DepthBound mi
 -- > Generalization:
 -- > [] (x:x:_)
 check :: Testable a => a -> IO ()
-check p = checkResult p >> return ()
+check = void . checkResult
 
 -- | Check a property
 --   printing results on 'stdout' and
@@ -134,7 +135,7 @@ data Result = OK        Int
   deriving (Eq, Show)
 
 resultsIO :: Testable a => Int -> a -> IO [Result]
-resultsIO n = sequence . zipWith torio [1..] . take n . results
+resultsIO n = zipWithM torio [1..] . take n . results
   where
     tor i (_,True) = OK i
     tor i (as,False) = Falsified i as
@@ -145,7 +146,7 @@ resultsIO n = sequence . zipWith torio [1..] . take n . results
 resultIO :: Testable a => Int -> a -> IO (Result, [[Expr]])
 resultIO n p = do
   rs <- resultsIO n p
-  return ( maybe (last rs) id $ find isFailure rs
+  return ( fromMaybe (last rs) $ find isFailure rs
          , mapMaybe ce rs )
   where
   isFailure (OK _) = False

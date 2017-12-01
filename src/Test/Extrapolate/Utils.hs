@@ -41,9 +41,8 @@ module Test.Extrapolate.Utils
 where
 
 import Data.Function (on)
-import Data.List (minimumBy, maximumBy, nub)
+import Data.List (minimumBy, maximumBy, nub, elemIndex)
 import Data.Typeable
-import Data.List (elemIndex)
 
 nubMergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 nubMergeBy cmp (x:xs) (y:ys) = case x `cmp` y of
