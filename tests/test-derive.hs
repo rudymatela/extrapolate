@@ -98,25 +98,9 @@ dict :: a -> b -> Dict a b
 dict = undefined
 
 
--- TODO: auto-derive Listable from deriveGeneralizable?
 deriveListable ''List
 deriveListable ''Perhaps
 deriveListable ''Ship
-deriveListable ''Arrangement
-
-deriveListable ''NonEmptyList
-
-deriveListable ''Mutual
-deriveListable ''Shared
-
-deriveListable ''Tree
-deriveListable ''Leafy
-
-deriveListable ''Dict
-
-deriveListable ''Data
-deriveListable ''EqData
-deriveListable ''OrdData
 
 
 deriveGeneralizable ''List

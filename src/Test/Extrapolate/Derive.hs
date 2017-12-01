@@ -26,6 +26,7 @@ import Test.Extrapolate.TypeBinding
 import Language.Haskell.TH
 import Test.LeanCheck.Basic
 import Test.LeanCheck.Utils.TypeBinding
+import Test.LeanCheck.Derive (deriveListableIfNeeded)
 import Control.Monad (unless, liftM, liftM2, filterM)
 import Data.List (delete,nub,sort)
 import Data.Char (toLower)
@@ -76,9 +77,10 @@ deriveGeneralizableX warnExisting cascade t = do
         (reportWarning $ "Instance Generalizable " ++ show t
                       ++ " already exists, skipping derivation")
       return []
-    else if cascade
-           then reallyDeriveGeneralizableCascading t
-           else reallyDeriveGeneralizable t
+    else
+      if cascade
+        then liftM2 (++) (deriveListableCascading t) (reallyDeriveGeneralizableCascading t)
+        else liftM2 (++) (deriveListableIfNeeded t)  (reallyDeriveGeneralizable t)
 
 reallyDeriveGeneralizable :: Name -> DecsQ
 reallyDeriveGeneralizable t = do
