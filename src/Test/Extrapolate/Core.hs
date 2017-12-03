@@ -46,6 +46,7 @@ module Test.Extrapolate.Core
   , generalizationsCounts
 
   , atoms
+  , theoryAndReprExprs
   , theoryAndReprConds
   , candidateConditions
   , validConditions
