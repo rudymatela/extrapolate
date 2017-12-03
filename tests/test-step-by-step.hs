@@ -10,6 +10,23 @@ tests :: Int -> [Bool]
 tests n =
   [ True
 
+  , tBackground prop
+    == [ operatorE (_is -==- _is)
+       , operatorE (_is -/=- _is)
+       , operatorE (_is -<=- _is)
+       , operatorE (_is -<-  _is)
+       , lengthE
+       , elemE
+
+       , operatorE (_b -==- _b)
+       , operatorE (_b -/=- _b)
+       , notE
+
+       , operatorE (_i -==- _i)
+       , operatorE (_i -/=- _i)
+       , operatorE (_i -<-  _i)
+       , operatorE (_i -<=- _i) ]
+
   , concat (take 2 $ atoms prop)
     == [ _b
        , _i

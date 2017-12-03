@@ -34,6 +34,7 @@ module Test.Extrapolate.Core
   , (*/=*)
   , (*<=*)
   , (*<*)
+  , tBackground
 
   , counterExamples
   , counterExampleGen
@@ -348,6 +349,9 @@ getEqInstancesFromBackground is =
 
 backgroundOf :: Generalizable a => a -> [Expr]
 backgroundOf x = getBackground $ instances x []
+
+tBackground :: Testable a => a -> [Expr]
+tBackground = getBackground . tinstances
 
 -- |  generalizes an expression by making it less defined,
 --    starting with smaller changes, then bigger changes:
