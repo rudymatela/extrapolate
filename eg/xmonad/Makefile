@@ -20,6 +20,7 @@ prepare:
 	cd xmonad; cabal configure --enable-tests --ghc-options=-dynamic
 
 clean:
+	cd xmonad; cabal clean
 
 clean-prepare:
 	rm -rf xmonad
