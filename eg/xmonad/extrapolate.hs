@@ -21,8 +21,7 @@ main = do
   putStrLn ""
 
   putStrLn "Extrapolate"
-  check `withConditionSize` 0 $ prop_delete
---check prop_delete
+  check prop_delete
   putStrLn ""
 
 type Tag = Int
