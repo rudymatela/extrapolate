@@ -44,4 +44,4 @@ main = do
         `withBackground` [constant "sum" (sum :: [Int8] -> Int8)]
         `withConditionSize` 4
         $ prop
--- TODO: somehow make overflow8 run faster
+-- NOTE: with T defined as a triple, this takes 25s to run
