@@ -33,14 +33,7 @@ instance Generalizable Int16 where
   name _ = "x"
   expr = showConstant
   instances x = this x id
---background x = bgOrd x
--- TODO: make overflow work nicely with a background
--- with the above line is uncommented, even withConditionSize 3, Extrapolate
--- takes 7 minutes to print its results and does not find any generalization.
--- try again after improving the algorithm.  Somehow include -10000 or other
--- negative number in the background.
--- TODO: it would be also nice to print a counter-example as it is found (not
--- wait for everything to generate output).
+  background x = bgOrd x
 
 {-
 instance Listable T where
@@ -56,6 +49,7 @@ main :: IO ()
 main = do
   check `for` 10000
         `withConditionSize` 2
+-- NOTE: it takes 25m to run with the following two lines uncommented
 --      `withBackground` [constant "sum" (sum :: [Int16] -> Int16)]
 --      `withConditionSize` 4
     $ prop
