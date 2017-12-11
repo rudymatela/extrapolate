@@ -9,8 +9,8 @@ packages:
 - .
 
 extra-deps:
-- leancheck-0.6.7
-- speculate-0.3.0
+- leancheck-0.7.0
+- speculate-0.3.1
 
 flags: {}
 
