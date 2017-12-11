@@ -59,4 +59,3 @@ main = do
 --      `withBackground` [constant "sum" (sum :: [Int16] -> Int16)]
 --      `withConditionSize` 4
     $ prop
---print $ take 1000 (list :: [T])
