@@ -63,6 +63,6 @@ matrix:
     - cabal install Cabal==1.18.*
     - cabal install leancheck speculate
     script:
-    - make GHCFLAGS=-O2 && make test-without-extra-deps GHCFLAGS=-O2
+    - make && make test
     - make haddock HADDOCKFLAGS=
     - cabal test
