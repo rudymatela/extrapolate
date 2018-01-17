@@ -26,11 +26,11 @@ tested-with: GHC==8.2, GHC==8.0, GHC==7.10, GHC==7.8
 
 source-repository head
   type:            git
-  location:        https://github.com/rudymatela/speculate
+  location:        https://github.com/rudymatela/extrapolate
 
 source-repository this
   type:            git
-  location:        https://github.com/rudymatela/speculate
+  location:        https://github.com/rudymatela/extrapolate
   tag:             v0.3.0
 
 library
