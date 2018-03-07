@@ -145,7 +145,7 @@ Extrapolate is also subject to a chapter in a [PhD Thesis (2017)].
 [IFL 2017]:             http://iflconference.org/
 [SmartCheck]:           https://github.com/leepike/SmartCheck
 [Lazy SmallCheck 2012]: https://github.com/UoYCS-plasma/lazysmallcheck2012
-[PhD Thesis 2017]: https://matela.com.br/paper/rudy-phd-thesis-2017.pdf
+[PhD Thesis (2017)]: https://matela.com.br/paper/rudy-phd-thesis-2017.pdf
 
 [build-status]:    https://travis-ci.org/rudymatela/extrapolate.svg?branch=master
 [build-log]:       https://travis-ci.org/rudymatela/extrapolate
