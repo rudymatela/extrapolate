@@ -105,19 +105,28 @@ list-hs:
 list-objs:
 	$(LISTOBJS)
 
-legacy-test: # needs ghc-8.0 .. ghc-7.8 installed as such
+legacy-test: # needs ghc-8.2 .. ghc-7.8 installed as such
+	make clean && make test -j8 GHC=ghc-8.2  GHCFLAGS="-Werror -dynamic"
 	make clean && make test -j8 GHC=ghc-8.0  GHCFLAGS="-Werror -dynamic"
 	make clean && make test -j8 GHC=ghc-7.10 GHCFLAGS="-Werror -dynamic"
 	make clean && make test -j8 GHC=ghc-7.8  GHCFLAGS="-Werror -dynamic"
 	make clean && make test -j8
 
 legacy-test-via-cabal: # needs similarly named cabal wrappers
+	cabal clean && cabal-ghc-8.2  configure && cabal-ghc-8.2  test
 	cabal clean && cabal-ghc-8.0  configure && cabal-ghc-8.0  test
 	cabal clean && cabal-ghc-7.10 configure && cabal-ghc-7.10 test
 	cabal clean && cabal-ghc-7.8  configure && cabal-ghc-7.8  test
 	cabal clean && cabal test
 
-prepare-legacy-test: prepare-legacy-test-8.0 prepare-legacy-test-7.10 prepare-legacy-test-7.8
+prepare-legacy-test: \
+  prepare-legacy-test-8.2 \
+  prepare-legacy-test-8.0 \
+  prepare-legacy-test-7.10 \
+  prepare-legacy-test-7.8
+
+prepare-legacy-test-8.2:
+	cabal-ghc-8.2  --ignore-sandbox install leancheck speculate
 
 prepare-legacy-test-8.0:
 	cabal-ghc-8.0  --ignore-sandbox install leancheck speculate
