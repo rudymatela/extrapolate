@@ -28,13 +28,6 @@ EG = \
   eg/overflow \
   eg/overflow8 \
   $(QUICKEG)
-LISTHS   = find src mk tests eg/*.hs bench/*.hs -name \*.hs
-LISTOBJS = $(LISTHS) | sed -e 's/.hs$$/.o/'
-LISTLIBS = find src -name \*.hs
-ALLHS    = $(shell $(LISTHS))
-HSS      = $(shell $(LISTHS))
-ALLOBJS  = $(shell $(LISTOBJS))
-OBJS = src/Test/Extrapolate.o
 GHCIMPORTDIRS = src:tests:eg
 GHCEXTRAFLAGS = #-prof -fprof-auto #-caf-all
 # When profiling is enabled, to get the cost centres with more than 6% time:
@@ -44,9 +37,9 @@ GHCFLAGS = -dynamic -O2 $(GHCEXTRAFLAGS)
 HADDOCKFLAGS = --no-print-missing-docs \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo --optghc=-dynamic)
 
-all: $(OBJS)
+all: mk/toplibs
 
-all-all: $(ALLOBJS)
+all-all: mk/All.hs
 
 test: $(patsubst %,%.test,$(TESTS)) diff-test
 
@@ -100,12 +93,6 @@ ghci-7.8: mk/All.ghci
 install:
 	@echo "use \`cabal install' instead"
 
-list-hs:
-	$(LISTHS)
-
-list-objs:
-	$(LISTOBJS)
-
 legacy-test: # needs ghc-8.2 .. ghc-7.8 installed as such
 	make clean && make test -j8 GHC=ghc-8.2  GHCFLAGS="-Werror -dynamic"
 	make clean && make test -j8 GHC=ghc-8.0  GHCFLAGS="-Werror -dynamic"
@@ -146,21 +133,6 @@ hlint:
 
 markdown:
 	pandoc README.md -o README.html
-
-haddock: doc/index.html
-
-clean-haddock:
-	rm -f doc/*.{html,css,js,png,gif} README.html
-
-upload-haddock:
-	@echo "use \`cabal upload -d' instead"
-	@echo "(but 1st: cabal install --only-dependencies --enable-documentation)"
-	@echo "(to just compile docs: cabal haddock --for-hackage)"
-	@echo "(on Arch Linux, use: cabal haddock --for-hackage --haddock-options=--optghc=-dynamic)"
-
-doc/index.html: $(shell $(LISTLIBS))
-	./mk/haddock-i base template-haskell | xargs \
-	haddock --html -odoc $(shell $(LISTLIBS)) $(HADDOCKFLAGS) --title=extrapolate
 
 # NOTE: (very hacky!) the following target allows parallel compilation (-jN) of
 # eg and tests programs so long as they don't share dependencies _not_ stored
