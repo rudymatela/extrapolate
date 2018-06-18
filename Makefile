@@ -41,7 +41,8 @@ GHCEXTRAFLAGS = #-prof -fprof-auto #-caf-all
 #   $ ./eg/sorting +RTS -p -RTS
 #   $ cat sorting.prof | grep -v ' [0-5].[0-9] ......$'
 GHCFLAGS = -dynamic -O2 $(GHCEXTRAFLAGS)
-HADDOCKFLAGS = --no-print-missing-docs
+HADDOCKFLAGS = --no-print-missing-docs \
+  $(shell grep -q "Arch Linux" /etc/lsb-release && echo --optghc=-dynamic)
 
 all: $(OBJS)
 
