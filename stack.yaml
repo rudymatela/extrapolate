@@ -8,9 +8,9 @@ resolver: lts-11.11
 packages:
 - .
 
-extra-deps: []
-#- leancheck-0.7.0
-#- speculate-0.3.2
+extra-deps:
+- leancheck-0.7.1
+- speculate-0.3.3
 
 flags: {}
 
