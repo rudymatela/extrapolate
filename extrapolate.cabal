@@ -32,9 +32,21 @@ extra-source-files: Makefile
                   , stack.yaml
                   , .travis.yml
                   , .gitignore
+                  , bench/diff.hs
+                  , bench/eq.hs
+                  , bench/false.hs
+                  , bench/ord.hs
+                  , bench/lazy-sc/Makefile
+                  , bench/lazy-sc/revision.txt
+                  , bench/lazy-sc/*.hs
                   , tests/test-sdist
                   , tests/model/eg/*.out
                   , tests/model/bench/*.out
+                  , eg/*.hs
+                  , eg/xmonad/extrapolate.hs
+                  , eg/xmonad/Makefile
+                  , eg/xmonad/revision.txt
+                  , eg/xmonad/xmonad.cabal
 tested-with: GHC==8.4, GHC==8.2, GHC==8.0, GHC==7.10, GHC==7.8
 
 source-repository head
