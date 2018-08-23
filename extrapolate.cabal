@@ -33,6 +33,8 @@ extra-source-files: Makefile
                   , .travis.yml
                   , .gitignore
                   , tests/test-sdist
+                  , tests/model/eg/*.out
+                  , tests/model/bench/*.out
 tested-with: GHC==8.4, GHC==8.2, GHC==8.0, GHC==7.10, GHC==7.8
 
 source-repository head
