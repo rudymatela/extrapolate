@@ -60,10 +60,10 @@ egs: $(EG)
 	./$<
 
 %.diff-test: %
-	./$< | diff -rud tests/model/$< -
+	./$< | diff -rud tests/model/$<.out -
 
 %.update-diff-test: %
-	./$< >           tests/model/$<
+	./$< >           tests/model/$<.out
 
 test-sdist:
 	./tests/test-sdist
