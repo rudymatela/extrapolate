@@ -22,6 +22,17 @@ cabal-version:       1.18
 
 extra-doc-files: README.md
                , TODO.md
+extra-source-files: Makefile
+                  , mk/All.hs
+                  , mk/depend.mk
+                  , mk/ghcdeps
+                  , mk/haddock-i
+                  , mk/haskell.mk
+                  , mk/Toplibs.hs
+                  , stack.yaml
+                  , .travis.yml
+                  , .gitignore
+                  , tests/test-sdist
 tested-with: GHC==8.4, GHC==8.2, GHC==8.0, GHC==7.10, GHC==7.8
 
 source-repository head
