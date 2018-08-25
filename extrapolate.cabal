@@ -36,6 +36,18 @@ extra-source-files: .gitignore
                   , bench/runtime/oubli/eg/*.runtime
                   , bench/runtime/zero/bench/*.runtime
                   , bench/runtime/zero/eg/*.runtime
+                  , bench/smartcheck/*.txt
+                  , bench/smartcheck/Makefile
+                  , bench/smartcheck/bin/count-cons
+                  , bench/smartcheck/bin/ncons-overflow
+                  , bench/smartcheck/bin/nvars-overflow
+                  , bench/smartcheck/bin/sort-stats
+                  , bench/smartcheck/div0-main.hs
+                  , bench/smartcheck/list.hs
+                  , bench/smartcheck/overflow-main.hs
+                  , bench/smartcheck/parser-main.hs
+                  , bench/smartcheck/sorting.hs
+                  , bench/smartcheck/word-refinements.hs
                   , bench/true.hs
                   , eg/*.hs
                   , eg/xmonad/Makefile
