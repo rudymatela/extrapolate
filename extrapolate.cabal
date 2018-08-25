@@ -23,6 +23,20 @@ cabal-version:       1.18
 extra-doc-files: README.md
                , TODO.md
 extra-source-files: Makefile
+                  , bench/diff.hs
+                  , bench/eq.hs
+                  , bench/false.hs
+                  , bench/lazy-sc/*.hs
+                  , bench/lazy-sc/Makefile
+                  , bench/lazy-sc/revision.txt
+                  , bench/ord.hs
+                  , bench/true.hs
+                  , eg/*.hs
+                  , eg/xmonad/extrapolate.hs
+                  , eg/xmonad/Makefile
+                  , eg/xmonad/revision.txt
+                  , eg/xmonad/xmonad.cabal
+                  , .gitignore
                   , mk/All.hs
                   , mk/depend.mk
                   , mk/ghcdeps
@@ -30,24 +44,10 @@ extra-source-files: Makefile
                   , mk/haskell.mk
                   , mk/Toplibs.hs
                   , stack.yaml
-                  , .travis.yml
-                  , .gitignore
-                  , bench/diff.hs
-                  , bench/eq.hs
-                  , bench/false.hs
-                  , bench/ord.hs
-                  , bench/true.hs
-                  , bench/lazy-sc/Makefile
-                  , bench/lazy-sc/revision.txt
-                  , bench/lazy-sc/*.hs
-                  , tests/test-sdist
-                  , tests/model/eg/*.out
                   , tests/model/bench/*.out
-                  , eg/*.hs
-                  , eg/xmonad/extrapolate.hs
-                  , eg/xmonad/Makefile
-                  , eg/xmonad/revision.txt
-                  , eg/xmonad/xmonad.cabal
+                  , tests/model/eg/*.out
+                  , tests/test-sdist
+                  , .travis.yml
 tested-with: GHC==8.4, GHC==8.2, GHC==8.0, GHC==7.10, GHC==7.8
 
 source-repository head
