@@ -22,7 +22,9 @@ cabal-version:       1.18
 
 extra-doc-files: README.md
                , TODO.md
-extra-source-files: Makefile
+extra-source-files: .gitignore
+                  , .travis.yml
+                  , Makefile
                   , bench/diff.hs
                   , bench/eq.hs
                   , bench/false.hs
@@ -32,22 +34,20 @@ extra-source-files: Makefile
                   , bench/ord.hs
                   , bench/true.hs
                   , eg/*.hs
-                  , eg/xmonad/extrapolate.hs
                   , eg/xmonad/Makefile
+                  , eg/xmonad/extrapolate.hs
                   , eg/xmonad/revision.txt
                   , eg/xmonad/xmonad.cabal
-                  , .gitignore
                   , mk/All.hs
+                  , mk/Toplibs.hs
                   , mk/depend.mk
                   , mk/ghcdeps
                   , mk/haddock-i
                   , mk/haskell.mk
-                  , mk/Toplibs.hs
                   , stack.yaml
                   , tests/model/bench/*.out
                   , tests/model/eg/*.out
                   , tests/test-sdist
-                  , .travis.yml
 tested-with: GHC==8.4, GHC==8.2, GHC==8.0, GHC==7.10, GHC==7.8
 
 source-repository head
