@@ -33,9 +33,9 @@ GHCEXTRAFLAGS = #-prof -fprof-auto #-caf-all
 # When profiling is enabled, to get the cost centres with more than 6% time:
 #   $ ./eg/sorting +RTS -p -RTS
 #   $ cat sorting.prof | grep -v ' [0-5].[0-9] ......$'
-GHCFLAGS = -dynamic -O2 $(GHCEXTRAFLAGS)
-HADDOCKFLAGS = --no-print-missing-docs \
-  $(shell grep -q "Arch Linux" /etc/lsb-release && echo --optghc=-dynamic)
+GHCFLAGS = -O2 $(GHCEXTRAFLAGS) \
+  $(shell grep -q "Arch Linux" /etc/lsb-release && echo -dynamic)
+HADDOCKFLAGS = --no-print-missing-docs
 
 all: mk/toplibs
 
