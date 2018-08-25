@@ -32,6 +32,10 @@ extra-source-files: .gitignore
                   , bench/lazy-sc/Makefile
                   , bench/lazy-sc/revision.txt
                   , bench/ord.hs
+                  , bench/runtime/oubli/bench/*.runtime
+                  , bench/runtime/oubli/eg/*.runtime
+                  , bench/runtime/zero/bench/*.runtime
+                  , bench/runtime/zero/eg/*.runtime
                   , bench/true.hs
                   , eg/*.hs
                   , eg/xmonad/Makefile
