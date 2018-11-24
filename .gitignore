@@ -21,7 +21,12 @@ etc
 **/TAGS
 **/tags
 
-doc
+doc/*.html
+doc/*.css
+doc/*.js
+doc/*.png
+doc/*.gif
+doc/*.json
 README.html
 
 mk/toplibs
