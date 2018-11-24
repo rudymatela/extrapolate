@@ -65,7 +65,8 @@ extra-source-files: .gitignore
                   , tests/model/bench/*.out
                   , tests/model/eg/*.out
                   , tests/test-sdist
-tested-with: GHC==8.4, GHC==8.2, GHC==8.0, GHC==7.10, GHC==7.8
+tested-with: GHC==8.6, GHC==8.4, GHC==8.2, GHC==8.0
+           , GHC==7.10, GHC==7.8
 
 source-repository head
   type:            git
