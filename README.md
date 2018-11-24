@@ -6,6 +6,8 @@ Extrapolate
 [![Extrapolate on Stackage LTS][stackage-lts-badge]][extrapolate-on-stackage-lts]
 [![Extrapolate on Stackage Nightly][stackage-nightly-badge]][extrapolate-on-stackage-nightly]
 
+![Extrapolate logo][extrapolate-logo]
+
 Extrapolate is a [property-based testing] library for [Haskell]
 capable of reporting generalized counter-examples.
 
@@ -145,6 +147,8 @@ Extrapolate is also subject to a chapter in a [PhD Thesis (2017)].
 [SmartCheck]:           https://github.com/leepike/SmartCheck
 [Lazy SmallCheck 2012]: https://github.com/UoYCS-plasma/lazysmallcheck2012
 [PhD Thesis (2017)]: https://matela.com.br/paper/rudy-phd-thesis-2017.pdf
+
+[extrapolate-logo]: https://github.com/rudymatela/extrapolate/raw/master/doc/extrapolate.svg?sanitize=true
 
 [build-status]:    https://travis-ci.org/rudymatela/extrapolate.svg?branch=master
 [build-log]:       https://travis-ci.org/rudymatela/extrapolate
