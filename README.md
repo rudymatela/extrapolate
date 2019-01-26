@@ -153,8 +153,8 @@ Extrapolate is also subject to a chapter in a [PhD Thesis (2017)].
 [build-status]:    https://travis-ci.org/rudymatela/extrapolate.svg?branch=master
 [build-log]:       https://travis-ci.org/rudymatela/extrapolate
 [hackage-version]: https://img.shields.io/hackage/v/extrapolate.svg
-[stackage-lts-badge]:            http://stackage.org/package/extrapolate/badge/lts
-[stackage-nightly-badge]:        http://stackage.org/package/extrapolate/badge/nightly
-[extrapolate-on-stackage]:         http://stackage.org/package/extrapolate
-[extrapolate-on-stackage-lts]:     http://stackage.org/lts/package/extrapolate
-[extrapolate-on-stackage-nightly]: http://stackage.org/nightly/package/extrapolate
+[stackage-lts-badge]:              https://stackage.org/package/extrapolate/badge/lts
+[stackage-nightly-badge]:          https://stackage.org/package/extrapolate/badge/nightly
+[extrapolate-on-stackage]:         https://stackage.org/package/extrapolate
+[extrapolate-on-stackage-lts]:     https://stackage.org/lts/package/extrapolate
+[extrapolate-on-stackage-nightly]: https://stackage.org/nightly/package/extrapolate
