@@ -26,16 +26,17 @@ post t  =  (sum . concat) (toList t) < 2 * 16 -- 3 * 16
 prop :: T -> Bool
 prop t  =  pre t ==> post t
 
-instance Listable Int8 where
-  list = map unX list
-
 instance Generalizable Int8 where
   name _ = "x"
   expr = showConstant
   instances x = this x id
   background x = bgOrd x
 
-deriveListable ''T
+instance Listable T where
+  tiers = cons2 makeT
+    where
+    makeT (Xs i) (Xs j) = T i j
+
 deriveGeneralizable ''T
 
 main :: IO ()
