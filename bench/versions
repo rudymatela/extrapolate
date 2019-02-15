@@ -1,0 +1,13 @@
+#!/bin/bash
+get-ghc-v() {
+    ghc --version | sed -e "s/.* version/GHC/"
+}
+get-pkg-v() {
+    ghc-pkg list $1 2>/dev/null |
+    grep " $1-" |
+    sed -e "s/^ *//" |
+    tail -1
+}
+get-ghc-v
+get-pkg-v leancheck
+get-pkg-v speculate

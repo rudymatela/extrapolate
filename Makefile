@@ -68,7 +68,10 @@ egs: $(EG)
 test-sdist:
 	./tests/test-sdist
 
+.PHONY: bench
 bench: $(patsubst %,%.bench,$(EG))
+	@mkdir -p bench/runtime/$$HOSTNAME
+	./bench/versions | tee bench/runtime/$$HOSTNAME/versions
 
 .PHONY: %.bench
 %.bench: %
