@@ -12,12 +12,10 @@
 -- luck importing "Test.Extrapolate" directly.
 module Test.Extrapolate.Basic
   ( module Test.Extrapolate.Core
-  , module Test.Extrapolate.New
   )
 where
 
 import Test.Extrapolate.Core
-import Test.Extrapolate.New
 import Data.Ratio
 
 instance (Integral a, Generalizable a) => Generalizable (Ratio a) where

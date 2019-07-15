@@ -26,6 +26,7 @@ extra-doc-files: README.md
 extra-source-files: .gitignore
                   , .travis.yml
                   , Makefile
+                  , bench/versions
                   , bench/diff.hs
                   , bench/eq.hs
                   , bench/false.hs
@@ -37,6 +38,7 @@ extra-source-files: .gitignore
                   , bench/runtime/oubli/eg/*.runtime
                   , bench/runtime/zero/bench/*.runtime
                   , bench/runtime/zero/eg/*.runtime
+                  , bench/runtime/zero/versions
                   , bench/smartcheck/*.txt
                   , bench/smartcheck/Makefile
                   , bench/smartcheck/bin/count-cons
@@ -62,6 +64,7 @@ extra-source-files: .gitignore
                   , mk/haddock-i
                   , mk/haskell.mk
                   , stack.yaml
+                  , stack-lts-11.yaml
                   , tests/model/bench/*.out
                   , tests/model/eg/*.out
                   , tests/test-sdist
@@ -86,7 +89,6 @@ library
                  , Test.Extrapolate.IO
                  , Test.Extrapolate.TypeBinding
                  , Test.Extrapolate.Utils
-                 , Test.Extrapolate.New
   other-extensions:    TemplateHaskell, CPP
   build-depends: base >= 4 && < 5
                , leancheck >= 0.9.0
@@ -114,14 +116,6 @@ test-suite derive
 test-suite utils
   type:                exitcode-stdio-1.0
   main-is:             test-utils.hs
-  other-modules:       Test
-  hs-source-dirs:      tests
-  build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
-  default-language:    Haskell2010
-
-test-suite new
-  type:                exitcode-stdio-1.0
-  main-is:             test-new.hs
   other-modules:       Test
   hs-source-dirs:      tests
   build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
