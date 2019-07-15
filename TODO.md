@@ -5,8 +5,6 @@ A non-exhaustive list of things TO DO for Extrapolate.
 
 * simplify test handling `make test/x.run`
 
-* `deriveGeneralizable` should `deriveListableIfNeeded`.
-
 * `deriveGeneralizableAtomic`: derive a generalizable value treating it as
   atomic, as I did with the Map on the XMonad example.  To be used on datatypes
   with data invariants.
