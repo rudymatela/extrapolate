@@ -45,7 +45,7 @@ test: $(patsubst %,%.run,$(TESTS)) diff-test test-sdist
 
 diff-test: $(patsubst %,%.diff-test,$(EG))
 
-quick-test: $(patsubst %,%.run,$(TESTS)) quick-diff-test
+quick-test: $(patsubst %,%.run,$(TESTS)) quick-diff-test test-sdist
 
 quick-diff-test: $(patsubst %,%.diff-test,$(QUICKEG))
 
