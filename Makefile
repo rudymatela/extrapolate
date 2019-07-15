@@ -36,12 +36,13 @@ GHCEXTRAFLAGS = #-prof -fprof-auto #-caf-all
 GHCFLAGS = -O2 $(GHCEXTRAFLAGS) \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo -dynamic)
 HADDOCKFLAGS = --no-print-missing-docs
+LIST_ALL_HSS = find src tests mk eg/*.hs bench/*.hs -name "*.hs"
 
 all: mk/toplibs
 
 all-all: mk/All.hs
 
-test: $(patsubst %,%.test,$(TESTS)) diff-test
+test: $(patsubst %,%.test,$(TESTS)) diff-test test-sdist
 
 diff-test: $(patsubst %,%.diff-test,$(EG))
 
