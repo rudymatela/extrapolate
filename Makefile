@@ -4,10 +4,10 @@
 # License:     3-Clause BSD  (see the file LICENSE)
 # Maintainer:  Rudy Matela <rudy@matela.com.br>
 TESTS = \
-  tests/test-derive \
-  tests/test-utils \
-  tests/test-step-by-step \
-  tests/test-extrapolate
+  test/derive \
+  test/utils \
+  test/step-by-step \
+  test/extrapolate
 QUICKEG = \
   eg/int \
   eg/list \
@@ -27,7 +27,7 @@ EG = \
   eg/overflow \
   eg/overflow8 \
   $(QUICKEG)
-GHCIMPORTDIRS = src:tests:eg
+GHCIMPORTDIRS = src:test:eg
 GHCEXTRAFLAGS = #-prof -fprof-auto #-caf-all
 # When profiling is enabled, to get the cost centres with more than 6% time:
 #   $ ./eg/sorting +RTS -p -RTS
@@ -35,7 +35,7 @@ GHCEXTRAFLAGS = #-prof -fprof-auto #-caf-all
 GHCFLAGS = -O2 $(GHCEXTRAFLAGS) \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo -dynamic)
 HADDOCKFLAGS = --no-print-missing-docs
-LIST_ALL_HSS = find src tests mk eg/*.hs bench/*.hs -name "*.hs"
+LIST_ALL_HSS = find src test mk eg/*.hs bench/*.hs -name "*.hs"
 
 all: mk/toplibs
 
@@ -53,20 +53,20 @@ update-diff-test: $(patsubst %,%.update-diff-test,$(EG))
 
 egs: $(EG)
 
-%.test: tests/test-%
+%.test: test/test-%
 	./$<
 
 %.test: %
 	./$<
 
 %.diff-test: %
-	./$< | diff -rud tests/model/$<.out -
+	./$< | diff -rud test/model/$<.out -
 
 %.update-diff-test: %
-	./$< >           tests/model/$<.out
+	./$< >           test/model/$<.out
 
 test-sdist:
-	./tests/test-sdist
+	./test/sdist
 
 .PHONY: bench
 bench: $(patsubst %,%.bench,$(EG))
@@ -85,7 +85,7 @@ clean: clean-hi-o clean-haddock
 
 ghci: mk/All.ghci
 
-ghci-test: tests/Test.ghci
+ghci-test: test/Test.ghci
 
 ghci-7.10: GHC=ghc-7.10
 ghci-7.10: mk/All.ghci
@@ -138,8 +138,8 @@ markdown:
 	pandoc README.md -o README.html
 
 # NOTE: (very hacky!) the following target allows parallel compilation (-jN) of
-# eg and tests programs so long as they don't share dependencies _not_ stored
-# in src/ and tests/.  Runnable binaries should depend on mk/toplibs instead of
+# eg and test programs so long as they don't share dependencies _not_ stored
+# in src/ and test/.  Runnable binaries should depend on mk/toplibs instead of
 # actual Haskell source files
 mk/toplibs: mk/Toplibs.o
 	touch mk/toplibs

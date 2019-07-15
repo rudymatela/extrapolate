@@ -65,9 +65,9 @@ extra-source-files: .gitignore
                   , mk/haskell.mk
                   , stack.yaml
                   , stack-lts-11.yaml
-                  , tests/model/bench/*.out
-                  , tests/model/eg/*.out
-                  , tests/test-sdist
+                  , test/model/bench/*.out
+                  , test/model/eg/*.out
+                  , test/sdist
 tested-with: GHC==8.6, GHC==8.4, GHC==8.2, GHC==8.0
            , GHC==7.10, GHC==7.8
 
@@ -99,32 +99,32 @@ library
 
 test-suite test
   type:                exitcode-stdio-1.0
-  main-is:             test-extrapolate.hs
+  main-is:             extrapolate.hs
   other-modules:       Test
-  hs-source-dirs:      tests
+  hs-source-dirs:      test
   build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
   default-language:    Haskell2010
 
 test-suite derive
   type:                exitcode-stdio-1.0
-  main-is:             test-derive.hs
+  main-is:             derive.hs
   other-modules:       Test
-  hs-source-dirs:      tests
+  hs-source-dirs:      test
   build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
   default-language:    Haskell2010
 
 test-suite utils
   type:                exitcode-stdio-1.0
-  main-is:             test-utils.hs
+  main-is:             utils.hs
   other-modules:       Test
-  hs-source-dirs:      tests
+  hs-source-dirs:      test
   build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
   default-language:    Haskell2010
 
 test-suite step-by-step
   type:                exitcode-stdio-1.0
-  main-is:             test-step-by-step.hs
+  main-is:             step-by-step.hs
   other-modules:       Test
-  hs-source-dirs:      tests
+  hs-source-dirs:      test
   build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
   default-language:    Haskell2010
