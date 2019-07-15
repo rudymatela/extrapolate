@@ -41,11 +41,11 @@ all: mk/toplibs
 
 all-all: mk/All.hs
 
-test: $(patsubst %,%.test,$(TESTS)) diff-test test-sdist
+test: $(patsubst %,%.run,$(TESTS)) diff-test test-sdist
 
 diff-test: $(patsubst %,%.diff-test,$(EG))
 
-quick-test: $(patsubst %,%.test,$(TESTS)) quick-diff-test
+quick-test: $(patsubst %,%.run,$(TESTS)) quick-diff-test
 
 quick-diff-test: $(patsubst %,%.diff-test,$(QUICKEG))
 
@@ -53,10 +53,7 @@ update-diff-test: $(patsubst %,%.update-diff-test,$(EG))
 
 egs: $(EG)
 
-%.test: test/test-%
-	./$<
-
-%.test: %
+%.run: %
 	./$<
 
 %.diff-test: %
