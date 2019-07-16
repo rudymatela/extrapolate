@@ -32,7 +32,9 @@ GHCEXTRAFLAGS = #-prof -fprof-auto #-caf-all
 # When profiling is enabled, to get the cost centres with more than 6% time:
 #   $ ./eg/sorting +RTS -p -RTS
 #   $ cat sorting.prof | grep -v ' [0-5].[0-9] ......$'
-GHCFLAGS = -O2 $(GHCEXTRAFLAGS) \
+GHCFLAGS = -O2 \
+  -Wall -Wno-name-shadowing -Wno-orphans -Wno-unused-matches \
+  $(GHCEXTRAFLAGS) \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo -dynamic)
 HADDOCKFLAGS = --no-print-missing-docs
 LIST_ALL_HSS = find src test mk eg/*.hs bench/*.hs -name "*.hs"
