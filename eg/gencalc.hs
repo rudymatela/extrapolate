@@ -46,11 +46,14 @@ instance Listable a => Listable (Exp a) where
 
 -- deriveGeneralizable ''Exp
 -- {-
+instance Name a => Name (Exp a) where  name _  =  "e1"
+
+instance Express a => Express (Exp a) where
+  expr e@(C i)        =  value "C"   (C    ->: e) :$ expr i
+  expr e@(Add e1 e2)  =  value "Add" (Add ->>: e) :$ expr e1 :$ expr e2
+  expr e@(Div e1 e2)  =  value "Div" (Div ->>: e) :$ expr e1 :$ expr e2
+
 instance Generalizable a => Generalizable (Exp a) where
-  name _ = "e1"
-  expr e@(C i)        =  constant "C"   (C    ->: e) :$ expr i
-  expr e@(Add e1 e2)  =  constant "Add" (Add ->>: e) :$ expr e1 :$ expr e2
-  expr e@(Div e1 e2)  =  constant "Div" (Div ->>: e) :$ expr e1 :$ expr e2
   instances e  =  this e $ (let C i = C undefined `asTypeOf` e in instances i)
 -- -}
 

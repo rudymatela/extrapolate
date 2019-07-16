@@ -107,8 +107,8 @@ deriveGeneralizable ''List
 {- -- derivation:
 instance (Generalizable a) => Generalizable (List a) where
   name _ = "xs"
-  expr xs@Nil          =  constant "Nil"  (Nil    -: xs)
-  expr xs@(Cons y ys)  =  constant "Cons" (Cons ->>: xs) :$ expr y :$ expr ys
+  expr xs@Nil          =  value "Nil"  (Nil    -: xs)
+  expr xs@(Cons y ys)  =  value "Cons" (Cons ->>: xs) :$ expr y :$ expr ys
   instances xs = this xs
                $ (let Cons y ys = Cons undefined undefined -: xs
                   in instances y . instances ys)
@@ -123,16 +123,16 @@ instance (Generalizable a) => Generalizable (List a) where
 deriveGeneralizable ''Perhaps
 {- -- derivation:
 instance (Generalizable a) => Generalizable (Perhaps a) where
-  expr px@Naught      =  constant "Naught" (Naught  -: px)
-  expr px@(Simply x)  =  constant "Simply" (Simply ->: px) :$ expr x
+  expr px@Naught      =  value "Naught" (Naught  -: px)
+  expr px@(Simply x)  =  value "Simply" (Simply ->: px) :$ expr x
   instances px = ...
 -}
 
 deriveGeneralizable ''Ship
 {- -- derivation:
 instance (Generalizable a, Generalizable b) => Generalizable (Ship a b) where
-  expr s@(Port x)       =  constant "Port"      (Port      ->: s) :$ expr x
-  expr s@(Starboard y)  =  constant "Starboard" (Starboard ->: s) :$ expr y
+  expr s@(Port x)       =  value "Port"      (Port      ->: s) :$ expr x
+  expr s@(Starboard y)  =  value "Starboard" (Starboard ->: s) :$ expr y
   instances s = ...
 -}
 
@@ -193,12 +193,12 @@ tests n =
     `instancesSubset` dict int (perhaps (mutual (ship (ls char) bool)))
 
   , backgroundOf Data    =$ sort $= []
-  , backgroundOf EqData  =$ sort $= [ constant "==" $ (==) -:> EqData
-                                    , constant "/=" $ (/=) -:> EqData
+  , backgroundOf EqData  =$ sort $= [ value "==" $ (==) -:> EqData
+                                    , value "/=" $ (/=) -:> EqData
                                     ]
-  , backgroundOf OrdData =$ sort $= [ constant "==" $ (==) -:> OrdData
-                                    , constant "/=" $ (/=) -:> OrdData
-                                    , constant "<=" $ (<=) -:> OrdData
-                                    , constant "<"  $ (<)  -:> OrdData
+  , backgroundOf OrdData =$ sort $= [ value "==" $ (==) -:> OrdData
+                                    , value "/=" $ (/=) -:> OrdData
+                                    , value "<=" $ (<=) -:> OrdData
+                                    , value "<"  $ (<)  -:> OrdData
                                     ]
   ]

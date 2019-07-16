@@ -4,7 +4,7 @@
 -- Distributed under the 3-Clause BSD licence (see the file LICENSE).
 import Test
 
-import Data.List (sort, nub, union)
+import Data.List (sort, nub)
 
 #if __GLASGOW_HASKELL__ < 710
 import Data.Typeable (Typeable)
@@ -28,7 +28,7 @@ tests n =
   [ True
 
   -- Transforming lists into Exprs
-  , expr ([]::[Int]) == constant "[]" ([]::[Int])
+  , expr ([]::[Int]) == value "[]" ([]::[Int])
   , expr ([0::Int])  == zero -:- ll
   , expr ([0::Int,1])  == zero -:- one -:- ll
   , holds n $ \xs -> expr xs == foldr (-:-) ll (map expr (xs :: [Int]))
@@ -43,8 +43,8 @@ tests n =
   , holds n $ \p -> expr (Just p) == just (expr (p :: Bool))
 
   -- Transforming Tuples into Exprs
-  , expr ((0,False) :: (Int,Bool))  ==  zero `comma` false
-  , expr ((True,1)  :: (Bool,Int))  ==  true `comma` one
+  , expr ((0,False) :: (Int,Bool))  ==  pair zero false
+  , expr ((True,1)  :: (Bool,Int))  ==  pair true one
 
   -- Showing of Exprs
   , holds n $ \x -> show (expr x) == show (x :: ()) ++ " :: ()"
@@ -92,44 +92,44 @@ tests n =
 #endif
 
   -- Silly test, as it basically replicates the actual implementation:
-  , backgroundOf int =$ sort $= [ constant "==" $ (==) -:> int
-                                , constant "/=" $ (/=) -:> int
-                                , constant "<=" $ (<=) -:> int
-                                , constant "<"  $ (<)  -:> int
+  , backgroundOf int =$ sort $= [ value "==" $ (==) -:> int
+                                , value "/=" $ (/=) -:> int
+                                , value "<=" $ (<=) -:> int
+                                , value "<"  $ (<)  -:> int
                                 ]
 
   , background (mayb int)
-    == [ constant "=="   ((==) -:> mayb int)
-       , constant "/="   ((/=) -:> mayb int)
-       , constant "<="   ((<=) -:> mayb int)
-       , constant "<"    ((<)  -:> mayb int)
-       , constant "Just" (Just ->: mayb int) ]
+    == [ value "=="   ((==) -:> mayb int)
+       , value "/="   ((/=) -:> mayb int)
+       , value "<="   ((<=) -:> mayb int)
+       , value "<"    ((<)  -:> mayb int)
+       , value "Just" (Just ->: mayb int) ]
 
   , background (eith int char)
-    == [ constant "=="    ((==)  -:> eith int char)
-       , constant "/="    ((/=)  -:> eith int char)
-       , constant "<="    ((<=)  -:> eith int char)
-       , constant "<"     ((<)   -:> eith int char)
-       , constant "Left"  (Left  ->: eith int char)
-       , constant "Right" (Right ->: eith int char) ]
+    == [ value "=="    ((==)  -:> eith int char)
+       , value "/="    ((/=)  -:> eith int char)
+       , value "<="    ((<=)  -:> eith int char)
+       , value "<"     ((<)   -:> eith int char)
+       , value "Left"  (Left  ->: eith int char)
+       , value "Right" (Right ->: eith int char) ]
 
   , background [int]
-    == [ constant "=="     ((==)   -:> [int])
-       , constant "/="     ((/=)   -:> [int])
-       , constant "<="     ((<=)   -:> [int])
-       , constant "<"      ((<)    -:> [int])
-       , constant "length" (length -:> [int])
-       , constant "elem"   (elem  ->:> [int]) ]
+    == [ value "=="     ((==)   -:> [int])
+       , value "/="     ((/=)   -:> [int])
+       , value "<="     ((<=)   -:> [int])
+       , value "<"      ((<)    -:> [int])
+       , value "length" (length -:> [int])
+       , value "elem"   (elem  ->:> [int]) ]
 
   , background (mayb nord)
-    == [ constant "Just" (Just ->: mayb nord) ]
+    == [ value "Just" (Just ->: mayb nord) ]
 
   , background (eith nord nord)
-    == [ constant "Left"  (Left  ->: eith nord nord)
-       , constant "Right" (Right ->: eith nord nord) ]
+    == [ value "Left"  (Left  ->: eith nord nord)
+       , value "Right" (Right ->: eith nord nord) ]
 
   , background [nord]
-    == [ constant "length" (length -:> [nord]) ]
+    == [ value "length" (length -:> [nord]) ]
 
   -- background tests
   , listBackgroundOK ()
@@ -255,16 +255,25 @@ tinstancesUnrepeated :: Testable a => a -> Bool
 tinstancesUnrepeated p = nub is == is
                       && nub is' == is'
   where
-  is = tinstances p
-  is' = fullInstances p
+  is = map extractiers $ filter (not . isBackground) $ tinstances p
+  is' = map extractiers $ filter (not . isBackground) $ fullInstances p
+  -- All tiers look the same without evaluating its elements:
+  -- > > tinstances bool
+  -- > [tiers :: [[Expr]],name :: Bool -> [Char],background :: [Expr],tiers :: [[Expr]],name :: Int -> [Char],background :: [Expr]]
+  -- So, this takes a representative to use in the comparison:
+  extractiers e@(Value "tiers" _)  =  head $ concat (eval undefined e :: [[Expr]])
+  extractiers e                    =  e
+  -- every background looks the same without evaluating its elements
+  isBackground (Value "background" _)  =  True
+  isBackground _                       =  False
 
 listBackgroundOK :: Generalizable a => a -> Bool
 listBackgroundOK x = backgroundListOf x `subset` backgroundOf [x]
   where
-  backgroundListOf x = [ constant "length" $ length  -:> [x] ]
+  backgroundListOf x = [ value "length" $ length  -:> [x] ]
                      +++ backgroundOf x
 
 maybeBackgroundOK :: Generalizable a => a -> Bool
 maybeBackgroundOK x = backgroundMaybeOf x `subset` backgroundOf (mayb x)
   where
-  backgroundMaybeOf x = [constant "Just" $ Just -:> x] +++ backgroundOf x
+  backgroundMaybeOf x = [value "Just" $ Just -:> x] +++ backgroundOf x

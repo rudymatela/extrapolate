@@ -10,33 +10,16 @@ module Test
   , mainTest
   , printLines
 
-  , (-:-), ll, llb, llmi
+  , ll, llb, llmi
 
-  , (-+-)
-
-  , _i, xx, yy
-  , _is, xxs, yys
-  , _b, pp, qq
+  , _i
+  , _is
+  , _b
   , _mi, mxx
-  , zero, one
-
-  , false, true
-  , not'
-  , notE
-
-  , elem', length'
-  , elemE, lengthE
 
   , nothing, nothingBool, just
 
-  , comma
-
   , operatorE
-
-  , (-==-)
-  , (-/=-)
-  , (-<-)
-  , (-<=-)
 
   -- * Properties and Tests
   , generalizableOK
@@ -50,6 +33,10 @@ module Test
   , subset, bgSubset
 
   , instancesSubset
+
+  , Thy
+
+  , module Data.Haexpress.Fixtures
   )
 where
 
@@ -60,14 +47,12 @@ import Test.Speculate.Expr (typ)
 import Test.Speculate.Expr.Instance as I
 import Data.Typeable (typeOf)
 import Data.List (isPrefixOf, sort)
-import Data.Maybe (fromMaybe)
 import Test.Speculate.Reason
-import Test.Speculate.Reason.Order
 
 import Test.Extrapolate
 import Test.Extrapolate.Utils
-import Test.Extrapolate.Core hiding (false, true, lengthE)
-import qualified Test.Extrapolate.Core as Core
+import Test.Extrapolate.Core
+import Data.Haexpress.Fixtures hiding (vars, canonicalizeWith)
 import Test.LeanCheck.Utils.Operators
 
 reportTests :: [Bool] -> IO ()
@@ -92,46 +77,21 @@ mainTest tests n' = do
 printLines :: Show a => [a] -> IO ()
 printLines = putStrLn . unlines . map show
 
-(-:-) :: Expr -> Expr -> Expr
-x -:- xs  =  consE :$ x :$ xs
-  where
-  consE = case show $ typ x of
-            "Int"       -> consEint
-            "Bool"      -> consEbool
-            "Maybe Int" -> consEmint
-            t           -> error $ "(-:-): unhandled type " ++ t
-  consEint   =  constant ":" ((:) -:> int)
-  consEbool  =  constant ":" ((:) -:> bool)
-  consEmint  =  constant ":" ((:) -:> mayb int)
-infixr 5 -:-
-
 ll :: Expr
 ll  =  expr ([] :: [Int])
 
-_i, xx, yy :: Expr
-_i  =  var ""  int
-xx  =  var "x" int
-yy  =  var "y" int
+_i :: Expr
+_i  =  i_
 
-_is, xxs, yys :: Expr
-_is  =  var ""   [int]
-xxs  =  var "xs" [int]
-yys  =  var "ys" [int]
+_is :: Expr
+_is  =  is_
 
 _mi, mxx :: Expr
 _mi  =  var ""   (mayb int)
 mxx  =  var "mx" (mayb int)
 
-_b, pp, qq :: Expr
+_b :: Expr
 _b  =  var ""  bool
-pp  =  var "p" bool
-qq  =  var "q" bool
-
-zero :: Expr
-zero  =  expr (0 :: Int)
-
-one :: Expr
-one  =  expr (1 :: Int)
 
 llb :: Expr
 llb  =  expr ([] :: [Bool])
@@ -139,34 +99,11 @@ llb  =  expr ([] :: [Bool])
 llmi :: Expr
 llmi  =  expr ([] :: [Maybe Int])
 
-false :: Expr
-false  =  expr False
-
-true :: Expr
-true  =  expr True
-
 nothing :: Expr
-nothing  =  constant "Nothing" (Nothing :: Maybe Int)
+nothing  =  value "Nothing" (Nothing :: Maybe Int)
 
 nothingBool :: Expr
-nothingBool  =  constant "Nothing" (Nothing :: Maybe Bool)
-
-elem' :: Expr -> Expr -> Expr
-elem' x xs  =  elemE :$ x :$ xs
-
-elemE :: Expr
-elemE  =  constant "elem" (elem :: Int -> [Int] -> Bool)
-
-length' :: Expr -> Expr
-length' xs  =  lengthE :$ xs
-
-lengthE  =  constant "length" (length :: [Int] -> Int)
-
-not' :: Expr -> Expr
-not' p  =  notE :$ p
-
-notE :: Expr
-notE  =  constant "not" not
+nothingBool  =  value "Nothing" (Nothing :: Maybe Bool)
 
 just :: Expr -> Expr
 just x  =  justE :$ x
@@ -175,56 +112,11 @@ just x  =  justE :$ x
             "Int"  -> justEint
             "Bool" -> justEbool
             t      -> error $ "(-:-): unhandled type " ++ t
-  justEint   =  constant "Just" (Just -:> int)
-  justEbool  =  constant "Just" (Just -:> bool)
-
-comma :: Expr -> Expr -> Expr
-comma x y  =  commaE :$ x :$ y
-  where
-  commaE  =  case (show $ typ x, show $ typ y) of
-               ("Int", "Int")  -> commaEii
-               ("Int", "Bool") -> commaEib
-               ("Bool","Int")  -> commaEbi
-               ("Bool","Bool") -> commaEbb
-               (t,t')          -> error $ "(-:-): unhandled types " ++ t ++ " " ++ t'
-  commaEii  =  constant "," ((,) ->>: (int,int))
-  commaEib  =  constant "," ((,) ->>: (int,bool))
-  commaEbi  =  constant "," ((,) ->>: (bool,int))
-  commaEbb  =  constant "," ((,) ->>: (bool,bool))
-
-(-+-) :: Expr -> Expr -> Expr
-e1 -+- e2 = plusE :$ e1 :$ e2
-infixl 6 -+-
-
-plusE :: Expr
-plusE = constant "+" ((+) :: Int -> Int -> Int)
+  justEint   =  value "Just" (Just -:> int)
+  justEbool  =  value "Just" (Just -:> bool)
 
 operatorE :: Expr -> Expr
 operatorE ((opE :$ _) :$ _) = opE
-
-(-==-) :: Expr -> Expr -> Expr
-e1 -==- e2 =
-  fromMaybe (error $ "(-==-): cannot equate " ++ show e1 ++ " and " ++ show e2)
-            (equation preludeInstances e1 e2)
-infix 4 -==-
-
-(-/=-) :: Expr -> Expr -> Expr
-e1 -/=- e2 =
-  fromMaybe (error $ "(-/=-): cannot inequate " ++ show e1 ++ " and " ++ show e2)
-            (inequality preludeInstances e1 e2)
-infix 4 -/=-
-
-(-<=-) :: Expr -> Expr -> Expr
-e1 -<=- e2 =
-  fromMaybe (error $ "(-<=-): cannot lessEq " ++ show e1 ++ " and " ++ show e2)
-            (comparisonLE preludeInstances e1 e2)
-infix 4 -<=-
-
-(-<-) :: Expr -> Expr -> Expr
-e1 -<- e2 =
-  fromMaybe (error $ "(-<-): cannot less " ++ show e1 ++ " and " ++ show e2)
-            (comparisonLT preludeInstances e1 e2)
-infix 4 -<-
 
 
 
@@ -254,7 +146,7 @@ instancesOK :: (Eq a, Generalizable a) => a -> Bool
 instancesOK = namesOK &&& tiersOK
 
 namesOK :: Generalizable a => a -> Bool
-namesOK x =  Core.name x == head (x `namesIn` x)
+namesOK x =  name x == head (x `namesIn` x)
           && x `sameNamesIn` [x]
           && x `sameNamesIn` [[x]]
           && x `sameNamesIn` mayb x
@@ -270,7 +162,7 @@ x `sameNamesIn` c = x `namesIn` x
            =| 12 |= x `namesIn` c
 
 namesIn :: (Generalizable a, Generalizable b) => a -> b -> [String]
-x `namesIn` c = I.names (instances c []) (typeOf x)
+x `namesIn` c = lookupNames (instances c []) (val x)
 
 tiersOK :: (Eq a, Generalizable a) => a -> Bool
 tiersOK x =  x `sameTiersIn` x
@@ -293,7 +185,7 @@ bgEqOrdOK = bgEqOK &&&& (*<=*) ==== (<=)
                    &&&& (*<*)  ==== (<)
 
 sameTiersIn :: (Eq a, Generalizable a, Generalizable b) => a -> b -> Bool
-x `sameTiersIn` cx = isListable (instances cx []) (typeOf x)
+x `sameTiersIn` cx = isListableT (instances cx []) (typeOf x)
                   && (tiers -: [[x]]) =| 6 |= tiersIn cx
 
 tiersIn :: (Generalizable a, Generalizable b) => b -> [[a]]

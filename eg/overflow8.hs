@@ -26,9 +26,9 @@ post t  =  (sum . concat) (toList t) < 2 * 16 -- 3 * 16
 prop :: T -> Bool
 prop t  =  pre t ==> post t
 
+instance Name Int8
+instance Express Int8 where  expr = val
 instance Generalizable Int8 where
-  name _ = "x"
-  expr = showConstant
   instances x = this x id
   background x = bgOrd x
 
@@ -42,7 +42,7 @@ deriveGeneralizable ''T
 main :: IO ()
 main = do
   check `for` 1080 -- 2160
-        `withBackground` [constant "sum" (sum :: [Int8] -> Int8)]
+        `withBackground` [value "sum" (sum :: [Int8] -> Int8)]
         `withConditionSize` 4
         $ prop
 -- NOTE: with T defined as a triple, this takes 25s to run

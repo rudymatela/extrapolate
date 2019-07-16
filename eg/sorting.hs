@@ -29,5 +29,5 @@ main  =  do
   chk `for` 99 $ prop_sortCount   -:>  bool
   where
   chk :: Testable a => a -> IO ()
-  chk = check `withBackground` [ constant "count" $ count -:> int ]
+  chk = check `withBackground` [ value "count" $ count -:> int ]
               `withConditionSize` 6

@@ -183,7 +183,7 @@ showCCE (c,es) = showCE es ++ "  when  " ++ showPrecExpr 0 (prettify c)
 
 -- WARNING: expressions are unevaluable after this, just good for printing
 prettify :: Expr -> Expr
-prettify (((Constant "<=" _) :$ e1) :$ e2) | lengthE e1 < lengthE e2 = (((Constant ">=" undefined) :$ e2) :$ e1)
-prettify (((Constant "<"  _) :$ e1) :$ e2) | lengthE e1 < lengthE e2 = (((Constant ">"  undefined) :$ e2) :$ e1)
+prettify (((Value "<=" _) :$ e1) :$ e2) | size e1 < size e2 = (((Value ">=" undefined) :$ e2) :$ e1)
+prettify (((Value "<"  _) :$ e1) :$ e2) | size e1 < size e2 = (((Value ">"  undefined) :$ e2) :$ e1)
 prettify (e1 :$ e2) = prettify e1 :$ prettify e2
 prettify e = e

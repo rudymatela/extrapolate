@@ -2,3 +2,4 @@
 module Toplibs () where
 
 import Test.Extrapolate
+import Test

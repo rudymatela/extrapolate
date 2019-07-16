@@ -52,7 +52,7 @@ tests n =
        , operatorE (_i -<-  _i)
        , operatorE (_i -<=- _i)
 
-       , showConstant [0::Int]
+       , val [0::Int]
        , one
        ]
 
@@ -114,8 +114,15 @@ tests n =
        ]
   ]
 
+thyes :: (Thy,[Expr])
 thyes  =  theoryAndReprConds prop
+
+prop :: (WithOption (WithOption ([Int] -> Bool)))
 prop   =  prop_nubid `With` MaxConditionSize 3 `With` ConstantBound Nothing
 
 prop_nubid :: [Int] -> Bool
 prop_nubid xs  =  nub xs == xs
+
+elemE, lengthE :: Expr
+lengthE = value "length" (length :: [Int] -> Int)
+elemE = value "elem" (elem :: Int -> [Int] -> Bool)

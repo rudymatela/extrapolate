@@ -90,6 +90,8 @@ import Data.Ratio (Ratio, numerator, denominator)
 import Test.Extrapolate.TypeBinding -- for Haddock
 import Test.Speculate.Reason (Thy)
 import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
+import Test.Speculate (constant)
+import Data.Haexpress.Name
 import Data.Monoid ((<>))
 
 -- | Extrapolate can generalize counter-examples of any types that are
@@ -114,15 +116,9 @@ import Data.Monoid ((<>))
 --   '-:', '->:', '->>:', ...;
 -- * Extrapolate's "Test.Extrapolate.TypeBinding" operators:
 --   'argTy1of1', 'argTy1of2', 'argTy2of2', ....
-class (Listable a, Typeable a, Show a) => Generalizable a where
-  -- | Transforms a value into an manipulable expression tree.
-  --   See 'constant' and ':$'.
-  expr :: a -> Expr
-
-  -- | Common name for a variable, defaults to @"x"@.
-  name :: a -> String
-  name _ = "x"
-
+--
+-- TODO: update outdated docs above
+class (Listable a, Express a, Name a, Show a) => Generalizable a where
   -- | List of symbols allowed to appear in side-conditions.
   --   Defaults to @[]@.  See 'constant'.
   background :: a -> [Expr]
@@ -133,48 +129,32 @@ class (Listable a, Typeable a, Show a) => Generalizable a where
 
 
 instance Generalizable () where
-  expr = showConstant
-  name _ = "u"
   instances u = this u id
 
 instance Generalizable Bool where
-  expr = showConstant
-  name _ = "p"
   background p = bgEq p
               ++ [ constant "not" not ]
   instances p = this p id
 
 instance Generalizable Int where
-  expr = showConstant
-  name _ = "x"
   background x = bgOrd x
   instances x = this x id
 
 instance Generalizable Integer where
-  expr = showConstant
-  name _ = "x"
   background x = bgOrd x
   instances x = this x id
 
 instance Generalizable Char where
-  expr = showConstant
-  name _ = "c"
   background c = bgOrd c
   instances c = this c id
 
 instance (Generalizable a) => Generalizable (Maybe a) where
-  expr mx@Nothing   =  constant "Nothing" (Nothing -: mx)
-  expr mx@(Just x)  =  constant "Just"    (Just   ->: mx) :$ expr x
-  name mx = "m" ++ name (fromJust mx)
   background mx  =  bgEqWith1  (maybeEq  ->:> mx)
                  ++ bgOrdWith1 (maybeOrd ->:> mx)
                  ++ [ constant "Just" (Just ->: mx) ]
   instances mx  =  this mx $ instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
-  expr lx@(Left x)   =  constant "Left"  (Left  ->: lx) :$ expr x
-  expr ry@(Right y)  =  constant "Right" (Right ->: ry) :$ expr y
-  name exy = "e" ++ name (fromLeft exy) ++ name (fromRight exy)
   background exy  =  bgEqWith2  (eitherEq  ->>:> exy)
                   ++ bgOrdWith2 (eitherOrd ->>:> exy)
                   ++ [ constant "Left"  (Left  ->: exy)
@@ -183,9 +163,6 @@ instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
                              . instances (fromRight exy)
 
 instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
-  name xy  =  name (fst xy) ++ name (snd xy)
-  expr (x,y)  =  constant "," ((,) ->>: (x,y))
-              :$ expr x :$ expr y
   background xy  =  bgEqWith2  (pairEq  ->>:> xy)
                  ++ bgOrdWith2 (pairOrd ->>:> xy)
   instances xy  =  this xy $ instances (fst xy)
@@ -193,10 +170,6 @@ instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
 
 instance (Generalizable a, Generalizable b, Generalizable c)
       => Generalizable (a,b,c) where
-  name xyz  =  name x ++ name y ++ name z
-               where  (x,y,z) = xyz
-  expr (x,y,z)  =  constant ",," ((,,) ->>>: (x,y,z))
-                :$ expr x :$ expr y :$ expr z
   background xyz  =  bgEqWith3  (tripleEq  ->>>:> xyz)
                   ++ bgOrdWith3 (tripleOrd ->>>:> xyz)
   instances xyz  =  this xyz $ instances x . instances y . instances z
@@ -204,10 +177,6 @@ instance (Generalizable a, Generalizable b, Generalizable c)
 
 instance (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
       => Generalizable (a,b,c,d) where
-  name xyzw  =  name x ++ name y ++ name z ++ name w
-                where (x,y,z,w) = xyzw
-  expr (x,y,z,w)  =  constant ",,," ((,,,) ->>>>: (x,y,z,w))
-                  :$ expr x :$ expr y :$ expr z :$ expr w
   background xyzw  =  bgEqWith4  (quadrupleEq  ->>>>:> xyzw)
                    ++ bgOrdWith4 (quadrupleOrd ->>>>:> xyzw)
   instances xyzw  =  this xyzw $ instances x
@@ -217,9 +186,6 @@ instance (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
                      where (x,y,z,w) = xyzw
 
 instance Generalizable a => Generalizable [a] where
-  name xs  =  name (head xs) ++ "s"
-  expr (xs@[])      =  showConstant  ([]    -: xs)
-  expr (xs@(y:ys))  =  constant ":"  ((:) ->>: xs) :$ expr y :$ expr ys
   background xs  =  bgEqWith1  (listEq  ->:> xs)
                  ++ bgOrdWith1 (listOrd ->:> xs)
                  ++ [ constant "length" (length -:> xs) ]
@@ -227,8 +193,6 @@ instance Generalizable a => Generalizable [a] where
   instances xs  =  this xs $ instances (head xs)
 
 instance Generalizable Ordering where
-  name o  =  "o"
-  expr o  =  showConstant o
   background o  =  bgOrd o
   instances o  =  this o id
 
@@ -324,28 +288,32 @@ bgOrdWith4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances
-ins x = listable x ++ nameWith (name x) x ++ backgroundWith (background x) x
+ins x = reifyListable x
+     ++ nameWith (name x) x
+     ++ backgroundWith (background x) x
 
 this :: Generalizable a
      => a -> (Instances -> Instances) -> Instances -> Instances
 this x f is =
-  if isListable is (typeOf x)
+  if isListableT is (typeOf x)
     then is
     else f (ins x ++ is)
 -- TODO: change type to a -> [Instances -> Instances] -> Instances -> Instances
 
 backgroundWith :: Typeable a => [Expr] -> a -> Instances
-backgroundWith es x = [ Instance "Background" (typeOf x) es ]
+backgroundWith es x = [ value "background" es ]
+-- TODO: rename the x argument above as it is not needed
 
 getBackground :: Instances -> [Expr]
-getBackground is = concat [es | Instance "Background" _ es <- is]
+getBackground is = concat [eval err e | e@(Value "background" _) <- is]
+  where
+  err = error "Cannot evaluate background"
 
 getEqInstancesFromBackground :: Instances -> Instances
-getEqInstancesFromBackground is =
-  [Instance "Eq" (argumentTy $ typ eq) [eq, iq] | eq <- eqs, iq <- iqs, typ eq == typ iq]
+getEqInstancesFromBackground is = eqs ++ iqs
   where
-  eqs = [Constant "==" e | Constant "==" e <- bg]
-  iqs = [Constant "/=" e | Constant "/=" e <- bg]
+  eqs = [e | e@(Value "==" _) <- bg]
+  iqs = [e | e@(Value "/=" _) <- bg]
   bg = getBackground is
 
 backgroundOf :: Generalizable a => a -> [Expr]
@@ -366,18 +334,18 @@ tBackground = getBackground . tinstances
 --
 --    1: change constant to hole
 generalizations1 :: Instances -> Expr -> [Expr]
-generalizations1 is (Var _ _)        =  []
-generalizations1 is (Constant _ dx)  =
-  [holeOfTy t | let t = dynTypeRep dx, isListable is t]
 generalizations1 is (e1 :$ e2) =
-  [holeOfTy t | isRight (etyp (e1 :$ e2))
-              , let t = typ (e1 :$ e2)
-              , isListable is t]
+  [ holeAsTypeOf e | let e = e1 :$ e2
+                   , isRight (etyp e)
+                   , isListable is e ]
   ++ productWith (:$) (generalizations1 is e1) (generalizations1 is e2)
   ++ map (:$ e2) (generalizations1 is e1)
   ++ map (e1 :$) (generalizations1 is e2)
+generalizations1 is e
+  | isVar e    =  []
+  | otherwise  =  [holeAsTypeOf e | isListable is e]
 -- note above, I should only generalize types that I know how to enumerate,
--- i.e.: types that I have TypeInfo of!
+-- i.e.: types that I have Instances of!
 
 generalizations :: Instances -> [Expr] -> [ [Expr] ]
 generalizations is = map unfold . generalizations1 is . fold
@@ -568,8 +536,8 @@ theoryAndReprsFromPropAndAtoms p ess =
   -- generator of quasi-canonical expressions.
   e1 === e2 = keep e1 && keep e2 && equal is m e1 e2
   keep e = maybe True (\b -> length (consts e) <= b) constBound
-        && maybe True (\b ->         depthE e  <= b) depthBound
-        && maybe True (\b ->        lengthE e  <= b) (computeMaxSpeculateSize p)
+        && maybe True (\b ->          depth e  <= b) depthBound
+        && maybe True (\b ->           size e  <= b) (computeMaxSpeculateSize p)
 -- NOTE: MaxSpeculateSize here should not be confused with the size
 -- considering sizes of atoms (as per tier enumeration), this regards only the
 -- size in number of symbols
@@ -578,7 +546,7 @@ theoryAndReprsFromPropAndAtoms p ess =
   is = fullInstances p
   m  = maxTests p
   compareExpr :: Expr -> Expr -> Ordering
-  compareExpr = compareComplexityThen (lexicompareBy cmp)
+  compareExpr = compareComplexity <> lexicompareBy cmp
   e1 `cmp` e2 | arity e1 == 0 && arity e2 /= 0 = LT
   e1 `cmp` e2 | arity e1 /= 0 && arity e2 == 0 = GT
   e1 `cmp` e2 = compareIndex (concat ess) e1 e2 <> e1 `compare` e2
@@ -596,13 +564,14 @@ fullInstances p = is ++ getEqInstancesFromBackground is
 atoms :: Testable a => a -> [[Expr]]
 atoms p = ([vs] \/)
         . foldr (\/) [esU]
-        $ [ eval (error msg :: [[Expr]]) ess
-          | Instance "Listable" _ [ess] <- is ]
+        $ [ eval (error msg :: [[Expr]]) tiersE
+          | tiersE@(Value "tiers" _) <- is ]
   where
-  vs = sort . map holeOfTy . filter (isListable is) . nubMergeMap (typesIn . typ) $ esU
+  vs = sort . mapMaybe holeOfTy . nubMergeMap (typesIn . typ) $ esU
   esU = getBackground is
   msg = "canditateConditions: wrong type, not [[Expr]]"
   is = tinstances p
+  holeOfTy t = holeAsTypeOf . head . concat <$> maybeTiersE (preludeInstances ++ is) t
 
 theoryAndReprExprs :: Testable a => a -> (Thy,[Expr])
 theoryAndReprExprs p =
@@ -617,7 +586,7 @@ theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
 
 candidateConditions :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> [Expr]
 candidateConditions (thy,cs) p es = expr True :
-  [ c | (c,_) <- classesFromSchemasAndVariables thy (uncurry (flip Var) <$> vars es) cs
+  [ c | (c,_) <- classesFromSchemasAndVariables thy (vars es) cs
       , hasVar c
       , not (isAssignment c)
       , not (isAssignmentTest is (maxTests p) c)
@@ -646,15 +615,11 @@ isCounterExampleUnder :: Testable a => a -> Expr -> [Expr] -> (Bool, Int)
 isCounterExampleUnder p c es = and'
   [ not . errorToFalse $ p $-| es'
   | (bs,es') <- take (maxTests p) $ groundsAndBinds (tinstances p) es
-  , errorToFalse $ eval False (c `assigning` bs)
+  , errorToFalse $ eval False (c //- bs)
   ]
   where
   and' ps = let len = length ps
             in  (and ps && len > computeMinFailures p && len > 0, len)
-
-isVar :: Expr -> Bool
-isVar (Var _ _) = True
-isVar _         = False
 
 fromBackgroundOf :: (Generalizable a, Typeable b) => String -> a -> Maybe b
 fromBackgroundOf nm = listToMaybe

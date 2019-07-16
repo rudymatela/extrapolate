@@ -221,6 +221,7 @@ mk/All.o: \
   src/Test/Extrapolate/Basic.hs \
   mk/All.hs
 mk/Toplibs.o: \
+  test/Test.hs \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
   src/Test/Extrapolate.hs \

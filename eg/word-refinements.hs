@@ -25,10 +25,10 @@ prop_lengthWords2 s  =  noDoubleSpace (" " ++ s ++ " ")
 main :: IO ()
 main = do
   check  prop_lengthWords0
-  let check1 = check `withBackground` [constant "isSpace" isSpace]
+  let check1 = check `withBackground` [value "isSpace" isSpace]
   check1 prop_lengthWords0
   check1 prop_lengthWords1
-  let check2 = check `withBackground` [ constant "`isInfixOf`" $ isInfixOf -:> string
-                                      , showConstant "  " ]
+  let check2 = check `withBackground` [ value "`isInfixOf`" $ isInfixOf -:> string
+                                      , val "  " ]
   check2 prop_lengthWords0 -- a step back, note the *zero*
   check  prop_lengthWords2

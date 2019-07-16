@@ -110,52 +110,65 @@ deriveGeneralizable ''Exp
 deriveGeneralizable ''Stmt
 -}
 -- {-
+instance Name Var  where  name _  =  "v"
+instance Name Lang where  name _  =  "l"
+instance Name Mod  where  name _  =  "m"
+instance Name Func where  name _  =  "f"
+instance Name Exp  where  name _  =  "e"
+instance Name Stmt where  name _  =  "stmt"
+
+instance Express Var where
+  expr (Var v)  =  value "Var" Var :$ expr v
+
+instance Express Lang where
+  expr (Lang ms fs)  =  value "Lang" Lang :$ expr ms :$ expr fs
+
+instance Express Mod where
+  expr (Mod is es)  =  value "Mod" Mod :$ expr is :$ expr es
+
+instance Express Func where
+  expr (Func n as ss)  =  value "Func" Func :$ expr n :$ expr as :$ expr ss
+
+instance Express Exp where
+  expr (Int i)      =  value "Int" Int :$ expr i
+  expr (Bool p)     =  value "Bool" Bool :$ expr p
+  expr (Add e1 e2)  =  value "Add" Add :$ expr e1 :$ expr e2
+  expr (Sub e1 e2)  =  value "Sub" Sub :$ expr e1 :$ expr e2
+  expr (Mul e1 e2)  =  value "Mul" Mul :$ expr e1 :$ expr e2
+  expr (Div e1 e2)  =  value "Div" Div :$ expr e1 :$ expr e2
+  expr (Not e)      =  value "Not" Not :$ expr e
+  expr (And e1 e2)  =  value "And" And :$ expr e1 :$ expr e2
+  expr (Or  e1 e2)  =  value "Or " Or  :$ expr e1 :$ expr e2
+
+instance Express Stmt where
+  expr (Assign v e)  =  value "Assign" Assign :$ expr v :$ expr e
+  expr (Alloc v e)   =  value "Alloc"  Alloc  :$ expr v :$ expr e
+  expr (Return e)    =  value "Return" Return :$ expr e
+
 instance Generalizable Var where
-  name _ = "v"
-  expr (Var v)  =  constant "Var" Var :$ expr v
-  instances v   =  this v $ instances (undefined :: [String])
+  instances v  =  this v $ instances (undefined :: [String])
 
 instance Generalizable Lang where
-  name _ = "l"
-  expr (Lang ms fs)  =  constant "Lang" Lang :$ expr ms :$ expr fs
   instances l  =  this l $ instances (undefined :: [Mod])
                          . instances (undefined :: [Func])
 
 instance Generalizable Mod where
-  name _ = "m"
-  expr (Mod is es)  =  constant "Mod" Mod :$ expr is :$ expr es
   instances m  =  this m $ instances (undefined :: Var)
 
 instance Generalizable Func where
-  name _ = "f"
-  expr (Func n as ss)  =  constant "Func" Func :$ expr n :$ expr as :$ expr ss
   instances f  =  this f $ instances (undefined :: Var)
                          . instances (undefined :: [Exp])
                          . instances (undefined :: [Stmt])
 
 instance Generalizable Exp where
-  name _ = "e"
-  expr (Int i)      =  constant "Int" Int :$ expr i
-  expr (Bool p)     =  constant "Bool" Bool :$ expr p
-  expr (Add e1 e2)  =  constant "Add" Add :$ expr e1 :$ expr e2
-  expr (Sub e1 e2)  =  constant "Sub" Sub :$ expr e1 :$ expr e2
-  expr (Mul e1 e2)  =  constant "Mul" Mul :$ expr e1 :$ expr e2
-  expr (Div e1 e2)  =  constant "Div" Div :$ expr e1 :$ expr e2
-  expr (Not e)      =  constant "Not" Not :$ expr e
-  expr (And e1 e2)  =  constant "And" And :$ expr e1 :$ expr e2
-  expr (Or  e1 e2)  =  constant "Or " Or  :$ expr e1 :$ expr e2
-  background e = [ constant "==" ((==) -:> e)
-                 , constant "/=" ((/=) -:> e) ]
+  background e = [ value "==" ((==) -:> e)
+                 , value "/=" ((/=) -:> e) ]
   instances  e = this e
                $ instances (undefined :: Var)
                . instances (undefined :: Int)
                . instances (undefined :: Bool)
 
 instance Generalizable Stmt where
-  name _ = "stmt"
-  expr (Assign v e)  =  constant "Assign" Assign :$ expr v :$ expr e
-  expr (Alloc v e)   =  constant "Alloc"  Alloc  :$ expr v :$ expr e
-  expr (Return e)    =  constant "Return" Return :$ expr e
   instances s  =  this s $ instances (undefined :: Var)
                          . instances (undefined :: Exp)
 -- -}

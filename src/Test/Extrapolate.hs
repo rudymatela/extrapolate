@@ -43,10 +43,12 @@ module Test.Extrapolate
   , minFailures
 
 -- * Generalizable types
+  , Name (..)
+  , Express (..)
   , Generalizable (..)
   , this
   , Expr (..)
-  , constant, showConstant
+  , value, val
   , bgEq
   , bgOrd
 

@@ -26,9 +26,9 @@ post t  =  (sum . concat) (toList t) < 5 * 256
 prop :: T -> Bool
 prop t  =  pre t ==> post t
 
+instance Name Int16
+instance Express Int16 where  expr = val
 instance Generalizable Int16 where
-  name _ = "x"
-  expr = showConstant
   instances x = this x id
   background x = bgOrd x
 

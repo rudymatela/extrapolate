@@ -23,10 +23,14 @@ deriving instance Typeable HeapPP
 instance (Ord a, Listable a) => Listable (Heap a) where
   tiers = cons1 heap
 
-instance (Ord a, Generalizable a) => Generalizable (Heap a) where
+instance Name (Heap a) where
   name _ = "h"
-  expr h = constant "fromList" (fromList ->: h) :$ expr (toList h)
-  background h = [ constant "size" $ size -:> h ]
+
+instance (Ord a, Express a) => Express (Heap a) where
+  expr h = value "fromList" (fromList ->: h) :$ expr (toList h)
+
+instance (Ord a, Generalizable a) => Generalizable (Heap a) where
+  background h = [ value "size" $ size -:> h ]
   instances h = this h $ instances (toList h)
 
 
@@ -114,14 +118,18 @@ instance (Listable a) => Listable (HeapP a) where
          \/ cons2 Merge
          \/ cons1 FromList
 
-instance (Generalizable a, Typeable a) => Generalizable (HeapP a) where
+instance Name (HeapP a) where
   name _ = "p"
-  expr p'@Empty             = constant "Empty"    (Empty     -: p')
-  expr p'@(Unit x)          = constant "Unit"     (Unit     ->: p') :$ expr x
-  expr p'@(Insert x p)      = constant "Insert"   (Insert  ->>: p') :$ expr x :$ expr p
-  expr p'@(SafeRemoveMin x) = constant "SafeRemoveMin" (SafeRemoveMin ->: p') :$ expr x
-  expr p'@(Merge p q)       = constant "Merge"    (Merge   ->>: p') :$ expr p :$ expr q
-  expr p'@(FromList xs)     = constant "FromList" (FromList ->: p') :$ expr xs
+
+instance Express a => Express (HeapP a) where
+  expr p'@Empty             = value "Empty"    (Empty     -: p')
+  expr p'@(Unit x)          = value "Unit"     (Unit     ->: p') :$ expr x
+  expr p'@(Insert x p)      = value "Insert"   (Insert  ->>: p') :$ expr x :$ expr p
+  expr p'@(SafeRemoveMin x) = value "SafeRemoveMin" (SafeRemoveMin ->: p') :$ expr x
+  expr p'@(Merge p q)       = value "Merge"    (Merge   ->>: p') :$ expr p :$ expr q
+  expr p'@(FromList xs)     = value "FromList" (FromList ->: p') :$ expr xs
+
+instance (Generalizable a, Typeable a) => Generalizable (HeapP a) where
   instances p = this p
               $ let Unit x = Unit undefined `asTypeOf` p
                 in instances x
@@ -138,11 +146,15 @@ instance (Ord a, Listable a) => Listable (HeapPP a) where
 heappp :: Ord a => HeapP a -> HeapPP a
 heappp p  =  HeapPP p (heap p)
 
-instance (Ord a, Generalizable a) => Generalizable (HeapPP a) where
+instance Name (HeapPP a) where
   name _ = "hpp"
-  expr (HeapPP p _) = constant "heappp" (heappp -:> p) :$ expr p
-  background hpp = [ constant "program" $ program -:> hpp
-                   , constant "theHeap" $ theHeap -:> hpp
+
+instance (Ord a, Express a) => Express (HeapPP a) where
+  expr (HeapPP p _) = value "heappp" (heappp -:> p) :$ expr p
+
+instance (Ord a, Generalizable a) => Generalizable (HeapPP a) where
+  background hpp = [ value "program" $ program -:> hpp
+                   , value "theHeap" $ theHeap -:> hpp
                    ]
   instances hpp = this hpp
                 $ let HeapPP p h = HeapPP undefined undefined `asTypeOf` hpp

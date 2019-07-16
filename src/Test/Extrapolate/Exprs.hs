@@ -29,11 +29,12 @@ where
 
 import Test.Speculate.Expr hiding
   ( ins
-  , name
   , canonicalizeWith
   , grounds
-  , vassignments
+  , canonicalVariations
   , vars
+  , nubVars
+  , mkNameWith
   )
 import qualified Test.Speculate.Expr as E
 import qualified Test.Speculate.Engine as E
@@ -44,24 +45,19 @@ import Data.List ((\\))
 type Exprs = [Expr]
 
 nameWith :: Typeable a => String -> a -> Instances
-nameWith = E.name
+nameWith = E.mkNameWith
 
 canonicalizeWith :: Instances -> [Expr] -> [Expr]
-canonicalizeWith is = unfold . canonicalizeWith1 is . unrepeatedToHole1 . fold
-
-canonicalizeWith1 :: Instances -> Expr -> Expr
-canonicalizeWith1 ti e = e `assigning` ((\(t,n,n') -> (n,Var n' t)) `map` cr [] e)
+canonicalizeWith is  =  unfold . c1 . unrepeatedToHole1 . fold
   where
-  cr :: [(TypeRep,String,String)] -> Expr -> [(TypeRep,String,String)]
-  cr bs (e1 :$ e2) = cr (cr bs e1) e2
-  cr bs (Var n t)
-    | n == "" = bs
-    | any (\(t',n',_) -> t == t' && n == n') bs = bs
-    | otherwise = (t,n,head $ names ti t \\ map (\(_,_,n) -> n) bs):bs
-  cr bs _ = bs
+  c1 e  =  e //- cn e
+  cn e  =  E.canonicalizationWith (lookupNames is)
+        $  fold [v | v <- E.vars e, not $ isHole v]
 
 unrepeatedToHole1 :: Expr -> Expr
-unrepeatedToHole1 e = e `assigning` [(n,Var "" t) | (t,n,1) <- countVars e]
+unrepeatedToHole1 e = e //- [(v, holeAsTypeOf v) | (v,1) <- countVars e]
+  where
+  countVars e = map (\e' -> (e',length . filter (== e') $ E.vars e)) $ E.nubVars e
 
 grounds :: Instances -> [Expr] -> [ [Expr] ]
 grounds is = map unfold . E.grounds is . fold
@@ -72,25 +68,13 @@ groundsAndBinds is = map (mapSnd unfold) . E.groundAndBinds is . fold
   mapSnd f (x,y) = (x,f y)
 
 vassignments :: [Expr] -> [[Expr]]
-vassignments = map unfold . E.vassignments . fold
+vassignments = map unfold . E.canonicalVariations . fold
 
-vars :: [Expr] -> [(TypeRep,String)]
-vars = E.vars . fold
+vars :: [Expr] -> [Expr]
+vars = E.nubVars . fold
 
 isAssignmentTest :: Instances -> Int -> Expr -> Bool
 isAssignmentTest is m e | typ e /= boolTy = False
 isAssignmentTest is m e = length rs > 1 && length (filter id rs) == 1
   where
   rs = [errorToFalse $ eval False e' | [e'] <- take m $ grounds is [e]]
-
-data MarkerType = MarkerType
-  deriving Typeable -- for GHC <= 7.8
-
-fold :: [Expr] -> Expr
-fold []     = constant "[]" MarkerType
-fold (e:es) = constant ":"  MarkerType :$ e :$ fold es
-
-unfold :: Expr -> [Expr]
-unfold   e'@(Constant "[]" _)              | typ e' == typeOf MarkerType  =  []
-unfold ((e'@(Constant ":"  _) :$ e) :$ es) | typ e' == typeOf MarkerType  =  e : unfold es
-unfold e  =  error $ "unfold: cannot unfold expression: " ++ showPrecExpr 0 e

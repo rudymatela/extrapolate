@@ -21,7 +21,8 @@ module Test.Extrapolate.Derive
   )
 where
 
-import Test.Extrapolate.Core hiding (isInstanceOf)
+import Test.Extrapolate.Core hiding (isInstanceOf, Name)
+import qualified Test.Extrapolate.Core as E
 import Test.Extrapolate.TypeBinding
 import Language.Haskell.TH
 import Test.LeanCheck.Basic
@@ -78,9 +79,15 @@ deriveGeneralizableX warnExisting cascade t = do
                       ++ " already exists, skipping derivation")
       return []
     else
-      if cascade
-        then liftM2 (++) (deriveListableCascading t) (reallyDeriveGeneralizableCascading t)
-        else liftM2 (++) (deriveListableIfNeeded t)  (reallyDeriveGeneralizable t)
+    if cascade
+    then concat <$> sequence [ deriveListableCascading t
+                             , deriveNameCascading t
+                             , deriveExpressCascading t
+                             , reallyDeriveGeneralizableCascading t ]
+    else concat <$> sequence [ deriveListableIfNeeded t
+                             , deriveNameIfNeeded t
+                             , deriveExpressIfNeeded t
+                             , reallyDeriveGeneralizable t ]
 
 reallyDeriveGeneralizable :: Name -> DecsQ
 reallyDeriveGeneralizable t = do
@@ -97,29 +104,19 @@ reallyDeriveGeneralizable t = do
                   , v <- vs]
   cs <- typeConstructorsArgNames t
   asName <- newName "x"
-  let generalizableExpr = mergeIFns $ foldr1 mergeI
-        [ do retTypeOf <- lookupValN $ "-" ++ replicate (length ns) '>' ++ ":"
-             let exprs = [[| expr $(varE n) |] | n <- ns]
-             let conex = [| $(varE retTypeOf) $(conE c) $(varE asName) |]
-             let root = [| constant $(stringE $ showJustName c) $(conex) |]
-             let rhs = foldl (\e1 e2 -> [| $e1 :$ $e2 |]) root exprs
-             [d| instance Generalizable $(return nt) where
-                   expr $(asP asName $ conP c (map varP ns)) = $rhs |]
-        | (c,ns) <- cs
-        ]
   let generalizableBackground = do
         n <- newName "x"
         case (isEq, isOrd) of
           (True, True) ->
             [d| instance Generalizable $(return nt) where
-                  background $(varP n) = [ constant "==" ((==) -:> $(varE n))
-                                         , constant "/=" ((/=) -:> $(varE n))
-                                         , constant "<"  ((<)  -:> $(varE n))
-                                         , constant "<=" ((<=) -:> $(varE n)) ] |]
+                  background $(varP n) = [ value "==" ((==) -:> $(varE n))
+                                         , value "/=" ((/=) -:> $(varE n))
+                                         , value "<"  ((<)  -:> $(varE n))
+                                         , value "<=" ((<=) -:> $(varE n)) ] |]
           (True, False) ->
             [d| instance Generalizable $(return nt) where
-                  background $(varP n) = [ constant "==" ((==) -:> $(varE n))
-                                         , constant "/=" ((/=) -:> $(varE n)) ] |]
+                  background $(varP n) = [ value "==" ((==) -:> $(varE n))
+                                         , value "/=" ((/=) -:> $(varE n)) ] |]
           (False, False) ->
             [d| instance Generalizable $(return nt) where
                   background $(varP n) = [] |]
@@ -130,12 +127,7 @@ reallyDeriveGeneralizable t = do
         let rhs = foldr0 (\e1 e2 -> [| $e1 . $e2 |]) [|id|] lets
         [d| instance Generalizable $(return nt) where
               instances $(varP n) = this $(varE n) $ $rhs |]
-  let generalizableName = do
-        [d| instance Generalizable $(return nt) where
-              name _ = $(stringE vname) |]
-  cxt |=>| (generalizableName `mergeI` generalizableExpr
-                              `mergeI` generalizableBackground
-                              `mergeI` generalizableInstances)
+  cxt |=>| (generalizableBackground `mergeI` generalizableInstances)
   where
   showJustName = reverse . takeWhile (/= '.') . reverse . show
   vname = map toLower . take 1 $ showJustName t

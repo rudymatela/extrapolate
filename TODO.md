@@ -3,7 +3,26 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
-* simplify test handling `make test/x.run`
+* __update documentation__: since using Haexpress the documentation is __very__
+  outdated.  It should be updated before any new release is made.
+
+* _refactor code_: while introducing the use of Haexpress, I tried to keep the
+  changes to a minimum.  Now code should be refactored to be shortened because
+  of Haexpress.
+
+* _move tests to Haexpress_: some tests can be moved out to Haexpress (e.g.:
+  `expr`).
+
+* _tighten Speculate imports_: avoid importing from Speculate and import from
+  Haexpress where possible -- currently several things are imported indirectly
+
+* _cleanup Test.hs_: cleanup `Test`.  Maybe move a couple definitions to
+  `Haexpress.Fixtures`.
+
+* _simplify `Derive` module_: derive module can now be simplified with derive
+  utils from Haexpress.
+
+* _address compilation warnings_: address some compilation warnings
 
 * `deriveGeneralizableAtomic`: derive a generalizable value treating it as
   atomic, as I did with the Map on the XMonad example.  To be used on datatypes
