@@ -36,7 +36,8 @@ GHCFLAGS = -O2 \
   -Wall -Wno-name-shadowing -Wno-orphans -Wno-unused-matches \
   $(GHCEXTRAFLAGS) \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo -dynamic)
-HADDOCKFLAGS = --no-print-missing-docs
+HADDOCKFLAGS = --no-print-missing-docs \
+  $(shell grep -q "Arch Linux" /etc/lsb-release && echo --optghc=-dynamic)
 LIST_ALL_HSS = find src test mk eg/*.hs bench/*.hs -name "*.hs"
 
 all: mk/toplibs
