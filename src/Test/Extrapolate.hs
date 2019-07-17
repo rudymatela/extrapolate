@@ -43,8 +43,6 @@ module Test.Extrapolate
   , minFailures
 
 -- * Generalizable types
-  , Name (..)
-  , Express (..)
   , Generalizable (..)
   , this
   , Expr (..)
@@ -59,6 +57,10 @@ module Test.Extrapolate
   , deriveGeneralizable
   , deriveGeneralizableIfNeeded
   , deriveGeneralizableCascading
+
+-- * Typeclasses required by Generalizable
+  , Name (..)
+  , Express (..)
 
 -- * Other useful modules
   , module Test.Extrapolate.TypeBinding
