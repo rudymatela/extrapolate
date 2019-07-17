@@ -1,7 +1,7 @@
 {-# LANGUAGE CPP #-} -- for GHC <= 7.8
 -- |
 -- Module      : Test.Extrapolate.Basic
--- Copyright   : (c) 2017 Rudy Matela
+-- Copyright   : (c) 2017-2019 Rudy Matela
 -- License     : 3-Clause BSD  (see the file LICENSE)
 -- Maintainer  : Rudy Matela <rudy@matela.com.br>
 --
