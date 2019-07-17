@@ -1,6 +1,6 @@
 # Makefile for Extrapolate
 #
-# Copyright:   (c) 2015-2018 Rudy Matela
+# Copyright:   (c) 2015-2019 Rudy Matela
 # License:     3-Clause BSD  (see the file LICENSE)
 # Maintainer:  Rudy Matela <rudy@matela.com.br>
 TESTS = \
@@ -39,6 +39,7 @@ GHCFLAGS = -O2 \
 HADDOCKFLAGS = --no-print-missing-docs \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo --optghc=-dynamic)
 LIST_ALL_HSS = find src test mk eg/*.hs bench/*.hs -name "*.hs"
+LIB_DEPS = base template-haskell leancheck haexpress speculate
 
 all: mk/toplibs
 
