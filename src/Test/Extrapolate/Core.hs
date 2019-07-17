@@ -97,30 +97,25 @@ import Data.Monoid ((<>))
 -- | Extrapolate can generalize counter-examples of any types that are
 --   'Generalizable'.
 --
--- The core (and only required functions) of the generalizable typeclass are
--- the 'expr' and 'instances' functions.
+-- The only required function is 'instances' functions.
 --
 -- The following example shows a datatype and its instance:
 --
 -- > data Stack a = Stack a (Stack a) | Empty
 --
 -- > instance Generalizable a => Generalizable (Stack a) where
--- > name _ = "s"
--- > expr s@(Stack x y) = constant "Stack" (Stack ->>: s) :$ expr x :$ expr y
--- > expr s@Empty       = constant "Empty" (Empty   -: s)
--- > instances s = this s $ instances (argTy1of1 s)
+-- >   instances s = this s $ instances (argTy1of1 s)
 --
--- To declare 'instances' and 'expr' it may be useful to use:
+-- To declare 'instances' it may be useful to use:
 --
--- * LeanCheck's "Test.LeanCheck.Utils.TypeBinding" operators:
---   '-:', '->:', '->>:', ...;
 -- * Extrapolate's "Test.Extrapolate.TypeBinding" operators:
 --   'argTy1of1', 'argTy1of2', 'argTy2of2', ....
 --
--- TODO: update outdated docs above
+-- Instances can be automatically derived using
+-- 'Test.Extrapolate.Derive.deriveGeneralizable'.
 class (Listable a, Express a, Name a, Show a) => Generalizable a where
   -- | List of symbols allowed to appear in side-conditions.
-  --   Defaults to @[]@.  See 'constant'.
+  --   Defaults to @[]@.  See 'value'.
   background :: a -> [Expr]
   background _ = []
 
