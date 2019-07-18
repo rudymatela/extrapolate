@@ -13,9 +13,6 @@ A non-exhaustive list of things TO DO for Extrapolate.
 * _move tests to Haexpress_: some tests can be moved out to Haexpress (e.g.:
   `expr`).
 
-* _tighten Speculate imports_: avoid importing from Speculate and import from
-  Haexpress where possible -- currently several things are imported indirectly
-
 * _cleanup Test.hs_: cleanup `Test`.  Maybe move a couple definitions to
   `Haexpress.Fixtures`.
 

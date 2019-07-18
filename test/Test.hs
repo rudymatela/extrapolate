@@ -43,8 +43,6 @@ where
 import System.Exit (exitFailure)
 import Data.List (elemIndices)
 import System.Environment (getArgs)
-import Test.Speculate.Expr (typ)
-import Test.Speculate.Expr.Instance as I
 import Data.Typeable (typeOf)
 import Data.List (isPrefixOf, sort)
 import Test.Speculate.Reason

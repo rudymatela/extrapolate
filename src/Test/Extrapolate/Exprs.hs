@@ -38,6 +38,7 @@ module Test.Extrapolate.Exprs
   , reifyListable
   , isListable
   , isListableT
+  , tiersE
   , maybeTiersE
   , equal
   , lexicompareBy
@@ -62,6 +63,7 @@ import Test.Speculate.Expr
   , reifyListable
   , isListable
   , isListableT
+  , tiersE
   , maybeTiersE
   , equal
   , lexicompareBy
