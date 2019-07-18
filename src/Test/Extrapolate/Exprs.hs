@@ -8,39 +8,73 @@
 -- This module is part of Extrapolate,
 -- a library for generalization of counter-examples.
 --
--- This module re-exports some functionality from Test.Speculate.Expr, but
--- instead of working on single expressions it works in lists of expressions
+-- This module re-exports functionality from
+-- "Data.Haexpress" and "Test.Speculate.Expr",
+-- but instead of working on single expressions
+-- it works on lists of expressions
 -- (the choosen representation for counter-examples).
 module Test.Extrapolate.Exprs
-  ( Exprs
+  ( module Data.Haexpress
+
+  -- * types
+  , Exprs
+  , Binds
+  , Instances
+
+  -- * new functions
+  , isAssignmentTest
+
+  -- * redefinitions of functions from Haexpress
   , canonicalizeWith
   , grounds
   , groundsAndBinds
-  , vassignments
-  , vars
-  , fold
-  , unfold
-  , isAssignmentTest
-  , nameWith
+  , vassignments -- TODO: rename to match Haexpress
+  , vars -- TODO: rename to match Haexpress
 
-  , module Test.Speculate.Expr
+  -- * re-exports from Speculate.Expr
+  , isConstantNamed
+  , isAssignment
+  , preludeInstances
+  , reifyListable
+  , isListable
+  , isListableT
+  , maybeTiersE
+  , equal
+  , lexicompareBy -- TODO: remove?
+
+  -- * to be removed:
+  , nameWith -- TODO: remove
   )
 where
+-- TODO: avoid most of this module by using a single Expr to represent
+--       counterexamples?
+--
+--       > val "prop" prop :$ val 0 :$ val 2
+--
+--       I'll just have to take care to avoid generalizing the prop.
 
-import Test.Speculate.Expr hiding
-  ( ins
-  , canonicalizeWith
-  , grounds
-  , canonicalVariations
-  , vars
-  , nubVars
-  , mkNameWith
+import Data.Haexpress hiding (canonicalizeWith, vars, nubVars)
+import qualified Data.Haexpress as E
+
+import Test.Speculate.Expr
+  ( Binds
+  , Instances
+  , isConstantNamed
+  , isAssignment
+  , preludeInstances
+  , reifyListable
+  , isListable
+  , isListableT
+  , maybeTiersE
+  , equal
+  , lexicompareBy
   )
-import qualified Test.Speculate.Expr as E
-import qualified Test.Speculate.Engine as E
+import qualified Test.Speculate.Expr as E (grounds, groundAndBinds)
+
+import Data.Haexpress.Utils.Typeable (boolTy)
+
 import Test.LeanCheck.Error (errorToFalse)
-import Data.Typeable (typeOf, TypeRep, Typeable)
-import Data.List ((\\))
+import Data.Typeable (Typeable)
 
 type Exprs = [Expr]
 
@@ -68,7 +102,7 @@ groundsAndBinds is = map (mapSnd unfold) . E.groundAndBinds is . fold
   mapSnd f (x,y) = (x,f y)
 
 vassignments :: [Expr] -> [[Expr]]
-vassignments = map unfold . E.canonicalVariations . fold
+vassignments = map unfold . canonicalVariations . fold
 
 vars :: [Expr] -> [Expr]
 vars = E.nubVars . fold

@@ -90,6 +90,7 @@ import Data.Ratio (Ratio, numerator, denominator)
 import Test.Extrapolate.TypeBinding -- for Haddock
 import Test.Speculate.Reason (Thy)
 import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
+import Test.Speculate.Utils (boolTy, typesIn)
 import Data.Haexpress.Name
 import Data.Monoid ((<>))
 
