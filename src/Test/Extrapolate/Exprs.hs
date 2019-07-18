@@ -41,9 +41,6 @@ module Test.Extrapolate.Exprs
   , maybeTiersE
   , equal
   , lexicompareBy
-
-  -- * to be removed:
-  , nameWith -- TODO: remove
   )
 where
 -- TODO: avoid most of this module by using a single Expr to represent
@@ -77,9 +74,6 @@ import Test.LeanCheck.Error (errorToFalse)
 import Data.Typeable (Typeable)
 
 type Exprs = [Expr]
-
-nameWith :: Typeable a => String -> a -> Instances
-nameWith = E.mkNameWith
 
 canonicalizeWith :: Instances -> [Expr] -> [Expr]
 canonicalizeWith is  =  unfold . c1 . unrepeatedToHole1 . fold

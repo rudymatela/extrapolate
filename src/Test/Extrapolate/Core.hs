@@ -284,7 +284,7 @@ bgOrdWith4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances
 ins x = reifyListable x
-     ++ nameWith (name x) x
+     ++ reifyName x
      ++ backgroundWith (background x) x
 
 this :: Generalizable a
