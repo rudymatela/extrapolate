@@ -40,7 +40,7 @@ module Test.Extrapolate.Exprs
   , isListableT
   , maybeTiersE
   , equal
-  , lexicompareBy -- TODO: remove?
+  , lexicompareBy
 
   -- * to be removed:
   , nameWith -- TODO: remove
