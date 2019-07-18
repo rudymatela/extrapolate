@@ -48,8 +48,8 @@ import Test.Extrapolate.Utils (foldr0)
 -- will automatically derive the following 'Generalizable' instance:
 --
 -- > instance Generalizable a => Generalizable (Stack a) where
--- >   expr s@(Stack x y) = constant "Stack" (Stack ->>: s) :$ expr x :$ expr y
--- >   expr s@Empty       = constant "Empty" (Empty   -: s)
+-- >   expr s@(Stack x y) = value "Stack" (Stack ->>: s) :$ expr x :$ expr y
+-- >   expr s@Empty       = value "Empty" (Empty   -: s)
 -- >   instances s = this "s" s
 -- >               $ let Stack x y = Stack undefined undefined `asTypeOf` s
 -- >                 in instances x

@@ -52,7 +52,7 @@ check `withInstances` is  =  \p -> check $ p `With` ExtraInstances is
 
 -- | Use @`withBackground`@ to provide additional functions to appear in side-conditions.
 --
--- > check `withBackground` [constant "isSpace" isSpace] $ \xs -> unwords (words xs) == xs
+-- > check `withBackground` [value "isSpace" isSpace] $ \xs -> unwords (words xs) == xs
 -- > *** Failed! Falsifiable (after 4 tests):
 -- > " "
 -- >

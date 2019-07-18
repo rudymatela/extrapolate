@@ -90,7 +90,6 @@ import Data.Ratio (Ratio, numerator, denominator)
 import Test.Extrapolate.TypeBinding -- for Haddock
 import Test.Speculate.Reason (Thy)
 import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
-import Test.Speculate (constant)
 import Data.Haexpress.Name
 import Data.Monoid ((<>))
 
@@ -128,7 +127,7 @@ instance Generalizable () where
 
 instance Generalizable Bool where
   background p = bgEq p
-              ++ [ constant "not" not ]
+              ++ [ value "not" not ]
   instances p = this p id
 
 instance Generalizable Int where
@@ -146,14 +145,14 @@ instance Generalizable Char where
 instance (Generalizable a) => Generalizable (Maybe a) where
   background mx  =  bgEqWith1  (maybeEq  ->:> mx)
                  ++ bgOrdWith1 (maybeOrd ->:> mx)
-                 ++ [ constant "Just" (Just ->: mx) ]
+                 ++ [ value "Just" (Just ->: mx) ]
   instances mx  =  this mx $ instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
   background exy  =  bgEqWith2  (eitherEq  ->>:> exy)
                   ++ bgOrdWith2 (eitherOrd ->>:> exy)
-                  ++ [ constant "Left"  (Left  ->: exy)
-                     , constant "Right" (Right ->: exy) ]
+                  ++ [ value "Left"  (Left  ->: exy)
+                     , value "Right" (Right ->: exy) ]
   instances exy  =  this exy $ instances (fromLeft  exy)
                              . instances (fromRight exy)
 
@@ -183,8 +182,8 @@ instance (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
 instance Generalizable a => Generalizable [a] where
   background xs  =  bgEqWith1  (listEq  ->:> xs)
                  ++ bgOrdWith1 (listOrd ->:> xs)
-                 ++ [ constant "length" (length -:> xs) ]
-                 ++ [ constant "elem"      (elemBy (*==*) ->:> xs) | hasEq $ head xs ]
+                 ++ [ value "length" (length -:> xs) ]
+                 ++ [ value "elem"      (elemBy (*==*) ->:> xs) | hasEq $ head xs ]
   instances xs  =  this xs $ instances (head xs)
 
 instance Generalizable Ordering where
@@ -192,28 +191,28 @@ instance Generalizable Ordering where
   instances o  =  this o id
 
 bgEq :: (Eq a, Generalizable a) => a -> [Expr]
-bgEq x = [ constant "==" ((==) -:> x)
-         , constant "/=" ((/=) -:> x) ]
+bgEq x = [ value "==" ((==) -:> x)
+         , value "/=" ((/=) -:> x) ]
 
 bgOrd :: (Ord a, Generalizable a) => a -> [Expr]
-bgOrd x = [ constant "==" ((==) -:> x)
-          , constant "/=" ((/=) -:> x)
-          , constant "<"  ((<)  -:> x)
-          , constant "<=" ((<=) -:> x) ]
+bgOrd x = [ value "==" ((==) -:> x)
+          , value "/=" ((/=) -:> x)
+          , value "<"  ((<)  -:> x)
+          , value "<=" ((<=) -:> x) ]
 
 bgEqWith1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
 bgEqWith1 makeEq = takeWhile (\_ -> hasEq x)
-                 [ constant "==" (       makeEq (*==*))
-                 , constant "/=" (not .: makeEq (*==*)) ]
+                 [ value "==" (       makeEq (*==*))
+                 , value "/=" (not .: makeEq (*==*)) ]
   where
   x = argTy1of2 $ argTy1of2 makeEq
 
 bgEqWith2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
 bgEqWith2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
-                 [ constant "==" (       makeEq (*==*) (*==*))
-                 , constant "/=" (not .: makeEq (*==*) (*==*)) ]
+                 [ value "==" (       makeEq (*==*) (*==*))
+                 , value "/=" (not .: makeEq (*==*) (*==*)) ]
   where
   x = argTy1of2 $ argTy1of2 makeEq
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
@@ -222,8 +221,8 @@ bgEqWith3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
           -> [Expr]
 bgEqWith3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z)
-                 [ constant "=="        (makeEq (*==*) (*==*) (*==*))
-                 , constant "/=" (not .: makeEq (*==*) (*==*) (*==*)) ]
+                 [ value "=="        (makeEq (*==*) (*==*) (*==*))
+                 , value "/=" (not .: makeEq (*==*) (*==*) (*==*)) ]
   where
   x = argTy1of2 $ argTy1of2 makeEq
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
@@ -233,8 +232,8 @@ bgEqWith4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
           -> [Expr]
 bgEqWith4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w)
-                 [ constant "=="        (makeEq (*==*) (*==*) (*==*) (*==*))
-                 , constant "/=" (not .: makeEq (*==*) (*==*) (*==*) (*==*)) ]
+                 [ value "=="        (makeEq (*==*) (*==*) (*==*) (*==*))
+                 , value "/=" (not .: makeEq (*==*) (*==*) (*==*) (*==*)) ]
   where
   x = argTy1of2 $ argTy1of2 makeEq
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
@@ -244,16 +243,16 @@ bgEqWith4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w)
 bgOrdWith1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
 bgOrdWith1 makeOrd = takeWhile (\_ -> hasOrd x)
-                   [ constant "<=" (             makeOrd (*<=*))
-                   , constant "<"  (not .: flip (makeOrd (*<=*))) ]
+                   [ value "<=" (             makeOrd (*<=*))
+                   , value "<"  (not .: flip (makeOrd (*<=*))) ]
   where
   x = argTy1of2 $ argTy1of2 makeOrd
 
 bgOrdWith2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
 bgOrdWith2 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y)
-                   [ constant "<=" (             makeOrd (*<=*) (*<=*))
-                   , constant "<"  (not .: flip (makeOrd (*<=*) (*<=*))) ]
+                   [ value "<=" (             makeOrd (*<=*) (*<=*))
+                   , value "<"  (not .: flip (makeOrd (*<=*) (*<=*))) ]
   where
   x = argTy1of2 $ argTy1of2 makeOrd
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
@@ -262,8 +261,8 @@ bgOrdWith3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable 
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
           -> [Expr]
 bgOrdWith3 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z)
-                   [ constant "<="              (makeOrd (*<=*) (*<=*) (*<=*))
-                   , constant "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*))) ]
+                   [ value "<="              (makeOrd (*<=*) (*<=*) (*<=*))
+                   , value "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*))) ]
   where
   x = argTy1of2 $ argTy1of2 makeOrd
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
@@ -273,8 +272,8 @@ bgOrdWith4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable 
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
           -> [Expr]
 bgOrdWith4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd w)
-                   [ constant "<="              (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))
-                   , constant "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))) ]
+                   [ value "<="              (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))
+                   , value "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))) ]
   where
   x = argTy1of2 $ argTy1of2 makeOrd
   y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
@@ -320,14 +319,14 @@ tBackground = getBackground . tinstances
 -- |  generalizes an expression by making it less defined,
 --    starting with smaller changes, then bigger changes:
 --
---    1: change constant to variable
---    1.1: if a variable of the constant type exists, use it
+--    1: change value to variable
+--    1.1: if a variable of the value type exists, use it
 --    1.2: if not, introduce new variable
 --    2: change a variable to a new variable
 --
 -- The above is the ideal, but let's start with a simpler algorithm:
 --
---    1: change constant to hole
+--    1: change value to hole
 generalizations1 :: Instances -> Expr -> [Expr]
 generalizations1 is (e1 :$ e2) =
   [ holeAsTypeOf e | let e = e1 :$ e2
@@ -456,8 +455,8 @@ generalizationsCEC p es =
   , gs' <- vassignments gs
   , let thycs = theoryAndReprConds p
   , let wc = weakestCondition thycs p gs'
-  , wc /= constant "False" False
-  , wc /= constant "True"  True
+  , wc /= value "False" False
+  , wc /= value "True"  True
   , let (wc'':gs'') = canonicalizeWith is (wc:gs')
   ]
   where

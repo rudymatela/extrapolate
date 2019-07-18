@@ -44,6 +44,6 @@ main = do
   check `for` 10000
         `withConditionSize` 2
 -- NOTE: it takes 25m to run with the following two lines uncommented
---      `withBackground` [constant "sum" (sum :: [Int16] -> Int16)]
+--      `withBackground` [value "sum" (sum :: [Int16] -> Int16)]
 --      `withConditionSize` 4
     $ prop
