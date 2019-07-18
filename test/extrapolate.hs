@@ -170,7 +170,7 @@ tests n =
 
   , [ canonicalizeWith (instances (undefined :: [Int]) []) g'
     | g <- generalizations (instances (undefined :: [Int]) []) [expr [0,0::Int]]
-    , g' <- vassignments g ]
+    , g' <- canonicalVariations g ]
     == map (:[])
        [ _is
        , _i -:- _is

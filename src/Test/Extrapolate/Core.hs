@@ -442,7 +442,7 @@ generalizationsCE :: Testable a => Int -> a -> [Expr] -> [[Expr]]
 generalizationsCE n p es =
   [ canonicalizeWith is gs'
   | gs <- generalizations is es
-  , gs' <- vassignments gs
+  , gs' <- canonicalVariations gs
   , isCounterExample n p gs'
   ]
   where
@@ -453,7 +453,7 @@ generalizationsCEC p es | maxConditionSize p <= 0 = []
 generalizationsCEC p es =
   [ (wc'', gs'')
   | gs <- generalizations is es
-  , gs' <- vassignments gs
+  , gs' <- canonicalVariations gs
   , let thycs = theoryAndReprConds p
   , let wc = weakestCondition thycs p gs'
   , wc /= value "False" False
@@ -472,7 +472,7 @@ generalizationsCounts :: Testable a => Int -> a -> [Expr] -> [([Expr],Int)]
 generalizationsCounts n p es =
   [ (canonicalizeWith is gs', countPasses n p gs')
   | gs <- generalizations is es
-  , gs' <- vassignments gs
+  , gs' <- canonicalVariations gs
   ]
   where
   is = tinstances p

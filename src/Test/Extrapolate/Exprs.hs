@@ -28,7 +28,7 @@ module Test.Extrapolate.Exprs
   , canonicalizeWith
   , grounds
   , groundsAndBinds
-  , vassignments -- TODO: rename to match Haexpress
+  , canonicalVariations
   , nubVars
 
   -- * re-exports from Speculate.Expr
@@ -53,7 +53,7 @@ where
 --
 --       I'll just have to take care to avoid generalizing the prop.
 
-import Data.Haexpress hiding (canonicalizeWith, vars, nubVars)
+import Data.Haexpress hiding (canonicalizeWith, nubVars, canonicalVariations)
 import qualified Data.Haexpress as E
 
 import Test.Speculate.Expr
@@ -101,8 +101,8 @@ groundsAndBinds is = map (mapSnd unfold) . E.groundAndBinds is . fold
   where
   mapSnd f (x,y) = (x,f y)
 
-vassignments :: [Expr] -> [[Expr]]
-vassignments = map unfold . canonicalVariations . fold
+canonicalVariations :: [Expr] -> [[Expr]]
+canonicalVariations = map unfold . E.canonicalVariations . fold
 
 nubVars :: [Expr] -> [Expr]
 nubVars = E.nubVars . fold
