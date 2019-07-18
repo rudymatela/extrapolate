@@ -14,10 +14,8 @@
  -- http://www.seas.upenn.edu/~cis552/12fa/lectures/stub/BST.html
 
 import RedBlackSet 
-import Control.Monad
 
 import Test.Extrapolate
-import Data.Typeable
 
 
 instance (Ord a, Listable a) => Listable (RBSet a) where
@@ -36,6 +34,7 @@ blackDepth (T R l _ r) = case (blackDepth(l),blackDepth(r)) of
 blackDepth (T B l _ r) = case (blackDepth(l),blackDepth(r)) of
   (Just(n),Just(m)) -> if n == m then Just(1+n) else Nothing
   (_,_) -> Nothing
+blackDepth _ = error "unhandled pattern"
 
  -- Check for red-red violations:
 prop_NoRedRed :: RBSet Int -> Bool
@@ -43,6 +42,7 @@ prop_NoRedRed E = True
 prop_NoRedRed (T R (T R _ _ _) _ _) = False
 prop_NoRedRed (T R _ _ (T R _ _ _)) = False
 prop_NoRedRed (T _ l x r) = (prop_NoRedRed l) && (prop_NoRedRed r)
+prop_NoRedRed _ = error "unhandled pattern"
 
 
  -- Check for black-balanced violations:

@@ -1,6 +1,4 @@
 import Test.Extrapolate
-import Test.LeanCheck.Utils
-import qualified Test.LeanCheck as Lean
 
 sort :: Ord a => [a] -> [a]
 sort []      =  []
