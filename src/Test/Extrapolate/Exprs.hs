@@ -29,7 +29,7 @@ module Test.Extrapolate.Exprs
   , grounds
   , groundsAndBinds
   , vassignments -- TODO: rename to match Haexpress
-  , vars -- TODO: rename to match Haexpress
+  , nubVars
 
   -- * re-exports from Speculate.Expr
   , isConstantNamed
@@ -104,8 +104,8 @@ groundsAndBinds is = map (mapSnd unfold) . E.groundAndBinds is . fold
 vassignments :: [Expr] -> [[Expr]]
 vassignments = map unfold . canonicalVariations . fold
 
-vars :: [Expr] -> [Expr]
-vars = E.nubVars . fold
+nubVars :: [Expr] -> [Expr]
+nubVars = E.nubVars . fold
 
 isAssignmentTest :: Instances -> Int -> Expr -> Bool
 isAssignmentTest is m e | typ e /= boolTy = False

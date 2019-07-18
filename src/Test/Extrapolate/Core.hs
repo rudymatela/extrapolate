@@ -581,7 +581,7 @@ theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
 
 candidateConditions :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> [Expr]
 candidateConditions (thy,cs) p es = expr True :
-  [ c | (c,_) <- classesFromSchemasAndVariables thy (vars es) cs
+  [ c | (c,_) <- classesFromSchemasAndVariables thy (nubVars es) cs
       , hasVar c
       , not (isAssignment c)
       , not (isAssignmentTest is (maxTests p) c)
