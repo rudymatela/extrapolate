@@ -69,14 +69,13 @@ module Test.Extrapolate
   )
 where
 
-import Test.Extrapolate.Core
 import Test.Extrapolate.Basic
 import Test.Extrapolate.Derive
 import Test.Extrapolate.TypeBinding
 import Test.Extrapolate.IO
 
 import Test.LeanCheck hiding
-  ( Testable (..)
+  ( Testable
   , results
   , counterExamples
   , counterExample
