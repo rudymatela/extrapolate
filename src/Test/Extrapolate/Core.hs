@@ -19,8 +19,8 @@ module Test.Extrapolate.Core
   , backgroundWith
   , (+++)
   , backgroundOf
-  , bgEq
-  , bgOrd
+  , reifyEq
+  , reifyOrd
   , bgEqWith1
   , bgEqWith2
 
@@ -128,20 +128,20 @@ instance Generalizable () where
   instances u = this u id
 
 instance Generalizable Bool where
-  background p = bgEq p
+  background p = reifyEq p
               ++ [ value "not" not ]
   instances p = this p id
 
 instance Generalizable Int where
-  background x = bgOrd x
+  background x = reifyEqOrd x
   instances x = this x id
 
 instance Generalizable Integer where
-  background x = bgOrd x
+  background x = reifyEqOrd x
   instances x = this x id
 
 instance Generalizable Char where
-  background c = bgOrd c
+  background c = reifyEqOrd c
   instances c = this c id
 
 instance (Generalizable a) => Generalizable (Maybe a) where
@@ -189,18 +189,8 @@ instance Generalizable a => Generalizable [a] where
   instances xs  =  this xs $ instances (head xs)
 
 instance Generalizable Ordering where
-  background o  =  bgOrd o
+  background o  =  reifyEqOrd o
   instances o  =  this o id
-
-bgEq :: (Eq a, Generalizable a) => a -> [Expr]
-bgEq x = [ value "==" ((==) -:> x)
-         , value "/=" ((/=) -:> x) ]
-
-bgOrd :: (Ord a, Generalizable a) => a -> [Expr]
-bgOrd x = [ value "==" ((==) -:> x)
-          , value "/=" ((/=) -:> x)
-          , value "<"  ((<)  -:> x)
-          , value "<=" ((<=) -:> x) ]
 
 bgEqWith1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]

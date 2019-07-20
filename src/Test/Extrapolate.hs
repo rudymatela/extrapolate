@@ -47,8 +47,9 @@ module Test.Extrapolate
   , this
   , Expr (..)
   , value, val
-  , bgEq
-  , bgOrd
+  , reifyEq
+  , reifyOrd
+  , reifyEqOrd
 
 -- * Testable properties
   , Testable

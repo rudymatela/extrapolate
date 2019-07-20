@@ -24,8 +24,9 @@ tests n =
 
        , operatorE (_i -==- _i)
        , operatorE (_i -/=- _i)
-       , operatorE (_i -<-  _i)
-       , operatorE (_i -<=- _i) ]
+       , operatorE (_i -<=-  _i)
+       , operatorE (_i -<- _i)
+       ]
 
   , concat (take 2 $ atoms prop)
     == [ _b
@@ -49,8 +50,8 @@ tests n =
 
        , operatorE (_i -==- _i)
        , operatorE (_i -/=- _i)
-       , operatorE (_i -<-  _i)
        , operatorE (_i -<=- _i)
+       , operatorE (_i -<-  _i)
 
        , val [0::Int]
        , one
@@ -78,12 +79,12 @@ tests n =
        , _i   -==- zero
        , _i   -/=- _i
        , _i   -/=- zero
-       , _i   -<-  _i
-       , _i   -<-  zero
-       , zero -<-  _i
        , _i   -<=- _i
        , _i   -<=- zero
        , zero -<=- _i
+       , _i   -<-  _i
+       , _i   -<-  zero
+       , zero -<-  _i
        ]
 
   , candidateConditions thyes prop [xxs]
@@ -101,10 +102,10 @@ tests n =
        , elem' xx xxs
        , elem' zero xxs
        , xx -/=- zero
-       , xx -<- zero
-       , zero -<- xx
        , xx -<=- zero
        , zero -<=- xx
+       , xx -<- zero
+       , zero -<- xx
        ]
 
   , validConditions thyes prop [xx -:- xxs]

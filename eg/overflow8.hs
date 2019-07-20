@@ -2,7 +2,6 @@
 {-# LANGUAGE DeriveDataTypeable, StandaloneDeriving, CPP #-} -- for GHC <= 7.8
 import Test.Extrapolate
 import Test.LeanCheck.Utils
-import qualified Test.LeanCheck as Lean
 import Data.Int
 
 #if __GLASGOW_HASKELL__ < 710
@@ -30,7 +29,7 @@ instance Name Int8
 instance Express Int8 where  expr = val
 instance Generalizable Int8 where
   instances x = this x id
-  background x = bgOrd x
+  background x = reifyEqOrd x
 
 instance Listable T where
   tiers = cons2 makeT
