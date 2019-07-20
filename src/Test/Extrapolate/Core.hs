@@ -16,7 +16,8 @@ module Test.Extrapolate.Core
 
   , Generalizable (..)
   , this
-  , backgroundWith
+  , reifyBackground
+  , mkBackground
   , (+++)
   , backgroundOf
   , reifyEq
@@ -276,7 +277,7 @@ bgOrdWith4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd
 ins :: Generalizable a => a -> Instances
 ins x = reifyListable x
      ++ reifyName x
-     ++ backgroundWith (background x) x
+     ++ reifyBackground x
 
 -- | Used in the definition of 'instances'
 --   in 'Generalizable' typeclass instances.
@@ -288,9 +289,11 @@ this x f is =
     else f (ins x ++ is)
 -- TODO: change type to a -> [Instances -> Instances] -> Instances -> Instances
 
-backgroundWith :: Typeable a => [Expr] -> a -> Instances
-backgroundWith es x = [ value "background" es ]
--- TODO: rename the x argument above as it is not needed
+reifyBackground :: Generalizable a => a -> Instances
+reifyBackground = mkBackground . background
+
+mkBackground :: [Expr] -> Instances
+mkBackground es = [value "background" es]
 
 getBackground :: Instances -> [Expr]
 getBackground is = concat [eval err e | e@(Value "background" _) <- is]
