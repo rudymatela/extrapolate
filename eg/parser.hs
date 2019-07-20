@@ -13,7 +13,7 @@ module Main where
 import Prelude hiding (showList, mod)
 
 --import Test.LeanCheck
-import Test.Extrapolate hiding (Var)
+import Test.Extrapolate
 import qualified Test.LeanCheck as Lean
 import Test.LeanCheck.Utils ((-:>))
 

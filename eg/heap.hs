@@ -5,12 +5,10 @@
 -- Which in turn was,
 -- Copied from QuickCheck2's examples.
 
-import System.Environment
 import Data.List (sort)
 import Data.Typeable
 import Test.Extrapolate
 import qualified Test.LeanCheck as Lean
-import Test.LeanCheck.Utils
 
 #if __GLASGOW_HASKELL__ < 710
 import Data.Typeable (Typeable)
