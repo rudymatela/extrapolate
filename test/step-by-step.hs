@@ -32,7 +32,7 @@ tests n =
     == [ b_
        , i_
        , is_
-       , ll
+       , nil
        , false
        , true
        , zero
@@ -64,9 +64,9 @@ tests n =
        , not' b_
 
        , is_  -==- is_
-       , is_  -==- ll
+       , is_  -==- nil
        , is_  -/=- is_
-       , is_  -/=- ll
+       , is_  -/=- nil
        , is_  -<=- is_
        , is_  -<-  is_
        , elem' i_ is_
@@ -89,7 +89,7 @@ tests n =
 
   , candidateConditions thyes prop [xxs]
     == [ true
-       , xxs -/=- ll
+       , xxs -/=- nil
        , elem' zero xxs
        ]
 
@@ -98,7 +98,7 @@ tests n =
 
   , candidateConditions thyes prop [xx -:- xxs]
     == [ true
-       , xxs -/=- ll
+       , xxs -/=- nil
        , elem' xx xxs
        , elem' zero xxs
        , xx -/=- zero

@@ -10,9 +10,7 @@ module Test
   , mainTest
   , printLines
 
-  , ll, llb, llmi
-
-  , mxx
+  , nilBool
 
   , nothing, nothingBool, just
 
@@ -72,17 +70,8 @@ mainTest tests n' = do
 printLines :: Show a => [a] -> IO ()
 printLines = putStrLn . unlines . map show
 
-ll :: Expr
-ll  =  expr ([] :: [Int])
-
-mxx :: Expr
-mxx  =  var "mx" (mayb int)
-
-llb :: Expr
-llb  =  expr ([] :: [Bool])
-
-llmi :: Expr
-llmi  =  expr ([] :: [Maybe Int])
+nilBool :: Expr
+nilBool  =  expr ([] :: [Bool])
 
 nothing :: Expr
 nothing  =  value "Nothing" (Nothing :: Maybe Int)

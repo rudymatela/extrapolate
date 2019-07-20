@@ -29,10 +29,10 @@ tests n =
 
   -- Transforming lists into Exprs
   , expr ([]::[Int]) == value "[]" ([]::[Int])
-  , expr ([0::Int])  == zero -:- ll
-  , expr ([0::Int,1])  == zero -:- one -:- ll
-  , holds n $ \xs -> expr xs == foldr (-:-) ll (map expr (xs :: [Int]))
-  , holds n $ \ps -> expr ps == foldr (-:-) llb (map expr (ps :: [Bool]))
+  , expr ([0::Int])  == zero -:- nil
+  , expr ([0::Int,1])  == zero -:- one -:- nil
+  , holds n $ \xs -> expr xs == foldr (-:-) nil (map expr (xs :: [Int]))
+  , holds n $ \ps -> expr ps == foldr (-:-) nilBool (map expr (ps :: [Bool]))
 
   -- Transforming Maybes into Exprs
   , expr (Nothing    :: Maybe Int)   ==  nothing
@@ -159,12 +159,12 @@ tests n =
        [ is_
        , i_ -:- is_
        , i_ -:- i_ -:- is_
-       , i_ -:- i_ -:- ll
+       , i_ -:- i_ -:- nil
        , i_ -:- zero -:- is_
-       , i_ -:- zero -:- ll
+       , i_ -:- zero -:- nil
        , zero -:- is_
        , zero -:- i_ -:- is_
-       , zero -:- i_ -:- ll
+       , zero -:- i_ -:- nil
        , zero -:- zero -:- is_
        ]
 
@@ -176,13 +176,13 @@ tests n =
        , i_ -:- is_
        , i_ -:- i_ -:- is_
        , xx -:- xx -:- is_
-       , i_ -:- i_ -:- ll
-       , xx -:- xx -:- ll
+       , i_ -:- i_ -:- nil
+       , xx -:- xx -:- nil
        , i_ -:- zero -:- is_
-       , i_ -:- zero -:- ll
+       , i_ -:- zero -:- nil
        , zero -:- is_
        , zero -:- i_ -:- is_
-       , zero -:- i_ -:- ll
+       , zero -:- i_ -:- nil
        , zero -:- zero -:- is_
        ]
 
