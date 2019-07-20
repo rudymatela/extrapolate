@@ -23,6 +23,7 @@ module Test.Extrapolate.Exprs
 
   -- * new functions
   , isAssignmentTest
+  , replaceFun
 
   -- * redefinitions of functions from Haexpress
   , canonicalizeWith
@@ -108,3 +109,14 @@ isAssignmentTest is m e | typ e /= boolTy = False
 isAssignmentTest is m e = length rs > 1 && length (filter id rs) == 1
   where
   rs = [errorToFalse $ eval False e' | [e'] <- take m $ grounds is [e]]
+
+-- | /O(n)/.
+-- Replaces the function in the given 'Expr'.
+--
+-- > replaceFun timesE (plusE :$ one :$ two) = timesE :$ one :$ two
+-- > replaceFun absE (idE :$ one) = absE :$ one
+-- > replaceFun two (one) = two
+replaceFun :: Expr -> Expr -> Expr
+replaceFun ef e = foldApp (e:tail es)
+  where
+  es = unfoldApp e
