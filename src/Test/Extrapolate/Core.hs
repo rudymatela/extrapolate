@@ -20,8 +20,6 @@ module Test.Extrapolate.Core
   , mkBackground
   , (+++)
   , backgroundOf
-  , reifyEq
-  , reifyOrd
   , bgEqWith1
   , bgEqWith2
 
