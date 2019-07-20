@@ -3,12 +3,12 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
-* __update documentation__: since using Haexpress the documentation is __very__
-  outdated.  It should be updated before any new release is made.
+* On Extrapolate, carry the counterexample with the property (already folded):
+  `prop :$ val 0 :$ var "x" int`.  In this way, the business of carrying
+  `[Expr]` everywhere disappears.  Just need `Expr`.
+  We also may avoid needing to carry the property in some places.
 
-* _refactor code_: while introducing the use of Haexpress, I tried to keep the
-  changes to a minimum.  Now code should be refactored to be shortened because
-  of Haexpress.
+  NOTE: on generalizations, we should avoid generalizing `prop`.
 
 * _move tests to Haexpress_: some tests can be moved out to Haexpress (e.g.:
   `expr`).
@@ -18,6 +18,10 @@ A non-exhaustive list of things TO DO for Extrapolate.
 
 * _simplify `Derive` module_: derive module can now be simplified with derive
   utils from Haexpress.
+
+* _refactor code_: while introducing the use of Haexpress, I tried to keep the
+  changes to a minimum.  Now code should be refactored to be shortened because
+  of Haexpress.
 
 * _address compilation warnings_: address some compilation warnings
 
