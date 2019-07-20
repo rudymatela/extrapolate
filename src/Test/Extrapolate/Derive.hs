@@ -37,6 +37,10 @@ import Test.Extrapolate.Utils (foldr0)
 
 -- | Derives a 'Generalizable' instance for a given type 'Name'.
 --
+-- If needed, this function also automatically derivates
+-- 'Listable', 'Express' and 'Name' instances using respectively
+-- 'deriveListable', 'deriveExpress' and 'deriveName'.
+--
 -- Consider the following @Stack@ datatype:
 --
 -- > data Stack a = Stack a (Stack a) | Empty
@@ -48,8 +52,6 @@ import Test.Extrapolate.Utils (foldr0)
 -- will automatically derive the following 'Generalizable' instance:
 --
 -- > instance Generalizable a => Generalizable (Stack a) where
--- >   expr s@(Stack x y) = value "Stack" (Stack ->>: s) :$ expr x :$ expr y
--- >   expr s@Empty       = value "Empty" (Empty   -: s)
 -- >   instances s = this "s" s
 -- >               $ let Stack x y = Stack undefined undefined `asTypeOf` s
 -- >                 in instances x

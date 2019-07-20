@@ -94,8 +94,9 @@ import Test.Speculate.Utils (boolTy, typesIn)
 import Data.Haexpress.Name
 import Data.Monoid ((<>))
 
--- | Extrapolate can generalize counter-examples of any types that are
---   'Generalizable'.
+-- |
+-- Extrapolate can generalize counter-examples of any types that are
+-- 'Generalizable'.
 --
 -- The only required function is 'instances' functions.
 --
@@ -106,13 +107,13 @@ import Data.Monoid ((<>))
 -- > instance Generalizable a => Generalizable (Stack a) where
 -- >   instances s = this s $ instances (argTy1of1 s)
 --
--- To declare 'instances' it may be useful to use:
---
--- * Extrapolate's "Test.Extrapolate.TypeBinding" operators:
---   'argTy1of1', 'argTy1of2', 'argTy2of2', ....
+-- To declare 'instances' it may be useful to use type binding
+-- operators such as: 'argTy1of1', 'argTy1of2' and 'argTy2of2'.
 --
 -- Instances can be automatically derived using
--- 'Test.Extrapolate.Derive.deriveGeneralizable'.
+-- 'Test.Extrapolate.Derive.deriveGeneralizable'
+-- which will also automatically derivate
+-- 'Listable', 'Express' and 'Name' when needed.
 class (Listable a, Express a, Name a, Show a) => Generalizable a where
   -- | List of symbols allowed to appear in side-conditions.
   --   Defaults to @[]@.  See 'value'.
@@ -287,6 +288,8 @@ ins x = reifyListable x
      ++ reifyName x
      ++ backgroundWith (background x) x
 
+-- | Used in the definition of 'instances'
+--   in 'Generalizable' typeclass instances.
 this :: Generalizable a
      => a -> (Instances -> Instances) -> Instances -> Instances
 this x f is =

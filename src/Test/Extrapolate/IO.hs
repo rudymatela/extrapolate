@@ -41,7 +41,7 @@ import Control.Exception as E (SomeException, catch, evaluate)
 -- > > check `for` 10080 $ \xs -> sort (sort xs) == sort (xs :: [Int])
 -- > +++ OK, passed 10080 tests.
 --
--- Don't forget the dollar (@$@)!
+-- Don't forget the dollar ('$')!
 for :: Testable a => (WithOption a -> b) -> Int -> a -> b
 check `for` m  =  \p -> check $ p `With` MaxTests m
 
@@ -72,9 +72,11 @@ check `withConditionSize` s  =   \p -> check $ p `With` MaxConditionSize s
 --   conditional generalization in function of the maximum number of tests.
 --
 -- To set that conditional generalizations should fail for 10% of cases:
+--
 -- > check `minFailures` (`div` 10) $ prop
 --
 -- To set that conditional generalizations should fail for 5% of cases:
+--
 -- > check `minFailures` (`div` 20) $ prop
 minFailures :: Testable a => (WithOption a -> b) -> Ratio Int -> a -> b
 check `minFailures` s =  \p -> check $ p `With` MinFailures s
