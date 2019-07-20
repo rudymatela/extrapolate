@@ -120,9 +120,9 @@ tests n =
   , holds n $ quadrupleOrd (<=) (<=) (<=) (<=) ==== (<=) -:> (bool,bool,bool,int)
   , holds n $ quadrupleOrd (<=) (<=) (<=) (<=) ==== (<=) -:> (bool,bool,bool,bool)
 
-  , minimumOn fst [(1,6),(2,5),(3,4)] == (1,6)
-  , minimumOn snd [(1,6),(2,5),(3,4)] == (3,4)
-  , maximumOn fst [(1,6),(2,5),(3,4)] == (3,4)
-  , maximumOn snd [(1,6),(2,5),(3,4)] == (1,6)
-  , maximumOn fst [(1,6),(1,5),(1,4)] == (1,6)
+  , minimumOn fst [(1,6),(2,5),(3,4)::(Int,Int)] == (1,6)
+  , minimumOn snd [(1,6),(2,5),(3,4)::(Int,Int)] == (3,4)
+  , maximumOn fst [(1,6),(2,5),(3,4)::(Int,Int)] == (3,4)
+  , maximumOn snd [(1,6),(2,5),(3,4)::(Int,Int)] == (1,6)
+  , maximumOn fst [(1,6),(1,5),(1,4)::(Int,Int)] == (1,6)
   ]
