@@ -156,34 +156,34 @@ tests n =
 
   , generalizations (instances (undefined :: [Int]) []) [expr [0,0::Int]]
     == map (:[])
-       [ _is
-       , _i -:- _is
-       , _i -:- _i -:- _is
-       , _i -:- _i -:- ll
-       , _i -:- zero -:- _is
-       , _i -:- zero -:- ll
-       , zero -:- _is
-       , zero -:- _i -:- _is
-       , zero -:- _i -:- ll
-       , zero -:- zero -:- _is
+       [ is_
+       , i_ -:- is_
+       , i_ -:- i_ -:- is_
+       , i_ -:- i_ -:- ll
+       , i_ -:- zero -:- is_
+       , i_ -:- zero -:- ll
+       , zero -:- is_
+       , zero -:- i_ -:- is_
+       , zero -:- i_ -:- ll
+       , zero -:- zero -:- is_
        ]
 
   , [ canonicalizeWith (instances (undefined :: [Int]) []) g'
     | g <- generalizations (instances (undefined :: [Int]) []) [expr [0,0::Int]]
     , g' <- canonicalVariations g ]
     == map (:[])
-       [ _is
-       , _i -:- _is
-       , _i -:- _i -:- _is
-       , xx -:- xx -:- _is
-       , _i -:- _i -:- ll
+       [ is_
+       , i_ -:- is_
+       , i_ -:- i_ -:- is_
+       , xx -:- xx -:- is_
+       , i_ -:- i_ -:- ll
        , xx -:- xx -:- ll
-       , _i -:- zero -:- _is
-       , _i -:- zero -:- ll
-       , zero -:- _is
-       , zero -:- _i -:- _is
-       , zero -:- _i -:- ll
-       , zero -:- zero -:- _is
+       , i_ -:- zero -:- is_
+       , i_ -:- zero -:- ll
+       , zero -:- is_
+       , zero -:- i_ -:- is_
+       , zero -:- i_ -:- ll
+       , zero -:- zero -:- is_
        ]
 
 --, holds n $ bgEqOrdOK -:> () -- no Eq or Ord instance on background

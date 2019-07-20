@@ -11,80 +11,80 @@ tests n =
   [ True
 
   , tBackground prop
-    == [ operatorE (_is -==- _is)
-       , operatorE (_is -/=- _is)
-       , operatorE (_is -<=- _is)
-       , operatorE (_is -<-  _is)
+    == [ operatorE (is_ -==- is_)
+       , operatorE (is_ -/=- is_)
+       , operatorE (is_ -<=- is_)
+       , operatorE (is_ -<-  is_)
        , lengthE
        , elemE
 
-       , operatorE (_b -==- _b)
-       , operatorE (_b -/=- _b)
+       , operatorE (b_ -==- b_)
+       , operatorE (b_ -/=- b_)
        , notE
 
-       , operatorE (_i -==- _i)
-       , operatorE (_i -/=- _i)
-       , operatorE (_i -<=-  _i)
-       , operatorE (_i -<- _i)
+       , operatorE (i_ -==- i_)
+       , operatorE (i_ -/=- i_)
+       , operatorE (i_ -<=-  i_)
+       , operatorE (i_ -<- i_)
        ]
 
   , concat (take 2 $ atoms prop)
-    == [ _b
-       , _i
-       , _is
+    == [ b_
+       , i_
+       , is_
        , ll
        , false
        , true
        , zero
 
-       , operatorE (_is -==- _is)
-       , operatorE (_is -/=- _is)
-       , operatorE (_is -<=- _is)
-       , operatorE (_is -<-  _is)
+       , operatorE (is_ -==- is_)
+       , operatorE (is_ -/=- is_)
+       , operatorE (is_ -<=- is_)
+       , operatorE (is_ -<-  is_)
        , lengthE
        , elemE
 
-       , operatorE (_b -==- _b)
-       , operatorE (_b -/=- _b)
+       , operatorE (b_ -==- b_)
+       , operatorE (b_ -/=- b_)
        , notE
 
-       , operatorE (_i -==- _i)
-       , operatorE (_i -/=- _i)
-       , operatorE (_i -<=- _i)
-       , operatorE (_i -<-  _i)
+       , operatorE (i_ -==- i_)
+       , operatorE (i_ -/=- i_)
+       , operatorE (i_ -<=- i_)
+       , operatorE (i_ -<-  i_)
 
        , val [0::Int]
        , one
        ]
 
   , snd thyes
-    == [ _b
+    == [ b_
        , false
        , true
-       , not' _b
+       , not' b_
 
-       , _is  -==- _is
-       , _is  -==- ll
-       , _is  -/=- _is
-       , _is  -/=- ll
-       , _is  -<=- _is
-       , _is  -<-  _is
-       , elem' _i _is
-       , elem' zero _is
+       , is_  -==- is_
+       , is_  -==- ll
+       , is_  -/=- is_
+       , is_  -/=- ll
+       , is_  -<=- is_
+       , is_  -<-  is_
+       , elem' i_ is_
+       , elem' zero is_
 
-       , _b   -==- _b
-       , _b   -/=- _b
+       , b_   -==- b_
+       , b_   -/=- b_
 
-       , _i   -==- _i
-       , _i   -==- zero
-       , _i   -/=- _i
-       , _i   -/=- zero
-       , _i   -<=- _i
-       , _i   -<=- zero
-       , zero -<=- _i
-       , _i   -<-  _i
-       , _i   -<-  zero
-       , zero -<-  _i
+       , i_   -==- i_
+       , i_   -==- zero
+       , i_   -/=- i_
+       , i_   -/=- zero
+       , i_   -<=- i_
+       , i_   -<=- zero
+       , zero -<=- i_
+       , i_   -<-  i_
+       , i_   -<-  zero
+       , zero -<-  i_
        ]
 
   , candidateConditions thyes prop [xxs]

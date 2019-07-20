@@ -12,10 +12,7 @@ module Test
 
   , ll, llb, llmi
 
-  , _i
-  , _is
-  , _b
-  , _mi, mxx
+  , mxx
 
   , nothing, nothingBool, just
 
@@ -78,18 +75,8 @@ printLines = putStrLn . unlines . map show
 ll :: Expr
 ll  =  expr ([] :: [Int])
 
-_i :: Expr
-_i  =  i_
-
-_is :: Expr
-_is  =  is_
-
-_mi, mxx :: Expr
-_mi  =  var ""   (mayb int)
+mxx :: Expr
 mxx  =  var "mx" (mayb int)
-
-_b :: Expr
-_b  =  var ""  bool
 
 llb :: Expr
 llb  =  expr ([] :: [Bool])
