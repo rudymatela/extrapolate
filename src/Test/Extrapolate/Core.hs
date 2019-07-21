@@ -431,20 +431,22 @@ generalizationsCE n p e =
   where
   is = tinstances p
 
-generalizationsCEC :: Testable a => a -> Expr -> [(Expr,Expr)]
+generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
-  [ (wc'', g'')
+  [ canonicalizeWith is $ wc -==>- g'
   | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
   , let thycs = theoryAndReprConds p
   , let wc = weakestCondition thycs p g'
   , wc /= value "False" False
   , wc /= value "True"  True
-  , let (wc'',g'') = unfoldPair $ canonicalizeWith is $ foldPair (wc,g')
   ]
   where
   is = tinstances p
+
+(-==>-) :: Expr -> Expr -> Expr
+e1 -==>- e2  =  value "==>" (==>) :$ e1 :$ e2
 
 isCounterExample :: [Expr] -> Int -> Expr -> Bool
 isCounterExample is m = all (not . errorToFalse . eval False)

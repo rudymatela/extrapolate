@@ -183,8 +183,11 @@ showCE = s . tail . unfoldApp
   s es = unwords [showPrecExpr 11 e | e <- es]
 
 
-showCCE :: (Expr,Expr) -> String
-showCCE (c,e) = showCE e ++ "  when  " ++ showPrecExpr 0 (prettify c)
+showCCE :: Expr -> String
+showCCE  =  s . unfoldApp
+  where
+  s [Value "==>" _,c,e]  =  showCE e ++ "  when  " ++ showPrecExpr 0 (prettify c)
+  s _  =  error "showCCE: not a conditional counterexample"
 
 -- WARNING: expressions are unevaluable after this, just good for printing
 prettify :: Expr -> Expr
