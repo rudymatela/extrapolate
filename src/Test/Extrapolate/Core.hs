@@ -452,7 +452,14 @@ generalizationsCEC p e =
   is = tinstances p
 
 (-==>-) :: Expr -> Expr -> Expr
-e1 -==>- e2  =  value "==>" (==>) :$ e1 :$ e2
+e1 -==>- e2  =  implies :$ e1 :$ e2
+
+implies :: Expr
+implies  =  value "==>" (==>)
+
+unimply :: Expr -> (Expr,Expr)
+unimply ((op :$ e1) :$ e2) | op == implies  =  (e1,e2)
+unimply _  =  error "unimply: not an implication"
 
 isCounterExample :: (Expr -> [Expr]) -> Expr -> Bool
 isCounterExample grounds  =  all (not . errorToFalse . eval False) . grounds
@@ -563,7 +570,7 @@ candidateConditions is m (thy,cs) e = expr True :
 validConditions :: Testable a => (Thy,[Expr]) -> a -> Expr -> [(Expr,Int)]
 validConditions thyes p e =
   [ (c,n) | c <- candidateConditions is m thyes e
-          , (True,n) <- [isCounterExampleUnder is m c e]
+          , (True,n) <- [isCounterExampleUnder is m $ c -==>- e]
           , n > minFailures
           ] ++ [(expr False,0)]
   where
@@ -577,11 +584,11 @@ weakestCondition thyes p e = fst
                            . takeBound (computeConditionBound p)
                            $ validConditions thyes p e
 
-isCounterExampleUnder :: [Expr] -> Int -> Expr -> Expr -> (Bool, Int)
-isCounterExampleUnder is m c e = andLength
+isCounterExampleUnder :: [Expr] -> Int -> Expr -> (Bool, Int)
+isCounterExampleUnder is m e  =  andLength
   [ not . errorToFalse $ eval False e'
-  | (bs,e') <- take m $ groundAndBinds is e
-  , errorToFalse $ eval False (c //- bs)
+  | e' <- take m $ grounds is e
+  , errorToFalse . eval False . fst $ unimply e'
   ]
   where
   andLength ps = (and ps, length ps)
