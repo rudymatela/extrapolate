@@ -571,8 +571,7 @@ candidateConditions (thy,cs) p e = expr True :
 validConditions :: Testable a => (Thy,[Expr]) -> a -> Expr -> [(Expr,Int)]
 validConditions thyes p e =
   [ (c,n) | c <- candidateConditions thyes p e
-          , let (valid,n) = isCounterExampleUnder is m c e
-          , valid
+          , (True,n) <- [isCounterExampleUnder is m c e]
           , n > minFailures
           ] ++ [(expr False,0)]
   where
