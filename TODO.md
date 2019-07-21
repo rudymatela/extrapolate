@@ -3,6 +3,8 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
+* _address compilation warnings_: address some compilation warnings
+
 * On Extrapolate, carry the counterexample with the property (already folded):
   `prop :$ val 0 :$ var "x" int`.  In this way, the business of carrying
   `[Expr]` everywhere disappears.  Just need `Expr`.
@@ -13,8 +15,6 @@ A non-exhaustive list of things TO DO for Extrapolate.
 * _refactor code_: while introducing the use of Haexpress, I tried to keep the
   changes to a minimum.  Now code should be refactored to be shortened because
   of Haexpress.
-
-* _address compilation warnings_: address some compilation warnings
 
 * `deriveGeneralizableAtomic`: derive a generalizable value treating it as
   atomic, as I did with the Map on the XMonad example.  To be used on datatypes
