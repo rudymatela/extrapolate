@@ -3,6 +3,13 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
+* make so that `generalizations` does not generalize `prop` in any case
+
+* change conditional counter-example format to `Expr ==> Expr` instead of
+  `(Expr,Expr)`.
+
+* avoid recomputing `tinstances` everywhere.  Just carry `[Expr]` around.
+
 * On Extrapolate, carry the counterexample with the property (already folded):
   `prop :$ val 0 :$ var "x" int`.  In this way, the business of carrying
   `[Expr]` everywhere disappears.  Just need `Expr`.
