@@ -320,19 +320,17 @@ tBackground = getBackground . tinstances
 -- The above is the ideal, but let's start with a simpler algorithm:
 --
 --    1: change value to hole
-generalizations :: Instances -> Expr -> [Expr]
-generalizations is  =  gen
+generalizations :: (Expr -> Bool) -> Expr -> [Expr]
+generalizations shouldGeneralize  =  gen
   where
-  gen (e1 :$ e2)  =
-    [ holeAsTypeOf e | let e = e1 :$ e2
-                     , isRight (etyp e)
-                     , isListable is e ]
+  gen e@(e1 :$ e2)  =
+    [holeAsTypeOf e | shouldGeneralize e]
     ++ productWith (:$) (gen e1) (gen e2)
     ++ map (:$ e2) (gen e1)
     ++ map (e1 :$) (gen e2)
   gen e
     | isVar e    =  []
-    | otherwise  =  [holeAsTypeOf e | isListable is e]
+    | otherwise  =  [holeAsTypeOf e | shouldGeneralize e]
 -- note above, I should only generalize types that I know how to enumerate,
 -- i.e.: types that I have Instances of!
 -- TODO: avoid generalizing "prop" value altogether in the function above
@@ -427,7 +425,7 @@ counterExampleGens n p = case counterExample n p of
 generalizationsCE :: Testable a => Int -> a -> Expr -> [Expr]
 generalizationsCE n p e =
   [ canonicalizeWith is g'
-  | g <- generalizations is e
+  | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
   , isCounterExample is n g'
   ]
@@ -438,7 +436,7 @@ generalizationsCEC :: Testable a => a -> Expr -> [(Expr,Expr)]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
   [ (wc'', g'')
-  | g <- generalizations is e
+  | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
   , let thycs = theoryAndReprConds p
   , let wc = weakestCondition thycs p g'
@@ -457,7 +455,7 @@ isCounterExample is m = all (not . errorToFalse . eval False)
 generalizationsCounts :: [Expr] -> Int -> Expr -> [(Expr,Int)]
 generalizationsCounts is n e  =
   [ (canonicalizeWith is g', countPasses is n g')
-  | g <- generalizations is e
+  | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
   ]
 
