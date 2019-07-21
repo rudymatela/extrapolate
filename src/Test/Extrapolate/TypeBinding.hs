@@ -20,68 +20,7 @@ module Test.Extrapolate.TypeBinding
 where
 
 -- TODO: reexport LeanCheck's typebinding operators
-
-argTypes0 :: a -> a
-argTypes0 f = f
-
-argTypes1 :: (a -> b) -> a -> (a -> b)
-argTypes1 f _ = f
-
-argTypes2 :: (a -> b -> c)
-          ->  a -> b
-          -> (a -> b -> c)
-argTypes2 f _ _ = f
-
-argTypes3 :: (a -> b -> c -> d)
-          ->  a -> b -> c
-          -> (a -> b -> c -> d)
-argTypes3 f _ _ _ = f
-
-argTypes4 :: (a -> b -> c -> d -> e)
-          ->  a -> b -> c -> d
-          -> (a -> b -> c -> d -> e)
-argTypes4 f _ _ _ _ = f
-
-argTypes5 :: (a -> b -> c -> d -> e -> f)
-          ->  a -> b -> c -> d -> e
-          -> (a -> b -> c -> d -> e -> f)
-argTypes5 f _ _ _ _ _ = f
-
-argTypes6 :: (a -> b -> c -> d -> e -> f -> g)
-          ->  a -> b -> c -> d -> e -> f
-          -> (a -> b -> c -> d -> e -> f -> g)
-argTypes6 f _ _ _ _ _ _ = f
-
-argTypes7 :: (a -> b -> c -> d -> e -> f -> g -> h)
-          ->  a -> b -> c -> d -> e -> f -> g
-          -> (a -> b -> c -> d -> e -> f -> g -> h)
-argTypes7 f _ _ _ _ _ _ _ = f
-
-argTypes8 :: (a -> b -> c -> d -> e -> f -> g -> h -> i)
-          ->  a -> b -> c -> d -> e -> f -> g -> h
-          -> (a -> b -> c -> d -> e -> f -> g -> h -> i)
-argTypes8 f _ _ _ _ _ _ _ _ = f
-
-argTypes9 :: (a -> b -> c -> d -> e -> f -> g -> h -> i -> j)
-          ->  a -> b -> c -> d -> e -> f -> g -> h -> i
-          -> (a -> b -> c -> d -> e -> f -> g -> h -> i -> j)
-argTypes9 f _ _ _ _ _ _ _ _ _ = f
-
-argTypes10 :: (a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k)
-           ->  a -> b -> c -> d -> e -> f -> g -> h -> i -> j
-           -> (a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k)
-argTypes10 f _ _ _ _ _ _ _ _ _ _ = f
-
-argTypes11 :: (a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k -> l)
-           ->  a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k
-           -> (a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k -> l)
-argTypes11 f _ _ _ _ _ _ _ _ _ _ _ = f
-
-argTypes12 :: (a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k -> l -> m)
-           ->  a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k -> l
-           -> (a -> b -> c -> d -> e -> f -> g -> h -> i -> j -> k -> l -> m)
-argTypes12 f _ _ _ _ _ _ _ _ _ _ _ _ = f
-
+-- TODO: or maybe re-export Haexpress's typebinding operators?
 
 argTy1of1 :: con a -> a
 argTy1of1 _ = undefined
