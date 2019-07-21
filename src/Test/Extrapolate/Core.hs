@@ -58,6 +58,7 @@ module Test.Extrapolate.Core
 
   , Testable (..)
   , results
+  , limitedResults
 
   , areInstancesOf
   )
@@ -410,8 +411,11 @@ instance (Typeable b, Testable b, Generalizable a, Listable a) => Testable (a->b
 results :: Testable a => a -> [(Expr,Bool)]
 results = concat . resultiers
 
+limitedResults :: Testable a => a -> [(Expr,Bool)]
+limitedResults p  =  take (maxTests p) (results p)
+
 counterExamples :: Testable a => a -> [Expr]
-counterExamples p  =  [as | (as,False) <- take (maxTests p) (results p)]
+counterExamples p  =  [as | (as,False) <- limitedResults p]
 
 counterExample :: Testable a => a -> Maybe Expr
 counterExample  =  listToMaybe . counterExamples

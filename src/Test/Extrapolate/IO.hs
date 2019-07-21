@@ -123,11 +123,10 @@ check = void . checkResult
 -- for silence, you should use 'Test.LeanCheck.holds'.
 checkResult :: Testable a => a -> IO Bool
 checkResult p = do
-  (r,ces) <- resultIO m p
+  (r,ces) <- resultIO p
   putStr . showResult p ces $ r
   return (isOK r)
   where
-  m = maxTests p
   isOK (OK _) = True
   isOK _      = False
 
@@ -136,8 +135,8 @@ data Result = OK        Int
             | Exception Int Expr String
   deriving (Eq, Show)
 
-resultsIO :: Testable a => Int -> a -> IO [Result]
-resultsIO n = zipWithM torio [1..] . take n . results
+resultsIO :: Testable a => a -> IO [Result]
+resultsIO = zipWithM torio [1..] . limitedResults
   where
     tor i (_,True) = OK i
     tor i (as,False) = Falsified i as
@@ -145,9 +144,9 @@ resultsIO n = zipWithM torio [1..] . take n . results
        `catch` \e -> let _ = e :: SomeException
                      in return (Exception i as (show e))
 
-resultIO :: Testable a => Int -> a -> IO (Result, [Expr])
-resultIO n p = do
-  rs <- resultsIO n p
+resultIO :: Testable a => a -> IO (Result, [Expr])
+resultIO p = do
+  rs <- resultsIO p
   return ( fromMaybe (last rs) $ find isFailure rs
          , mapMaybe ce rs )
   where
