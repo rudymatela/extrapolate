@@ -151,6 +151,18 @@ deriveGeneralizable ''Data
 deriveGeneralizable ''EqData
 deriveGeneralizable ''OrdData
 
+{-
+-- these should produce warnings because instances already exist:
+deriveGeneralizable ''Int
+deriveGeneralizable ''Bool
+deriveGeneralizable ''Either
+-}
+
+-- these should /not/ produce warnings even though instances already exist:
+deriveGeneralizableIfNeeded ''Int
+deriveGeneralizableIfNeeded ''Bool
+deriveGeneralizableIfNeeded ''Either
+
 
 main :: IO ()
 main = mainTest tests 2160
