@@ -161,13 +161,13 @@ showResult :: Testable a => Int -> a -> [Expr] -> Result -> String
 showResult m p ces (OK n)             = "+++ OK, passed " ++ show n ++ " tests"
                                      ++ takeWhile (\_ -> n < m) " (exhausted)" ++ ".\n\n"
 showResult m p ces (Falsified i ce)   = "*** Failed! Falsifiable (after "
-                                     ++ show i ++ " tests):\n" ++ showCEandGens m p ce
+                                     ++ show i ++ " tests):\n" ++ showCEandGens p ce
 showResult m p ces (Exception i ce e) = "*** Failed! Exception '" ++ e ++ "' (after "
-                                     ++ show i ++ " tests):\n" ++ showCEandGens m p ce
+                                     ++ show i ++ " tests):\n" ++ showCEandGens p ce
 
-showCEandGens :: Testable a => Int -> a -> Expr -> String
-showCEandGens m p e = showCE e ++ "\n\n"
-  ++ case generalizationsCE m p e of
+showCEandGens :: Testable a => a -> Expr -> String
+showCEandGens p e = showCE e ++ "\n\n"
+  ++ case generalizationsCE p e of
        []    -> ""
        (e:_) -> "Generalization:\n"
              ++ showCE e ++ "\n\n"

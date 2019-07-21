@@ -410,25 +410,26 @@ instance (Typeable b, Testable b, Generalizable a, Listable a) => Testable (a->b
 results :: Testable a => a -> [(Expr,Bool)]
 results = concat . resultiers
 
-counterExamples :: Testable a => Int -> a -> [Expr]
-counterExamples n p = [as | (as,False) <- take n (results p)]
+counterExamples :: Testable a => a -> [Expr]
+counterExamples p  =  [as | (as,False) <- take (maxTests p) (results p)]
 
-counterExample :: Testable a => Int -> a -> Maybe Expr
-counterExample n = listToMaybe . counterExamples n
+counterExample :: Testable a => a -> Maybe Expr
+counterExample  =  listToMaybe . counterExamples
 
-counterExampleGens :: Testable a => Int -> a -> Maybe (Expr,[Expr])
-counterExampleGens n p = case counterExample n p of
+counterExampleGens :: Testable a => a -> Maybe (Expr,[Expr])
+counterExampleGens p  =  case counterExample p of
   Nothing -> Nothing
-  Just e  -> Just (e,generalizationsCE n p e)
+  Just e  -> Just (e,generalizationsCE p e)
 
-generalizationsCE :: Testable a => Int -> a -> Expr -> [Expr]
-generalizationsCE n p e =
+generalizationsCE :: Testable a => a -> Expr -> [Expr]
+generalizationsCE p e =
   [ canonicalizeWith (lookupNames is) g'
   | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
-  , isCounterExample (take n . grounds is) g'
+  , isCounterExample (take m . grounds is) g'
   ]
   where
+  m = maxTests p
   is = tinstances p
 
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
@@ -461,8 +462,8 @@ generalizationsCounts is n e  =
 countPasses :: [Expr] -> Int -> Expr -> Int
 countPasses is m  =  length . filter (eval False) . take m . grounds is
 
-counterExampleGen :: Testable a => Int -> a -> Maybe (Expr,Maybe Expr)
-counterExampleGen n p = case counterExampleGens n p of
+counterExampleGen :: Testable a => a -> Maybe (Expr,Maybe Expr)
+counterExampleGen p  =  case counterExampleGens p of
   Nothing        -> Nothing
   Just (e,[])    -> Just (e,Nothing)
   Just (e,(g:_)) -> Just (e,Just g)
