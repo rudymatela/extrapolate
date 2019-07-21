@@ -1,5 +1,4 @@
 import Test.Extrapolate
-import Data.List
 import Data.Typeable (typeOf)
 
 main :: IO ()
