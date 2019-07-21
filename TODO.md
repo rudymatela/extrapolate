@@ -3,8 +3,6 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
-* _address compilation warnings_: address some compilation warnings
-
 * On Extrapolate, carry the counterexample with the property (already folded):
   `prop :$ val 0 :$ var "x" int`.  In this way, the business of carrying
   `[Expr]` everywhere disappears.  Just need `Expr`.
