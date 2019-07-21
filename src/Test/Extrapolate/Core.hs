@@ -452,17 +452,15 @@ isCounterExample is m = all (not . errorToFalse . eval False)
                       . take m
                       . grounds is
 
-generalizationsCounts :: Testable a => Int -> a -> Expr -> [(Expr,Int)]
-generalizationsCounts n p e =
-  [ (canonicalizeWith is g', countPasses n p g')
+generalizationsCounts :: [Expr] -> Int -> Expr -> [(Expr,Int)]
+generalizationsCounts is n e  =
+  [ (canonicalizeWith is g', countPasses is n g')
   | g <- generalizations is e
   , g' <- canonicalVariations g
   ]
-  where
-  is = tinstances p
 
-countPasses :: Testable a => Int -> a -> Expr -> Int
-countPasses m p = length . filter (eval False) . take m . grounds (tinstances p)
+countPasses :: [Expr] -> Int -> Expr -> Int
+countPasses is m  =  length . filter (eval False) . take m . grounds is
 
 counterExampleGen :: Testable a => Int -> a -> Maybe (Expr,Maybe Expr)
 counterExampleGen n p = case counterExampleGens n p of
