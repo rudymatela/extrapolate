@@ -554,15 +554,13 @@ theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
   where
   (thy,es) = theoryAndReprExprs p
 
-candidateConditions :: Testable a => (Thy,[Expr]) -> a -> Expr -> [Expr]
-candidateConditions (thy,cs) p e = expr True :
+candidateConditions :: [Expr] -> Int -> (Thy,[Expr]) -> Expr -> [Expr]
+candidateConditions is m (thy,cs) e = expr True :
   [ c | (c,_) <- classesFromSchemasAndVariables thy (nubVars e) cs
       , hasVar c
       , not (isAssignment c)
-      , not (isAssignmentTest is (maxTests p) c)
+      , not (isAssignmentTest is m c)
       ]
-  where
-  is = tinstances p
 -- 'expr True' is expected by the functions that call candidateConditions.  It
 -- is always useful to check if a generalization without any conditions still
 -- passes (that means we should skip as there is an already reported
@@ -570,7 +568,7 @@ candidateConditions (thy,cs) p e = expr True :
 
 validConditions :: Testable a => (Thy,[Expr]) -> a -> Expr -> [(Expr,Int)]
 validConditions thyes p e =
-  [ (c,n) | c <- candidateConditions thyes p e
+  [ (c,n) | c <- candidateConditions is m thyes e
           , (True,n) <- [isCounterExampleUnder is m c e]
           , n > minFailures
           ] ++ [(expr False,0)]

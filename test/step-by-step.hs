@@ -87,7 +87,7 @@ tests n =
        , zero -<-  i_
        ]
 
-  , candidateConditions thyes prop (prop' xxs)
+  , candidateConditions (tinstances prop) (maxTests prop) thyes (prop' xxs)
     == [ true
        , xxs -/=- nil
        , elem' zero xxs
@@ -96,7 +96,7 @@ tests n =
   , validConditions thyes prop (prop' xxs)
     == [(false, 0)]
 
-  , candidateConditions thyes prop (prop' $ xx -:- xxs)
+  , candidateConditions (tinstances prop) (maxTests prop) thyes (prop' $ xx -:- xxs)
     == [ true
        , xxs -/=- nil
        , elem' xx xxs
