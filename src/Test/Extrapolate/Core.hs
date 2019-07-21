@@ -321,16 +321,18 @@ tBackground = getBackground . tinstances
 --
 --    1: change value to hole
 generalizations :: Instances -> Expr -> [Expr]
-generalizations is (e1 :$ e2) =
-  [ holeAsTypeOf e | let e = e1 :$ e2
-                   , isRight (etyp e)
-                   , isListable is e ]
-  ++ productWith (:$) (generalizations is e1) (generalizations is e2)
-  ++ map (:$ e2) (generalizations is e1)
-  ++ map (e1 :$) (generalizations is e2)
-generalizations is e
-  | isVar e    =  []
-  | otherwise  =  [holeAsTypeOf e | isListable is e]
+generalizations is  =  gen
+  where
+  gen (e1 :$ e2)  =
+    [ holeAsTypeOf e | let e = e1 :$ e2
+                     , isRight (etyp e)
+                     , isListable is e ]
+    ++ productWith (:$) (gen e1) (gen e2)
+    ++ map (:$ e2) (gen e1)
+    ++ map (e1 :$) (gen e2)
+  gen e
+    | isVar e    =  []
+    | otherwise  =  [holeAsTypeOf e | isListable is e]
 -- note above, I should only generalize types that I know how to enumerate,
 -- i.e.: types that I have Instances of!
 -- TODO: avoid generalizing "prop" value altogether in the function above
