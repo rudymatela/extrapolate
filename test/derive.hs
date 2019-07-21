@@ -140,8 +140,7 @@ deriveGeneralizable ''Arrangement
 
 deriveGeneralizable ''NonEmptyList
 
-deriveGeneralizable ''Mutual
-deriveGeneralizable ''Shared
+deriveGeneralizableCascading ''Mutual
 
 deriveGeneralizable ''Tree
 deriveGeneralizable ''Leafy
@@ -160,17 +159,19 @@ tests :: Int -> [Bool]
 tests n =
   [ True
 
-  , generalizableOK n (ls bool)
-  , generalizableOK n (perhaps int)
-  , generalizableOK n (ship int char)
-  , generalizableOK n (arrangement)
-  , generalizableOK n (mutual bool)
-  , generalizableOK n (shared int)
-  , generalizableOK n (tree bool)
-  , generalizableOK n (leafy int)
-  , generalizableOK n (dict bool int)
-  , generalizableOK n EqData
-  , generalizableOK n OrdData
+  , generalizableOK n $ ls bool
+  , generalizableOK n $ perhaps int
+  , generalizableOK n $ ship int char
+  , generalizableOK n $ arrangement
+  , generalizableOK n $ nonEmptyList int
+  , generalizableOK n $ mutual bool
+  , generalizableOK n $ shared int
+  , generalizableOK n $ tree bool
+  , generalizableOK n $ leafy int
+  , generalizableOK n $ dict bool int
+--, generalizableOK n $ Data -- not Eq, can't run test
+  , generalizableOK n $ EqData
+  , generalizableOK n $ OrdData
 
   ,       int  `instancesSubset` ls int
   , not $ bool `instancesSubset` ls int
