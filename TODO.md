@@ -10,9 +10,6 @@ A non-exhaustive list of things TO DO for Extrapolate.
 
   NOTE: on generalizations, we should avoid generalizing `prop`.
 
-* _move tests to Haexpress_: some tests can be moved out to Haexpress (e.g.:
-  `expr`).
-
 * _simplify `Derive` module_: derive module can now be simplified with derive
   utils from Haexpress.
 
