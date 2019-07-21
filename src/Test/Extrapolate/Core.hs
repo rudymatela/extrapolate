@@ -79,7 +79,6 @@ import Test.LeanCheck hiding
   , checkResultFor
   )
 import Data.Maybe
-import Data.Either (isRight)
 import Data.List (sort)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Test.Extrapolate.Exprs
