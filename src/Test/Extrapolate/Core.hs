@@ -368,6 +368,12 @@ maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [4]
 groundsFor :: Testable a => a -> Expr -> [Expr]
 groundsFor p  =  take (maxTests p) . grounds (tinstances p)
 
+isListableFor :: Testable a => a -> Expr -> Bool
+isListableFor  =  isListable . tinstances
+
+namesFor :: Testable a => a -> Expr -> [String]
+namesFor  =  lookupNames . tinstances
+
 -- minimum number of failures for a conditional generalization
 computeMinFailures :: Testable a => a -> Int
 computeMinFailures p = max 2 $ m * numerator r `div` denominator r
@@ -430,27 +436,23 @@ counterExampleGens p  =  case counterExample p of
 
 generalizationsCE :: Testable a => a -> Expr -> [Expr]
 generalizationsCE p e =
-  [ canonicalizeWith (lookupNames is) g'
-  | g <- generalizations (isListable is) e
+  [ canonicalizeWith (namesFor p) g'
+  | g <- generalizations (isListableFor p) e
   , g' <- canonicalVariations g
   , isCounterExample (groundsFor p) g'
   ]
-  where
-  is = tinstances p
 
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
-  [ canonicalizeWith (lookupNames is) $ wc -==>- g'
-  | g <- generalizations (isListable is) e
+  [ canonicalizeWith (namesFor p) $ wc -==>- g'
+  | g <- generalizations (isListableFor p) e
   , g' <- canonicalVariations g
   , let thycs = theoryAndReprConds p
   , let wc = weakestCondition thycs p g'
   , wc /= value "False" False
   , wc /= value "True"  True
   ]
-  where
-  is = tinstances p
 
 (-==>-) :: Expr -> Expr -> Expr
 e1 -==>- e2  =  implies :$ e1 :$ e2
