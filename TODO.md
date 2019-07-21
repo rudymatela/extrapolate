@@ -13,9 +13,6 @@ A non-exhaustive list of things TO DO for Extrapolate.
 * _move tests to Haexpress_: some tests can be moved out to Haexpress (e.g.:
   `expr`).
 
-* _cleanup Test.hs_: cleanup `Test`.  Maybe move a couple definitions to
-  `Haexpress.Fixtures`.
-
 * _simplify `Derive` module_: derive module can now be simplified with derive
   utils from Haexpress.
 

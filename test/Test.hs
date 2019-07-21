@@ -10,10 +10,6 @@ module Test
   , mainTest
   , printLines
 
-  , nilBool
-
-  , nothing, nothingBool, just
-
   , operatorE
 
   -- * Properties and Tests
@@ -69,25 +65,6 @@ mainTest tests n' = do
 
 printLines :: Show a => [a] -> IO ()
 printLines = putStrLn . unlines . map show
-
-nilBool :: Expr
-nilBool  =  expr ([] :: [Bool])
-
-nothing :: Expr
-nothing  =  value "Nothing" (Nothing :: Maybe Int)
-
-nothingBool :: Expr
-nothingBool  =  value "Nothing" (Nothing :: Maybe Bool)
-
-just :: Expr -> Expr
-just x  =  justE :$ x
-  where
-  justE = case show $ typ x of
-            "Int"  -> justEint
-            "Bool" -> justEbool
-            t      -> error $ "(-:-): unhandled type " ++ t
-  justEint   =  value "Just" (Just -:> int)
-  justEbool  =  value "Just" (Just -:> bool)
 
 operatorE :: Expr -> Expr
 operatorE ((opE :$ _) :$ _) = opE
