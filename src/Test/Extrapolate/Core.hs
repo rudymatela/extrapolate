@@ -570,13 +570,14 @@ candidateConditions is m (thy,cs) e = expr True :
 validConditions :: Testable a => (Thy,[Expr]) -> a -> Expr -> [(Expr,Int)]
 validConditions thyes p e =
   [ (c,n) | c <- candidateConditions is m thyes e
-          , (True,n) <- [isCounterExampleUnder is m $ c -==>- e]
+          , (True,n) <- [isCounterExampleUnder grounds $ c -==>- e]
           , n > minFailures
           ] ++ [(expr False,0)]
   where
   is = tinstances p
   m = maxTests p
   minFailures = computeMinFailures p
+  grounds = groundsFor p
 
 weakestCondition :: Testable a => (Thy,[Expr]) -> a -> Expr -> Expr
 weakestCondition thyes p e = fst
@@ -584,10 +585,10 @@ weakestCondition thyes p e = fst
                            . takeBound (computeConditionBound p)
                            $ validConditions thyes p e
 
-isCounterExampleUnder :: [Expr] -> Int -> Expr -> (Bool, Int)
-isCounterExampleUnder is m e  =  andLength
+isCounterExampleUnder :: (Expr -> [Expr]) -> Expr -> (Bool, Int)
+isCounterExampleUnder grounds e  =  andLength
   [ not . errorToFalse $ eval False e'
-  | e' <- take m $ grounds is e
+  | e' <- grounds e
   , errorToFalse . eval False . fst $ unimply e'
   ]
   where
