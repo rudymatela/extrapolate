@@ -3,18 +3,6 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
-* avoid carrying `[Expr]` around.  Just carry functions that are needed.
-  e.g.: `take m . ground is`
-
-* avoid recomputing `tinstances` everywhere.  Just carry `[Expr]` around.
-
-* On Extrapolate, carry the counterexample with the property (already folded):
-  `prop :$ val 0 :$ var "x" int`.  In this way, the business of carrying
-  `[Expr]` everywhere disappears.  Just need `Expr`.
-  We also may avoid needing to carry the property in some places.
-
-  NOTE: on generalizations, we should avoid generalizing `prop`.
-
 * _refactor code_: while introducing the use of Haexpress, I tried to keep the
   changes to a minimum.  Now code should be refactored to be shortened because
   of Haexpress.
