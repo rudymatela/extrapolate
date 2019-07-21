@@ -74,7 +74,6 @@ import qualified Test.Speculate.Expr as E (grounds, groundAndBinds)
 import Data.Haexpress.Utils.Typeable (boolTy)
 
 import Test.LeanCheck.Error (errorToFalse)
-import Data.Typeable (Typeable)
 
 type Exprs = [Expr]
 

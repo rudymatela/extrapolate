@@ -38,8 +38,7 @@ module Test.Extrapolate.Utils
 where
 
 import Data.Function (on)
-import Data.List (minimumBy, maximumBy, nub, elemIndex)
-import Data.Typeable
+import Data.List (minimumBy, elemIndex)
 
 nubMergeBy :: (a -> a -> Ordering) -> [a] -> [a] -> [a]
 nubMergeBy cmp (x:xs) (y:ys) = case x `cmp` y of
@@ -180,15 +179,6 @@ nubMergesBy cmp xss = nubMergeBy cmp (nubMerges yss) (nubMerges zss)
 
 nubMergeMap :: Ord b => (a -> [b]) -> [a] -> [b]
 nubMergeMap f = nubMerges . map f
-
-funTyCon :: TyCon
-funTyCon = typeRepTyCon $ typeOf (undefined :: () -> ())
-
-isFunTy :: TypeRep -> Bool
-isFunTy t =
-  case splitTyConApp t of
-    (con,[_,_]) | con == funTyCon -> True
-    _ -> False
 
 discard :: (a -> Bool) -> [a] -> [a]
 discard p = filter (not . p)

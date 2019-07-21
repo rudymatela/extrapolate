@@ -67,9 +67,8 @@ import Test.Extrapolate.Utils
 import Test.LeanCheck.Utils
 import Test.LeanCheck.Utils.TypeBinding
 import Data.Typeable
-import Data.Dynamic
 import Test.LeanCheck hiding
-  ( Testable (..)
+  ( Testable
   , results
   , counterExamples
   , counterExample
@@ -81,7 +80,7 @@ import Test.LeanCheck hiding
   )
 import Data.Maybe
 import Data.Either (isRight)
-import Data.List (insert, nub, sort)
+import Data.List (sort)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Test.Extrapolate.Exprs
 import Test.LeanCheck.Error (errorToFalse)
@@ -90,7 +89,6 @@ import Test.Extrapolate.TypeBinding -- for Haddock
 import Test.Speculate.Reason (Thy)
 import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
 import Test.Speculate.Utils (boolTy, typesIn)
-import Data.Haexpress.Name
 import Data.Monoid ((<>))
 
 -- |
@@ -498,20 +496,12 @@ matchList = m []
     case matchWith bs e1 e2 of
       Nothing -> Nothing
       Just bs -> m bs es1 es2
+  m bs _ _ = Nothing -- different lengths
 
 -- list only the matches that introduce new variables (not variable-to-variable
 -- matches)
 newMatches :: [Expr] -> [Expr] -> Maybe Binds
 e1 `newMatches` e2 = filter (not . isVar . snd) <$> e1 `matchList` e2
-
-
--- | Given tiers of atomic expressions, generates tiers of expressions combined
---   by function application.  This is done blindly so redundant expressions
---   are generated: like x + y and y + x.
-expressionsTT :: [[Expr]] -> [[Expr]]
-expressionsTT dss = dss \/ productMaybeWith ($$) ess ess `addWeight` 1
-  where
-  ess = expressionsTT dss
 
 -- Generates expression schemas and a theory
 theoryAndReprsFromPropAndAtoms :: Testable a => a -> [[Expr]] -> (Thy,[[Expr]])

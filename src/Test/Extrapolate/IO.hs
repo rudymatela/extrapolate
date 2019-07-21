@@ -30,8 +30,8 @@ import Prelude hiding (catch)
 #endif
 
 import Test.Extrapolate.Core
-import Data.Maybe (listToMaybe, mapMaybe, fromMaybe)
-import Data.List (find, intercalate)
+import Data.Maybe (mapMaybe, fromMaybe)
+import Data.List (find)
 import Data.Ratio (Ratio)
 import Control.Monad
 import Control.Exception as E (SomeException, catch, evaluate)
