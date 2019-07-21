@@ -67,7 +67,8 @@ printLines :: Show a => [a] -> IO ()
 printLines = putStrLn . unlines . map show
 
 operatorE :: Expr -> Expr
-operatorE ((opE :$ _) :$ _) = opE
+operatorE ((opE :$ _) :$ _)  =  opE
+operatorE _  =  error "operatorE: not a binary operator"
 
 
 
