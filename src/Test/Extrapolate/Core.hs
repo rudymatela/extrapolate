@@ -42,7 +42,6 @@ module Test.Extrapolate.Core
   , generalizations
   , generalizationsCE
   , generalizationsCEC
-  , generalizationsCounts
 
   , atoms
   , theoryAndReprExprs
@@ -457,16 +456,6 @@ e1 -==>- e2  =  value "==>" (==>) :$ e1 :$ e2
 
 isCounterExample :: (Expr -> [Expr]) -> Expr -> Bool
 isCounterExample grounds  =  all (not . errorToFalse . eval False) . grounds
-
-generalizationsCounts :: [Expr] -> Int -> Expr -> [(Expr,Int)]
-generalizationsCounts is n e  =
-  [ (canonicalizeWith (lookupNames is) g', countPasses is n g')
-  | g <- generalizations (isListable is) e
-  , g' <- canonicalVariations g
-  ]
-
-countPasses :: [Expr] -> Int -> Expr -> Int
-countPasses is m  =  length . filter (eval False) . take m . grounds is
 
 counterExampleGen :: Testable a => a -> Maybe (Expr,Maybe Expr)
 counterExampleGen p  =  case counterExampleGens p of
