@@ -423,7 +423,7 @@ counterExampleGens n p = case counterExample n p of
 
 generalizationsCE :: Testable a => Int -> a -> Expr -> [Expr]
 generalizationsCE n p e =
-  [ canonicalizeWith is g'
+  [ canonicalizeWith (lookupNames is) g'
   | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
   , isCounterExample (take n . grounds is) g'
@@ -434,7 +434,7 @@ generalizationsCE n p e =
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
-  [ canonicalizeWith is $ wc -==>- g'
+  [ canonicalizeWith (lookupNames is) $ wc -==>- g'
   | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
   , let thycs = theoryAndReprConds p
@@ -453,7 +453,7 @@ isCounterExample grounds  =  all (not . errorToFalse . eval False) . grounds
 
 generalizationsCounts :: [Expr] -> Int -> Expr -> [(Expr,Int)]
 generalizationsCounts is n e  =
-  [ (canonicalizeWith is g', countPasses is n g')
+  [ (canonicalizeWith (lookupNames is) g', countPasses is n g')
   | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
   ]

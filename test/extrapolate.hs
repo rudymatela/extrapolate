@@ -141,7 +141,7 @@ tests n =
        , zero -:- zero -:- is_
        ]
 
-  , [ canonicalizeWith (instances (undefined :: [Int]) []) g'
+  , [ canonicalizeWith namesFor' g'
     | g <- generalizations isListable' (expr [0,0::Int])
     , g' <- canonicalVariations g ]
     == [ is_
@@ -223,8 +223,14 @@ tests n =
   , tinstancesUnrepeated $ eith [bool] [bool] >- ([bool],[bool]) >- bool
   ]
 
+theInstances :: [Expr]
+theInstances  =  instances (undefined :: [Int]) []
+
 isListable' :: Expr -> Bool
-isListable'  =  isListable $ instances (undefined :: [Int]) []
+isListable'  =  isListable theInstances
+
+namesFor' :: Expr -> [String]
+namesFor'  =  lookupNames theInstances
 
 tinstancesUnrepeated :: Testable a => a -> Bool
 tinstancesUnrepeated p = nub is == is

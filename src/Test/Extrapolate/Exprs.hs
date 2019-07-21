@@ -70,11 +70,11 @@ import Test.LeanCheck.Error (errorToFalse)
 
 type Exprs = [Expr]
 
-canonicalizeWith :: Instances -> Expr -> Expr
-canonicalizeWith is  =  c1 . unrepeatedToHole1
+canonicalizeWith :: (Expr -> [String]) -> Expr -> Expr
+canonicalizeWith namesFor  =  c1 . unrepeatedToHole1
   where
   c1 e  =  e //- cn e
-  cn e  =  E.canonicalizationWith (lookupNames is)
+  cn e  =  E.canonicalizationWith namesFor
         $  fold [v | v <- E.vars e, not $ isHole v]
 
 unrepeatedToHole1 :: Expr -> Expr
