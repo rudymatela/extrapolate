@@ -320,22 +320,19 @@ tBackground = getBackground . tinstances
 -- The above is the ideal, but let's start with a simpler algorithm:
 --
 --    1: change value to hole
-generalizations1 :: Instances -> Expr -> [Expr]
-generalizations1 is (e1 :$ e2) =
+generalizations :: Instances -> Expr -> [Expr]
+generalizations is (e1 :$ e2) =
   [ holeAsTypeOf e | let e = e1 :$ e2
                    , isRight (etyp e)
                    , isListable is e ]
-  ++ productWith (:$) (generalizations1 is e1) (generalizations1 is e2)
-  ++ map (:$ e2) (generalizations1 is e1)
-  ++ map (e1 :$) (generalizations1 is e2)
-generalizations1 is e
+  ++ productWith (:$) (generalizations is e1) (generalizations is e2)
+  ++ map (:$ e2) (generalizations is e1)
+  ++ map (e1 :$) (generalizations is e2)
+generalizations is e
   | isVar e    =  []
   | otherwise  =  [holeAsTypeOf e | isListable is e]
 -- note above, I should only generalize types that I know how to enumerate,
 -- i.e.: types that I have Instances of!
-
-generalizations :: Instances -> [Expr] -> [ [Expr] ]
-generalizations is = map unfold . generalizations1 is . fold
 
 productWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 productWith f xs ys = [f x y | x <- xs, y <- ys]
@@ -387,96 +384,90 @@ computeDepthBound :: Testable a => a -> Maybe Int
 computeDepthBound p = head $ [b | DepthBound b <- options p] ++ [Nothing]
 
 class Testable a where
-  resultiers :: a -> [[([Expr],Bool)]]
-  ($-|) :: a -> [Expr] -> Bool
+  resultiers :: a -> [[(Expr,Bool)]]
   tinstances :: a -> Instances
   options :: a -> Options
   options _ = []
 
 instance Testable a => Testable (WithOption a) where
   resultiers (p `With` o) = resultiers p
-  (p `With` o) $-| es     = p $-| es
   tinstances (p `With` o) = tinstances p ++ extraInstances (p `With` o)
   options    (p `With` o) = o : options p
 
 instance Testable Bool where
-  resultiers p = [[([],p)]]
-  p $-| []  =  p
-  p $-| _   =  error "($-|): too many arguments"
+  resultiers p = [[(value "prop" p, p)]]
   tinstances _ = instances bool . instances int $ []
 
-instance (Testable b, Generalizable a, Listable a) => Testable (a->b) where
+instance (Typeable b, Testable b, Generalizable a, Listable a) => Testable (a->b) where
   resultiers p = concatMapT resultiersFor tiers
-    where resultiersFor x = mapFst (expr x:) `mapT` resultiers (p x)
+    where resultiersFor x = mapFst (replaceFun (value "prop" p :$ expr x)) `mapT` resultiers (p x)
           mapFst f (x,y) = (f x, y)
-  p $-| []      =  error "($-|): too few arguments"
-  p $-| (e:es)  =  p (eval (error "($-|): wrong type") e) $-| es
   tinstances p = instances (undefarg p) $ tinstances (p undefined)
     where
     undefarg :: (a -> b) -> a
     undefarg _ = undefined
 
-results :: Testable a => a -> [([Expr],Bool)]
+results :: Testable a => a -> [(Expr,Bool)]
 results = concat . resultiers
 
-counterExamples :: Testable a => Int -> a -> [[Expr]]
+counterExamples :: Testable a => Int -> a -> [Expr]
 counterExamples n p = [as | (as,False) <- take n (results p)]
 
-counterExample :: Testable a => Int -> a -> Maybe [Expr]
+counterExample :: Testable a => Int -> a -> Maybe Expr
 counterExample n = listToMaybe . counterExamples n
 
-counterExampleGens :: Testable a => Int -> a -> Maybe ([Expr],[[Expr]])
+counterExampleGens :: Testable a => Int -> a -> Maybe (Expr,[Expr])
 counterExampleGens n p = case counterExample n p of
   Nothing -> Nothing
-  Just es -> Just (es,generalizationsCE n p es)
+  Just e  -> Just (e,generalizationsCE n p e)
 
-generalizationsCE :: Testable a => Int -> a -> [Expr] -> [[Expr]]
-generalizationsCE n p es =
-  [ canonicalizeWith is gs'
-  | gs <- generalizations is es
-  , gs' <- canonicalVariations gs
-  , isCounterExample n p gs'
+generalizationsCE :: Testable a => Int -> a -> Expr -> [Expr]
+generalizationsCE n p e =
+  [ canonicalizeWith is g'
+  | g <- generalizations is e
+  , g' <- canonicalVariations g
+  , isCounterExample n p g'
   ]
   where
   is = tinstances p
 
-generalizationsCEC :: Testable a => a -> [Expr] -> [(Expr,[Expr])]
-generalizationsCEC p es | maxConditionSize p <= 0 = []
-generalizationsCEC p es =
-  [ (wc'', gs'')
-  | gs <- generalizations is es
-  , gs' <- canonicalVariations gs
+generalizationsCEC :: Testable a => a -> Expr -> [(Expr,Expr)]
+generalizationsCEC p e | maxConditionSize p <= 0 = []
+generalizationsCEC p e =
+  [ (wc'', g'')
+  | g <- generalizations is e
+  , g' <- canonicalVariations g
   , let thycs = theoryAndReprConds p
-  , let wc = weakestCondition thycs p gs'
+  , let wc = weakestCondition thycs p g'
   , wc /= value "False" False
   , wc /= value "True"  True
-  , let (wc'':gs'') = canonicalizeWith is (wc:gs')
+  , let (wc'',g'') = unfoldPair $ canonicalizeWith is $ foldPair (wc,g')
   ]
   where
   is = tinstances p
 
-isCounterExample :: Testable a => Int -> a -> [Expr] -> Bool
-isCounterExample m p = all (not . errorToFalse . (p $-|))
+isCounterExample :: Testable a => Int -> a -> Expr -> Bool
+isCounterExample m p = all (not . errorToFalse . eval False)
                      . take m
                      . grounds (tinstances p)
 
-generalizationsCounts :: Testable a => Int -> a -> [Expr] -> [([Expr],Int)]
-generalizationsCounts n p es =
-  [ (canonicalizeWith is gs', countPasses n p gs')
-  | gs <- generalizations is es
-  , gs' <- canonicalVariations gs
+generalizationsCounts :: Testable a => Int -> a -> Expr -> [(Expr,Int)]
+generalizationsCounts n p e =
+  [ (canonicalizeWith is g', countPasses n p g')
+  | g <- generalizations is e
+  , g' <- canonicalVariations g
   ]
   where
   is = tinstances p
 
-countPasses :: Testable a => Int -> a -> [Expr] -> Int
-countPasses m p = length . filter (p $-|) . take m . grounds (tinstances p)
+countPasses :: Testable a => Int -> a -> Expr -> Int
+countPasses m p = length . filter (eval False) . take m . grounds (tinstances p)
 
-counterExampleGen :: Testable a => Int -> a -> Maybe ([Expr],Maybe [Expr])
+counterExampleGen :: Testable a => Int -> a -> Maybe (Expr,Maybe Expr)
 counterExampleGen n p = case counterExampleGens n p of
-  Nothing          -> Nothing
-  Just (es,[])     -> Just (es,Nothing)
-  Just (es,(gs:_)) -> Just (es,Just gs)
+  Nothing        -> Nothing
+  Just (e,[])    -> Just (e,Nothing)
+  Just (e,(g:_)) -> Just (e,Just g)
 
 areInstancesOf :: [Expr] -> [Expr] -> Bool
 es1 `areInstancesOf` es2 = length es1 == length es2
@@ -563,9 +554,9 @@ theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
   where
   (thy,es) = theoryAndReprExprs p
 
-candidateConditions :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> [Expr]
-candidateConditions (thy,cs) p es = expr True :
-  [ c | (c,_) <- classesFromSchemasAndVariables thy (nubVars es) cs
+candidateConditions :: Testable a => (Thy,[Expr]) -> a -> Expr -> [Expr]
+candidateConditions (thy,cs) p e = expr True :
+  [ c | (c,_) <- classesFromSchemasAndVariables thy (nubVars e) cs
       , hasVar c
       , not (isAssignment c)
       , not (isAssignmentTest is (maxTests p) c)
@@ -577,23 +568,23 @@ candidateConditions (thy,cs) p es = expr True :
 -- passes (that means we should skip as there is an already reported
 -- unconditional generalization).
 
-validConditions :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> [(Expr,Int)]
-validConditions thyes p es =
-  [ (c,n) | c <- candidateConditions thyes p es
-          , let (is,n) = isCounterExampleUnder p c es
+validConditions :: Testable a => (Thy,[Expr]) -> a -> Expr -> [(Expr,Int)]
+validConditions thyes p e =
+  [ (c,n) | c <- candidateConditions thyes p e
+          , let (is,n) = isCounterExampleUnder p c e
           , is
           ] ++ [(expr False,0)]
 
-weakestCondition :: Testable a => (Thy,[Expr]) -> a -> [Expr] -> Expr
-weakestCondition thyes p es = fst
-                            . maximumOn snd
-                            . takeBound (computeConditionBound p)
-                            $ validConditions thyes p es
+weakestCondition :: Testable a => (Thy,[Expr]) -> a -> Expr -> Expr
+weakestCondition thyes p e = fst
+                           . maximumOn snd
+                           . takeBound (computeConditionBound p)
+                           $ validConditions thyes p e
 
-isCounterExampleUnder :: Testable a => a -> Expr -> [Expr] -> (Bool, Int)
-isCounterExampleUnder p c es = and'
-  [ not . errorToFalse $ p $-| es'
-  | (bs,es') <- take (maxTests p) $ groundsAndBinds (tinstances p) es
+isCounterExampleUnder :: Testable a => a -> Expr -> Expr -> (Bool, Int)
+isCounterExampleUnder p c e = and'
+  [ not . errorToFalse $ eval False e'
+  | (bs,e') <- take (maxTests p) $ groundAndBinds (tinstances p) e
   , errorToFalse $ eval False (c //- bs)
   ]
   where

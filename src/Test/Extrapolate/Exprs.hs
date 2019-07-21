@@ -27,10 +27,6 @@ module Test.Extrapolate.Exprs
 
   -- * redefinitions of functions from Haexpress
   , canonicalizeWith
-  , grounds
-  , groundsAndBinds
-  , canonicalVariations
-  , nubVars
 
   -- * re-exports from Speculate.Expr
   , isConstantNamed
@@ -43,16 +39,12 @@ module Test.Extrapolate.Exprs
   , maybeTiersE
   , equal
   , lexicompareBy
+  , grounds
+  , groundAndBinds
   )
 where
--- TODO: avoid most of this module by using a single Expr to represent
---       counterexamples?
---
---       > val "prop" prop :$ val 0 :$ val 2
---
---       I'll just have to take care to avoid generalizing the prop.
 
-import Data.Haexpress hiding (canonicalizeWith, nubVars, canonicalVariations)
+import Data.Haexpress hiding (canonicalizeWith)
 import qualified Data.Haexpress as E
 
 import Test.Speculate.Expr
@@ -68,8 +60,9 @@ import Test.Speculate.Expr
   , maybeTiersE
   , equal
   , lexicompareBy
+  , grounds
+  , groundAndBinds
   )
-import qualified Test.Speculate.Expr as E (grounds, groundAndBinds)
 
 import Data.Haexpress.Utils.Typeable (boolTy)
 
@@ -77,8 +70,8 @@ import Test.LeanCheck.Error (errorToFalse)
 
 type Exprs = [Expr]
 
-canonicalizeWith :: Instances -> [Expr] -> [Expr]
-canonicalizeWith is  =  unfold . c1 . unrepeatedToHole1 . fold
+canonicalizeWith :: Instances -> Expr -> Expr
+canonicalizeWith is  =  c1 . unrepeatedToHole1
   where
   c1 e  =  e //- cn e
   cn e  =  E.canonicalizationWith (lookupNames is)
@@ -89,25 +82,11 @@ unrepeatedToHole1 e = e //- [(v, holeAsTypeOf v) | (v,1) <- countVars e]
   where
   countVars e = map (\e' -> (e',length . filter (== e') $ E.vars e)) $ E.nubVars e
 
-grounds :: Instances -> [Expr] -> [ [Expr] ]
-grounds is = map unfold . E.grounds is . fold
-
-groundsAndBinds :: Instances -> [Expr] -> [(Binds,[Expr])]
-groundsAndBinds is = map (mapSnd unfold) . E.groundAndBinds is . fold
-  where
-  mapSnd f (x,y) = (x,f y)
-
-canonicalVariations :: [Expr] -> [[Expr]]
-canonicalVariations = map unfold . E.canonicalVariations . fold
-
-nubVars :: [Expr] -> [Expr]
-nubVars = E.nubVars . fold
-
 isAssignmentTest :: Instances -> Int -> Expr -> Bool
 isAssignmentTest is m e | typ e /= boolTy = False
 isAssignmentTest is m e = length rs > 1 && length (filter id rs) == 1
   where
-  rs = [errorToFalse $ eval False e' | [e'] <- take m $ grounds is [e]]
+  rs = [errorToFalse $ eval False e' | e' <- take m $ grounds is e]
 
 -- | /O(n)/.
 -- Replaces the function in the given 'Expr'.
@@ -116,6 +95,6 @@ isAssignmentTest is m e = length rs > 1 && length (filter id rs) == 1
 -- > replaceFun absE (idE :$ one) = absE :$ one
 -- > replaceFun two (one) = two
 replaceFun :: Expr -> Expr -> Expr
-replaceFun ef e = foldApp (e:tail es)
+replaceFun ef e = foldApp (ef:tail es)
   where
   es = unfoldApp e

@@ -128,9 +128,8 @@ tests n =
   , not $ mayb int `sameNamesIn`     [mayb [int]]
   , not $ mayb int `sameTiersIn`     [mayb [int]]
 
-  , generalizations (instances (undefined :: [Int]) []) [expr [0,0::Int]]
-    == map (:[])
-       [ is_
+  , generalizations (instances (undefined :: [Int]) []) (expr [0,0::Int])
+    == [ is_
        , i_ -:- is_
        , i_ -:- i_ -:- is_
        , i_ -:- i_ -:- nil
@@ -143,10 +142,9 @@ tests n =
        ]
 
   , [ canonicalizeWith (instances (undefined :: [Int]) []) g'
-    | g <- generalizations (instances (undefined :: [Int]) []) [expr [0,0::Int]]
+    | g <- generalizations (instances (undefined :: [Int]) []) (expr [0,0::Int])
     , g' <- canonicalVariations g ]
-    == map (:[])
-       [ is_
+    == [ is_
        , i_ -:- is_
        , i_ -:- i_ -:- is_
        , xx -:- xx -:- is_

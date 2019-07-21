@@ -132,8 +132,8 @@ checkResult p = do
   isOK _      = False
 
 data Result = OK        Int
-            | Falsified Int [Expr]
-            | Exception Int [Expr] String
+            | Falsified Int Expr
+            | Exception Int Expr String
   deriving (Eq, Show)
 
 resultsIO :: Testable a => Int -> a -> IO [Result]
@@ -145,7 +145,7 @@ resultsIO n = zipWithM torio [1..] . take n . results
        `catch` \e -> let _ = e :: SomeException
                      in return (Exception i as (show e))
 
-resultIO :: Testable a => Int -> a -> IO (Result, [[Expr]])
+resultIO :: Testable a => Int -> a -> IO (Result, [Expr])
 resultIO n p = do
   rs <- resultsIO n p
   return ( fromMaybe (last rs) $ find isFailure rs
@@ -157,7 +157,7 @@ resultIO n p = do
   ce (Falsified _ es)   = Just es
   ce (Exception _ es _) = Just es
 
-showResult :: Testable a => Int -> a -> [[Expr]] -> Result -> String
+showResult :: Testable a => Int -> a -> [Expr] -> Result -> String
 showResult m p ces (OK n)             = "+++ OK, passed " ++ show n ++ " tests"
                                      ++ takeWhile (\_ -> n < m) " (exhausted)" ++ ".\n\n"
 showResult m p ces (Falsified i ce)   = "*** Failed! Falsifiable (after "
@@ -165,23 +165,26 @@ showResult m p ces (Falsified i ce)   = "*** Failed! Falsifiable (after "
 showResult m p ces (Exception i ce e) = "*** Failed! Exception '" ++ e ++ "' (after "
                                      ++ show i ++ " tests):\n" ++ showCEandGens m p ce
 
-showCEandGens :: Testable a => Int -> a -> [Expr] -> String
-showCEandGens m p es = showCE es ++ "\n\n"
-  ++ case generalizationsCE m p es of
-       []     -> ""
-       (es:_) -> "Generalization:\n"
-              ++ showCE es ++ "\n\n"
-  ++ case generalizationsCEC p es of
+showCEandGens :: Testable a => Int -> a -> Expr -> String
+showCEandGens m p e = showCE e ++ "\n\n"
+  ++ case generalizationsCE m p e of
+       []    -> ""
+       (e:_) -> "Generalization:\n"
+             ++ showCE e ++ "\n\n"
+  ++ case generalizationsCEC p e of
        []         -> ""
-       (es:_) -> "Conditional Generalization:\n"
-              ++ showCCE es ++ "\n\n"
+       (e:_) -> "Conditional Generalization:\n"
+              ++ showCCE e ++ "\n\n"
 
-showCE :: [Expr] -> String
-showCE [e] = showPrecExpr 0 e
-showCE es = unwords [showPrecExpr 11 e | e <- es]
+showCE :: Expr -> String
+showCE = s . tail . unfoldApp
+  where
+  s [e] = showPrecExpr 0 e
+  s es = unwords [showPrecExpr 11 e | e <- es]
 
-showCCE :: (Expr,[Expr]) -> String
-showCCE (c,es) = showCE es ++ "  when  " ++ showPrecExpr 0 (prettify c)
+
+showCCE :: (Expr,Expr) -> String
+showCCE (c,e) = showCE e ++ "  when  " ++ showPrecExpr 0 (prettify c)
 
 -- WARNING: expressions are unevaluable after this, just good for printing
 prettify :: Expr -> Expr

@@ -87,16 +87,16 @@ tests n =
        , zero -<-  i_
        ]
 
-  , candidateConditions thyes prop [xxs]
+  , candidateConditions thyes prop (prop' xxs)
     == [ true
        , xxs -/=- nil
        , elem' zero xxs
        ]
 
-  , validConditions thyes prop [xxs]
+  , validConditions thyes prop (prop' xxs)
     == [(false, 0)]
 
-  , candidateConditions thyes prop [xx -:- xxs]
+  , candidateConditions thyes prop (prop' $ xx -:- xxs)
     == [ true
        , xxs -/=- nil
        , elem' xx xxs
@@ -108,7 +108,7 @@ tests n =
        , zero -<- xx
        ]
 
-  , validConditions thyes prop [xx -:- xxs]
+  , validConditions thyes prop (prop' $ xx -:- xxs)
     =$ map fst
     $= [ (elem' xx xxs, 323) -- TODO: why is this 317 on GHC 8.0?
        , (false, 0)
@@ -117,6 +117,12 @@ tests n =
 
 thyes :: (Thy,[Expr])
 thyes  =  theoryAndReprConds prop
+
+prop' :: Expr -> Expr
+prop' e  =  propE :$ e
+
+propE :: Expr
+propE  =  value "prop" prop_nubid
 
 prop :: (WithOption (WithOption ([Int] -> Bool)))
 prop   =  prop_nubid `With` MaxConditionSize 3 `With` ConstantBound Nothing
