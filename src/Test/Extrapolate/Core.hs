@@ -427,7 +427,7 @@ generalizationsCE n p e =
   [ canonicalizeWith is g'
   | g <- generalizations is e
   , g' <- canonicalVariations g
-  , isCounterExample n p g'
+  , isCounterExample is n g'
   ]
   where
   is = tinstances p
@@ -447,10 +447,10 @@ generalizationsCEC p e =
   where
   is = tinstances p
 
-isCounterExample :: Testable a => Int -> a -> Expr -> Bool
-isCounterExample m p = all (not . errorToFalse . eval False)
-                     . take m
-                     . grounds (tinstances p)
+isCounterExample :: [Expr] -> Int -> Expr -> Bool
+isCounterExample is m = all (not . errorToFalse . eval False)
+                      . take m
+                      . grounds is
 
 generalizationsCounts :: Testable a => Int -> a -> Expr -> [(Expr,Int)]
 generalizationsCounts n p e =
