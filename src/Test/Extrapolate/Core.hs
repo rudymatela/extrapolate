@@ -28,6 +28,7 @@ module Test.Extrapolate.Core
   , maxTests
   , extraInstances
   , maxConditionSize
+  , groundsFor
   , hasEq
   , (*==*)
   , (*/=*)
@@ -555,12 +556,12 @@ theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
   where
   (thy,es) = theoryAndReprExprs p
 
-candidateConditions :: [Expr] -> Int -> (Thy,[Expr]) -> Expr -> [Expr]
-candidateConditions is m (thy,cs) e = expr True :
+candidateConditions :: (Expr -> [Expr]) -> (Thy,[Expr]) -> Expr -> [Expr]
+candidateConditions grounds (thy,cs) e = expr True :
   [ c | (c,_) <- classesFromSchemasAndVariables thy (nubVars e) cs
       , hasVar c
       , not (isAssignment c)
-      , not (isAssignmentTest is m c)
+      , not (isAssignmentTest grounds c)
       ]
 -- 'expr True' is expected by the functions that call candidateConditions.  It
 -- is always useful to check if a generalization without any conditions still
@@ -569,13 +570,11 @@ candidateConditions is m (thy,cs) e = expr True :
 
 validConditions :: Testable a => (Thy,[Expr]) -> a -> Expr -> [(Expr,Int)]
 validConditions thyes p e =
-  [ (c,n) | c <- candidateConditions is m thyes e
+  [ (c,n) | c <- candidateConditions grounds thyes e
           , (True,n) <- [isConditionalCounterExample grounds $ c -==>- e]
           , n > minFailures
           ] ++ [(expr False,0)]
   where
-  is = tinstances p
-  m = maxTests p
   minFailures = computeMinFailures p
   grounds = groundsFor p
 

@@ -82,11 +82,11 @@ unrepeatedToHole1 e = e //- [(v, holeAsTypeOf v) | (v,1) <- countVars e]
   where
   countVars e = map (\e' -> (e',length . filter (== e') $ E.vars e)) $ E.nubVars e
 
-isAssignmentTest :: Instances -> Int -> Expr -> Bool
-isAssignmentTest is m e | typ e /= boolTy = False
-isAssignmentTest is m e = length rs > 1 && length (filter id rs) == 1
+isAssignmentTest :: (Expr -> [Expr]) -> Expr -> Bool
+isAssignmentTest grounds e | typ e /= boolTy = False
+isAssignmentTest grounds e = length rs > 1 && length (filter id rs) == 1
   where
-  rs = [errorToFalse $ eval False e' | e' <- take m $ grounds is e]
+  rs = [errorToFalse $ eval False e' | e' <- grounds e]
 
 -- | /O(n)/.
 -- Replaces the function in the given 'Expr'.
