@@ -365,6 +365,9 @@ extraInstances p = concat [is | ExtraInstances is <- options p]
 maxConditionSize :: Testable a => a -> Int
 maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [4]
 
+groundsFor :: Testable a => a -> Expr -> [Expr]
+groundsFor p  =  take (maxTests p) . grounds (tinstances p)
+
 -- minimum number of failures for a conditional generalization
 computeMinFailures :: Testable a => a -> Int
 computeMinFailures p = max 2 $ m * numerator r `div` denominator r
@@ -430,10 +433,9 @@ generalizationsCE p e =
   [ canonicalizeWith (lookupNames is) g'
   | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
-  , isCounterExample (take m . grounds is) g'
+  , isCounterExample (groundsFor p) g'
   ]
   where
-  m = maxTests p
   is = tinstances p
 
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
