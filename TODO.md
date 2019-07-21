@@ -5,8 +5,8 @@ A non-exhaustive list of things TO DO for Extrapolate.
 
 * make so that `generalizations` does not generalize `prop` in any case
 
-* change conditional counter-example format to `Expr ==> Expr` instead of
-  `(Expr,Expr)`.
+* avoid carrying `[Expr]` around.  Just carry functions that are needed.
+  e.g.: `take m . ground is`
 
 * avoid recomputing `tinstances` everywhere.  Just carry `[Expr]` around.
 
