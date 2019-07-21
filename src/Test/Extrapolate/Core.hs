@@ -573,7 +573,10 @@ validConditions thyes p e =
   [ (c,n) | c <- candidateConditions thyes p e
           , let (is,n) = isCounterExampleUnder p c e
           , is
+          , n > minFailures
           ] ++ [(expr False,0)]
+  where
+  minFailures = computeMinFailures p
 
 weakestCondition :: Testable a => (Thy,[Expr]) -> a -> Expr -> Expr
 weakestCondition thyes p e = fst
@@ -582,14 +585,13 @@ weakestCondition thyes p e = fst
                            $ validConditions thyes p e
 
 isCounterExampleUnder :: Testable a => a -> Expr -> Expr -> (Bool, Int)
-isCounterExampleUnder p c e = and'
+isCounterExampleUnder p c e = andLength
   [ not . errorToFalse $ eval False e'
   | (bs,e') <- take (maxTests p) $ groundAndBinds (tinstances p) e
   , errorToFalse $ eval False (c //- bs)
   ]
   where
-  and' ps = let len = length ps
-            in  (and ps && len > computeMinFailures p && len > 0, len)
+  andLength ps = (and ps, length ps)
 
 fromBackgroundOf :: (Generalizable a, Typeable b) => String -> a -> Maybe b
 fromBackgroundOf nm = listToMaybe
