@@ -10,9 +10,6 @@ A non-exhaustive list of things TO DO for Extrapolate.
 
   NOTE: on generalizations, we should avoid generalizing `prop`.
 
-* _simplify `Derive` module_: derive module can now be simplified with derive
-  utils from Haexpress.
-
 * _refactor code_: while introducing the use of Haexpress, I tried to keep the
   changes to a minimum.  Now code should be refactored to be shortened because
   of Haexpress.

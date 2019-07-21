@@ -28,7 +28,7 @@ import Test.LeanCheck.Derive (deriveListableIfNeeded)
 import Language.Haskell.TH
 import Data.Haexpress.Utils.TH
 
-import Control.Monad (unless, liftM, filterM)
+import Control.Monad (liftM, filterM)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Data.List (delete)
 
@@ -57,37 +57,34 @@ import Data.List (delete)
 --
 -- This function needs the @TemplateHaskell@ extension.
 deriveGeneralizable :: Name -> DecsQ
-deriveGeneralizable = deriveGeneralizableX True False
+deriveGeneralizable  =  deriveWhenNeededOrWarn ''Express reallyDerive
+  where
+  reallyDerive  =  reallyDeriveGeneralizableWithRequisites
 
 -- | Same as 'deriveGeneralizable' but does not warn when instance already exists
 --   ('deriveGeneralizable' is preferable).
 deriveGeneralizableIfNeeded :: Name -> DecsQ
-deriveGeneralizableIfNeeded = deriveGeneralizableX False False
+deriveGeneralizableIfNeeded  =  deriveWhenNeeded ''Express reallyDerive
+  where
+  reallyDerive  =  reallyDeriveGeneralizableWithRequisites
 
 -- | Derives a 'Generalizable' instance for a given type 'Name'
 --   cascading derivation of type arguments as well.
 deriveGeneralizableCascading :: Name -> DecsQ
-deriveGeneralizableCascading = deriveGeneralizableX True True
+deriveGeneralizableCascading = deriveWhenNeeded ''Express reallyDerive
+  where
+  reallyDerive t  =  concat
+                 <$> sequence [ deriveListableCascading t
+                              , deriveNameCascading t
+                              , deriveExpressCascading t
+                              , reallyDeriveGeneralizableCascading t ]
 
-deriveGeneralizableX :: Bool -> Bool -> Name -> DecsQ
-deriveGeneralizableX warnExisting cascade t = do
-  is <- t `isInstanceOf` ''Generalizable
-  if is
-    then do
-      unless (not warnExisting)
-        (reportWarning $ "Instance Generalizable " ++ show t
-                      ++ " already exists, skipping derivation")
-      return []
-    else
-    if cascade
-    then concat <$> sequence [ deriveListableCascading t
-                             , deriveNameCascading t
-                             , deriveExpressCascading t
-                             , reallyDeriveGeneralizableCascading t ]
-    else concat <$> sequence [ deriveListableIfNeeded t
-                             , deriveNameIfNeeded t
-                             , deriveExpressIfNeeded t
-                             , reallyDeriveGeneralizable t ]
+reallyDeriveGeneralizableWithRequisites :: Name -> DecsQ
+reallyDeriveGeneralizableWithRequisites t  =  concat <$>
+  sequence [ deriveListableIfNeeded t
+           , deriveNameIfNeeded t
+           , deriveExpressIfNeeded t
+           , reallyDeriveGeneralizable t ]
 
 reallyDeriveGeneralizable :: Name -> DecsQ
 reallyDeriveGeneralizable t = do
