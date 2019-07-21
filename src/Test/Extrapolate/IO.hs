@@ -124,7 +124,7 @@ check = void . checkResult
 checkResult :: Testable a => a -> IO Bool
 checkResult p = do
   (r,ces) <- resultIO m p
-  putStr . showResult m p ces $ r
+  putStr . showResult p ces $ r
   return (isOK r)
   where
   m = maxTests p
@@ -157,13 +157,13 @@ resultIO n p = do
   ce (Falsified _ es)   = Just es
   ce (Exception _ es _) = Just es
 
-showResult :: Testable a => Int -> a -> [Expr] -> Result -> String
-showResult m p ces (OK n)             = "+++ OK, passed " ++ show n ++ " tests"
-                                     ++ takeWhile (\_ -> n < m) " (exhausted)" ++ ".\n\n"
-showResult m p ces (Falsified i ce)   = "*** Failed! Falsifiable (after "
-                                     ++ show i ++ " tests):\n" ++ showCEandGens p ce
-showResult m p ces (Exception i ce e) = "*** Failed! Exception '" ++ e ++ "' (after "
-                                     ++ show i ++ " tests):\n" ++ showCEandGens p ce
+showResult :: Testable a => a -> [Expr] -> Result -> String
+showResult p ces (OK n)             = "+++ OK, passed " ++ show n ++ " tests"
+                                   ++ takeWhile (\_ -> n < maxTests p) " (exhausted)" ++ ".\n\n"
+showResult p ces (Falsified i ce)   = "*** Failed! Falsifiable (after "
+                                   ++ show i ++ " tests):\n" ++ showCEandGens p ce
+showResult p ces (Exception i ce e) = "*** Failed! Exception '" ++ e ++ "' (after "
+                                   ++ show i ++ " tests):\n" ++ showCEandGens p ce
 
 showCEandGens :: Testable a => a -> Expr -> String
 showCEandGens p e = showCE e ++ "\n\n"
