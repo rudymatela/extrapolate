@@ -3,8 +3,6 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
-* make so that `generalizations` does not generalize `prop` in any case
-
 * avoid carrying `[Expr]` around.  Just carry functions that are needed.
   e.g.: `take m . ground is`
 

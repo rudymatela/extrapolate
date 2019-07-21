@@ -393,7 +393,7 @@ computeConstantBound p = head $ [b | ConstantBound b <- options p] ++ [Nothing]
 computeDepthBound :: Testable a => a -> Maybe Int
 computeDepthBound p = head $ [b | DepthBound b <- options p] ++ [Nothing]
 
-class Testable a where
+class Typeable a => Testable a where
   resultiers :: a -> [[(Expr,Bool)]]
   tinstances :: a -> Instances
   options :: a -> Options
@@ -408,7 +408,7 @@ instance Testable Bool where
   resultiers p = [[(value "prop" p, p)]]
   tinstances _ = instances bool . instances int $ []
 
-instance (Typeable b, Testable b, Generalizable a, Listable a) => Testable (a->b) where
+instance (Testable b, Generalizable a, Listable a) => Testable (a->b) where
   resultiers p = concatMapT resultiersFor tiers
     where resultiersFor x = mapFst (replaceFun (value "prop" p :$ expr x)) `mapT` resultiers (p x)
           mapFst f (x,y) = (f x, y)
@@ -437,22 +437,28 @@ counterExampleGens p  =  case counterExample p of
 generalizationsCE :: Testable a => a -> Expr -> [Expr]
 generalizationsCE p e =
   [ canonicalizeWith (namesFor p) g'
-  | g <- generalizations (isListableFor p) e
+  | g <- generalizations isListable e
   , g' <- canonicalVariations g
   , isCounterExample (groundsFor p) g'
   ]
+  where
+  isListable e | e == value "prop" p  =  False
+               | otherwise            =  isListableFor p e
 
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
   [ canonicalizeWith (namesFor p) $ wc -==>- g'
-  | g <- generalizations (isListableFor p) e
+  | g <- generalizations isListable e
   , g' <- canonicalVariations g
   , let thycs = theoryAndReprConds p
   , let wc = weakestCondition thycs p g'
   , wc /= value "False" False
   , wc /= value "True"  True
   ]
+  where
+  isListable e | e == value "prop" p  =  False
+               | otherwise            =  isListableFor p e
 
 (-==>-) :: Expr -> Expr -> Expr
 e1 -==>- e2  =  implies :$ e1 :$ e2
