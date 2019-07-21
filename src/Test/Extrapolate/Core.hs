@@ -333,6 +333,7 @@ generalizations is e
   | otherwise  =  [holeAsTypeOf e | isListable is e]
 -- note above, I should only generalize types that I know how to enumerate,
 -- i.e.: types that I have Instances of!
+-- TODO: avoid generalizing "prop" value altogether in the function above
 
 productWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 productWith f xs ys = [f x y | x <- xs, y <- ys]
