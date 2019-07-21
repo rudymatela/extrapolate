@@ -426,7 +426,7 @@ generalizationsCE n p e =
   [ canonicalizeWith is g'
   | g <- generalizations (isListable is) e
   , g' <- canonicalVariations g
-  , isCounterExample is n g'
+  , isCounterExample (take n . grounds is) g'
   ]
   where
   is = tinstances p
@@ -448,10 +448,8 @@ generalizationsCEC p e =
 (-==>-) :: Expr -> Expr -> Expr
 e1 -==>- e2  =  value "==>" (==>) :$ e1 :$ e2
 
-isCounterExample :: [Expr] -> Int -> Expr -> Bool
-isCounterExample is m = all (not . errorToFalse . eval False)
-                      . take m
-                      . grounds is
+isCounterExample :: (Expr -> [Expr]) -> Expr -> Bool
+isCounterExample grounds  =  all (not . errorToFalse . eval False) . grounds
 
 generalizationsCounts :: [Expr] -> Int -> Expr -> [(Expr,Int)]
 generalizationsCounts is n e  =
