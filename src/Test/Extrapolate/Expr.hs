@@ -13,54 +13,21 @@
 -- along with some extra utilities.
 module Test.Extrapolate.Expr
   ( module Data.Haexpress
-
-  -- * types
-  , Instances
-
-  -- * new functions
-  , isAssignmentTest
-  , replaceFun
+  , module Test.Speculate.Expr
 
   -- * redefinitions of functions from Haexpress
   , canonicalizeWith
 
-  -- * re-exports from Speculate.Expr
-  , isConstantNamed
-  , isAssignment
-  , preludeInstances
-  , reifyListable
-  , isListable
-  , isListableT
-  , tiersE
-  , maybeTiersE
-  , equal
-  , lexicompareBy
-  , grounds
-  , groundAndBinds
+  -- * new functions
+  , isAssignmentTest
+  , replaceFun
   )
 where
 
 import Data.Haexpress hiding (canonicalizeWith)
-import qualified Data.Haexpress as E
-
-import Test.Speculate.Expr
-  ( Instances
-  , isConstantNamed
-  , isAssignment
-  , preludeInstances
-  , reifyListable
-  , isListable
-  , isListableT
-  , tiersE
-  , maybeTiersE
-  , equal
-  , lexicompareBy
-  , grounds
-  , groundAndBinds
-  )
-
+import qualified Data.Haexpress as E (canonicalizeWith)
+import Test.Speculate.Expr hiding (Data.Haexpress, canonicalizeWith)
 import Data.Haexpress.Utils.Typeable (boolTy)
-
 import Test.LeanCheck.Error (errorToFalse)
 
 canonicalizeWith :: (Expr -> [String]) -> Expr -> Expr
