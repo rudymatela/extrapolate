@@ -18,32 +18,33 @@ module Test.Extrapolate.Expr
   -- * redefinitions of functions from Haexpress
   , canonicalizeWith
 
+  -- * misc re-exports
+
   -- * new functions
   , isAssignmentTest
   , replaceFun
   )
 where
 
-import Data.Haexpress hiding (canonicalizeWith)
-import qualified Data.Haexpress as E (canonicalizeWith)
-import Test.Speculate.Expr hiding (Data.Haexpress, canonicalizeWith)
-import Data.Haexpress.Utils.Typeable (boolTy)
-import Test.LeanCheck.Error (errorToFalse)
+import Data.Haexpress          hiding (canonicalizeWith)
+import Data.Haexpress.Fixtures hiding (canonicalizeWith)
+import Test.Speculate.Expr     hiding (canonicalizeWith)
+import Test.LeanCheck.Error    (errorToFalse)
 
 canonicalizeWith :: (Expr -> [String]) -> Expr -> Expr
 canonicalizeWith namesFor  =  c1 . unrepeatedToHole1
   where
   c1 e  =  e //- cn e
-  cn e  =  E.canonicalizationWith namesFor
-        $  fold [v | v <- E.vars e, not $ isHole v]
+  cn e  =  canonicalizationWith namesFor
+        $  fold [v | v <- vars e, not $ isHole v]
 
 unrepeatedToHole1 :: Expr -> Expr
 unrepeatedToHole1 e = e //- [(v, holeAsTypeOf v) | (v,1) <- countVars e]
   where
-  countVars e = map (\e' -> (e',length . filter (== e') $ E.vars e)) $ E.nubVars e
+  countVars e = map (\e' -> (e',length . filter (== e') $ vars e)) $ nubVars e
 
 isAssignmentTest :: (Expr -> [Expr]) -> Expr -> Bool
-isAssignmentTest grounds e | typ e /= boolTy = False
+isAssignmentTest grounds e | typ e /= typ false = False
 isAssignmentTest grounds e = length rs > 1 && length (filter id rs) == 1
   where
   rs = [errorToFalse $ eval False e' | e' <- grounds e]
