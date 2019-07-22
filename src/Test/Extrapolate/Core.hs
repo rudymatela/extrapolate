@@ -34,6 +34,7 @@ module Test.Extrapolate.Core
   , extraInstances
   , maxConditionSize
   , groundsFor
+  , namesFor
   , hasEq
   , (*==*)
   , (*/=*)
@@ -422,15 +423,17 @@ counterExample  =  listToMaybe . counterExamples
 counterExampleGens :: Testable a => a -> Maybe (Expr,[Expr])
 counterExampleGens p  =  case counterExample p of
   Nothing -> Nothing
-  Just e  -> Just (e,generalizationsCE p e)
+  Just e  -> Just (e,generalizationsCE (groundsFor p) e)
 
-generalizationsCE :: Testable a => a -> Expr -> [Expr]
-generalizationsCE p e =
-  [ canonicalizeWith (namesFor p) g'
-  | g <- candidateGeneralizations (isListableFor p) e
+generalizationsCE :: (Expr -> [Expr]) -> Expr -> [Expr]
+generalizationsCE grounds e =
+  [ canonicalize $ g'
+  | g <- candidateGeneralizations isListable e
   , g' <- canonicalVariations g
-  , isCounterExample (groundsFor p) g'
+  , isCounterExample grounds g'
   ]
+  where
+  isListable = not . null . grounds . holeAsTypeOf
 
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []

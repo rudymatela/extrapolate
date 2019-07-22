@@ -166,10 +166,10 @@ showResult p ces (Exception i ce e) = "*** Failed! Exception '" ++ e ++ "' (afte
 
 showCEandGens :: Testable a => a -> Expr -> String
 showCEandGens p e = showCE e ++ "\n\n"
-  ++ case generalizationsCE p e of
+  ++ case generalizationsCE (groundsFor p) e of
        []    -> ""
        (e:_) -> "Generalization:\n"
-             ++ showCE e ++ "\n\n"
+             ++ showCE (canonicalizeWith (namesFor p) e) ++ "\n\n"
   ++ case generalizationsCEC p e of
        []         -> ""
        (e:_) -> "Conditional Generalization:\n"
