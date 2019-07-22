@@ -191,21 +191,21 @@ instance Generalizable Ordering where
   instances o  =  this o id
 
 mkEq1 :: (Generalizable a, Generalizable b)
-          => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
+      => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
 mkEq1 m = takeWhile (\_ -> hasEq x) . mkEq $ m (*==*)
   where
   x = arg1 ==: m
 
 mkEq2 :: (Generalizable a, Generalizable b, Generalizable c)
-          => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
+      => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
 mkEq2 m = takeWhile (\_ -> hasEq x && hasEq y) . mkEq $ m (*==*) (*==*)
   where
   x = arg1 ==: m
   y = arg2 ==: m
 
 mkEq3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
-          => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
-          -> [Expr]
+      => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
+      -> [Expr]
 mkEq3 m = takeWhile (\_ -> hasEq x && hasEq y && hasEq z) . mkEq
         $ m (*==*) (*==*) (*==*)
   where
@@ -214,8 +214,8 @@ mkEq3 m = takeWhile (\_ -> hasEq x && hasEq y && hasEq z) . mkEq
   z = arg3 ==: m
 
 mkEq4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
-          => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
-          -> [Expr]
+      => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
+      -> [Expr]
 mkEq4 m = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w) . mkEq
         $ m (*==*) (*==*) (*==*) (*==*)
   where
@@ -225,14 +225,14 @@ mkEq4 m = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w) . mkEq
   w = arg4 ==: m
 
 mkOrd1 :: (Generalizable a, Generalizable b)
-          => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
+       => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
 mkOrd1 m = takeWhile (\_ -> hasOrd x) . mkOrdLessEqual
          $ m (*<=*)
   where
   x = arg1 ==: m
 
 mkOrd2 :: (Generalizable a, Generalizable b, Generalizable c)
-          => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
+       => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
 mkOrd2 m = takeWhile (\_ -> hasOrd x && hasOrd y) . mkOrdLessEqual
          $ m (*<=*) (*<=*)
   where
@@ -240,8 +240,8 @@ mkOrd2 m = takeWhile (\_ -> hasOrd x && hasOrd y) . mkOrdLessEqual
   y = arg2 ==: m
 
 mkOrd3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
-          => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
-          -> [Expr]
+       => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
+       -> [Expr]
 mkOrd3 m = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z) . mkOrdLessEqual
          $ m (*<=*) (*<=*) (*<=*)
   where
@@ -250,8 +250,8 @@ mkOrd3 m = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z) . mkOrdLessEqual
   z = arg3 ==: m
 
 mkOrd4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
-          => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
-          -> [Expr]
+       => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
+       -> [Expr]
 mkOrd4 m = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd w) . mkOrdLessEqual
          $ m (*<=*) (*<=*) (*<=*) (*<=*)
   where
