@@ -15,8 +15,6 @@ module Test.Extrapolate.Expr
   ( module Data.Haexpress
 
   -- * types
-  , Exprs
-  , Binds
   , Instances
 
   -- * new functions
@@ -46,8 +44,7 @@ import Data.Haexpress hiding (canonicalizeWith)
 import qualified Data.Haexpress as E
 
 import Test.Speculate.Expr
-  ( Binds
-  , Instances
+  ( Instances
   , isConstantNamed
   , isAssignment
   , preludeInstances
@@ -65,8 +62,6 @@ import Test.Speculate.Expr
 import Data.Haexpress.Utils.Typeable (boolTy)
 
 import Test.LeanCheck.Error (errorToFalse)
-
-type Exprs = [Expr]
 
 canonicalizeWith :: (Expr -> [String]) -> Expr -> Expr
 canonicalizeWith namesFor  =  c1 . unrepeatedToHole1
