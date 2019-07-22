@@ -3,10 +3,6 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
-* get rid of the Exprs module, move everything into core.
-  actually, maybe I can do the reverse?  move some stuff from core into `Exprs`
-  and rename it to simply `Expr`.
-
 * _refactor code_: while introducing the use of Haexpress, I tried to keep the
   changes to a minimum.  Now code should be refactored to be shortened because
   of Haexpress.
