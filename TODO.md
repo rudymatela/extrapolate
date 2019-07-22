@@ -3,9 +3,9 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
-* _refactor code_: while introducing the use of Haexpress, I tried to keep the
-  changes to a minimum.  Now code should be refactored to be shortened because
-  of Haexpress.
+* `isListable` from `grounds`.  Use `grounds` itself to compute `isListable`.
+  Speculate will have to be updated so that grounds simply returns an empty
+  list whenever no Listable enumeration is found for any for the variables.
 
 * `deriveGeneralizableAtomic`: derive a generalizable value treating it as
   atomic, as I did with the Map on the XMonad example.  To be used on datatypes
