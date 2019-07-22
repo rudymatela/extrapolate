@@ -11,7 +11,6 @@
 -- This is the core of extrapolate.
 module Test.Extrapolate.Core
   ( module Test.LeanCheck
-  , module Test.LeanCheck.Utils.TypeBinding
   , module Test.Extrapolate.Expr
 
   , Generalizable (..)
@@ -67,7 +66,6 @@ where
 
 import Test.Extrapolate.Utils
 import Test.LeanCheck.Utils
-import Test.LeanCheck.Utils.TypeBinding
 import Data.Typeable
 import Test.LeanCheck hiding
   ( Testable

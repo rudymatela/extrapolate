@@ -23,8 +23,11 @@ module Test.Extrapolate.TypeBinding
   , argTy1of4, argTy2of4, argTy3of4, argTy4of4
   , argTy1of5, argTy2of5, argTy3of5, argTy4of5, argTy5of5
   , argTy1of6, argTy2of6, argTy3of6, argTy4of6, argTy5of6, argTy6of6
+  , module Test.LeanCheck.Utils.TypeBinding
   )
 where
+
+import Test.LeanCheck.Utils.TypeBinding
 
 -- TODO: reexport LeanCheck's typebinding operators
 -- TODO: or maybe re-export Haexpress's typebinding operators?
