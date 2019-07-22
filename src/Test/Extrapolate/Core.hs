@@ -56,8 +56,6 @@ module Test.Extrapolate.Core
   , Testable (..)
   , results
   , limitedResults
-
-  , areInstancesOf
   )
 where
 
@@ -328,9 +326,6 @@ candidateGeneralizations shouldGeneralize  =  gen
   gen e
     | isVar e    =  []
     | otherwise  =  [holeAsTypeOf e | shouldGeneralize e]
--- note above, I should only generalize types that I know how to enumerate,
--- i.e.: types that I have Instances of!
--- TODO: avoid generalizing "prop" value altogether in the function above
 
 productWith :: (a -> b -> c) -> [a] -> [b] -> [c]
 productWith f xs ys = [f x y | x <- xs, y <- ys]
@@ -463,12 +458,6 @@ counterExampleGen p  =  case counterExampleGens p of
   Nothing        -> Nothing
   Just (e,[])    -> Just (e,Nothing)
   Just (e,(g:_)) -> Just (e,Just g)
-
-areInstancesOf :: [Expr] -> [Expr] -> Bool
-es1 `areInstancesOf` es2 = length es1 == length es2
-                        && and [e1 `isInstanceOf` e2 | (e1,e2) <- zip es1 es2]
--- change the above to use fold
--- maybe create a module that deals with lists of expressions, called Exprs
 
 -- Generates expression schemas and a theory
 theoryAndReprsFromPropAndAtoms :: Testable a => a -> [[Expr]] -> (Thy,[[Expr]])
