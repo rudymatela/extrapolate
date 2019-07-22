@@ -128,7 +128,7 @@ tests n =
   , not $ mayb int `sameNamesIn`     [mayb [int]]
   , not $ mayb int `sameTiersIn`     [mayb [int]]
 
-  , generalizations isListable' (expr [0,0::Int])
+  , candidateGeneralizations isListable' (expr [0,0::Int])
     == [ is_
        , i_ -:- is_
        , i_ -:- i_ -:- is_
@@ -142,7 +142,7 @@ tests n =
        ]
 
   , [ canonicalizeWith namesFor' g'
-    | g <- generalizations isListable' (expr [0,0::Int])
+    | g <- candidateGeneralizations isListable' (expr [0,0::Int])
     , g' <- canonicalVariations g ]
     == [ is_
        , i_ -:- is_

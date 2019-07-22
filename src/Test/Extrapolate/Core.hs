@@ -40,7 +40,7 @@ module Test.Extrapolate.Core
   , counterExampleGen
   , counterExampleGens
 
-  , generalizations
+  , candidateGeneralizations
   , generalizationsCE
   , generalizationsCEC
 
@@ -320,8 +320,8 @@ tBackground = getBackground . tinstances
 -- The above is the ideal, but let's start with a simpler algorithm:
 --
 --    1: change value to hole
-generalizations :: (Expr -> Bool) -> Expr -> [Expr]
-generalizations shouldGeneralize  =  gen
+candidateGeneralizations :: (Expr -> Bool) -> Expr -> [Expr]
+candidateGeneralizations shouldGeneralize  =  gen
   where
   gen e@(e1 :$ e2)  =
     [holeAsTypeOf e | shouldGeneralize e]
@@ -369,7 +369,11 @@ groundsFor :: Testable a => a -> Expr -> [Expr]
 groundsFor p  =  take (maxTests p) . grounds (tinstances p)
 
 isListableFor :: Testable a => a -> Expr -> Bool
-isListableFor  =  isListable . tinstances
+isListableFor p e
+  | e == value "prop" p  =  False
+  | otherwise            =  isListable is e
+  where
+  is = tinstances p
 
 namesFor :: Testable a => a -> Expr -> [String]
 namesFor  =  lookupNames . tinstances
@@ -437,28 +441,22 @@ counterExampleGens p  =  case counterExample p of
 generalizationsCE :: Testable a => a -> Expr -> [Expr]
 generalizationsCE p e =
   [ canonicalizeWith (namesFor p) g'
-  | g <- generalizations isListable e
+  | g <- candidateGeneralizations (isListableFor p) e
   , g' <- canonicalVariations g
   , isCounterExample (groundsFor p) g'
   ]
-  where
-  isListable e | e == value "prop" p  =  False
-               | otherwise            =  isListableFor p e
 
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
   [ canonicalizeWith (namesFor p) $ wc -==>- g'
-  | g <- generalizations isListable e
+  | g <- candidateGeneralizations (isListableFor p) e
   , g' <- canonicalVariations g
   , let thycs = theoryAndReprConds p
   , let wc = weakestCondition thycs p g'
   , wc /= value "False" False
   , wc /= value "True"  True
   ]
-  where
-  isListable e | e == value "prop" p  =  False
-               | otherwise            =  isListableFor p e
 
 (-==>-) :: Expr -> Expr -> Expr
 e1 -==>- e2  =  implies :$ e1 :$ e2
