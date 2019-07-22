@@ -31,9 +31,7 @@ module Test.Extrapolate.Utils
   , maximumOn
   , takeBound
   , nubMergeMap
-  , discard
   , compareIndex
-  , (.:)
   )
 where
 
@@ -179,12 +177,6 @@ nubMergesBy cmp xss = nubMergeBy cmp (nubMerges yss) (nubMerges zss)
 
 nubMergeMap :: Ord b => (a -> [b]) -> [a] -> [b]
 nubMergeMap f = nubMerges . map f
-
-discard :: (a -> Bool) -> [a] -> [a]
-discard p = filter (not . p)
-
-(.:) :: (c -> d) -> (a -> b -> c) -> (a -> b -> d)
-(.:) = (.) . (.)
 
 compareIndex :: Eq a => [a] -> a -> a -> Ordering
 compareIndex xs x y =
