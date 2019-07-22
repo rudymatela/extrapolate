@@ -144,7 +144,7 @@ tiersIn :: (Generalizable a, Generalizable b) => b -> [[a]]
 tiersIn c = ret
   where
   ret = mapT (eval . error $ "tiersIn: the imposible happened")
-      $ tiersE (instances c []) (typeOf (head (head ret)))
+      $ lookupTiers (instances c []) (val (head (head ret)))
 
 subset :: Ord a => [a] -> [a] -> Bool
 xs `subset` ys = sort xs `isSubsequenceOf` sort ys

@@ -496,11 +496,10 @@ atoms p = ([vs] \/)
         $ [ eval (error msg :: [[Expr]]) tiersE
           | tiersE@(Value "tiers" _) <- is ]
   where
-  vs = sort . mapMaybe holeOfTy . nubMergeMap (typesIn . typ) $ esU
+  vs = sort . mapMaybe (maybeHoleOfTy is) . nubMergeMap (typesIn . typ) $ esU
   esU = getBackground is
   msg = "canditateConditions: wrong type, not [[Expr]]"
   is = tinstances p
-  holeOfTy t = holeAsTypeOf . head . concat <$> maybeTiersE (preludeInstances ++ is) t
 
 theoryAndReprExprs :: Testable a => a -> (Thy,[Expr])
 theoryAndReprExprs p =
