@@ -190,7 +190,7 @@ bgEqWith1 makeEq = takeWhile (\_ -> hasEq x)
                  [ value "==" (       makeEq (*==*))
                  , value "/=" (not .: makeEq (*==*)) ]
   where
-  x = argTy1of2 $ argTy1of2 makeEq
+  x = arg1 $ arg1 makeEq
 
 bgEqWith2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
@@ -198,8 +198,8 @@ bgEqWith2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
                  [ value "==" (       makeEq (*==*) (*==*))
                  , value "/=" (not .: makeEq (*==*) (*==*)) ]
   where
-  x = argTy1of2 $ argTy1of2 makeEq
-  y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
+  x = arg1 $ arg1 makeEq
+  y = arg1 $ arg2 makeEq
 
 bgEqWith3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
@@ -208,9 +208,9 @@ bgEqWith3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z)
                  [ value "=="        (makeEq (*==*) (*==*) (*==*))
                  , value "/=" (not .: makeEq (*==*) (*==*) (*==*)) ]
   where
-  x = argTy1of2 $ argTy1of2 makeEq
-  y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
-  z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeEq
+  x = arg1 $ arg1 makeEq
+  y = arg1 $ arg2 makeEq
+  z = arg1 $ arg3 makeEq
 
 bgEqWith4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
@@ -219,10 +219,10 @@ bgEqWith4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w)
                  [ value "=="        (makeEq (*==*) (*==*) (*==*) (*==*))
                  , value "/=" (not .: makeEq (*==*) (*==*) (*==*) (*==*)) ]
   where
-  x = argTy1of2 $ argTy1of2 makeEq
-  y = argTy1of2 . argTy1of2 $ argTy2of2 makeEq
-  z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeEq
-  w = argTy1of2 . argTy1of2 . argTy2of2 . argTy2of2 $ argTy2of2 makeEq
+  x = arg1 $ arg1 makeEq
+  y = arg1 $ arg2 makeEq
+  z = arg1 $ arg3 makeEq
+  w = arg1 $ arg4 makeEq
 
 bgOrdWith1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
@@ -230,7 +230,7 @@ bgOrdWith1 makeOrd = takeWhile (\_ -> hasOrd x)
                    [ value "<=" (             makeOrd (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*))) ]
   where
-  x = argTy1of2 $ argTy1of2 makeOrd
+  x = arg1 $ arg1 makeOrd
 
 bgOrdWith2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
@@ -238,8 +238,8 @@ bgOrdWith2 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y)
                    [ value "<=" (             makeOrd (*<=*) (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*) (*<=*))) ]
   where
-  x = argTy1of2 $ argTy1of2 makeOrd
-  y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
+  x = arg1 $ arg1 makeOrd
+  y = arg1 $ arg2 makeOrd
 
 bgOrdWith3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
@@ -248,9 +248,9 @@ bgOrdWith3 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z)
                    [ value "<="              (makeOrd (*<=*) (*<=*) (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*))) ]
   where
-  x = argTy1of2 $ argTy1of2 makeOrd
-  y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
-  z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeOrd
+  x = arg1 $ arg1 makeOrd
+  y = arg1 $ arg2 makeOrd
+  z = arg1 $ arg3 makeOrd
 
 bgOrdWith4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
@@ -259,10 +259,10 @@ bgOrdWith4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd
                    [ value "<="              (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))) ]
   where
-  x = argTy1of2 $ argTy1of2 makeOrd
-  y = argTy1of2 . argTy1of2 $ argTy2of2 makeOrd
-  z = argTy1of2 . argTy1of2 . argTy2of2 $ argTy2of2 makeOrd
-  w = argTy1of2 . argTy1of2 . argTy2of2 . argTy2of2 $ argTy2of2 makeOrd
+  x = arg1 $ arg1 makeOrd
+  y = arg1 $ arg2 makeOrd
+  z = arg1 $ arg3 makeOrd
+  w = arg1 $ arg4 makeOrd
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances

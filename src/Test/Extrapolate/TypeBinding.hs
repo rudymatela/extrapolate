@@ -10,7 +10,13 @@
 -- Some type binding operators that are useful when defining Generalizable
 -- instances.
 module Test.Extrapolate.TypeBinding
-  ( argTy1of1
+  ( arg1
+  , arg2
+  , arg3
+  , arg4
+  , arg5
+  , arg6
+  , argTy1of1
   , argTy1of2, argTy2of2
   , argTy1of3, argTy2of3, argTy3of3
   , argTy1of4, argTy2of4, argTy3of4, argTy4of4
@@ -21,6 +27,25 @@ where
 
 -- TODO: reexport LeanCheck's typebinding operators
 -- TODO: or maybe re-export Haexpress's typebinding operators?
+
+arg1 :: (a -> b) -> a
+arg1 _  =  undefined
+
+arg2 :: (a -> b -> c) -> b
+arg2 _  =  undefined
+
+arg3 :: (a -> b -> c -> d) -> c
+arg3 _  =  undefined
+
+arg4 :: (a -> b -> c -> d -> e) -> d
+arg4 _  =  undefined
+
+arg5 :: (a -> b -> c -> d -> e -> f) -> e
+arg5 _  =  undefined
+
+arg6 :: (a -> b -> c -> d -> e -> f -> g) -> f
+arg6 _  =  undefined
+
 
 argTy1of1 :: con a -> a
 argTy1of1 _ = undefined
