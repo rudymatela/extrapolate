@@ -5,7 +5,8 @@ A non-exhaustive list of things TO DO for Extrapolate.
 
 * avoid carrying the Testable property on the conditionalGeneralizations path.
   Some functions will have to be lifted like it is done on the unconditional
-  generalizations path.
+  generalizations path.  This will involve changes in the Grounds module of
+  Speculate.
 
 * `deriveGeneralizableAtomic`: derive a generalizable value treating it as
   atomic, as I did with the Map on the XMonad example.  To be used on datatypes
