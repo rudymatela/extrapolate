@@ -1,6 +1,6 @@
 {-# LANGUAGE DeriveDataTypeable #-} -- for GHC <= 7.8
 -- |
--- Module      : Test.Extrapolate.IO
+-- Module      : Test.Extrapolate.Expr
 -- Copyright   : (c) 2017-2019 Rudy Matela
 -- License     : 3-Clause BSD  (see the file LICENSE)
 -- Maintainer  : Rudy Matela <rudy@matela.com.br>
@@ -9,11 +9,9 @@
 -- a library for generalization of counter-examples.
 --
 -- This module re-exports functionality from
--- "Data.Haexpress" and "Test.Speculate.Expr",
--- but instead of working on single expressions
--- it works on lists of expressions
--- (the choosen representation for counter-examples).
-module Test.Extrapolate.Exprs
+-- "Data.Haexpress" and "Test.Speculate.Expr"
+-- along with some extra utilities.
+module Test.Extrapolate.Expr
   ( module Data.Haexpress
 
   -- * types

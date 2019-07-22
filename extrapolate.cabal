@@ -85,7 +85,7 @@ library
                  , Test.Extrapolate.Core
                  , Test.Extrapolate.Basic
                  , Test.Extrapolate.Derive
-                 , Test.Extrapolate.Exprs
+                 , Test.Extrapolate.Expr
                  , Test.Extrapolate.IO
                  , Test.Extrapolate.TypeBinding
                  , Test.Extrapolate.Utils

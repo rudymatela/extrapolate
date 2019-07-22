@@ -12,7 +12,7 @@
 module Test.Extrapolate.Core
   ( module Test.LeanCheck
   , module Test.LeanCheck.Utils.TypeBinding
-  , module Test.Extrapolate.Exprs
+  , module Test.Extrapolate.Expr
 
   , Generalizable (..)
   , this
@@ -82,7 +82,7 @@ import Test.LeanCheck hiding
 import Data.Maybe
 import Data.List (sort)
 import Data.Functor ((<$>)) -- for GHC <= 7.8
-import Test.Extrapolate.Exprs
+import Test.Extrapolate.Expr
 import Test.LeanCheck.Error (errorToFalse)
 import Data.Ratio (Ratio, numerator, denominator)
 import Test.Extrapolate.TypeBinding -- for Haddock
