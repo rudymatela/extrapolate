@@ -22,6 +22,12 @@ module Test.Extrapolate.Core
   , backgroundOf
   , mkEq1
   , mkEq2
+  , mkEq3
+  , mkEq4
+  , mkOrd1
+  , mkOrd2
+  , mkOrd3
+  , mkOrd4
 
   , Option (..)
   , WithOption (..)
