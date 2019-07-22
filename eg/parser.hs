@@ -17,8 +17,6 @@ import Test.Extrapolate
 import qualified Test.LeanCheck as Lean
 import Test.LeanCheck.Utils ((-:>))
 
-import System.Environment
-
 import Data.List
 
 import GHC.Generics
