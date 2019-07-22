@@ -19,6 +19,8 @@ module Test.Extrapolate.Expr
   , canonicalizeWith
 
   -- * misc re-exports
+  , (-==>-)
+  , unimply
 
   -- * new functions
   , isAssignmentTest
@@ -59,3 +61,7 @@ replaceFun :: Expr -> Expr -> Expr
 replaceFun ef e = foldApp (ef:tail es)
   where
   es = unfoldApp e
+
+unimply :: Expr -> (Expr,Expr)
+unimply ((op :$ e1) :$ e2) | op == implies  =  (e1,e2)
+unimply _  =  error "unimply: not an implication"

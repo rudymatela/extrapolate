@@ -455,16 +455,6 @@ generalizationsCEC p e =
   , wc /= value "True"  True
   ]
 
-(-==>-) :: Expr -> Expr -> Expr
-e1 -==>- e2  =  implies :$ e1 :$ e2
-
-implies :: Expr
-implies  =  value "==>" (==>)
-
-unimply :: Expr -> (Expr,Expr)
-unimply ((op :$ e1) :$ e2) | op == implies  =  (e1,e2)
-unimply _  =  error "unimply: not an implication"
-
 isCounterExample :: (Expr -> [Expr]) -> Expr -> Bool
 isCounterExample grounds  =  all (not . errorToFalse . eval False) . grounds
 
