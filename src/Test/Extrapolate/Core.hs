@@ -53,9 +53,6 @@ module Test.Extrapolate.Core
   , getBackground
   , fullInstances
 
-  , matchList
-  , newMatches
-
   , Testable (..)
   , results
   , limitedResults
@@ -482,25 +479,6 @@ es1 `areInstancesOf` es2 = length es1 == length es2
                         && and [e1 `isInstanceOf` e2 | (e1,e2) <- zip es1 es2]
 -- change the above to use fold
 -- maybe create a module that deals with lists of expressions, called Exprs
-
--- | List matches of lists of expressions if possible
---
--- > [0,1]   `matchList` [x,y]   = Just [x=0, y=1]
--- > [0,1+2] `matchList` [x,y+y] = Nothing
-matchList :: [Expr] -> [Expr] -> Maybe Binds
-matchList = m []
-  where
-  m bs [] [] = Just bs
-  m bs (e1:es1) (e2:es2) =
-    case matchWith bs e1 e2 of
-      Nothing -> Nothing
-      Just bs -> m bs es1 es2
-  m bs _ _ = Nothing -- different lengths
-
--- list only the matches that introduce new variables (not variable-to-variable
--- matches)
-newMatches :: [Expr] -> [Expr] -> Maybe Binds
-e1 `newMatches` e2 = filter (not . isVar . snd) <$> e1 `matchList` e2
 
 -- Generates expression schemas and a theory
 theoryAndReprsFromPropAndAtoms :: Testable a => a -> [[Expr]] -> (Thy,[[Expr]])
