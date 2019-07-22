@@ -192,17 +192,14 @@ instance Generalizable Ordering where
 
 mkEq1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
-mkEq1 makeEq = takeWhile (\_ -> hasEq x)
-                 [ value "==" (       makeEq (*==*))
-                 , value "/=" (not .: makeEq (*==*)) ]
+mkEq1 makeEq = takeWhile (\_ -> hasEq x) . mkEq $ makeEq (*==*)
   where
   x = arg1 $ arg1 makeEq
 
 mkEq2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
-mkEq2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
-                 [ value "==" (       makeEq (*==*) (*==*))
-                 , value "/=" (not .: makeEq (*==*) (*==*)) ]
+mkEq2 makeEq = takeWhile (\_ -> hasEq x && hasEq y) . mkEq
+             $ makeEq (*==*) (*==*)
   where
   x = arg1 $ arg1 makeEq
   y = arg1 $ arg2 makeEq
@@ -210,9 +207,8 @@ mkEq2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
 mkEq3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
           -> [Expr]
-mkEq3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z)
-                 [ value "=="        (makeEq (*==*) (*==*) (*==*))
-                 , value "/=" (not .: makeEq (*==*) (*==*) (*==*)) ]
+mkEq3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z) . mkEq
+             $ makeEq (*==*) (*==*) (*==*)
   where
   x = arg1 $ arg1 makeEq
   y = arg1 $ arg2 makeEq
@@ -221,9 +217,8 @@ mkEq3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z)
 mkEq4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
           -> [Expr]
-mkEq4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w)
-                 [ value "=="        (makeEq (*==*) (*==*) (*==*) (*==*))
-                 , value "/=" (not .: makeEq (*==*) (*==*) (*==*) (*==*)) ]
+mkEq4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w) . mkEq
+             $ makeEq (*==*) (*==*) (*==*) (*==*)
   where
   x = arg1 $ arg1 makeEq
   y = arg1 $ arg2 makeEq
