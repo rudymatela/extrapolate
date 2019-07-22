@@ -66,7 +66,6 @@ module Test.Extrapolate
 -- * Other useful modules
   , module Test.Extrapolate.TypeBinding
   , module Test.LeanCheck
-  , module Test.LeanCheck.Utils.TypeBinding
   )
 where
 
@@ -86,4 +85,3 @@ import Test.LeanCheck hiding
   , checkResult
   , checkResultFor
   )
-import Test.LeanCheck.Utils.TypeBinding
