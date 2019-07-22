@@ -16,6 +16,7 @@ module Test.Extrapolate.TypeBinding
   , arg4
   , arg5
   , arg6
+  , (==:)
   , argTy1of1
   , argTy1of2, argTy2of2
   , argTy1of3, argTy2of3, argTy3of3
@@ -45,6 +46,9 @@ arg5 _  =  undefined
 
 arg6 :: (a -> b -> c -> d -> e -> f -> g) -> f
 arg6 _  =  undefined
+
+(==:) :: (a -> (b -> c -> d)) -> a -> b
+x ==: y  =  undefined
 
 
 argTy1of1 :: con a -> a

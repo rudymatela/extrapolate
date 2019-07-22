@@ -194,15 +194,15 @@ mkEq1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
 mkEq1 makeEq = takeWhile (\_ -> hasEq x) . mkEq $ makeEq (*==*)
   where
-  x = arg1 $ arg1 makeEq
+  x = arg1 ==: makeEq
 
 mkEq2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
 mkEq2 makeEq = takeWhile (\_ -> hasEq x && hasEq y) . mkEq
              $ makeEq (*==*) (*==*)
   where
-  x = arg1 $ arg1 makeEq
-  y = arg1 $ arg2 makeEq
+  x = arg1 ==: makeEq
+  y = arg2 ==: makeEq
 
 mkEq3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
@@ -210,9 +210,9 @@ mkEq3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
 mkEq3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z) . mkEq
              $ makeEq (*==*) (*==*) (*==*)
   where
-  x = arg1 $ arg1 makeEq
-  y = arg1 $ arg2 makeEq
-  z = arg1 $ arg3 makeEq
+  x = arg1 ==: makeEq
+  y = arg2 ==: makeEq
+  z = arg3 ==: makeEq
 
 mkEq4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
@@ -220,10 +220,10 @@ mkEq4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Ge
 mkEq4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w) . mkEq
              $ makeEq (*==*) (*==*) (*==*) (*==*)
   where
-  x = arg1 $ arg1 makeEq
-  y = arg1 $ arg2 makeEq
-  z = arg1 $ arg3 makeEq
-  w = arg1 $ arg4 makeEq
+  x = arg1 ==: makeEq
+  y = arg2 ==: makeEq
+  z = arg3 ==: makeEq
+  w = arg4 ==: makeEq
 
 mkOrd1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
@@ -231,7 +231,7 @@ mkOrd1 makeOrd = takeWhile (\_ -> hasOrd x)
                    [ value "<=" (             makeOrd (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*))) ]
   where
-  x = arg1 $ arg1 makeOrd
+  x = arg1 ==: makeOrd
 
 mkOrd2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
@@ -239,8 +239,8 @@ mkOrd2 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y)
                    [ value "<=" (             makeOrd (*<=*) (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*) (*<=*))) ]
   where
-  x = arg1 $ arg1 makeOrd
-  y = arg1 $ arg2 makeOrd
+  x = arg1 ==: makeOrd
+  y = arg2 ==: makeOrd
 
 mkOrd3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
@@ -249,9 +249,9 @@ mkOrd3 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z)
                    [ value "<="              (makeOrd (*<=*) (*<=*) (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*))) ]
   where
-  x = arg1 $ arg1 makeOrd
-  y = arg1 $ arg2 makeOrd
-  z = arg1 $ arg3 makeOrd
+  x = arg1 ==: makeOrd
+  y = arg2 ==: makeOrd
+  z = arg3 ==: makeOrd
 
 mkOrd4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
@@ -260,10 +260,10 @@ mkOrd4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd w)
                    [ value "<="              (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))) ]
   where
-  x = arg1 $ arg1 makeOrd
-  y = arg1 $ arg2 makeOrd
-  z = arg1 $ arg3 makeOrd
-  w = arg1 $ arg4 makeOrd
+  x = arg1 ==: makeOrd
+  y = arg2 ==: makeOrd
+  z = arg3 ==: makeOrd
+  w = arg4 ==: makeOrd
 
 -- | Usage: @ins "x" (undefined :: Type)@
 ins :: Generalizable a => a -> Instances
