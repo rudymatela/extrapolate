@@ -20,8 +20,8 @@ module Test.Extrapolate.Core
   , mkBackground
   , (+++)
   , backgroundOf
-  , bgEqWith1
-  , bgEqWith2
+  , mkEq1
+  , mkEq2
 
   , Option (..)
   , WithOption (..)
@@ -137,36 +137,36 @@ instance Generalizable Char where
   instances c = this c id
 
 instance (Generalizable a) => Generalizable (Maybe a) where
-  background mx  =  bgEqWith1  (maybeEq  ->:> mx)
-                 ++ bgOrdWith1 (maybeOrd ->:> mx)
+  background mx  =  mkEq1  (maybeEq  ->:> mx)
+                 ++ mkOrd1 (maybeOrd ->:> mx)
                  ++ [ value "Just" (Just ->: mx) ]
   instances mx  =  this mx $ instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
-  background exy  =  bgEqWith2  (eitherEq  ->>:> exy)
-                  ++ bgOrdWith2 (eitherOrd ->>:> exy)
+  background exy  =  mkEq2  (eitherEq  ->>:> exy)
+                  ++ mkOrd2 (eitherOrd ->>:> exy)
                   ++ [ value "Left"  (Left  ->: exy)
                      , value "Right" (Right ->: exy) ]
   instances exy  =  this exy $ instances (fromLeft  exy)
                              . instances (fromRight exy)
 
 instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
-  background xy  =  bgEqWith2  (pairEq  ->>:> xy)
-                 ++ bgOrdWith2 (pairOrd ->>:> xy)
+  background xy  =  mkEq2  (pairEq  ->>:> xy)
+                 ++ mkOrd2 (pairOrd ->>:> xy)
   instances xy  =  this xy $ instances (fst xy)
                            . instances (snd xy)
 
 instance (Generalizable a, Generalizable b, Generalizable c)
       => Generalizable (a,b,c) where
-  background xyz  =  bgEqWith3  (tripleEq  ->>>:> xyz)
-                  ++ bgOrdWith3 (tripleOrd ->>>:> xyz)
+  background xyz  =  mkEq3  (tripleEq  ->>>:> xyz)
+                  ++ mkOrd3 (tripleOrd ->>>:> xyz)
   instances xyz  =  this xyz $ instances x . instances y . instances z
                     where (x,y,z) = xyz
 
 instance (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
       => Generalizable (a,b,c,d) where
-  background xyzw  =  bgEqWith4  (quadrupleEq  ->>>>:> xyzw)
-                   ++ bgOrdWith4 (quadrupleOrd ->>>>:> xyzw)
+  background xyzw  =  mkEq4  (quadrupleEq  ->>>>:> xyzw)
+                   ++ mkOrd4 (quadrupleOrd ->>>>:> xyzw)
   instances xyzw  =  this xyzw $ instances x
                                . instances y
                                . instances z
@@ -174,8 +174,8 @@ instance (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
                      where (x,y,z,w) = xyzw
 
 instance Generalizable a => Generalizable [a] where
-  background xs  =  bgEqWith1  (listEq  ->:> xs)
-                 ++ bgOrdWith1 (listOrd ->:> xs)
+  background xs  =  mkEq1  (listEq  ->:> xs)
+                 ++ mkOrd1 (listOrd ->:> xs)
                  ++ [ value "length" (length -:> xs) ]
                  ++ [ value "elem"      (elemBy (*==*) ->:> xs) | hasEq $ head xs ]
   instances xs  =  this xs $ instances (head xs)
@@ -184,27 +184,27 @@ instance Generalizable Ordering where
   background o  =  reifyEqOrd o
   instances o  =  this o id
 
-bgEqWith1 :: (Generalizable a, Generalizable b)
+mkEq1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
-bgEqWith1 makeEq = takeWhile (\_ -> hasEq x)
+mkEq1 makeEq = takeWhile (\_ -> hasEq x)
                  [ value "==" (       makeEq (*==*))
                  , value "/=" (not .: makeEq (*==*)) ]
   where
   x = arg1 $ arg1 makeEq
 
-bgEqWith2 :: (Generalizable a, Generalizable b, Generalizable c)
+mkEq2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
-bgEqWith2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
+mkEq2 makeEq = takeWhile (\_ -> hasEq x && hasEq y)
                  [ value "==" (       makeEq (*==*) (*==*))
                  , value "/=" (not .: makeEq (*==*) (*==*)) ]
   where
   x = arg1 $ arg1 makeEq
   y = arg1 $ arg2 makeEq
 
-bgEqWith3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
+mkEq3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
           -> [Expr]
-bgEqWith3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z)
+mkEq3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z)
                  [ value "=="        (makeEq (*==*) (*==*) (*==*))
                  , value "/=" (not .: makeEq (*==*) (*==*) (*==*)) ]
   where
@@ -212,10 +212,10 @@ bgEqWith3 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z)
   y = arg1 $ arg2 makeEq
   z = arg1 $ arg3 makeEq
 
-bgEqWith4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
+mkEq4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
           -> [Expr]
-bgEqWith4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w)
+mkEq4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w)
                  [ value "=="        (makeEq (*==*) (*==*) (*==*) (*==*))
                  , value "/=" (not .: makeEq (*==*) (*==*) (*==*) (*==*)) ]
   where
@@ -224,27 +224,27 @@ bgEqWith4 makeEq = takeWhile (\_ -> hasEq x && hasEq y && hasEq z && hasEq w)
   z = arg1 $ arg3 makeEq
   w = arg1 $ arg4 makeEq
 
-bgOrdWith1 :: (Generalizable a, Generalizable b)
+mkOrd1 :: (Generalizable a, Generalizable b)
           => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
-bgOrdWith1 makeOrd = takeWhile (\_ -> hasOrd x)
+mkOrd1 makeOrd = takeWhile (\_ -> hasOrd x)
                    [ value "<=" (             makeOrd (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*))) ]
   where
   x = arg1 $ arg1 makeOrd
 
-bgOrdWith2 :: (Generalizable a, Generalizable b, Generalizable c)
+mkOrd2 :: (Generalizable a, Generalizable b, Generalizable c)
           => ((b -> b -> Bool) -> (c -> c -> Bool) -> a -> a -> Bool) -> [Expr]
-bgOrdWith2 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y)
+mkOrd2 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y)
                    [ value "<=" (             makeOrd (*<=*) (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*) (*<=*))) ]
   where
   x = arg1 $ arg1 makeOrd
   y = arg1 $ arg2 makeOrd
 
-bgOrdWith3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
+mkOrd3 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> a -> a -> Bool)
           -> [Expr]
-bgOrdWith3 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z)
+mkOrd3 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z)
                    [ value "<="              (makeOrd (*<=*) (*<=*) (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*))) ]
   where
@@ -252,10 +252,10 @@ bgOrdWith3 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z)
   y = arg1 $ arg2 makeOrd
   z = arg1 $ arg3 makeOrd
 
-bgOrdWith4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
+mkOrd4 :: (Generalizable a, Generalizable b, Generalizable c, Generalizable d, Generalizable e)
           => ((b->b->Bool) -> (c->c->Bool) -> (d->d->Bool) -> (e->e->Bool) -> a -> a -> Bool)
           -> [Expr]
-bgOrdWith4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd w)
+mkOrd4 makeOrd = takeWhile (\_ -> hasOrd x && hasOrd y && hasOrd z && hasOrd w)
                    [ value "<="              (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))
                    , value "<"  (not .: flip (makeOrd (*<=*) (*<=*) (*<=*) (*<=*))) ]
   where
