@@ -8,10 +8,6 @@ A non-exhaustive list of things TO DO for Extrapolate.
   generalizations path.  This will involve changes in the Grounds module of
   Speculate.
 
-* `deriveGeneralizableAtomic`: derive a generalizable value treating it as
-  atomic, as I did with the Map on the XMonad example.  To be used on datatypes
-  with data invariants.
-
 * `deriveGeneralizableFromTo`: derive a generalizable value using a bijection
   passed as parameter so that a data invariant is not broken.  Example:
 
