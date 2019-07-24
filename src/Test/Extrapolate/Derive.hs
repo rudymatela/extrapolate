@@ -123,7 +123,7 @@ reallyDeriveGeneralizable t = do
         let lets = [letin n c ns | (c,ns) <- cs, not (null ns)]
         let rhs = foldr0 (\e1 e2 -> [| $e1 . $e2 |]) [|id|] lets
         [d| instance Generalizable $(return nt) where
-              instances $(varP n) = this $(varE n) $ $rhs |]
+              subInstances $(varP n) = $rhs |]
   cxt |=>| (generalizableBackground `mergeI` generalizableInstances)
 
 -- Not only really derive Generalizable instances,

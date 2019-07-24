@@ -44,7 +44,7 @@ module Test.Extrapolate
 
 -- * Generalizable types
   , Generalizable (..)
-  , this
+  , instances
   , Expr (..)
   , value, val
   , reifyEq

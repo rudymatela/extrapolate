@@ -144,31 +144,30 @@ instance Express Stmt where
   expr (Return e)    =  value "Return" Return :$ expr e
 
 instance Generalizable Var where
-  instances v  =  this v $ instances (undefined :: [String])
+  subInstances v  =  instances (undefined :: [String])
 
 instance Generalizable Lang where
-  instances l  =  this l $ instances (undefined :: [Mod])
-                         . instances (undefined :: [Func])
+  subInstances l  =  instances (undefined :: [Mod])
+                  .  instances (undefined :: [Func])
 
 instance Generalizable Mod where
-  instances m  =  this m $ instances (undefined :: Var)
+  subInstances m  =  instances (undefined :: Var)
 
 instance Generalizable Func where
-  instances f  =  this f $ instances (undefined :: Var)
-                         . instances (undefined :: [Exp])
-                         . instances (undefined :: [Stmt])
+  subInstances f  =  instances (undefined :: Var)
+                  .  instances (undefined :: [Exp])
+                  .  instances (undefined :: [Stmt])
 
 instance Generalizable Exp where
   background e = [ value "==" ((==) -:> e)
                  , value "/=" ((/=) -:> e) ]
-  instances  e = this e
-               $ instances (undefined :: Var)
-               . instances (undefined :: Int)
-               . instances (undefined :: Bool)
+  subInstances  e  =  instances (undefined :: Var)
+                   .  instances (undefined :: Int)
+                   .  instances (undefined :: Bool)
 
 instance Generalizable Stmt where
-  instances s  =  this s $ instances (undefined :: Var)
-                         . instances (undefined :: Exp)
+  subInstances s  =  instances (undefined :: Var)
+                  .  instances (undefined :: Exp)
 -- -}
 
 

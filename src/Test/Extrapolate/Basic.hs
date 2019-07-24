@@ -18,29 +18,27 @@ where
 import Test.Extrapolate.Core
 import Data.Ratio
 
-instance (Integral a, Generalizable a) => Generalizable (Ratio a) where
-  instances q = this q id
+instance (Integral a, Generalizable a) => Generalizable (Ratio a)
 
 instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
          , Generalizable e )
       => Generalizable (a,b,c,d,e) where
-  instances xyzwv = this xyzwv $ instances x . instances y . instances z
-                               . instances w . instances v
-                    where (x,y,z,w,v) = xyzwv
+  subInstances xyzwv = instances x . instances y . instances z
+                     . instances w . instances v
+                     where (x,y,z,w,v) = xyzwv
 
 instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
          , Generalizable e, Generalizable f )
       => Generalizable (a,b,c,d,e,f) where
-  instances xyzwvu = this xyzwvu $ instances x . instances y . instances z
-                                 . instances w . instances v . instances u
+  subInstances xyzwvu = instances x . instances y . instances z
+                      . instances w . instances v . instances u
                where (x,y,z,w,v,u) = xyzwvu
 
 instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
          , Generalizable e, Generalizable f, Generalizable g )
       => Generalizable (a,b,c,d,e,f,g) where
-  instances xyzwvut = this xyzwvut
-                    $ instances x . instances y . instances z . instances w
-                    . instances v . instances u . instances t
+  subInstances xyzwvut = instances x . instances y . instances z . instances w
+                       . instances v . instances u . instances t
                 where (x,y,z,w,v,u,t) = xyzwvut
 
 #if __GLASGOW_HASKELL__ < 710
@@ -53,8 +51,7 @@ instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
 instance ( Generalizable a, Generalizable b, Generalizable c, Generalizable d
          , Generalizable e, Generalizable f, Generalizable g, Generalizable h )
       => Generalizable (a,b,c,d,e,f,g,h) where
-  instances xyzwvuts = this xyzwvuts
-                     $ instances x . instances y . instances z . instances w
-                     . instances v . instances u . instances t . instances s
+  subInstances xyzwvuts = instances x . instances y . instances z . instances w
+                        . instances v . instances u . instances t . instances s
     where (x,y,z,w,v,u,t,s) = xyzwvuts
 #endif

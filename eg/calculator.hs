@@ -5,9 +5,8 @@
 -- The version here is the one from the paper (similar to the one in the README
 -- file).  I chose the one in the paper as it is clearer.
 import Control.Monad
-import Test.Extrapolate hiding (eval)
+import Test.Extrapolate
 import Data.Maybe
-import qualified Test.LeanCheck as Lean
 
 #if __GLASGOW_HASKELL__ < 710
 import Data.Typeable (Typeable)
@@ -55,7 +54,7 @@ instance Express Exp where
 instance Generalizable Exp where
   background e  =  [ value "eval" eval
                    , value "noDiv0" noDiv0 ]
-  instances e   = this e $ instances (undefined :: Int)
+  subInstances _  =  instances (undefined :: Int)
 -- -}
 
 

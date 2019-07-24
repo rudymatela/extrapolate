@@ -28,7 +28,6 @@ prop t  =  pre t ==> post t
 instance Name Int16
 instance Express Int16 where  expr = val
 instance Generalizable Int16 where
-  instances x = this x id
   background x = reifyEqOrd x
 
 instance Listable T where

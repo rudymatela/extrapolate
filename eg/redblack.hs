@@ -131,8 +131,7 @@ instance (Ord a, Express a) => Express (RBSet a) where
   expr t = value "fromList" (fromList ->: t) :$ expr (toAscList t)
 
 instance (Ord a, Generalizable a) => Generalizable (RBSet a) where
-  instances h = this h
-              $ instances (toAscList h)
+  subInstances h  =  instances (toAscList h)
 
 -- TODO: make LeanCheck find a counter-example to prop_BlackBalanced
 --       when -DBALANCE_BUG is active or find out why it cannot find it.

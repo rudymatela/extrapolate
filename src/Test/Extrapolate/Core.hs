@@ -14,7 +14,7 @@ module Test.Extrapolate.Core
   , module Test.Extrapolate.Expr
 
   , Generalizable (..)
-  , this
+  , instances
   , reifyBackground
   , mkBackground
   , (+++)
@@ -115,67 +115,63 @@ class (Listable a, Express a, Name a, Show a) => Generalizable a where
   -- | List of symbols allowed to appear in side-conditions.
   --   Defaults to @[]@.  See 'value'.
   background :: a -> [Expr]
-  background _ = []
+  background _  =  []
 
-  -- | Computes a list of reified instances.  See 'this'.
-  instances :: a -> Instances -> Instances
+  -- | Computes a list of reified subtype instances.  See 'instances'.
+  subInstances :: a -> Instances -> Instances
+  subInstances _  =  id
 
 
-instance Generalizable () where
-  instances u = this u id
+instance Generalizable ()
 
 instance Generalizable Bool where
-  background p = reifyEq p
-              ++ [ value "not" not ]
-  instances p = this p id
+  background p  =  reifyEq p
+                ++ [ value "not" not ]
 
 instance Generalizable Int where
-  background x = reifyEqOrd x
-  instances x = this x id
+  background x  =  reifyEqOrd x
 
 instance Generalizable Integer where
-  background x = reifyEqOrd x
-  instances x = this x id
+  background x  =  reifyEqOrd x
 
 instance Generalizable Char where
-  background c = reifyEqOrd c
-  instances c = this c id
+  background c  =  reifyEqOrd c
 
 instance (Generalizable a) => Generalizable (Maybe a) where
   background mx  =  mkEq1  (maybeEq  ->:> mx)
                  ++ mkOrd1 (maybeOrd ->:> mx)
                  ++ [ value "Just" (Just ->: mx) ]
-  instances mx  =  this mx $ instances (fromJust mx)
+  subInstances mx  =  instances (fromJust mx)
 
 instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
   background exy  =  mkEq2  (eitherEq  ->>:> exy)
                   ++ mkOrd2 (eitherOrd ->>:> exy)
                   ++ [ value "Left"  (Left  ->: exy)
                      , value "Right" (Right ->: exy) ]
-  instances exy  =  this exy $ instances (fromLeft  exy)
-                             . instances (fromRight exy)
+  subInstances exy  =  instances (fromLeft  exy)
+                    .  instances (fromRight exy)
 
 instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
   background xy  =  mkEq2  (pairEq  ->>:> xy)
                  ++ mkOrd2 (pairOrd ->>:> xy)
-  instances xy  =  this xy $ instances (fst xy)
-                           . instances (snd xy)
+  subInstances xy  =  instances (fst xy)
+                   .  instances (snd xy)
 
 instance (Generalizable a, Generalizable b, Generalizable c)
       => Generalizable (a,b,c) where
   background xyz  =  mkEq3  (tripleEq  ->>>:> xyz)
                   ++ mkOrd3 (tripleOrd ->>>:> xyz)
-  instances xyz  =  this xyz $ instances x . instances y . instances z
-                    where (x,y,z) = xyz
+  subInstances xyz  =  instances x . instances y . instances z
+                       where (x,y,z) = xyz
 
 instance (Generalizable a, Generalizable b, Generalizable c, Generalizable d)
       => Generalizable (a,b,c,d) where
   background xyzw  =  mkEq4  (quadrupleEq  ->>>>:> xyzw)
                    ++ mkOrd4 (quadrupleOrd ->>>>:> xyzw)
-  instances xyzw  =  this xyzw $ instances x
-                               . instances y
-                               . instances z
-                               . instances w
+  subInstances xyzw  =  instances x
+                     .  instances y
+                     .  instances z
+                     .  instances w
                      where (x,y,z,w) = xyzw
 
 instance Generalizable a => Generalizable [a] where
@@ -183,11 +179,10 @@ instance Generalizable a => Generalizable [a] where
                  ++ mkOrd1 (listOrd ->:> xs)
                  ++ [ value "length" (length -:> xs) ]
                  ++ [ value "elem"      (elemBy (*==*) ->:> xs) | hasEq $ head xs ]
-  instances xs  =  this xs $ instances (head xs)
+  subInstances xs  =  instances (head xs)
 
 instance Generalizable Ordering where
   background o  =  reifyEqOrd o
-  instances o  =  this o id
 
 mkEq1 :: (Generalizable a, Generalizable b)
       => ((b -> b -> Bool) -> a -> a -> Bool) -> [Expr]
@@ -265,15 +260,18 @@ ins x = reifyListable x
      ++ reifyName x
      ++ reifyBackground x
 
--- | Used in the definition of 'instances'
+-- | Used in the definition of 'subInstances'
 --   in 'Generalizable' typeclass instances.
-this :: Generalizable a
-     => a -> (Instances -> Instances) -> Instances -> Instances
-this x f is =
-  if isListableT is (typeOf x)
-    then is
-    else f (ins x ++ is)
--- TODO: change type to a -> [Instances -> Instances] -> Instances -> Instances
+instances :: Generalizable a => a -> Instances -> Instances
+instances x = this x (subInstances x)
+  where
+  this :: Generalizable a
+       => a -> (Instances -> Instances) -> Instances -> Instances
+  this x f is =
+    if isListableT is (typeOf x)
+      then is
+      else f (ins x ++ is)
+  -- TODO: change type to a -> [Instances -> Instances] -> Instances -> Instances
 
 reifyBackground :: Generalizable a => a -> Instances
 reifyBackground = mkBackground . background

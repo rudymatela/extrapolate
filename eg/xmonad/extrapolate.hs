@@ -7,10 +7,7 @@ import XMonad.StackSet
 
 deriveListableCascading ''StackSet
 
-instance (Generalizable a, Generalizable b) => Generalizable (Map a b) where
-  expr = showConstant
-  name xys = name (argTy1of2 xys) ++ name (argTy2of2 xys) ++ "s"
-  instances xys = this xys id
+instance (Generalizable a, Generalizable b) => Generalizable (Map a b)
 
 deriveGeneralizableCascading ''StackSet
 

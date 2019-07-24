@@ -54,7 +54,8 @@ instance Express a => Express (Exp a) where
   expr e@(Div e1 e2)  =  value "Div" (Div ->>: e) :$ expr e1 :$ expr e2
 
 instance Generalizable a => Generalizable (Exp a) where
-  instances e  =  this e $ (let C i = C undefined `asTypeOf` e in instances i)
+  subInstances e  =  instances i
+                     where C i = e
 -- -}
 
 argTypeOf :: (a -> b) -> a -> (a -> b)

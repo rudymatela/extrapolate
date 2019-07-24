@@ -28,8 +28,8 @@ instance (Ord a, Express a) => Express (Heap a) where
   expr h = value "fromList" (fromList ->: h) :$ expr (toList h)
 
 instance (Ord a, Generalizable a) => Generalizable (Heap a) where
-  background h = [ value "size" $ size -:> h ]
-  instances h = this h $ instances (toList h)
+  background h  =  [ value "size" $ size -:> h ]
+  subInstances h  =  instances (toList h)
 
 
 data Heap a
@@ -128,9 +128,7 @@ instance Express a => Express (HeapP a) where
   expr p'@(FromList xs)     = value "FromList" (FromList ->: p') :$ expr xs
 
 instance (Generalizable a, Typeable a) => Generalizable (HeapP a) where
-  instances p = this p
-              $ let Unit x = Unit undefined `asTypeOf` p
-                in instances x
+  subInstances p  =  instances x where Unit x = p
 
 
 
@@ -154,9 +152,7 @@ instance (Ord a, Generalizable a) => Generalizable (HeapPP a) where
   background hpp = [ value "program" $ program -:> hpp
                    , value "theHeap" $ theHeap -:> hpp
                    ]
-  instances hpp = this hpp
-                $ let HeapPP p h = HeapPP undefined undefined `asTypeOf` hpp
-                  in instances p . instances h
+  subInstances hpp = instances p . instances h where HeapPP p h = hpp
 
 
 (==?) :: Ord a => Heap a -> [a] -> Bool
