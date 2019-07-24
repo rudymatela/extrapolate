@@ -353,7 +353,7 @@ maxConditionSize :: Testable a => a -> Int
 maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [4]
 
 groundsFor :: Testable a => a -> Expr -> [Expr]
-groundsFor p  =  take (maxTests p) . grounds (tinstances p)
+groundsFor p  =  take (maxTests p) . grounds (lookupTiers $ tinstances p)
 
 isListableFor :: Testable a => a -> Expr -> Bool
 isListableFor p e
