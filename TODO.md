@@ -3,19 +3,6 @@ TODO
 
 A non-exhaustive list of things TO DO for Extrapolate.
 
-* refactor the `Generalizable` typeclass, either:
-
-	- split the instances function into two, one for the instances just for the
-	  type and one for the one with the subtypes
-
-	- split the instances function into three, one for each of the required
-	  instances:
-		- tiers
-		- name
-		- background -- this will need to be tagged with the type somenow
-		- or have the three above as a tuple (this could work with the previous
-		  item)
-
 * avoid carrying the Testable property on the conditionalGeneralizations path.
   Some functions will have to be lifted like it is done on the unconditional
   generalizations path.  This will involve changes in the Grounds module of
