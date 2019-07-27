@@ -36,15 +36,7 @@ theoryAndReprsFromPropAndAtoms p ess =
   theoryAndRepresentativesFromAtoms
     (maxConditionSize p) compareExpr (const True) (===) ess
   where
-  -- the following uses of keep make Speculate run faster by defaulting to
-  -- "these things are not equal" even in cases that they are.  Despite
-  -- failing to detect some equalities, Speculte will still be useful as a
-  -- generator of quasi-canonical expressions.
-  e1 === e2 = keep e1 && keep e2 && equal is m e1 e2
-  keep = computeKeep p
--- NOTE: MaxSpeculateSize here should not be confused with the size
--- considering sizes of atoms (as per tier enumeration), this regards only the
--- size in number of symbols
+  e1 === e2 = equal is m e1 e2
   is = fullInstances p
   m  = maxTests p
   compareExpr :: Expr -> Expr -> Ordering

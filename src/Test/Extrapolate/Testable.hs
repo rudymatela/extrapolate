@@ -29,7 +29,6 @@ module Test.Extrapolate.Testable
   , tBackground
   , getBackground
   , computeMinFailures
-  , computeKeep
   )
 where
 
@@ -50,7 +49,6 @@ data Option = MaxTests Int
             | ExtraInstances Instances
             | MaxConditionSize Int
             | MinFailures (Ratio Int)
-            | Keep (Expr -> Bool)
   deriving Typeable -- Typeable needed for GHC <= 7.8
 
 data WithOption a = With
@@ -87,11 +85,6 @@ computeMinFailures p = max 2 $ m * numerator r `div` denominator r
   where
   r = head $ [r | MinFailures r <- options p] ++ [0]
   m = maxTests p
-
-computeKeep :: Testable a => a -> Expr -> Bool
-computeKeep p = head $ [keep | Keep keep <- options p] ++ [keep]
-  where
-  keep e = size e <= 4
 
 class Typeable a => Testable a where
   resultiers :: a -> [[(Expr,Bool)]]
