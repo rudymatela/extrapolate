@@ -49,6 +49,9 @@ module Test.Extrapolate.Core
   )
 where
 
+-- TODO: split this module into Testable, ConditionalGeneralization and
+--       Speculation
+
 import Data.List (sort)
 import Data.Maybe
 import Data.Ratio (Ratio, numerator, denominator)
