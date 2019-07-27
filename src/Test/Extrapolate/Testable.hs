@@ -33,7 +33,7 @@ module Test.Extrapolate.Testable
 where
 
 import Data.Maybe (listToMaybe)
-import Data.Ratio (Ratio, numerator, denominator)
+import Data.Ratio (Ratio)
 
 import Test.LeanCheck hiding (Testable, results, counterExample, counterExamples)
 import Test.LeanCheck.Utils (bool, int)
@@ -90,11 +90,8 @@ namesFor :: Testable a => a -> Expr -> [String]
 namesFor  =  lookupNames . tinstances
 
 -- minimum number of failures for a conditional generalization
-computeMinFailures :: Testable a => a -> Int
-computeMinFailures p = max 2 $ m * numerator r `div` denominator r
-  where
-  r = head $ [r | MinFailures r <- options p] ++ [0]
-  m = maxTests p
+computeMinFailures :: Testable a => a -> Ratio Int
+computeMinFailures p = head $ [r | MinFailures r <- options p] ++ [0]
 
 class Typeable a => Testable a where
   resultiers :: a -> [[(Expr,Bool)]]

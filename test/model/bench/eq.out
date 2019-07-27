@@ -8,6 +8,9 @@ checks :: Bool
 *** Failed! Falsifiable (after 2 tests):
 False True
 
+Conditional Generalization:
+p q  when  p /= q
+
 
 checks :: Int
 

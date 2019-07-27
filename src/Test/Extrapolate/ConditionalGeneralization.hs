@@ -17,6 +17,8 @@ module Test.Extrapolate.ConditionalGeneralization
   )
 where
 
+import Data.Ratio
+
 import Test.LeanCheck.Error (errorToFalse)
 
 import Test.Extrapolate.Speculation
@@ -56,22 +58,23 @@ candidateConditions grounds (thy,cs) e = expr True :
 -- passes (that means we should skip as there is an already reported
 -- unconditional generalization).
 
-validConditions :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Int -> Expr -> [(Expr,Int)]
+validConditions :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Ratio Int -> Expr -> [(Expr,Ratio Int)]
 validConditions thyes grounds minFailures e =
   [ (c,n) | c <- candidateConditions grounds thyes e
           , (True,n) <- [isConditionalCounterExample grounds $ c -==>- e]
           , n > minFailures
           ] ++ [(expr False,0)]
 
-weakestCondition :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Int -> Expr -> Expr
+weakestCondition :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Ratio Int -> Expr -> Expr
 weakestCondition thyes grounds minFailures =
   fst . maximumOn snd . validConditions thyes grounds minFailures
 
-isConditionalCounterExample :: (Expr -> [Expr]) -> Expr -> (Bool, Int)
+isConditionalCounterExample :: (Expr -> [Expr]) -> Expr -> (Bool, Ratio Int)
 isConditionalCounterExample grounds e  =  andLength
   [ not . errorToFalse $ eval False e'
-  | e' <- grounds e
+  | e' <- gs
   , errorToFalse . eval False . fst $ unimply e'
   ]
   where
-  andLength ps = (and ps, length ps)
+  gs = grounds e
+  andLength ps = (and ps, length ps % length gs)
