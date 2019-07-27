@@ -27,6 +27,8 @@ import Test.Extrapolate.Utils
 
 import Test.Extrapolate.Testable -- TODO: remove me
 
+import Data.Haexpress.Fixtures ((-&&-))
+
 conditionalCounterExampleGeneralizations :: Testable a => a -> Expr -> [Expr]
 conditionalCounterExampleGeneralizations p = conditionalCounterExampleGeneralizations'
   (maxConditionSize p)
@@ -63,25 +65,19 @@ candidateConditions grounds (thy,cs) e = expr True :
 -- passes (that means we should skip as there is an already reported
 -- unconditional generalization).
 
-validConditions :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Expr -> [(Expr,Ratio Int)]
+validConditions :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Expr -> [Expr]
 validConditions thyes grounds e =
-  [ (c,n) | c <- candidateConditions grounds thyes e
-          , (True,n) <- [isConditionalCounterExample grounds $ c -==>- e]
-          ] ++ [(expr False,0)]
+  [ c | c <- candidateConditions grounds thyes e
+      , isCounterExample $ e -&&- c ] ++ [expr False]
+  where
+  isCounterExample  =  all (not . errorToFalse . eval False) . grounds
 
 weakestCondition :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Expr -> Expr
 weakestCondition thyes grounds  =
-  fst . maximumOn snd . validConditions thyes grounds
+  maximumOn (ratioFailures grounds) . validConditions thyes grounds
 
-isConditionalCounterExample :: (Expr -> [Expr]) -> Expr -> (Bool, Ratio Int)
-isConditionalCounterExample grounds e  =  andLength
-  [ not . errorToFalse $ eval False e'
-  | e' <- gs
-  , errorToFalse . eval False . fst $ unimply e'
-  ]
+ratioFailures :: (Expr -> [Expr]) -> Expr -> Ratio Int
+ratioFailures grounds e  =  length ps % length gs
   where
   gs = grounds e
-  andLength ps = (and ps, length ps % length gs)
-
--- Here we use Ratio Int instead of simply an Int because the number of tests
--- for a conditional generalization may vary for finite types.
+  ps = filter (errorToFalse . eval False . fst . unimply) gs

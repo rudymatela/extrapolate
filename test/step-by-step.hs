@@ -94,7 +94,7 @@ tests n =
        ]
 
   , validConditions thyes (groundsFor prop) (prop' xxs)
-    == [(false, 0)]
+    == [false]
 
   , candidateConditions (groundsFor prop) thyes (prop' $ xx -:- xxs)
     == [ true
@@ -109,9 +109,8 @@ tests n =
        ]
 
   , validConditions thyes (groundsFor prop) (prop' $ xx -:- xxs)
-    =$ map fst
-    $= [ (elem' xx xxs, 323) -- TODO: why is this 317 on GHC 8.0?
-       , (false, 0)
+    == [ elem' xx xxs
+       , false
        ]
   ]
 
