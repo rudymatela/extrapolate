@@ -36,8 +36,10 @@ theoryAndReprsFromPropAndAtoms p ess =
   theoryAndRepresentativesFromAtoms
     (maxConditionSize p) compareExpr (const True) (===) ess
   where
-  e1 === e2 = equal is m e1 e2
-  is = fullInstances p
+  e1 === e2 = isTrue gs $ mkEquation eqis e1 e2
+  gs = take m . grounds (lookupTiers $ is)
+  is = tinstances p
+  eqis = getEqInstancesFromBackground is
   m  = maxTests p
   compareExpr :: Expr -> Expr -> Ordering
   compareExpr = compareComplexity <> lexicompareBy cmp
@@ -47,12 +49,6 @@ theoryAndReprsFromPropAndAtoms p ess =
 -- NOTE: "concat ess" may be an infinite list.  This function assumes
 -- that the symbols will appear on the list eventually for termination.  If I
 -- am correct this ivariant is assured by the rest of the code.
-
--- tinstances including auto generated Eq instances (based on background)
-fullInstances :: Testable a => a -> Instances
-fullInstances p = is ++ getEqInstancesFromBackground is
-  where
-  is = tinstances p
 
 -- Given a property, returns the atoms to be passed to Speculate
 atoms :: Instances -> [[Expr]]
