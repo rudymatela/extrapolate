@@ -18,13 +18,9 @@ module Test.Extrapolate.Core
   , module Test.Extrapolate.ConditionalGeneralization
   , module Test.Extrapolate.Testable
 
-  , counterExampleGen
-  , counterExampleGens
+  , counterExampleWithGeneralizations
   )
 where
-
--- TODO: split this module into Testable, ConditionalGeneralization and
---       Speculation
 
 import Data.Typeable
 
@@ -50,13 +46,14 @@ import Test.Extrapolate.Generalization
 import Test.Extrapolate.ConditionalGeneralization
 import Test.Extrapolate.Testable
 
-counterExampleGens :: Testable a => a -> Maybe (Expr,[Expr])
-counterExampleGens p  =  case counterExample p of
+counterExampleWithGeneralizations :: Testable a => a -> Maybe (Expr,[Expr])
+counterExampleWithGeneralizations p  =  case counterExample p of
   Nothing -> Nothing
-  Just e  -> Just (e,counterExampleGeneralizations (groundsFor p) e)
-
-counterExampleGen :: Testable a => a -> Maybe (Expr,Maybe Expr)
-counterExampleGen p  =  case counterExampleGens p of
-  Nothing        -> Nothing
-  Just (e,[])    -> Just (e,Nothing)
-  Just (e,(g:_)) -> Just (e,Just g)
+  Just e  -> Just (e,gens e ++ take 1 (cgens e))
+  where
+  gens = counterExampleGeneralizations (groundsFor p)
+  cgens = conditionalCounterExampleGeneralizations
+    (maxConditionSize p)
+    (atomsFor p)
+    (groundsFor p)
+    (mkEquationFor p)
