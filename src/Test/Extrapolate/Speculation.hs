@@ -28,8 +28,6 @@ import Test.Speculate.Utils (boolTy, typesIn)
 import Test.Extrapolate.Expr
 import Test.Extrapolate.Utils
 
-import Test.Extrapolate.Testable -- TODO: remove this import
-
 -- Generates expression schemas and a theory
 theoryAndReprsFromPropAndAtoms :: Instances -> Int -> Int -> [[Expr]] -> (Thy,[[Expr]])
 theoryAndReprsFromPropAndAtoms is maxTests maxConditionSize ess =
@@ -76,3 +74,8 @@ getEqInstancesFromBackground is = eqs ++ iqs
   eqs = [e | e@(Value "==" _) <- bg]
   iqs = [e | e@(Value "/=" _) <- bg]
   bg = getBackground is
+
+getBackground :: Instances -> [Expr]
+getBackground is = concat [eval err e | e@(Value "background" _) <- is]
+   where
+   err = error "Cannot evaluate background"

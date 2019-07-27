@@ -62,7 +62,8 @@ import Test.Extrapolate.Testable
 import Test.Extrapolate.Utils
 
 backgroundOf :: Generalizable a => a -> [Expr]
-backgroundOf x = getBackground $ instances x []
+backgroundOf x = concat [evl e | e@(Value "background" _) <- instances x []]
+-- TODO: move backgroundOf to Test
 
 counterExampleGens :: Testable a => a -> Maybe (Expr,[Expr])
 counterExampleGens p  =  case counterExample p of

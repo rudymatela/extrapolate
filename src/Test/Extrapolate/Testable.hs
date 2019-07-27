@@ -27,7 +27,6 @@ module Test.Extrapolate.Testable
   , namesFor
   , isListableFor
   , tBackground
-  , getBackground
   , computeMinFailures
   )
 where
@@ -122,11 +121,7 @@ counterExamples p  =  [as | (as,False) <- limitedResults p]
 counterExample :: Testable a => a -> Maybe Expr
 counterExample  =  listToMaybe . counterExamples
 
--- move this out'a here or localize
-getBackground :: Instances -> [Expr]
-getBackground is = concat [eval err e | e@(Value "background" _) <- is]
+tBackground :: Testable a => a -> [Expr]
+tBackground p  =  concat [eval err e | e@(Value "background" _) <- tinstances p]
   where
   err = error "Cannot evaluate background"
-
-tBackground :: Testable a => a -> [Expr]
-tBackground = getBackground . tinstances
