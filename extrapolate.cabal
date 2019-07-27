@@ -83,7 +83,6 @@ source-repository this
 library
   exposed-modules: Test.Extrapolate
                  , Test.Extrapolate.Core
-                 , Test.Extrapolate.Basic
                  , Test.Extrapolate.Expr
                  , Test.Extrapolate.Generalizable
                  , Test.Extrapolate.Generalizable.Derive

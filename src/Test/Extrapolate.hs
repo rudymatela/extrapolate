@@ -69,7 +69,7 @@ module Test.Extrapolate
   )
 where
 
-import Test.Extrapolate.Basic
+import Test.Extrapolate.Core
 import Test.Extrapolate.Generalizable.Derive
 import Test.Extrapolate.TypeBinding
 import Test.Extrapolate.IO

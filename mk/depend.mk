@@ -13,7 +13,6 @@ bench/diff.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   bench/diff.hs
 bench/eq: \
   bench/eq.hs \
@@ -30,7 +29,6 @@ bench/eq.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   bench/eq.hs
 bench/false: \
   bench/false.hs \
@@ -47,7 +45,6 @@ bench/false.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   bench/false.hs
 bench/ord: \
   bench/ord.hs \
@@ -64,7 +61,6 @@ bench/ord.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   bench/ord.hs
 bench/true: \
   bench/true.hs \
@@ -81,7 +77,6 @@ bench/true.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   bench/true.hs
 eg/calculator: \
   eg/calculator.hs \
@@ -98,7 +93,6 @@ eg/calculator.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/calculator.hs
 eg/gencalc: \
   eg/gencalc.hs \
@@ -115,7 +109,6 @@ eg/gencalc.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/gencalc.hs
 eg/heap: \
   eg/heap.hs \
@@ -132,7 +125,6 @@ eg/heap.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/heap.hs
 eg/int: \
   eg/int.hs \
@@ -149,7 +141,6 @@ eg/int.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/int.hs
 eg/list: \
   eg/list.hs \
@@ -166,7 +157,6 @@ eg/list.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/list.hs
 eg/overflow8: \
   eg/overflow8.hs \
@@ -183,7 +173,6 @@ eg/overflow8.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/overflow8.hs
 eg/overflow: \
   eg/overflow.hs \
@@ -200,7 +189,6 @@ eg/overflow.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/overflow.hs
 eg/parser: \
   eg/parser.hs \
@@ -217,7 +205,6 @@ eg/parser.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/parser.hs
 eg/redblack: \
   eg/RedBlackSet.hs \
@@ -235,7 +222,6 @@ eg/redblack.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/RedBlackSet.hs \
   eg/redblack.hs
 eg/RedBlackSet.o: \
@@ -255,7 +241,6 @@ eg/sorting.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/sorting.hs
 eg/word-refinements: \
   eg/word-refinements.hs \
@@ -272,7 +257,6 @@ eg/word-refinements.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   eg/word-refinements.hs
 mk/All.o: \
   src/Test/Extrapolate/Utils.hs \
@@ -286,7 +270,6 @@ mk/All.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   mk/All.hs
 mk/Toplibs.o: \
   test/Test.hs \
@@ -301,18 +284,7 @@ mk/Toplibs.o: \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs \
   mk/Toplibs.hs
-src/Test/Extrapolate/Basic.o: \
-  src/Test/Extrapolate/Utils.hs \
-  src/Test/Extrapolate/TypeBinding.hs \
-  src/Test/Extrapolate/Testable.hs \
-  src/Test/Extrapolate/Speculation.hs \
-  src/Test/Extrapolate/Generalization.hs \
-  src/Test/Extrapolate/Generalizable.hs \
-  src/Test/Extrapolate/Expr.hs \
-  src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs
 src/Test/Extrapolate/Core.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
@@ -359,8 +331,7 @@ src/Test/Extrapolate.o: \
   src/Test/Extrapolate/Generalizable.hs \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
-  src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs
+  src/Test/Extrapolate/Core.hs
 src/Test/Extrapolate/Speculation.o: \
   src/Test/Extrapolate/Utils.hs \
   src/Test/Extrapolate/TypeBinding.hs \
@@ -391,8 +362,7 @@ test/derive.o: \
   src/Test/Extrapolate/Generalizable.hs \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
-  src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs
+  src/Test/Extrapolate/Core.hs
 test/derive: \
   test/Test.hs \
   test/derive.hs \
@@ -410,8 +380,7 @@ test/extrapolate.o: \
   src/Test/Extrapolate/Generalizable.hs \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
-  src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs
+  src/Test/Extrapolate/Core.hs
 test/extrapolate: \
   test/Test.hs \
   test/extrapolate.hs \
@@ -429,8 +398,7 @@ test/step-by-step.o: \
   src/Test/Extrapolate/Generalizable.hs \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
-  src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs
+  src/Test/Extrapolate/Core.hs
 test/step-by-step: \
   test/Test.hs \
   test/step-by-step.hs \
@@ -447,8 +415,7 @@ test/Test.o: \
   src/Test/Extrapolate/Generalizable.hs \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
-  src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs
+  src/Test/Extrapolate/Core.hs
 test/Test: \
   test/Test.hs \
   mk/toplibs
@@ -465,8 +432,7 @@ test/utils.o: \
   src/Test/Extrapolate/Generalizable.hs \
   src/Test/Extrapolate/Generalizable/Derive.hs \
   src/Test/Extrapolate/Expr.hs \
-  src/Test/Extrapolate/Core.hs \
-  src/Test/Extrapolate/Basic.hs
+  src/Test/Extrapolate/Core.hs
 test/utils: \
   test/utils.hs \
   test/Test.hs \

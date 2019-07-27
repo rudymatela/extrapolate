@@ -1,6 +1,5 @@
 module All
   ( module Test.Extrapolate
-  , module Test.Extrapolate.Basic
   , module Test.Extrapolate.Core
   , module Test.Extrapolate.Expr
   , module Test.Extrapolate.IO
@@ -10,7 +9,6 @@ module All
 where
 
 import Test.Extrapolate
-import Test.Extrapolate.Basic
 import Test.Extrapolate.Core
 import Test.Extrapolate.Expr
 import Test.Extrapolate.IO
