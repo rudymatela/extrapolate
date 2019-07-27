@@ -11,7 +11,7 @@
 --
 -- You are probably better off importing "Test.Extrapolate".
 module Test.Extrapolate.ConditionalGeneralization
-  ( generalizationsCEC
+  ( conditionalCounterExampleGeneralizations
   , validConditions
   , candidateConditions
   )
@@ -25,9 +25,9 @@ import Test.Extrapolate.Utils
 
 import Test.Extrapolate.Testable -- TODO: remove me
 
-generalizationsCEC :: Testable a => a -> Expr -> [Expr]
-generalizationsCEC p e | maxConditionSize p <= 0 = []
-generalizationsCEC p e =
+conditionalCounterExampleGeneralizations :: Testable a => a -> Expr -> [Expr]
+conditionalCounterExampleGeneralizations p e | maxConditionSize p <= 0 = []
+conditionalCounterExampleGeneralizations p e =
   [ canonicalize $ wc -==>- g
   | g <- fastCandidateGeneralizations (isListableFor p) e
   , let wc = weakestCondition' g

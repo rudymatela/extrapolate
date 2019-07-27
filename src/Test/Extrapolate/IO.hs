@@ -146,7 +146,7 @@ showCEandGens p e = showCE e ++ "\n\n"
        []    -> ""
        (e:_) -> "Generalization:\n"
              ++ showCE (canonicalizeWith (namesFor p) e) ++ "\n\n"
-  ++ case generalizationsCEC p e of
+  ++ case conditionalCounterExampleGeneralizations p e of
        []         -> ""
        (e:_) -> "Conditional Generalization:\n"
               ++ showCCE e ++ "\n\n"
