@@ -41,9 +41,7 @@ theoryAndReprsFromPropAndAtoms p ess =
   -- failing to detect some equalities, Speculte will still be useful as a
   -- generator of quasi-canonical expressions.
   e1 === e2 = keep e1 && keep e2 && equal is m e1 e2
-  keep e = maybe True (\b -> length (consts e) <= b) (computeConstantBound p)
-        && maybe True (\b ->          depth e  <= b) (computeDepthBound p)
-        && maybe True (\b ->           size e  <= b) (computeMaxSpeculateSize p)
+  keep = computeKeep p
 -- NOTE: MaxSpeculateSize here should not be confused with the size
 -- considering sizes of atoms (as per tier enumeration), this regards only the
 -- size in number of symbols

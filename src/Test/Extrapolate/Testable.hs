@@ -29,9 +29,7 @@ module Test.Extrapolate.Testable
   , tBackground
   , getBackground
   , computeMinFailures
-  , computeConstantBound
-  , computeDepthBound
-  , computeMaxSpeculateSize
+  , computeKeep
   )
 where
 
@@ -52,10 +50,8 @@ data Option = MaxTests Int
             | ExtraInstances Instances
             | MaxConditionSize Int
             | MinFailures (Ratio Int)
-            | MaxSpeculateSize (Maybe Int)
-            | ConstantBound (Maybe Int)
-            | DepthBound (Maybe Int)
-  deriving (Show, Typeable) -- Typeable needed for GHC <= 7.8
+            | Keep (Expr -> Bool)
+  deriving Typeable -- Typeable needed for GHC <= 7.8
 
 data WithOption a = With
                   { property :: a
@@ -92,14 +88,10 @@ computeMinFailures p = max 2 $ m * numerator r `div` denominator r
   r = head $ [r | MinFailures r <- options p] ++ [0]
   m = maxTests p
 
-computeMaxSpeculateSize :: Testable a => a -> Maybe Int
-computeMaxSpeculateSize p = head $ [b | MaxSpeculateSize b <- options p] ++ [Just 4]
-
-computeConstantBound :: Testable a => a -> Maybe Int
-computeConstantBound p = head $ [b | ConstantBound b <- options p] ++ [Nothing]
-
-computeDepthBound :: Testable a => a -> Maybe Int
-computeDepthBound p = head $ [b | DepthBound b <- options p] ++ [Nothing]
+computeKeep :: Testable a => a -> Expr -> Bool
+computeKeep p = head $ [keep | Keep keep <- options p] ++ [keep]
+  where
+  keep e = size e <= 4
 
 class Typeable a => Testable a where
   resultiers :: a -> [[(Expr,Bool)]]

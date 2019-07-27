@@ -124,8 +124,8 @@ prop' e  =  propE :$ e
 propE :: Expr
 propE  =  value "prop" prop_nubid
 
-prop :: (WithOption (WithOption ([Int] -> Bool)))
-prop   =  prop_nubid `With` MaxConditionSize 3 `With` ConstantBound Nothing
+prop :: (WithOption ([Int] -> Bool))
+prop   =  prop_nubid `With` MaxConditionSize 3
 
 prop_nubid :: [Int] -> Bool
 prop_nubid xs  =  nub xs == xs
