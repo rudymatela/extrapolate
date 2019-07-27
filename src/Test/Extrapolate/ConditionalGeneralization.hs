@@ -31,12 +31,13 @@ conditionalCounterExampleGeneralizations :: Testable a => a -> Expr -> [Expr]
 conditionalCounterExampleGeneralizations p e | maxConditionSize p <= 0 = []
 conditionalCounterExampleGeneralizations p e =
   [ canonicalize $ wc -==>- g
-  | g <- fastCandidateGeneralizations (isListableFor p) e
+  | g <- fastCandidateGeneralizations isListable e
   , let wc = weakestCondition' g
   , wc /= value "False" False
   , wc /= value "True"  True
   ]
   where
+  isListable = not . null . grounds . holeAsTypeOf
   canonicalize = canonicalizeWith (namesFor p)
   weakestCondition' = weakestCondition
     (theoryAndReprConds (tinstances p) (maxConditionSize p) (===))
