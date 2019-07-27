@@ -48,6 +48,7 @@ ch x = do
   check `withConditionSize` 3 $ (>=) -:> x
   putStrLn ""
 
+{-
 chint :: IO ()
 chint = do
   -- TODO: make the following work on GHC >= 8.2
@@ -63,3 +64,4 @@ chint = do
   check `withConditionSize` 3 $ (>)  -:> [int]
   check `withConditionSize` 3 $ (>=) -:> [int]
   putStrLn ""
+-}
