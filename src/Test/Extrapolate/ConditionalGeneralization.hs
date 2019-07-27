@@ -76,7 +76,3 @@ isAssignmentTest grounds e | typ e /= typ false = False
 isAssignmentTest grounds e = length rs > 1 && length (filter id rs) == 1
   where
   rs = [errorToFalse $ eval False e' | e' <- grounds e]
-
-unimply :: Expr -> (Expr,Expr)
-unimply ((op :$ e1) :$ e2) | op == implies  =  (e1,e2)
-unimply _  =  error "unimply: not an implication"
