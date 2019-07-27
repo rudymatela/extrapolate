@@ -3,6 +3,7 @@
 module Test
   ( module Test.Extrapolate
   , module Test.Extrapolate.Core
+  , module Test.Extrapolate.Utils
   , module Test.LeanCheck.Utils.Operators
 
   , reportTests
@@ -39,8 +40,8 @@ import Data.List (isPrefixOf, sort)
 import Test.Speculate.Reason
 
 import Test.Extrapolate
-import Test.Extrapolate.Utils
 import Test.Extrapolate.Core
+import Test.Extrapolate.Utils
 import Data.Haexpress.Fixtures hiding (canonicalize, canonicalizeWith)
 import Test.LeanCheck.Utils.Operators
 
