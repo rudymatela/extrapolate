@@ -65,22 +65,21 @@ fullInstances p = is ++ getEqInstancesFromBackground is
   is = tinstances p
 
 -- Given a property, returns the atoms to be passed to Speculate
-atoms :: Testable a => a -> [[Expr]]
-atoms p = ([vs] \/)
-        . foldr (\/) [esU]
-        $ [ eval (error msg :: [[Expr]]) tiersE
-          | tiersE@(Value "tiers" _) <- is ]
+atoms :: Instances -> [[Expr]]
+atoms is = ([vs] \/)
+         . foldr (\/) [esU]
+         $ [ eval (error msg :: [[Expr]]) tiersE
+           | tiersE@(Value "tiers" _) <- is ]
   where
   vs = sort . mapMaybe (maybeHoleOfTy is) . nubMergeMap (typesIn . typ) $ esU
   esU = getBackground is
   msg = "canditateConditions: wrong type, not [[Expr]]"
-  is = tinstances p
 
 theoryAndReprExprs :: Testable a => a -> (Thy,[Expr])
 theoryAndReprExprs p =
     (\(thy,ess) -> (thy, concat $ take (maxConditionSize p) ess))
   . theoryAndReprsFromPropAndAtoms p
-  $ atoms p
+  $ atoms $ tinstances p
 
 theoryAndReprConds :: Testable a => a -> (Thy, [Expr])
 theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
