@@ -28,8 +28,16 @@ import Test.Extrapolate.Utils
 import Test.Extrapolate.Testable -- TODO: remove me
 
 conditionalCounterExampleGeneralizations :: Testable a => a -> Expr -> [Expr]
-conditionalCounterExampleGeneralizations p e | maxConditionSize p <= 0 = []
-conditionalCounterExampleGeneralizations p e =
+conditionalCounterExampleGeneralizations p = conditionalCounterExampleGeneralizations'
+  (maxConditionSize p)
+  (atomsFor p)
+  (groundsFor p)
+  (mkEquationFor p)
+
+conditionalCounterExampleGeneralizations'
+  :: Int -> [[Expr]] -> (Expr -> [Expr]) -> (Expr -> Expr -> Expr) -> Expr -> [Expr]
+conditionalCounterExampleGeneralizations' 0 _ _ _ _  =  []
+conditionalCounterExampleGeneralizations' maxCondSize atoms grounds (-==-) e  =
   [ canonicalize $ wc -==>- g
   | g <- fastCandidateGeneralizations isListable e
   , let wc = weakestCondition' g
@@ -42,10 +50,6 @@ conditionalCounterExampleGeneralizations p e =
     (theoryAndReprConds maxCondSize (===) atoms)
     grounds
   e1 === e2 = isTrue grounds $ e1 -==- e2
-  atoms = atomsFor p
-  maxCondSize = maxConditionSize p
-  grounds = groundsFor p
-  (-==-) = mkEquationFor p
 
 candidateConditions :: (Expr -> [Expr]) -> (Thy,[Expr]) -> Expr -> [Expr]
 candidateConditions grounds (thy,cs) e = expr True :
