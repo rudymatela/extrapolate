@@ -17,7 +17,6 @@ module Test.Extrapolate.IO
   , withInstances
   , withBackground
   , withConditionSize
-  , minFailures
   )
 where
 
@@ -28,7 +27,6 @@ import Prelude hiding (catch)
 import Test.Extrapolate.Core
 import Data.Maybe (mapMaybe, fromMaybe)
 import Data.List (find)
-import Data.Ratio (Ratio)
 import Control.Monad
 import Control.Exception as E (SomeException, catch, evaluate)
 
@@ -63,19 +61,6 @@ check `withBackground` ufs  =  check `withInstances` [value "background" ufs]
 -- | Use @`withConditionSize`@ to configure the maximum condition size allowed.
 withConditionSize :: Testable a => (WithOption a -> b) -> Int -> a -> b
 check `withConditionSize` s  =   \p -> check $ p `With` MaxConditionSize s
-
--- | Use @`minFailures`@ to configure the minimum number of failures for a
---   conditional generalization in function of the maximum number of tests.
---
--- To set that conditional generalizations should fail for 10% of cases:
---
--- > check `minFailures` (`div` 10) $ prop
---
--- To set that conditional generalizations should fail for 5% of cases:
---
--- > check `minFailures` (`div` 20) $ prop
-minFailures :: Testable a => (WithOption a -> b) -> Ratio Int -> a -> b
-check `minFailures` s =  \p -> check $ p `With` MinFailures s
 
 -- | Checks a property printing results on 'stdout'
 --

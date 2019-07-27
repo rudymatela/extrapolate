@@ -41,7 +41,6 @@ conditionalCounterExampleGeneralizations p e =
   weakestCondition' = weakestCondition
     (theoryAndReprConds (tinstances p) (maxConditionSize p) (===))
     grounds
-    (computeMinFailures p)
   e1 === e2 = isTrue grounds $ e1 -==- e2
   grounds = groundsFor p
   (-==-) = mkEquationFor p
@@ -58,16 +57,15 @@ candidateConditions grounds (thy,cs) e = expr True :
 -- passes (that means we should skip as there is an already reported
 -- unconditional generalization).
 
-validConditions :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Ratio Int -> Expr -> [(Expr,Ratio Int)]
-validConditions thyes grounds minFailures e =
+validConditions :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Expr -> [(Expr,Ratio Int)]
+validConditions thyes grounds e =
   [ (c,n) | c <- candidateConditions grounds thyes e
           , (True,n) <- [isConditionalCounterExample grounds $ c -==>- e]
-          , n > minFailures
           ] ++ [(expr False,0)]
 
-weakestCondition :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Ratio Int -> Expr -> Expr
-weakestCondition thyes grounds minFailures =
-  fst . maximumOn snd . validConditions thyes grounds minFailures
+weakestCondition :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Expr -> Expr
+weakestCondition thyes grounds  =
+  fst . maximumOn snd . validConditions thyes grounds
 
 isConditionalCounterExample :: (Expr -> [Expr]) -> Expr -> (Bool, Ratio Int)
 isConditionalCounterExample grounds e  =  andLength

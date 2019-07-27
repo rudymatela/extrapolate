@@ -28,7 +28,6 @@ module Test.Extrapolate.Testable
   , namesFor
   , isListableFor
   , tBackground
-  , computeMinFailures
   )
 where
 
@@ -48,7 +47,6 @@ import Test.Extrapolate.Generalizable
 data Option = MaxTests Int
             | ExtraInstances Instances
             | MaxConditionSize Int
-            | MinFailures (Ratio Int)
   deriving Typeable -- Typeable needed for GHC <= 7.8
 
 data WithOption a = With
@@ -88,10 +86,6 @@ isListableFor p e
 
 namesFor :: Testable a => a -> Expr -> [String]
 namesFor  =  lookupNames . tinstances
-
--- minimum number of failures for a conditional generalization
-computeMinFailures :: Testable a => a -> Ratio Int
-computeMinFailures p = head $ [r | MinFailures r <- options p] ++ [0]
 
 class Typeable a => Testable a where
   resultiers :: a -> [[(Expr,Bool)]]

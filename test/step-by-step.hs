@@ -93,7 +93,7 @@ tests n =
        , elem' zero xxs
        ]
 
-  , validConditions thyes (groundsFor prop) (computeMinFailures prop) (prop' xxs)
+  , validConditions thyes (groundsFor prop) (prop' xxs)
     == [(false, 0)]
 
   , candidateConditions (groundsFor prop) thyes (prop' $ xx -:- xxs)
@@ -108,7 +108,7 @@ tests n =
        , zero -<- xx
        ]
 
-  , validConditions thyes (groundsFor prop) (computeMinFailures prop) (prop' $ xx -:- xxs)
+  , validConditions thyes (groundsFor prop) (prop' $ xx -:- xxs)
     =$ map fst
     $= [ (elem' xx xxs, 323) -- TODO: why is this 317 on GHC 8.0?
        , (false, 0)
