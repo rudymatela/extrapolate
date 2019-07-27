@@ -12,6 +12,7 @@
 -- You are probably better off importing "Test.Extrapolate".
 module Test.Extrapolate.ConditionalGeneralization
   ( generalizationsCEC
+  , equalsFor
   , validConditions
   , candidateConditions
   )
@@ -37,9 +38,19 @@ generalizationsCEC p e =
   where
   canonicalize = canonicalizeWith (namesFor p)
   weakestCondition' = weakestCondition
-    (theoryAndReprConds (tinstances p) (maxTests p) (maxConditionSize p))
+    (theoryAndReprConds (tinstances p) (maxConditionSize p) (===))
     (groundsFor p)
     (computeMinFailures p)
+  (===) = equalsFor p
+
+equalsFor :: Testable a => a -> Expr -> Expr -> Bool
+equalsFor p = (===)
+  where
+  e1 === e2 = isTrue gs $ mkEquation eqis e1 e2
+  gs = take (maxTests p) . grounds (lookupTiers $ is)
+  eqis = getEqInstancesFromBackground is
+  is = tinstances p
+
 
 candidateConditions :: (Expr -> [Expr]) -> (Thy,[Expr]) -> Expr -> [Expr]
 candidateConditions grounds (thy,cs) e = expr True :
@@ -72,3 +83,10 @@ isConditionalCounterExample grounds e  =  andLength
   ]
   where
   andLength ps = (and ps, length ps)
+
+getEqInstancesFromBackground :: Instances -> Instances
+getEqInstancesFromBackground is = eqs ++ iqs
+  where
+  eqs = [e | e@(Value "==" _) <- bg]
+  iqs = [e | e@(Value "/=" _) <- bg]
+  bg = concat [evl e | e@(Value "background" _) <- is]

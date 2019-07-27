@@ -34,14 +34,11 @@ import Test.Extrapolate.Expr
 import Test.Extrapolate.Utils
 
 -- Generates expression schemas and a theory
-theoryAndReprsFromPropAndAtoms :: Instances -> Int -> Int -> [[Expr]] -> (Thy,[[Expr]])
-theoryAndReprsFromPropAndAtoms is maxTests maxConditionSize ess =
+theoryAndReprsFromPropAndAtoms :: Int -> (Expr -> Expr -> Bool) -> [[Expr]] -> (Thy,[[Expr]])
+theoryAndReprsFromPropAndAtoms maxConditionSize (===) ess =
   theoryAndRepresentativesFromAtoms
     maxConditionSize compareExpr (const True) (===) ess
   where
-  e1 === e2 = isTrue gs $ mkEquation eqis e1 e2
-  gs = take maxTests . grounds (lookupTiers $ is)
-  eqis = getEqInstancesFromBackground is
   compareExpr :: Expr -> Expr -> Ordering
   compareExpr = compareComplexity <> lexicompareBy cmp
   e1 `cmp` e2 | arity e1 == 0 && arity e2 /= 0 = LT
@@ -59,28 +56,16 @@ atoms is = ([vs] \/)
            | tiersE@(Value "tiers" _) <- is ]
   where
   vs = sort . mapMaybe (maybeHoleOfTy is) . nubMergeMap (typesIn . typ) $ esU
-  esU = getBackground is
+  esU = concat [evl e | e@(Value "background" _) <- is]
   msg = "canditateConditions: wrong type, not [[Expr]]"
 
-theoryAndReprExprs :: Instances -> Int -> Int -> (Thy,[Expr])
-theoryAndReprExprs is maxTests maxConditionSize  =
+theoryAndReprExprs :: Instances -> Int -> (Expr -> Expr -> Bool) -> (Thy,[Expr])
+theoryAndReprExprs is maxConditionSize (===) =
     (\(thy,ess) -> (thy, concat $ take maxConditionSize ess))
-  . theoryAndReprsFromPropAndAtoms is maxTests maxConditionSize
+  . theoryAndReprsFromPropAndAtoms maxConditionSize (===)
   $ atoms is
 
-theoryAndReprConds :: Instances -> Int -> Int -> (Thy, [Expr])
-theoryAndReprConds is maxTests maxConditionSize  = (thy, filter (\c -> typ c == boolTy) es)
+theoryAndReprConds :: Instances -> Int -> (Expr -> Expr -> Bool) -> (Thy, [Expr])
+theoryAndReprConds is maxConditionSize (===)  = (thy, filter (\c -> typ c == boolTy) es)
   where
-  (thy,es) = theoryAndReprExprs is maxTests maxConditionSize
-
-getEqInstancesFromBackground :: Instances -> Instances
-getEqInstancesFromBackground is = eqs ++ iqs
-  where
-  eqs = [e | e@(Value "==" _) <- bg]
-  iqs = [e | e@(Value "/=" _) <- bg]
-  bg = getBackground is
-
-getBackground :: Instances -> [Expr]
-getBackground is = concat [eval err e | e@(Value "background" _) <- is]
-   where
-   err = error "Cannot evaluate background"
+  (thy,es) = theoryAndReprExprs is maxConditionSize (===)
