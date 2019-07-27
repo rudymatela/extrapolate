@@ -20,15 +20,17 @@ module Test.Extrapolate.Testable
 
   , Option (..)
   , WithOption (..)
-  , maxTests
-  , extraInstances
-  , maxConditionSize
-  , groundsFor
-  , mkEquationFor
-  , namesFor
-  , atomsFor
-  , isListableFor
-  , tBackground
+
+  , testableMaxTests
+  , testableMaxConditionSize
+  , testableExtraInstances
+
+  , testableGrounds
+  , testableNames
+
+  , testableBackground
+  , testableMkEquation
+  , testableAtoms
   )
 where
 
@@ -43,67 +45,6 @@ import Test.LeanCheck.Utils (bool, int)
 
 import Test.Extrapolate.Generalizable
 
--- TODO: standardize the names of functions in this module
--- maybe: testableMaxTests, testableGrounds, etc...?
-
--- I don't love Option/WithOption.  It is clever but it is not __clear__.
--- Maybe remove from future versions of the tool?
-data Option = MaxTests Int
-            | ExtraInstances Instances
-            | MaxConditionSize Int
-  deriving Typeable -- Typeable needed for GHC <= 7.8
-
-data WithOption a = With
-                  { property :: a
-                  , option :: Option }
-
-type Options = [Option]
-
-maxTests :: Testable a => a -> Int
-maxTests p = head $ [m | MaxTests m <- options p] ++ [500]
-
-extraInstances :: Testable a => a -> Instances
-extraInstances p = concat [is | ExtraInstances is <- options p]
-
-maxConditionSize :: Testable a => a -> Int
-maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [4]
-
-groundsFor :: Testable a => a -> Expr -> [Expr]
-groundsFor p  =  take (maxTests p) . grounds (lookupTiers $ tinstances p)
-
-mkEquationFor :: Testable a => a -> Expr -> Expr -> Expr
-mkEquationFor p = mkEquation (getEqInstancesFromBackground is)
-  where
-  is = tinstances p
-  getEqInstancesFromBackground is = eqs ++ iqs
-    where
-    eqs = [e | e@(Value "==" _) <- bg]
-    iqs = [e | e@(Value "/=" _) <- bg]
-    bg = concat [evl e | e@(Value "background" _) <- is]
-
-isListableFor :: Testable a => a -> Expr -> Bool
-isListableFor p e
-  | e == value "prop" p  =  False
-  | otherwise            =  isListable is e
-  where
-  is = tinstances p
-
-namesFor :: Testable a => a -> Expr -> [String]
-namesFor  =  lookupNames . tinstances
-
--- Given a property, returns the atoms to be passed to Speculate
-atomsFor :: Testable a => a -> [[Expr]]
-atomsFor  =  atoms . tinstances
-  where
-  atoms :: Instances -> [[Expr]]
-  atoms is = ([vs] \/)
-           . foldr (\/) [esU]
-           $ [ eval (error msg :: [[Expr]]) tiersE
-             | tiersE@(Value "tiers" _) <- is ]
-    where
-    vs = sort . mapMaybe (maybeHoleOfTy is) . nubMergeMap (typesIn . typ) $ esU
-    esU = concat [evl e | e@(Value "background" _) <- is]
-    msg = "canditateConditions: wrong type, not [[Expr]]"
 
 class Typeable a => Testable a where
   resultiers :: a -> [[(Expr,Bool)]]
@@ -113,7 +54,7 @@ class Typeable a => Testable a where
 
 instance Testable a => Testable (WithOption a) where
   resultiers (p `With` o) = resultiers p
-  tinstances (p `With` o) = tinstances p ++ extraInstances (p `With` o)
+  tinstances (p `With` o) = tinstances p ++ testableExtraInstances (p `With` o)
   options    (p `With` o) = o : options p
 
 instance Testable Bool where
@@ -129,30 +70,76 @@ instance (Testable b, Generalizable a, Listable a) => Testable (a->b) where
     undefarg :: (a -> b) -> a
     undefarg _ = undefined
 
+
 results :: Testable a => a -> [(Expr,Bool)]
 results = concat . resultiers
 
 limitedResults :: Testable a => a -> [(Expr,Bool)]
-limitedResults p  =  take (maxTests p) (results p)
+limitedResults p  =  take (testableMaxTests p) (results p)
 
-counterExamples :: Testable a => a -> [Expr]
-counterExamples p  =  [as | (as,False) <- limitedResults p]
 
 counterExample :: Testable a => a -> Maybe Expr
 counterExample  =  listToMaybe . counterExamples
 
-tBackground :: Testable a => a -> [Expr]
-tBackground p  =  concat [eval err e | e@(Value "background" _) <- tinstances p]
+counterExamples :: Testable a => a -> [Expr]
+counterExamples p  =  [as | (as,False) <- limitedResults p]
+
+
+-- I don't love Option/WithOption.  It is clever but it is not __clear__.
+-- Maybe remove from future versions of the tool?
+data Option = MaxTests Int
+            | ExtraInstances Instances
+            | MaxConditionSize Int
+  deriving Typeable -- Typeable needed for GHC <= 7.8
+
+data WithOption a = With
+                  { property :: a
+                  , option :: Option }
+
+type Options = [Option]
+
+
+testableMaxTests :: Testable a => a -> Int
+testableMaxTests p  =  head $ [m | MaxTests m <- options p] ++ [500]
+
+testableMaxConditionSize :: Testable a => a -> Int
+testableMaxConditionSize p  =  head $ [m | MaxConditionSize m <- options p] ++ [4]
+
+testableExtraInstances :: Testable a => a -> Instances
+testableExtraInstances p  =  concat [is | ExtraInstances is <- options p]
+
+
+testableGrounds :: Testable a => a -> Expr -> [Expr]
+testableGrounds p  =  take (testableMaxTests p) . grounds (lookupTiers $ tinstances p)
+
+testableMkEquation :: Testable a => a -> Expr -> Expr -> Expr
+testableMkEquation p  =  mkEquation (getEqInstancesFromBackground is)
+  where
+  is = tinstances p
+  getEqInstancesFromBackground is = eqs ++ iqs
+    where
+    eqs = [e | e@(Value "==" _) <- bg]
+    iqs = [e | e@(Value "/=" _) <- bg]
+    bg = concat [evl e | e@(Value "background" _) <- is]
+
+testableNames :: Testable a => a -> Expr -> [String]
+testableNames  =  lookupNames . tinstances
+
+testableBackground :: Testable a => a -> [Expr]
+testableBackground p  =  concat [eval err e | e@(Value "background" _) <- tinstances p]
   where
   err = error "Cannot evaluate background"
 
--- | /O(n)/.
--- Replaces the function in the given 'Expr'.
---
--- > replaceFun timesE (plusE :$ one :$ two) = timesE :$ one :$ two
--- > replaceFun absE (idE :$ one) = absE :$ one
--- > replaceFun two (one) = two
-replaceFun :: Expr -> Expr -> Expr
-replaceFun ef e = foldApp (ef:tail es)
+-- Given a property, returns the atoms to be passed to Speculate
+testableAtoms :: Testable a => a -> [[Expr]]
+testableAtoms  =  atoms . tinstances
   where
-  es = unfoldApp e
+  atoms :: Instances -> [[Expr]]
+  atoms is = ([vs] \/)
+           . foldr (\/) [esU]
+           $ [ eval (error msg :: [[Expr]]) tiersE
+             | tiersE@(Value "tiers" _) <- is ]
+    where
+    vs = sort . mapMaybe (maybeHoleOfTy is) . nubMergeMap (typesIn . typ) $ esU
+    esU = concat [evl e | e@(Value "background" _) <- is]
+    msg = "canditateConditions: wrong type, not [[Expr]]"

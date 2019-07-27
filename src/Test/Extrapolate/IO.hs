@@ -119,7 +119,7 @@ resultIO p = do
 
 showResult :: Testable a => a -> [Expr] -> Result -> String
 showResult p ces (OK n)             = "+++ OK, passed " ++ show n ++ " tests"
-                                   ++ takeWhile (\_ -> n < maxTests p) " (exhausted)" ++ ".\n\n"
+                                   ++ takeWhile (\_ -> n < testableMaxTests p) " (exhausted)" ++ ".\n\n"
 showResult p ces (Falsified i ce)   = "*** Failed! Falsifiable (after "
                                    ++ show i ++ " tests):\n" ++ showCEandGens p ce
 showResult p ces (Exception i ce e) = "*** Failed! Exception '" ++ e ++ "' (after "
@@ -128,20 +128,22 @@ showResult p ces (Exception i ce e) = "*** Failed! Exception '" ++ e ++ "' (afte
 showCEandGens :: Testable a => a -> Expr -> String
 showCEandGens p e = showCE e ++ "\n\n"
   ++ concat [ "Generalization:\n"
-              ++ showCE (canonicalizeUsingHolesWith (namesFor p) e)
+              ++ showCE (canonicalizeUsingHolesWith names e)
               ++ "\n\n"
             | e <- gens e]
   ++ case cgens e of
        []         -> ""
        (e:_) -> "Conditional Generalization:\n"
-              ++ showCCE (canonicalizeUsingHolesWith (namesFor p) e) ++ "\n\n"
+              ++ showCCE (canonicalizeUsingHolesWith names e) ++ "\n\n"
   where
-  gens = counterExampleGeneralizations (groundsFor p)
+  names = testableNames p
+  grounds = testableGrounds p
+  gens = counterExampleGeneralizations grounds
   cgens = conditionalCounterExampleGeneralizations
-    (maxConditionSize p)
-    (atomsFor p)
-    (groundsFor p)
-    (mkEquationFor p)
+    (testableMaxConditionSize p)
+    (testableAtoms p)
+    (testableGrounds p)
+    (testableMkEquation p)
 
 showCE :: Expr -> String
 showCE = s . tail . unfoldApp

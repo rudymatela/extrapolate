@@ -51,9 +51,10 @@ counterExampleWithGeneralizations p  =  case counterExample p of
   Nothing -> Nothing
   Just e  -> Just (e,gens e ++ take 1 (cgens e))
   where
-  gens = counterExampleGeneralizations (groundsFor p)
+  grounds = testableGrounds p
+  gens = counterExampleGeneralizations (testableGrounds p)
   cgens = conditionalCounterExampleGeneralizations
-    (maxConditionSize p)
-    (atomsFor p)
-    (groundsFor p)
-    (mkEquationFor p)
+    (testableMaxConditionSize p)
+    (testableAtoms p)
+    (testableGrounds p)
+    (testableMkEquation p)
