@@ -104,6 +104,8 @@ instance (Generalizable a) => Generalizable (Maybe a) where
                  ++ [ value "Just" (Just ->: mx) ]
   subInstances mx  =  instances (fromJust mx)
 
+-- TODO: move maybeEq and maybeOrd here, I'll have to change the tests
+
 instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
   background exy  =  mkEq2  (eitherEq  ->>:> exy)
                   ++ mkOrd2 (eitherOrd ->>:> exy)
@@ -111,6 +113,8 @@ instance (Generalizable a, Generalizable b) => Generalizable (Either a b) where
                      , value "Right" (Right ->: exy) ]
   subInstances exy  =  instances (fromLeft  exy)
                     .  instances (fromRight exy)
+
+-- TODO: move eitherEq and eitherOrd here, I'll have to change the tests
 
 instance (Generalizable a, Generalizable b) => Generalizable (a,b) where
   background xy  =  mkEq2  (pairEq  ->>:> xy)
