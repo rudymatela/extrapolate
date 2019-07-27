@@ -297,17 +297,7 @@ backgroundOf x = getBackground $ instances x []
 tBackground :: Testable a => a -> [Expr]
 tBackground = getBackground . tinstances
 
--- |  generalizes an expression by making it less defined,
---    starting with smaller changes, then bigger changes:
---
---    1: change value to variable
---    1.1: if a variable of the value type exists, use it
---    1.2: if not, introduce new variable
---    2: change a variable to a new variable
---
--- The above is the ideal, but let's start with a simpler algorithm:
---
---    1: change value to hole
+-- TODO: make it so that this assigns variables not just holes
 candidateGeneralizations :: (Expr -> Bool) -> Expr -> [Expr]
 candidateGeneralizations shouldGeneralize  =  gen
   where
