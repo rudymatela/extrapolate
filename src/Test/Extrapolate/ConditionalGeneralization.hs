@@ -30,7 +30,7 @@ import Test.Extrapolate.Testable -- TODO: remove me
 conditionalCounterExampleGeneralizations :: Testable a => a -> Expr -> [Expr]
 conditionalCounterExampleGeneralizations p e | maxConditionSize p <= 0 = []
 conditionalCounterExampleGeneralizations p e =
-  [ wc -==>- g
+  [ canonicalize $ wc -==>- g
   | g <- fastCandidateGeneralizations isListable e
   , let wc = weakestCondition' g
   , wc /= value "False" False
