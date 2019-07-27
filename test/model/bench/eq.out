@@ -171,7 +171,7 @@ Generalization:
 (_,_,False) (_,_,True)
 
 Conditional Generalization:
-(_,_,p) (_,_,q)  when  p /= q
+(x,_,_) (y,_,_)  when  x /= y
 
 
 checks :: (Ordering,Char,Integer)

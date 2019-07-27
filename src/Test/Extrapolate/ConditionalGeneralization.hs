@@ -62,8 +62,8 @@ validConditions thyes grounds e =
   isCounterExample  =  all (not . errorToFalse . eval False) . grounds
 
 weakestCondition :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Expr -> Expr
-weakestCondition thyes grounds  =
-  maximumOn (ratioFailures grounds) . validConditions thyes grounds
+weakestCondition thyes grounds e  =
+  maximumOn (ratioFailures grounds . (-==>- e)) $ validConditions thyes grounds e
 
 ratioFailures :: (Expr -> [Expr]) -> Expr -> Ratio Int
 ratioFailures grounds e  =  length ps % length gs
