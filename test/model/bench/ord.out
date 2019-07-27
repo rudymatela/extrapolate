@@ -25,11 +25,17 @@ False False
 Generalization:
 p p
 
+Generalization:
+_ False
+
 *** Failed! Falsifiable (after 1 tests):
 False False
 
 Generalization:
 p p
+
+Generalization:
+False _
 
 *** Failed! Falsifiable (after 3 tests):
 True False
@@ -145,6 +151,9 @@ LT LT
 Generalization:
 o o
 
+Generalization:
+_ LT
+
 Conditional Generalization:
 p o  when  o <= p
 
@@ -153,6 +162,9 @@ LT LT
 
 Generalization:
 o o
+
+Generalization:
+LT _
 
 Conditional Generalization:
 o p  when  o <= p
@@ -178,11 +190,17 @@ checks :: [Bool]
 Generalization:
 ps ps
 
+Generalization:
+_ []
+
 *** Failed! Falsifiable (after 1 tests):
 [] []
 
 Generalization:
 ps ps
+
+Generalization:
+[] _
 
 *** Failed! Falsifiable (after 4 tests):
 [False] []
@@ -211,6 +229,9 @@ checks :: [Integer]
 Generalization:
 xs xs
 
+Generalization:
+_ []
+
 Conditional Generalization:
 ys xs  when  xs <= ys
 
@@ -219,6 +240,9 @@ ys xs  when  xs <= ys
 
 Generalization:
 xs xs
+
+Generalization:
+[] _
 
 Conditional Generalization:
 xs ys  when  xs <= ys
@@ -250,6 +274,9 @@ checks :: (Bool,Char)
 Generalization:
 pc pc
 
+Generalization:
+(_,c) (False,c)
+
 Conditional Generalization:
 (p,d) (p,c)  when  c <= d
 
@@ -258,6 +285,9 @@ Conditional Generalization:
 
 Generalization:
 pc pc
+
+Generalization:
+(False,c) (_,c)
 
 Conditional Generalization:
 (p,c) (p,d)  when  c <= d
@@ -289,6 +319,9 @@ checks :: (Ordering,Char,Integer)
 Generalization:
 ocx ocx
 
+Generalization:
+(_,c,x) (LT,c,x)
+
 Conditional Generalization:
 ocx' ocx  when  ocx <= ocx'
 
@@ -297,6 +330,9 @@ ocx' ocx  when  ocx <= ocx'
 
 Generalization:
 ocx ocx
+
+Generalization:
+(LT,c,x) (_,c,x)
 
 Conditional Generalization:
 ocx ocx'  when  ocx <= ocx'
@@ -328,11 +364,17 @@ Nothing Nothing
 Generalization:
 mu mu
 
+Generalization:
+_ Nothing
+
 *** Failed! Falsifiable (after 1 tests):
 Nothing Nothing
 
 Generalization:
 mu mu
+
+Generalization:
+Nothing _
 
 *** Failed! Falsifiable (after 3 tests):
 (Just ()) Nothing
@@ -355,6 +397,9 @@ Nothing Nothing
 Generalization:
 mx mx
 
+Generalization:
+_ Nothing
+
 Conditional Generalization:
 mx' mx  when  mx <= mx'
 
@@ -363,6 +408,9 @@ Nothing Nothing
 
 Generalization:
 mx mx
+
+Generalization:
+Nothing _
 
 Conditional Generalization:
 mx mx'  when  mx <= mx'
@@ -394,11 +442,17 @@ checks :: Either () Bool
 Generalization:
 eup eup
 
+Generalization:
+_ (Left _)
+
 *** Failed! Falsifiable (after 1 tests):
 (Left ()) (Left ())
 
 Generalization:
 eup eup
+
+Generalization:
+(Left _) _
 
 *** Failed! Falsifiable (after 4 tests):
 (Right False) (Left ())

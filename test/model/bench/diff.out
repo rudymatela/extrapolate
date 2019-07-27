@@ -114,6 +114,9 @@ checks :: ((),Int)
 Generalization:
 ux ux
 
+Generalization:
+(_,x) (_,x)
+
 
 checks :: (Bool,Char)
 
@@ -131,6 +134,9 @@ checks :: (Int,(),Bool)
 
 Generalization:
 xup xup
+
+Generalization:
+(x,_,p) (x,_,p)
 
 
 checks :: (Ordering,Char,Integer)
@@ -167,6 +173,9 @@ checks :: Either () Bool
 
 Generalization:
 eup eup
+
+Generalization:
+(Left _) (Left _)
 
 
 checks :: Either Int Char

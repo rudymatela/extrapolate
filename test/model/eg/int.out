@@ -33,6 +33,9 @@ x x
 Generalization:
 _ x x
 
+Generalization:
+x x _
+
 *** Failed! Falsifiable (after 1 tests):
 (0,0)
 
@@ -44,4 +47,7 @@ Generalization:
 
 Generalization:
 (_,x,x)
+
+Generalization:
+(x,x,_)
 

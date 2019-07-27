@@ -6,6 +6,9 @@
 Generalization:
 xs (x:x:xs)
 
+Generalization:
+[] (x:x:_)
+
 Conditional Generalization:
 xs (_:xs)  when  xs /= []
 

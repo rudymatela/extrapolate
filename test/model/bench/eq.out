@@ -56,6 +56,9 @@ checks :: [()]
 Generalization:
 us (_:us)
 
+Generalization:
+[] (_:_)
+
 Conditional Generalization:
 [] us  when  0 /= length us
 
@@ -67,6 +70,9 @@ checks :: [Bool]
 
 Generalization:
 ps (_:ps)
+
+Generalization:
+[] (_:_)
 
 Conditional Generalization:
 ps qs  when  ps /= qs
@@ -80,6 +86,9 @@ checks :: [Int]
 Generalization:
 xs (_:xs)
 
+Generalization:
+[] (_:_)
+
 Conditional Generalization:
 xs ys  when  xs /= ys
 
@@ -91,6 +100,9 @@ checks :: [Integer]
 
 Generalization:
 xs (_:xs)
+
+Generalization:
+[] (_:_)
 
 Conditional Generalization:
 xs ys  when  xs /= ys
@@ -104,6 +116,9 @@ checks :: [Char]
 Generalization:
 cs (_:cs)
 
+Generalization:
+"" (_:_)
+
 Conditional Generalization:
 cs ds  when  cs /= ds
 
@@ -115,6 +130,9 @@ checks :: [Ordering]
 
 Generalization:
 os (_:os)
+
+Generalization:
+[] (_:_)
 
 Conditional Generalization:
 os ps  when  os /= ps

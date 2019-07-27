@@ -27,15 +27,18 @@ import Test.Extrapolate.Expr
 
 -- |
 -- Given boolean expression representing a counter-example,
--- returns all possible unconditional generalizations
--- from most general to least general.
+-- returns all possible unconditional generalizations.
+--
+-- If more than one generalization is returned,
+-- they are _not_ instances of one another.
+-- (cf. 'isInstanceOf')
 -- All according to a given function that lists ground expressions.
 --
 -- > > counterExampleGeneralizations (groundsFor not) false
 -- > []
 --
 -- > > counterExampleGeneralizations (groundsFor not) (false -&&- true)
--- > [False && _ :: Bool]
+-- > [False && p :: Bool]
 --
 -- > > counterExampleGeneralizations (groundsFor not) (false -||- true)
 -- > []
@@ -45,26 +48,18 @@ import Test.Extrapolate.Expr
 --
 -- > > counterExampleGeneralizations (groundsFor not) (false -&&- true -&&- false)
 -- > [ (False && _) && _ :: Bool
--- > , (False && p) && p :: Bool
--- > , _ && False :: Bool
--- > , (_ && _) && False :: Bool
--- > , (p && p) && False :: Bool
--- > , (_ && True) && False :: Bool
--- > , (False && _) && False :: Bool
--- > , (False && True) && _ :: Bool
+-- > , p && False :: Bool
 -- > ]
 counterExampleGeneralizations :: (Expr -> [Expr]) -> Expr -> [Expr]
-counterExampleGeneralizations grounds e =
-  [ canonicalize $ g
-  | g <- fastCandidateGeneralizations isListable e
-  , isCounterExample g
-  ]
+counterExampleGeneralizations grounds  =
+  map canonicalize . filterRelevant . fastCandidateGeneralizations isListable
   where
   isListable = not . null . grounds . holeAsTypeOf
   isCounterExample  =  all (not . errorToFalse . eval False) . grounds
--- TODO: here I can maybe discardLater isInstanceOf to report multiple gens?
--- TODO: and since everything has the same format, I can at later stages score
---       gens and cgens in the same list?
+  filterRelevant []  =  []
+  filterRelevant (g:gs)
+    | isCounterExample g  =  g : filterRelevant [g' | g' <- gs, not $ g' `isInstanceOf` g]
+    | otherwise           =  filterRelevant gs
 
 -- |
 -- Returns candidate generalizations for an expression.
