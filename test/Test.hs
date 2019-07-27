@@ -23,6 +23,7 @@ module Test
   , bgEqOK, bgEqOrdOK
 
   , subset, bgSubset
+  , backgroundOf
 
   , instancesSubset
 
@@ -157,6 +158,9 @@ instancesSubset :: (Eq a, Eq b, Generalizable a, Generalizable b) => a -> b -> B
 x `instancesSubset` y = x `bgSubset` y
                      && x `sameTiersIn` y
                      && x `sameNamesIn` y
+
+backgroundOf :: Generalizable a => a -> [Expr]
+backgroundOf x = concat [evl e | e@(Value "background" _) <- instances x []]
 
 -- available on Data.List since GHC >= 8.0
 isSubsequenceOf :: Eq a => [a] -> [a] -> Bool

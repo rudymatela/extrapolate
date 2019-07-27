@@ -17,8 +17,6 @@ module Test.Extrapolate.Core
   , module Test.Extrapolate.Testable
   , module Test.Extrapolate.Speculation
 
-  , backgroundOf
-
   , counterExampleGen
   , counterExampleGens
 
@@ -60,10 +58,6 @@ import Test.Extrapolate.Generalization
 import Test.Extrapolate.Speculation
 import Test.Extrapolate.Testable
 import Test.Extrapolate.Utils
-
-backgroundOf :: Generalizable a => a -> [Expr]
-backgroundOf x = concat [evl e | e@(Value "background" _) <- instances x []]
--- TODO: move backgroundOf to Test
 
 counterExampleGens :: Testable a => a -> Maybe (Expr,[Expr])
 counterExampleGens p  =  case counterExample p of
