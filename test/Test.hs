@@ -27,8 +27,6 @@ module Test
 
   , instancesSubset
 
-  , Thy
-
   , module Data.Haexpress.Fixtures
   )
 where

@@ -13,6 +13,11 @@
 module Test.Extrapolate.Speculation
   ( theoryAndReprConds
   , atoms
+
+  -- re-exports from Speculate
+  , Thy
+  , Expr
+  , classesFromSchemasAndVariables
   )
 where
 
@@ -21,7 +26,7 @@ import Data.Maybe
 
 import Test.LeanCheck ((\/))
 
-import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms)
+import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
 import Test.Speculate.Reason (Thy)
 import Test.Speculate.Utils (boolTy, typesIn)
 
