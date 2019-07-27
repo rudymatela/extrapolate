@@ -99,14 +99,24 @@ import Data.Monoid ((<>))
 -- Extrapolate can generalize counter-examples of any types that are
 -- 'Generalizable'.
 --
--- The only required function is 'instances' functions.
+-- 'Generalizable' types must first be instances of
+--
+-- * 'Listable', so Extrapolate knows how to enumerate values;
+-- * 'Express', so Extrapolate can represent then manipulate values;
+-- * 'Name', so Extrapolate knows how to name variables.
+--
+-- There are no required functions, so we can define instances with:
+--
+-- > instance Generalizable OurType
+--
+-- However, it is desirable to define both 'background' and 'subInstances'.
 --
 -- The following example shows a datatype and its instance:
 --
 -- > data Stack a = Stack a (Stack a) | Empty
 --
 -- > instance Generalizable a => Generalizable (Stack a) where
--- >   instances s = this s $ instances (argTy1of1 s)
+-- >   subInstances s  =  instances (argTy1of1 s)
 --
 -- To declare 'instances' it may be useful to use type binding
 -- operators such as: 'argTy1of1', 'argTy1of2' and 'argTy2of2'.
@@ -121,7 +131,9 @@ class (Listable a, Express a, Name a, Show a) => Generalizable a where
   background :: a -> [Expr]
   background _  =  []
 
-  -- | Computes a list of reified subtype instances.  See 'instances'.
+  -- | Computes a list of reified subtype instances.
+  --   Defaults to 'id'.
+  --   See 'instances'.
   subInstances :: a -> Instances -> Instances
   subInstances _  =  id
 
