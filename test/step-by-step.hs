@@ -28,7 +28,7 @@ tests n =
        , operatorE (i_ -<- i_)
        ]
 
-  , concat (take 2 $ atoms prop)
+  , concat (take 2 $ atoms $ tinstances prop)
     == [ b_
        , i_
        , is_
