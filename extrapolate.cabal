@@ -84,9 +84,9 @@ library
   exposed-modules: Test.Extrapolate
                  , Test.Extrapolate.Core
                  , Test.Extrapolate.Basic
-                 , Test.Extrapolate.Derive
                  , Test.Extrapolate.Expr
                  , Test.Extrapolate.Generalizable
+                 , Test.Extrapolate.Generalizable.Derive
                  , Test.Extrapolate.Generalization
                  , Test.Extrapolate.Speculation
                  , Test.Extrapolate.Testable

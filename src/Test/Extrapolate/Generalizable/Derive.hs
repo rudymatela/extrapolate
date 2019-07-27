@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell, CPP #-}
 -- |
--- Module      : Test.Extrapolate.Derive
+-- Module      : Test.Extrapolate.Generalizable.Derive
 -- Copyright   : (c) 2017-2019 Rudy Matela
 -- License     : 3-Clause BSD  (see the file LICENSE)
 -- Maintainer  : Rudy Matela <rudy@matela.com.br>
@@ -14,16 +14,16 @@
 --
 -- If Extrapolate does not compile under later GHCs, this module is the
 -- probable culprit.
-module Test.Extrapolate.Derive
+module Test.Extrapolate.Generalizable.Derive
   ( deriveGeneralizable
   , deriveGeneralizableIfNeeded
   , deriveGeneralizableCascading
   )
 where
 
-import Test.Extrapolate.Core hiding (isInstanceOf, Name)
+import Test.Extrapolate.Generalizable hiding (Name, isInstanceOf)
 import Test.Extrapolate.Utils (foldr0)
-import Test.LeanCheck.Derive (deriveListableIfNeeded)
+import Test.LeanCheck.Derive (deriveListableIfNeeded, deriveListableCascading)
 
 import Language.Haskell.TH
 import Data.Haexpress.Utils.TH
