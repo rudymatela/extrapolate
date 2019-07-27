@@ -62,6 +62,8 @@ module Test.Extrapolate.Core
   , Testable (..)
   , results
   , limitedResults
+
+  , computeMinFailures
   )
 where
 
@@ -320,7 +322,6 @@ data Option = MaxTests Int
             | MaxConditionSize Int
             | MinFailures (Ratio Int)
             | MaxSpeculateSize (Maybe Int)
-            | ConditionBound (Maybe Int)
             | ConstantBound (Maybe Int)
             | DepthBound (Maybe Int)
   deriving (Show, Typeable) -- Typeable needed for GHC <= 7.8
@@ -362,9 +363,6 @@ computeMinFailures p = max 2 $ m * numerator r `div` denominator r
 
 computeMaxSpeculateSize :: Testable a => a -> Maybe Int
 computeMaxSpeculateSize p = head $ [b | MaxSpeculateSize b <- options p] ++ [Just 4]
-
-computeConditionBound :: Testable a => a -> Maybe Int
-computeConditionBound p = head $ [b | ConditionBound b <- options p] ++ [Nothing]
 
 computeConstantBound :: Testable a => a -> Maybe Int
 computeConstantBound p = head $ [b | ConstantBound b <- options p] ++ [Nothing]
@@ -426,14 +424,22 @@ generalizationsCE grounds e =
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
-  [ canonicalizeWith (namesFor p) $ wc -==>- g'
+  [ canonicalize $ wc -==>- g'
   | g <- candidateGeneralizations (isListableFor p) e
   , g' <- canonicalVariations g
-  , let thycs = theoryAndReprConds p
-  , let wc = weakestCondition thycs p g'
+  , let wc = weakestCondition g'
   , wc /= value "False" False
   , wc /= value "True"  True
   ]
+  where
+  canonicalize = canonicalizeWith (namesFor p)
+  weakestCondition = weakestConditionFor p
+
+weakestConditionFor :: Testable a => a -> Expr -> Expr
+weakestConditionFor p = weakestCondition
+  (theoryAndReprConds p)
+  (groundsFor p)
+  (computeMinFailures p)
 
 isCounterExample :: (Expr -> [Expr]) -> Expr -> Bool
 isCounterExample grounds  =  all (not . errorToFalse . eval False) . grounds
@@ -513,21 +519,16 @@ candidateConditions grounds (thy,cs) e = expr True :
 -- passes (that means we should skip as there is an already reported
 -- unconditional generalization).
 
-validConditions :: Testable a => (Thy,[Expr]) -> a -> Expr -> [(Expr,Int)]
-validConditions thyes p e =
+validConditions :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Int -> Expr -> [(Expr,Int)]
+validConditions thyes grounds minFailures e =
   [ (c,n) | c <- candidateConditions grounds thyes e
           , (True,n) <- [isConditionalCounterExample grounds $ c -==>- e]
           , n > minFailures
           ] ++ [(expr False,0)]
-  where
-  minFailures = computeMinFailures p
-  grounds = groundsFor p
 
-weakestCondition :: Testable a => (Thy,[Expr]) -> a -> Expr -> Expr
-weakestCondition thyes p e = fst
-                           . maximumOn snd
-                           . takeBound (computeConditionBound p)
-                           $ validConditions thyes p e
+weakestCondition :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Int -> Expr -> Expr
+weakestCondition thyes grounds minFailures =
+  fst . maximumOn snd . validConditions thyes grounds minFailures
 
 isConditionalCounterExample :: (Expr -> [Expr]) -> Expr -> (Bool, Int)
 isConditionalCounterExample grounds e  =  andLength

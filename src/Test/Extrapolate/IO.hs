@@ -19,7 +19,6 @@ module Test.Extrapolate.IO
   , withConditionSize
   , minFailures
   , maxSpeculateSize
-  , conditionBound
   , constantBound
   , depthBound
   )
@@ -80,9 +79,6 @@ check `withConditionSize` s  =   \p -> check $ p `With` MaxConditionSize s
 -- > check `minFailures` (`div` 20) $ prop
 minFailures :: Testable a => (WithOption a -> b) -> Ratio Int -> a -> b
 check `minFailures` s =  \p -> check $ p `With` MinFailures s
-
-conditionBound :: Testable a => (WithOption a -> b) -> Maybe Int -> a -> b
-check `conditionBound` mi =  \p -> check $ p `With` ConditionBound mi
 
 maxSpeculateSize :: Testable a => (WithOption a -> b) -> Maybe Int -> a -> b
 check `maxSpeculateSize` mi =  \p -> check $ p `With` MaxSpeculateSize mi
