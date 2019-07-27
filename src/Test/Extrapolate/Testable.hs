@@ -24,6 +24,7 @@ module Test.Extrapolate.Testable
   , extraInstances
   , maxConditionSize
   , groundsFor
+  , mkEquationFor
   , namesFor
   , isListableFor
   , tBackground
@@ -67,6 +68,16 @@ maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [4]
 
 groundsFor :: Testable a => a -> Expr -> [Expr]
 groundsFor p  =  take (maxTests p) . grounds (lookupTiers $ tinstances p)
+
+mkEquationFor :: Testable a => a -> Expr -> Expr -> Expr
+mkEquationFor p = mkEquation (getEqInstancesFromBackground is)
+  where
+  is = tinstances p
+  getEqInstancesFromBackground is = eqs ++ iqs
+    where
+    eqs = [e | e@(Value "==" _) <- bg]
+    iqs = [e | e@(Value "/=" _) <- bg]
+    bg = concat [evl e | e@(Value "background" _) <- is]
 
 isListableFor :: Testable a => a -> Expr -> Bool
 isListableFor p e

@@ -12,7 +12,6 @@
 -- You are probably better off importing "Test.Extrapolate".
 module Test.Extrapolate.ConditionalGeneralization
   ( generalizationsCEC
-  , equalsFor
   , validConditions
   , candidateConditions
   )
@@ -39,22 +38,11 @@ generalizationsCEC p e =
   canonicalize = canonicalizeWith (namesFor p)
   weakestCondition' = weakestCondition
     (theoryAndReprConds (tinstances p) (maxConditionSize p) (===))
-    (groundsFor p)
+    grounds
     (computeMinFailures p)
-  (===) = equalsFor p
-
-equalsFor :: Testable a => a -> Expr -> Expr -> Bool
-equalsFor p = (===)
-  where
-  e1 === e2 = isTrue gs $ mkEquationFor p e1 e2
-  gs = take (maxTests p) . grounds (lookupTiers $ tinstances p)
-
-mkEquationFor :: Testable a => a -> Expr -> Expr -> Expr
-mkEquationFor p = mkEquation (getEqInstancesFromBackground is)
-  where
-  is = tinstances p
-
-
+  e1 === e2 = isTrue grounds $ e1 -==- e2
+  grounds = groundsFor p
+  (-==-) = mkEquationFor p
 
 candidateConditions :: (Expr -> [Expr]) -> (Thy,[Expr]) -> Expr -> [Expr]
 candidateConditions grounds (thy,cs) e = expr True :
@@ -87,10 +75,3 @@ isConditionalCounterExample grounds e  =  andLength
   ]
   where
   andLength ps = (and ps, length ps)
-
-getEqInstancesFromBackground :: Instances -> Instances
-getEqInstancesFromBackground is = eqs ++ iqs
-  where
-  eqs = [e | e@(Value "==" _) <- bg]
-  iqs = [e | e@(Value "/=" _) <- bg]
-  bg = concat [evl e | e@(Value "background" _) <- is]

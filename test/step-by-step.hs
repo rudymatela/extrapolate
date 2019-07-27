@@ -116,7 +116,11 @@ tests n =
   ]
 
 thyes :: (Thy,[Expr])
-thyes  =  theoryAndReprConds (tinstances prop) (maxConditionSize prop) (equalsFor prop)
+thyes  =  theoryAndReprConds (tinstances prop) (maxConditionSize prop) (===)
+  where
+  e1 === e2 = isTrue grounds $ e1 -==- e2
+  grounds = groundsFor prop
+  (-==-) = mkEquationFor prop
 
 prop' :: Expr -> Expr
 prop' e  =  propE :$ e
