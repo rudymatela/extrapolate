@@ -46,10 +46,14 @@ generalizationsCEC p e =
 equalsFor :: Testable a => a -> Expr -> Expr -> Bool
 equalsFor p = (===)
   where
-  e1 === e2 = isTrue gs $ mkEquation eqis e1 e2
-  gs = take (maxTests p) . grounds (lookupTiers $ is)
-  eqis = getEqInstancesFromBackground is
+  e1 === e2 = isTrue gs $ mkEquationFor p e1 e2
+  gs = take (maxTests p) . grounds (lookupTiers $ tinstances p)
+
+mkEquationFor :: Testable a => a -> Expr -> Expr -> Expr
+mkEquationFor p = mkEquation (getEqInstancesFromBackground is)
+  where
   is = tinstances p
+
 
 
 candidateConditions :: (Expr -> [Expr]) -> (Thy,[Expr]) -> Expr -> [Expr]
