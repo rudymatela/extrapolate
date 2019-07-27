@@ -29,13 +29,11 @@ generalizationsCE :: (Expr -> [Expr]) -> Expr -> [Expr]
 generalizationsCE grounds e =
   [ canonicalize $ g
   | g <- fastCandidateGeneralizations isListable e
-  , isCounterExample grounds g
+  , isCounterExample g
   ]
   where
   isListable = not . null . grounds . holeAsTypeOf
-
-isCounterExample :: (Expr -> [Expr]) -> Expr -> Bool
-isCounterExample grounds  =  all (not . errorToFalse . eval False) . grounds
+  isCounterExample  =  all (not . errorToFalse . eval False) . grounds
 
 -- |
 -- Returns candidate generalizations for an expression.
