@@ -134,7 +134,7 @@ showCEandGens p e = showCE e ++ "\n\n"
   ++ case conditionalCounterExampleGeneralizations p e of
        []         -> ""
        (e:_) -> "Conditional Generalization:\n"
-              ++ showCCE e ++ "\n\n"
+              ++ showCCE (canonicalizeWith (namesFor p) e) ++ "\n\n"
 
 showCE :: Expr -> String
 showCE = s . tail . unfoldApp
