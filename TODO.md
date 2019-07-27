@@ -18,7 +18,7 @@ A non-exhaustive list of things TO DO for Extrapolate.
 
 * `report-multiple-generalizations`:
   when there is more than one generalization and they don't encompass
-  one-another, report both.
+  one-another, report both.  (see TODO on counterExampleGeneralizations)
 
 * `renaming`:
   possibly print          `(Div (C 0) (Add (C x) (C (negate x))))`
