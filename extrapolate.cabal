@@ -87,6 +87,7 @@ library
                  , Test.Extrapolate.Generalizable
                  , Test.Extrapolate.Generalizable.Derive
                  , Test.Extrapolate.Generalization
+                 , Test.Extrapolate.ConditionalGeneralization
                  , Test.Extrapolate.Speculation
                  , Test.Extrapolate.Testable
                  , Test.Extrapolate.IO
