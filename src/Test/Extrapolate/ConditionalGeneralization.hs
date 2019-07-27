@@ -76,3 +76,6 @@ isConditionalCounterExample grounds e  =  andLength
   where
   gs = grounds e
   andLength ps = (and ps, length ps % length gs)
+
+-- Here we use Ratio Int instead of simply an Int because the number of tests
+-- for a conditional generalization may vary for finite types.
