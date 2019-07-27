@@ -31,16 +31,14 @@ import Test.Extrapolate.Utils
 import Test.Extrapolate.Testable -- TODO: remove this import
 
 -- Generates expression schemas and a theory
-theoryAndReprsFromPropAndAtoms :: Testable a => a -> [[Expr]] -> (Thy,[[Expr]])
-theoryAndReprsFromPropAndAtoms p ess =
+theoryAndReprsFromPropAndAtoms :: Instances -> Int -> Int -> [[Expr]] -> (Thy,[[Expr]])
+theoryAndReprsFromPropAndAtoms is maxTests maxConditionSize ess =
   theoryAndRepresentativesFromAtoms
-    (maxConditionSize p) compareExpr (const True) (===) ess
+    maxConditionSize compareExpr (const True) (===) ess
   where
   e1 === e2 = isTrue gs $ mkEquation eqis e1 e2
-  gs = take m . grounds (lookupTiers $ is)
-  is = tinstances p
+  gs = take maxTests . grounds (lookupTiers $ is)
   eqis = getEqInstancesFromBackground is
-  m  = maxTests p
   compareExpr :: Expr -> Expr -> Ordering
   compareExpr = compareComplexity <> lexicompareBy cmp
   e1 `cmp` e2 | arity e1 == 0 && arity e2 /= 0 = LT
@@ -64,8 +62,10 @@ atoms is = ([vs] \/)
 theoryAndReprExprs :: Testable a => a -> (Thy,[Expr])
 theoryAndReprExprs p =
     (\(thy,ess) -> (thy, concat $ take (maxConditionSize p) ess))
-  . theoryAndReprsFromPropAndAtoms p
-  $ atoms $ tinstances p
+  . theoryAndReprsFromPropAndAtoms is (maxTests p) (maxConditionSize p)
+  $ atoms is
+  where
+  is = tinstances p
 
 theoryAndReprConds :: Testable a => a -> (Thy, [Expr])
 theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
