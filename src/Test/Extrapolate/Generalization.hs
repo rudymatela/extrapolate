@@ -62,6 +62,9 @@ counterExampleGeneralizations grounds e =
   where
   isListable = not . null . grounds . holeAsTypeOf
   isCounterExample  =  all (not . errorToFalse . eval False) . grounds
+-- TODO: here I can maybe discardLater isInstanceOf to report multiple gens?
+-- TODO: and since everything has the same format, I can at later stages score
+--       gens and cgens in the same list?
 
 -- |
 -- Returns candidate generalizations for an expression.
