@@ -21,11 +21,6 @@ module Test.Extrapolate.Expr
 
   -- * misc re-exports
   , (-==>-)
-  , unimply
-
-  -- * new functions
-  , isAssignmentTest
-  , replaceFun
   )
 where
 
@@ -48,24 +43,3 @@ unrepeatedToHole1 :: Expr -> Expr
 unrepeatedToHole1 e = e //- [(v, holeAsTypeOf v) | (v,1) <- countVars e]
   where
   countVars e = map (\e' -> (e',length . filter (== e') $ vars e)) $ nubVars e
-
-isAssignmentTest :: (Expr -> [Expr]) -> Expr -> Bool
-isAssignmentTest grounds e | typ e /= typ false = False
-isAssignmentTest grounds e = length rs > 1 && length (filter id rs) == 1
-  where
-  rs = [errorToFalse $ eval False e' | e' <- grounds e]
-
--- | /O(n)/.
--- Replaces the function in the given 'Expr'.
---
--- > replaceFun timesE (plusE :$ one :$ two) = timesE :$ one :$ two
--- > replaceFun absE (idE :$ one) = absE :$ one
--- > replaceFun two (one) = two
-replaceFun :: Expr -> Expr -> Expr
-replaceFun ef e = foldApp (ef:tail es)
-  where
-  es = unfoldApp e
-
-unimply :: Expr -> (Expr,Expr)
-unimply ((op :$ e1) :$ e2) | op == implies  =  (e1,e2)
-unimply _  =  error "unimply: not an implication"

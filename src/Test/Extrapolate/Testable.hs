@@ -145,3 +145,14 @@ tBackground :: Testable a => a -> [Expr]
 tBackground p  =  concat [eval err e | e@(Value "background" _) <- tinstances p]
   where
   err = error "Cannot evaluate background"
+
+-- | /O(n)/.
+-- Replaces the function in the given 'Expr'.
+--
+-- > replaceFun timesE (plusE :$ one :$ two) = timesE :$ one :$ two
+-- > replaceFun absE (idE :$ one) = absE :$ one
+-- > replaceFun two (one) = two
+replaceFun :: Expr -> Expr -> Expr
+replaceFun ef e = foldApp (ef:tail es)
+  where
+  es = unfoldApp e
