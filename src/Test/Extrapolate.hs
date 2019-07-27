@@ -19,19 +19,29 @@
 -- library.  See:
 --
 -- > > check $ \xs -> sort (sort xs :: [Int]) == sort xs
--- > +++ OK, passed 360 tests.
+-- > +++ OK, passed 500 tests.
 --
 -- When tests fail, Extrapolate reports a fully defined counter-example and a
 -- generalization of failing inputs.  See:
 --
--- > > > check $ \xs -> length (sort xs :: [Int]) == length xs
+-- > > check $ \xs -> length (sort xs :: [Int]) == length xs
 -- > *** Failed! Falsifiable (after 3 tests):
 -- > [0,0]
 -- >
 -- > Generalization:
 -- > x:x:_
+-- >
+-- > Conditional Generalization:
+-- > x:xs  when  elem x xs
 --
--- The property fails for any integer @x@ and for any list @_@ at the tail.
+-- /Generalization:/
+-- the property fails for any integer @x@ and for any list @_@ at the tail.
+--
+-- /Conditional Generalization:/
+-- the property fails for a list @x:xs@ whenever @x@ is an element of @xs@
+--
+-- This hints at the actual source of the fault:
+-- our @sort@ above discards repeated elements!
 module Test.Extrapolate
   (
 -- * Checking properties
