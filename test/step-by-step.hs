@@ -116,7 +116,7 @@ tests n =
   ]
 
 thyes :: (Thy,[Expr])
-thyes  =  theoryAndReprConds prop
+thyes  =  theoryAndReprConds (tinstances prop) (maxTests prop) (maxConditionSize prop)
 
 prop' :: Expr -> Expr
 prop' e  =  propE :$ e

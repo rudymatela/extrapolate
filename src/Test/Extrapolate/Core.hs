@@ -84,7 +84,7 @@ generalizationsCEC p e =
 
 weakestConditionFor :: Testable a => a -> Expr -> Expr
 weakestConditionFor p = weakestCondition
-  (theoryAndReprConds p)
+  (theoryAndReprConds (tinstances p) (maxTests p) (maxConditionSize p))
   (groundsFor p)
   (computeMinFailures p)
 

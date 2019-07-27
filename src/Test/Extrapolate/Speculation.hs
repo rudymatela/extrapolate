@@ -59,18 +59,16 @@ atoms is = ([vs] \/)
   esU = getBackground is
   msg = "canditateConditions: wrong type, not [[Expr]]"
 
-theoryAndReprExprs :: Testable a => a -> (Thy,[Expr])
-theoryAndReprExprs p =
-    (\(thy,ess) -> (thy, concat $ take (maxConditionSize p) ess))
-  . theoryAndReprsFromPropAndAtoms is (maxTests p) (maxConditionSize p)
+theoryAndReprExprs :: Instances -> Int -> Int -> (Thy,[Expr])
+theoryAndReprExprs is maxTests maxConditionSize  =
+    (\(thy,ess) -> (thy, concat $ take maxConditionSize ess))
+  . theoryAndReprsFromPropAndAtoms is maxTests maxConditionSize
   $ atoms is
-  where
-  is = tinstances p
 
-theoryAndReprConds :: Testable a => a -> (Thy, [Expr])
-theoryAndReprConds p = (thy, filter (\c -> typ c == boolTy) es)
+theoryAndReprConds :: Instances -> Int -> Int -> (Thy, [Expr])
+theoryAndReprConds is maxTests maxConditionSize  = (thy, filter (\c -> typ c == boolTy) es)
   where
-  (thy,es) = theoryAndReprExprs p
+  (thy,es) = theoryAndReprExprs is maxTests maxConditionSize
 
 getEqInstancesFromBackground :: Instances -> Instances
 getEqInstancesFromBackground is = eqs ++ iqs
