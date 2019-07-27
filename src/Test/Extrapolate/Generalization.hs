@@ -11,11 +11,11 @@
 --
 -- You are probably better off importing "Test.Extrapolate".
 module Test.Extrapolate.Generalization
-  ( candidateGeneralizations
+  ( counterExampleGeneralizations
+
+  , candidateGeneralizations
   , fastCandidateGeneralizations
   , candidateHoleGeneralizations
-
-  , generalizationsCE
 
   , module Test.Extrapolate.Expr
   )
@@ -25,8 +25,8 @@ import Test.LeanCheck.Error (errorToFalse)
 
 import Test.Extrapolate.Expr
 
-generalizationsCE :: (Expr -> [Expr]) -> Expr -> [Expr]
-generalizationsCE grounds e =
+counterExampleGeneralizations :: (Expr -> [Expr]) -> Expr -> [Expr]
+counterExampleGeneralizations grounds e =
   [ canonicalize $ g
   | g <- fastCandidateGeneralizations isListable e
   , isCounterExample g

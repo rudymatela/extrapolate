@@ -193,7 +193,7 @@ counterExample  =  listToMaybe . counterExamples
 counterExampleGens :: Testable a => a -> Maybe (Expr,[Expr])
 counterExampleGens p  =  case counterExample p of
   Nothing -> Nothing
-  Just e  -> Just (e,generalizationsCE (groundsFor p) e)
+  Just e  -> Just (e,counterExampleGeneralizations (groundsFor p) e)
 
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
