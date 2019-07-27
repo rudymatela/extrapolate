@@ -28,6 +28,8 @@ module Test.Extrapolate.Generalizable
   , (*/=*)
   , (*<=*)
   , (*<*)
+
+  , module Test.Extrapolate.Expr
   )
 where
 

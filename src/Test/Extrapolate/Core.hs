@@ -13,6 +13,7 @@ module Test.Extrapolate.Core
   ( module Test.LeanCheck
   , module Test.Extrapolate.Expr
   , module Test.Extrapolate.Generalizable
+  , module Test.Extrapolate.Generalization
 
   , backgroundOf
 
@@ -29,10 +30,6 @@ module Test.Extrapolate.Core
   , counterExampleGen
   , counterExampleGens
 
-  , candidateGeneralizations
-  , fastCandidateGeneralizations
-  , candidateHoleGeneralizations
-  , generalizationsCE
   , generalizationsCEC
 
   , atoms
@@ -79,9 +76,10 @@ import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSche
 import Test.Speculate.Reason (Thy)
 import Test.Speculate.Utils (boolTy, typesIn)
 
+import Test.Extrapolate.Utils
 import Test.Extrapolate.Expr
 import Test.Extrapolate.Generalizable
-import Test.Extrapolate.Utils
+import Test.Extrapolate.Generalization
 
 getBackground :: Instances -> [Expr]
 getBackground is = concat [eval err e | e@(Value "background" _) <- is]
@@ -100,88 +98,6 @@ backgroundOf x = getBackground $ instances x []
 
 tBackground :: Testable a => a -> [Expr]
 tBackground = getBackground . tinstances
-
--- |
--- Returns candidate generalizations for an expression.
--- (cf. 'candidateHoleGeneralizations')
---
--- This takes a function that returns whether to generalize a given
--- subexpression.
---
--- > > import Data.Haexpress.Fixtures
---
--- > > candidateGeneralizations (\e -> typ e == typ one) (one -+- two)
--- > [ _ :: Int
--- > , _ + _ :: Int
--- > , x + x :: Int
--- > , _ + 2 :: Int
--- > , 1 + _ :: Int
--- > ]
---
--- > > candidateGeneralizations (const True) (one -+- two)
--- > [ _ :: Int
--- > , _ _ :: Int
--- > , _ _ _ :: Int
--- > , _ x x :: Int
--- > , _ 1 _ :: Int
--- > , _ + _ :: Int
--- > , x + x :: Int
--- > , _ 2 :: Int
--- > , _ _ 2 :: Int
--- > , _ 1 2 :: Int
--- > , _ + 2 :: Int
--- > , 1 + _ :: Int
--- > ]
-candidateGeneralizations :: (Expr -> Bool) -> Expr -> [Expr]
-candidateGeneralizations should  =  map canonicalize
-                                 .  fastCandidateGeneralizations should
-
--- |
--- Like 'candidateGeneralizations' but faster because result is not
--- canonicalized.  Variable names will be repeated across different types.
-fastCandidateGeneralizations :: (Expr -> Bool) -> Expr -> [Expr]
-fastCandidateGeneralizations should  =  concatMap fastCanonicalVariations
-                                     .  candidateHoleGeneralizations should
-
--- |
--- Returns candidate generalizations for an expression by replacing values with
--- holes. (cf. 'candidateGeneralizations')
---
--- > > import Data.Haexpress.Fixtures
---
--- > > candidateHoleGeneralizations (\e -> typ e == typ one) (one -+- two)
--- > [ _ :: Int
--- > , _ + _ :: Int
--- > , _ + 2 :: Int
--- > , 1 + _ :: Int
--- > ]
---
--- > > candidateHoleGeneralizations (const True) (one -+- two)
--- > [ _ :: Int
--- > , _ _ :: Int
--- > , _ _ _ :: Int
--- > , _ 1 _ :: Int
--- > , _ + _ :: Int
--- > , _ 2 :: Int
--- > , _ _ 2 :: Int
--- > , _ 1 2 :: Int
--- > , _ + 2 :: Int
--- > , 1 + _ :: Int
--- > ]
-candidateHoleGeneralizations :: (Expr -> Bool) -> Expr -> [Expr]
-candidateHoleGeneralizations shouldGeneralize  =  gen
-  where
-  gen e@(e1 :$ e2)  =
-    [holeAsTypeOf e | shouldGeneralize e]
-    ++ productWith (:$) (gen e1) (gen e2)
-    ++ map (:$ e2) (gen e1)
-    ++ map (e1 :$) (gen e2)
-  gen e
-    | isVar e    =  []
-    | otherwise  =  [holeAsTypeOf e | shouldGeneralize e]
-
-productWith :: (a -> b -> c) -> [a] -> [b] -> [c]
-productWith f xs ys = [f x y | x <- xs, y <- ys]
 
 -- I don't love Option/WithOption.  It is clever but it is not __clear__.
 -- Maybe remove from future versions of the tool?
@@ -279,15 +195,6 @@ counterExampleGens p  =  case counterExample p of
   Nothing -> Nothing
   Just e  -> Just (e,generalizationsCE (groundsFor p) e)
 
-generalizationsCE :: (Expr -> [Expr]) -> Expr -> [Expr]
-generalizationsCE grounds e =
-  [ canonicalize $ g
-  | g <- fastCandidateGeneralizations isListable e
-  , isCounterExample grounds g
-  ]
-  where
-  isListable = not . null . grounds . holeAsTypeOf
-
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
@@ -306,9 +213,6 @@ weakestConditionFor p = weakestCondition
   (theoryAndReprConds p)
   (groundsFor p)
   (computeMinFailures p)
-
-isCounterExample :: (Expr -> [Expr]) -> Expr -> Bool
-isCounterExample grounds  =  all (not . errorToFalse . eval False) . grounds
 
 counterExampleGen :: Testable a => a -> Maybe (Expr,Maybe Expr)
 counterExampleGen p  =  case counterExampleGens p of
