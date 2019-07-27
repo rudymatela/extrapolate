@@ -127,14 +127,21 @@ showResult p ces (Exception i ce e) = "*** Failed! Exception '" ++ e ++ "' (afte
 
 showCEandGens :: Testable a => a -> Expr -> String
 showCEandGens p e = showCE e ++ "\n\n"
-  ++ case counterExampleGeneralizations (groundsFor p) e of
+  ++ case gens e of
        []    -> ""
        (e:_) -> "Generalization:\n"
              ++ showCE (canonicalizeWith (namesFor p) e) ++ "\n\n"
-  ++ case conditionalCounterExampleGeneralizations p e of
+  ++ case cgens e of
        []         -> ""
        (e:_) -> "Conditional Generalization:\n"
               ++ showCCE (canonicalizeWith (namesFor p) e) ++ "\n\n"
+  where
+  gens = counterExampleGeneralizations (groundsFor p)
+  cgens = conditionalCounterExampleGeneralizations
+    (maxConditionSize p)
+    (atomsFor p)
+    (groundsFor p)
+    (mkEquationFor p)
 
 showCE :: Expr -> String
 showCE = s . tail . unfoldApp
