@@ -19,34 +19,25 @@ module Test.Extrapolate.Core
 
   , backgroundOf
 
-  , counterExamples
   , counterExampleGen
   , counterExampleGens
 
   , generalizationsCEC
 
-  , theoryAndReprConds
   , candidateConditions
   , validConditions
   , weakestCondition
-  , getBackground
-
-  , computeMinFailures
   )
 where
 
 -- TODO: split this module into Testable, ConditionalGeneralization and
 --       Speculation
 
-import Data.List (sort)
-import Data.Maybe
-
 import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Data.Monoid ((<>))
 
 import Data.Typeable
 
-import Test.LeanCheck.Utils
 import Test.LeanCheck hiding
   ( Testable
   , results
@@ -63,12 +54,12 @@ import Test.LeanCheck.Error (errorToFalse)
 import Test.Speculate.Reason (Thy)
 import Test.Speculate.Engine (classesFromSchemasAndVariables)
 
-import Test.Extrapolate.Utils
 import Test.Extrapolate.Expr
 import Test.Extrapolate.Generalizable
 import Test.Extrapolate.Generalization
 import Test.Extrapolate.Speculation
 import Test.Extrapolate.Testable
+import Test.Extrapolate.Utils
 
 backgroundOf :: Generalizable a => a -> [Expr]
 backgroundOf x = getBackground $ instances x []
