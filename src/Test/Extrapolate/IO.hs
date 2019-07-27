@@ -151,9 +151,9 @@ showCE = s . tail . unfoldApp
 
 
 showCCE :: Expr -> String
-showCCE  =  s . unimply
+showCCE  =  s . unand
   where
-  s (c,e)  =  showCE e ++ "  when  " ++ showPrecExpr 0 (prettify c)
+  s (e,c)  =  showCE e ++ "  when  " ++ showPrecExpr 0 (prettify c)
 
 -- WARNING: expressions are unevaluable after this, just good for printing
 prettify :: Expr -> Expr

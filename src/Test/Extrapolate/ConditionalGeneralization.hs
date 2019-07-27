@@ -29,7 +29,7 @@ conditionalCounterExampleGeneralizations
   :: Int -> [[Expr]] -> (Expr -> [Expr]) -> (Expr -> Expr -> Expr)
   -> Expr -> [Expr]
 conditionalCounterExampleGeneralizations maxCondSize atoms grounds (-==-) e  =
-  [ canonicalize $ wc -==>- g
+  [ canonicalize $ g -&&- wc
   | g <- fastCandidateGeneralizations isListable e
   , let wc = weakestCondition' g
   , wc /= value "False" False
@@ -63,13 +63,13 @@ validConditions thyes grounds e =
 
 weakestCondition :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Expr -> Expr
 weakestCondition thyes grounds e  =
-  maximumOn (ratioFailures grounds . (-==>- e)) $ validConditions thyes grounds e
+  maximumOn (ratioFailures grounds . (e -&&-)) $ validConditions thyes grounds e
 
 ratioFailures :: (Expr -> [Expr]) -> Expr -> Ratio Int
 ratioFailures grounds e  =  length ps % length gs
   where
   gs = grounds e
-  ps = filter (errorToFalse . eval False . fst . unimply) gs
+  ps = filter (errorToFalse . eval False . snd . unand) gs
 
 isAssignmentTest :: (Expr -> [Expr]) -> Expr -> Bool
 isAssignmentTest grounds e | typ e /= typ false = False

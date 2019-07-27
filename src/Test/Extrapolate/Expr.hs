@@ -17,13 +17,11 @@ module Test.Extrapolate.Expr
 
   , canonicalizeUsingHoles
   , canonicalizeUsingHolesWith
-  , unimply
+  , unand
 
   -- * misc re-exports
-  , (-==>-)
   , (-&&-)
   , false
-  , implies
   )
 where
 
@@ -47,6 +45,6 @@ canonicalizeUsingHolesWith namesFor  =  c1 . unrepeatedToHole1
   unrepeatedToHole1 e = e //- [(v, holeAsTypeOf v) | (v,1) <- countVars e]
   countVars e = map (\e' -> (e',length . filter (== e') $ vars e)) $ nubVars e
 
-unimply :: Expr -> (Expr,Expr)
-unimply ((op :$ e1) :$ e2) | op == implies  =  (e1,e2)
-unimply _  =  error "unimply: not an implication"
+unand :: Expr -> (Expr,Expr)
+unand ((op :$ e1) :$ e2) | op == andE  =  (e1,e2)
+unand _  =  error "unimply: not an implication"
