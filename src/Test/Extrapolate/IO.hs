@@ -130,11 +130,11 @@ showCEandGens p e = showCE e ++ "\n\n"
   ++ case gens e of
        []    -> ""
        (e:_) -> "Generalization:\n"
-             ++ showCE (canonicalizeWith (namesFor p) e) ++ "\n\n"
+             ++ showCE (canonicalizeUsingHolesWith (namesFor p) e) ++ "\n\n"
   ++ case cgens e of
        []         -> ""
        (e:_) -> "Conditional Generalization:\n"
-              ++ showCCE (canonicalizeWith (namesFor p) e) ++ "\n\n"
+              ++ showCCE (canonicalizeUsingHolesWith (namesFor p) e) ++ "\n\n"
   where
   gens = counterExampleGeneralizations (groundsFor p)
   cgens = conditionalCounterExampleGeneralizations

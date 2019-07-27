@@ -15,31 +15,30 @@ module Test.Extrapolate.Expr
   ( module Data.Haexpress
   , module Test.Speculate.Expr
 
-  -- * redefinitions of functions from Haexpress
-  , canonicalize
-  , canonicalizeWith
+  , canonicalizeUsingHoles
+  , canonicalizeUsingHolesWith
 
   -- * misc re-exports
   , (-==>-)
   )
 where
 
-import Data.Haexpress          hiding (canonicalize, canonicalizeWith)
-import Data.Haexpress.Fixtures hiding (canonicalize, canonicalizeWith)
-import Test.Speculate.Expr     hiding (canonicalize, canonicalizeWith)
-import Test.LeanCheck.Error    (errorToFalse)
+import Data.Haexpress
+import Data.Haexpress.Fixtures
+import Test.Speculate.Expr
 
-canonicalize :: Expr -> Expr
-canonicalize  =  canonicalizeWith (lookupNames preludeNameInstances)
+-- |
+-- Like 'canonicalize' but uses holes for unrepeated variables.
+canonicalizeUsingHoles :: Expr -> Expr
+canonicalizeUsingHoles  =  canonicalizeUsingHolesWith (lookupNames preludeNameInstances)
 
-canonicalizeWith :: (Expr -> [String]) -> Expr -> Expr
-canonicalizeWith namesFor  =  c1 . unrepeatedToHole1
+-- |
+-- Like 'canonicalizeWith' but uses holes for unrepeated variables.
+canonicalizeUsingHolesWith :: (Expr -> [String]) -> Expr -> Expr
+canonicalizeUsingHolesWith namesFor  =  c1 . unrepeatedToHole1
   where
   c1 e  =  e //- cn e
   cn e  =  canonicalizationWith namesFor
         $  fold [v | v <- vars e, not $ isHole v]
-
-unrepeatedToHole1 :: Expr -> Expr
-unrepeatedToHole1 e = e //- [(v, holeAsTypeOf v) | (v,1) <- countVars e]
-  where
+  unrepeatedToHole1 e = e //- [(v, holeAsTypeOf v) | (v,1) <- countVars e]
   countVars e = map (\e' -> (e',length . filter (== e') $ vars e)) $ nubVars e

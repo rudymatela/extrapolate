@@ -142,14 +142,14 @@ tests n =
        ]
 
   , candidateGeneralizations (\e -> typ e == typ one) (one -+- two)
-    == [  i_
-       ,  i_ -+- i_
+    == [  xx
+       ,  xx -+- yy
        ,  xx -+- xx
-       ,  i_ -+- two
-       , one -+- i_
+       ,  xx -+- two
+       , one -+- xx
        ]
 
-  , [ canonicalizeWith namesFor' g
+  , [ canonicalizeUsingHolesWith namesFor' g
     | g <- candidateGeneralizations isListable' (expr [0,0::Int]) ]
     == [ is_
        , i_ -:- is_
