@@ -30,13 +30,16 @@ generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
   [ canonicalize $ wc -==>- g
   | g <- fastCandidateGeneralizations (isListableFor p) e
-  , let wc = weakestCondition g
+  , let wc = weakestCondition' g
   , wc /= value "False" False
   , wc /= value "True"  True
   ]
   where
   canonicalize = canonicalizeWith (namesFor p)
-  weakestCondition = weakestConditionFor p
+  weakestCondition' = weakestCondition
+    (theoryAndReprConds (tinstances p) (maxTests p) (maxConditionSize p))
+    (groundsFor p)
+    (computeMinFailures p)
 
 candidateConditions :: (Expr -> [Expr]) -> (Thy,[Expr]) -> Expr -> [Expr]
 candidateConditions grounds (thy,cs) e = expr True :
@@ -56,12 +59,6 @@ validConditions thyes grounds minFailures e =
           , (True,n) <- [isConditionalCounterExample grounds $ c -==>- e]
           , n > minFailures
           ] ++ [(expr False,0)]
-
-weakestConditionFor :: Testable a => a -> Expr -> Expr
-weakestConditionFor p = weakestCondition
-  (theoryAndReprConds (tinstances p) (maxTests p) (maxConditionSize p))
-  (groundsFor p)
-  (computeMinFailures p)
 
 weakestCondition :: (Thy,[Expr]) -> (Expr -> [Expr]) -> Int -> Expr -> Expr
 weakestCondition thyes grounds minFailures =
