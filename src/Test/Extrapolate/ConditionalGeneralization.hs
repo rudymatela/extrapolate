@@ -39,10 +39,10 @@ conditionalCounterExampleGeneralizations p e =
   where
   isListable = not . null . grounds . holeAsTypeOf
   weakestCondition' = weakestCondition
-    (theoryAndReprConds is maxCondSize (===))
+    (theoryAndReprConds maxCondSize (===) atoms)
     grounds
   e1 === e2 = isTrue grounds $ e1 -==- e2
-  is = tinstances p
+  atoms = atomsFor p
   maxCondSize = maxConditionSize p
   grounds = groundsFor p
   (-==-) = mkEquationFor p

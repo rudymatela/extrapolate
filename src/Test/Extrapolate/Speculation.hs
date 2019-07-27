@@ -12,7 +12,6 @@
 -- You are probably better off importing "Test.Extrapolate".
 module Test.Extrapolate.Speculation
   ( theoryAndReprConds
-  , atoms
 
   -- re-exports from Speculate
   , Thy
@@ -21,17 +20,14 @@ module Test.Extrapolate.Speculation
   )
 where
 
-import Data.List
-import Data.Maybe
-
 import Test.LeanCheck ((\/))
 
 import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
 import Test.Speculate.Reason (Thy)
 import Test.Speculate.Utils (boolTy, typesIn)
 
-import Test.Extrapolate.Expr
 import Test.Extrapolate.Utils
+import Test.Extrapolate.Expr
 
 -- Generates expression schemas and a theory
 theoryAndReprsFromPropAndAtoms :: Int -> (Expr -> Expr -> Bool) -> [[Expr]] -> (Thy,[[Expr]])
@@ -48,24 +44,12 @@ theoryAndReprsFromPropAndAtoms maxConditionSize (===) ess =
 -- that the symbols will appear on the list eventually for termination.  If I
 -- am correct this ivariant is assured by the rest of the code.
 
--- Given a property, returns the atoms to be passed to Speculate
-atoms :: Instances -> [[Expr]]
-atoms is = ([vs] \/)
-         . foldr (\/) [esU]
-         $ [ eval (error msg :: [[Expr]]) tiersE
-           | tiersE@(Value "tiers" _) <- is ]
-  where
-  vs = sort . mapMaybe (maybeHoleOfTy is) . nubMergeMap (typesIn . typ) $ esU
-  esU = concat [evl e | e@(Value "background" _) <- is]
-  msg = "canditateConditions: wrong type, not [[Expr]]"
-
-theoryAndReprExprs :: Instances -> Int -> (Expr -> Expr -> Bool) -> (Thy,[Expr])
-theoryAndReprExprs is maxConditionSize (===) =
+theoryAndReprExprs :: Int -> (Expr -> Expr -> Bool) -> [[Expr]] -> (Thy,[Expr])
+theoryAndReprExprs maxConditionSize (===) =
     (\(thy,ess) -> (thy, concat $ take maxConditionSize ess))
   . theoryAndReprsFromPropAndAtoms maxConditionSize (===)
-  $ atoms is
 
-theoryAndReprConds :: Instances -> Int -> (Expr -> Expr -> Bool) -> (Thy, [Expr])
-theoryAndReprConds is maxConditionSize (===)  = (thy, filter (\c -> typ c == boolTy) es)
+theoryAndReprConds :: Int -> (Expr -> Expr -> Bool) -> [[Expr]] -> (Thy, [Expr])
+theoryAndReprConds maxConditionSize (===) ess  =  (thy, filter (\c -> typ c == boolTy) es)
   where
-  (thy,es) = theoryAndReprExprs is maxConditionSize (===)
+  (thy,es) = theoryAndReprExprs maxConditionSize (===) ess

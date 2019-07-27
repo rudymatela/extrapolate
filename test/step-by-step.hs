@@ -28,7 +28,7 @@ tests n =
        , operatorE (i_ -<- i_)
        ]
 
-  , concat (take 2 $ atoms $ tinstances prop)
+  , concat (take 2 $ atomsFor prop)
     == [ b_
        , i_
        , is_
@@ -116,7 +116,7 @@ tests n =
   ]
 
 thyes :: (Thy,[Expr])
-thyes  =  theoryAndReprConds (tinstances prop) (maxConditionSize prop) (===)
+thyes  =  theoryAndReprConds (maxConditionSize prop) (===) (atomsFor prop)
   where
   e1 === e2 = isTrue grounds $ e1 -==- e2
   grounds = groundsFor prop

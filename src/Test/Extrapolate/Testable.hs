@@ -26,13 +26,17 @@ module Test.Extrapolate.Testable
   , groundsFor
   , mkEquationFor
   , namesFor
+  , atomsFor
   , isListableFor
   , tBackground
   )
 where
 
-import Data.Maybe (listToMaybe)
+import Data.List
+import Data.Maybe
 import Data.Ratio (Ratio)
+
+import Test.Extrapolate.Utils
 
 import Test.LeanCheck hiding (Testable, results, counterExample, counterExamples)
 import Test.LeanCheck.Utils (bool, int)
@@ -86,6 +90,20 @@ isListableFor p e
 
 namesFor :: Testable a => a -> Expr -> [String]
 namesFor  =  lookupNames . tinstances
+
+-- Given a property, returns the atoms to be passed to Speculate
+atomsFor :: Testable a => a -> [[Expr]]
+atomsFor  =  atoms . tinstances
+  where
+  atoms :: Instances -> [[Expr]]
+  atoms is = ([vs] \/)
+           . foldr (\/) [esU]
+           $ [ eval (error msg :: [[Expr]]) tiersE
+             | tiersE@(Value "tiers" _) <- is ]
+    where
+    vs = sort . mapMaybe (maybeHoleOfTy is) . nubMergeMap (typesIn . typ) $ esU
+    esU = concat [evl e | e@(Value "background" _) <- is]
+    msg = "canditateConditions: wrong type, not [[Expr]]"
 
 class Typeable a => Testable a where
   resultiers :: a -> [[(Expr,Bool)]]
