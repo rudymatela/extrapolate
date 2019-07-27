@@ -47,6 +47,8 @@ module Test.Extrapolate.Core
   , counterExampleGens
 
   , candidateGeneralizations
+  , fastCandidateGeneralizations
+  , candidateHoleGeneralizations
   , generalizationsCE
   , generalizationsCEC
 
@@ -299,9 +301,75 @@ backgroundOf x = getBackground $ instances x []
 tBackground :: Testable a => a -> [Expr]
 tBackground = getBackground . tinstances
 
--- TODO: make it so that this assigns variables not just holes
+-- |
+-- Returns candidate generalizations for an expression.
+-- (cf. 'candidateHoleGeneralizations')
+--
+-- This takes a function that returns whether to generalize a given
+-- subexpression.
+--
+-- > > import Data.Haexpress.Fixtures
+--
+-- > > candidateGeneralizations (\e -> typ e == typ one) (one -+- two)
+-- > [ _ :: Int
+-- > , _ + _ :: Int
+-- > , x + x :: Int
+-- > , _ + 2 :: Int
+-- > , 1 + _ :: Int
+-- > ]
+--
+-- > > candidateGeneralizations (const True) (one -+- two)
+-- > [ _ :: Int
+-- > , _ _ :: Int
+-- > , _ _ _ :: Int
+-- > , _ x x :: Int
+-- > , _ 1 _ :: Int
+-- > , _ + _ :: Int
+-- > , x + x :: Int
+-- > , _ 2 :: Int
+-- > , _ _ 2 :: Int
+-- > , _ 1 2 :: Int
+-- > , _ + 2 :: Int
+-- > , 1 + _ :: Int
+-- > ]
 candidateGeneralizations :: (Expr -> Bool) -> Expr -> [Expr]
-candidateGeneralizations shouldGeneralize  =  gen
+candidateGeneralizations should  =  map canonicalize
+                                 .  fastCandidateGeneralizations should
+
+-- |
+-- Like 'candidateGeneralizations' but faster because result is not
+-- canonicalized.  Variable names will be repeated across different types.
+fastCandidateGeneralizations :: (Expr -> Bool) -> Expr -> [Expr]
+fastCandidateGeneralizations should  =  concatMap fastCanonicalVariations
+                                     .  candidateHoleGeneralizations should
+
+-- |
+-- Returns candidate generalizations for an expression by replacing values with
+-- holes. (cf. 'candidateGeneralizations')
+--
+-- > > import Data.Haexpress.Fixtures
+--
+-- > > candidateHoleGeneralizations (\e -> typ e == typ one) (one -+- two)
+-- > [ _ :: Int
+-- > , _ + _ :: Int
+-- > , _ + 2 :: Int
+-- > , 1 + _ :: Int
+-- > ]
+--
+-- > > candidateHoleGeneralizations (const True) (one -+- two)
+-- > [ _ :: Int
+-- > , _ _ :: Int
+-- > , _ _ _ :: Int
+-- > , _ 1 _ :: Int
+-- > , _ + _ :: Int
+-- > , _ 2 :: Int
+-- > , _ _ 2 :: Int
+-- > , _ 1 2 :: Int
+-- > , _ + 2 :: Int
+-- > , 1 + _ :: Int
+-- > ]
+candidateHoleGeneralizations :: (Expr -> Bool) -> Expr -> [Expr]
+candidateHoleGeneralizations shouldGeneralize  =  gen
   where
   gen e@(e1 :$ e2)  =
     [holeAsTypeOf e | shouldGeneralize e]
@@ -413,10 +481,9 @@ counterExampleGens p  =  case counterExample p of
 
 generalizationsCE :: (Expr -> [Expr]) -> Expr -> [Expr]
 generalizationsCE grounds e =
-  [ canonicalize $ g'
-  | g <- candidateGeneralizations isListable e
-  , g' <- canonicalVariations g
-  , isCounterExample grounds g'
+  [ canonicalize $ g
+  | g <- fastCandidateGeneralizations isListable e
+  , isCounterExample grounds g
   ]
   where
   isListable = not . null . grounds . holeAsTypeOf
@@ -424,10 +491,9 @@ generalizationsCE grounds e =
 generalizationsCEC :: Testable a => a -> Expr -> [Expr]
 generalizationsCEC p e | maxConditionSize p <= 0 = []
 generalizationsCEC p e =
-  [ canonicalize $ wc -==>- g'
-  | g <- candidateGeneralizations (isListableFor p) e
-  , g' <- canonicalVariations g
-  , let wc = weakestCondition g'
+  [ canonicalize $ wc -==>- g
+  | g <- fastCandidateGeneralizations (isListableFor p) e
+  , let wc = weakestCondition g
   , wc /= value "False" False
   , wc /= value "True"  True
   ]

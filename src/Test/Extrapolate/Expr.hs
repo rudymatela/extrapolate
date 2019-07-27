@@ -16,6 +16,7 @@ module Test.Extrapolate.Expr
   , module Test.Speculate.Expr
 
   -- * redefinitions of functions from Haexpress
+  , canonicalize
   , canonicalizeWith
 
   -- * misc re-exports
@@ -28,10 +29,13 @@ module Test.Extrapolate.Expr
   )
 where
 
-import Data.Haexpress          hiding (canonicalizeWith)
-import Data.Haexpress.Fixtures hiding (canonicalizeWith)
-import Test.Speculate.Expr     hiding (canonicalizeWith)
+import Data.Haexpress          hiding (canonicalize, canonicalizeWith)
+import Data.Haexpress.Fixtures hiding (canonicalize, canonicalizeWith)
+import Test.Speculate.Expr     hiding (canonicalize, canonicalizeWith)
 import Test.LeanCheck.Error    (errorToFalse)
+
+canonicalize :: Expr -> Expr
+canonicalize  =  canonicalizeWith (lookupNames preludeNameInstances)
 
 canonicalizeWith :: (Expr -> [String]) -> Expr -> Expr
 canonicalizeWith namesFor  =  c1 . unrepeatedToHole1

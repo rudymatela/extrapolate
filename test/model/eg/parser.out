@@ -7,5 +7,5 @@ Generalization:
 Lang _ (Func _ (And (Int _) (Bool _):_) _:_)
 
 Conditional Generalization:
-Lang _ (Func _ (And f e:_) _:_)  when  e /= f
+Lang _ (Func _ (And e f:_) _:_)  when  e /= f
 

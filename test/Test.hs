@@ -41,7 +41,7 @@ import Test.Speculate.Reason
 import Test.Extrapolate
 import Test.Extrapolate.Utils
 import Test.Extrapolate.Core
-import Data.Haexpress.Fixtures hiding (nubVars, canonicalizeWith, canonicalVariations)
+import Data.Haexpress.Fixtures hiding (canonicalize, canonicalizeWith)
 import Test.LeanCheck.Utils.Operators
 
 reportTests :: [Bool] -> IO ()
