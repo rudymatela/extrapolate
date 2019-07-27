@@ -9,6 +9,7 @@ TESTS = \
   test/step-by-step \
   test/extrapolate
 QUICKEG = \
+  eg/sorting \
   eg/int \
   eg/list \
   eg/calculator \
@@ -16,8 +17,7 @@ QUICKEG = \
   eg/parser \
   eg/heap \
   eg/redblack \
-  eg/word-refinements \
-  eg/sorting
+  eg/word-refinements
 EG = \
   bench/true  \
   bench/false \
