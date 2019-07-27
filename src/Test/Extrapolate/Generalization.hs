@@ -25,6 +25,34 @@ import Test.LeanCheck.Error (errorToFalse)
 
 import Test.Extrapolate.Expr
 
+-- |
+-- Given boolean expression representing a counter-example,
+-- returns all possible unconditional generalizations
+-- from most general to least general.
+-- All according to a given function that lists ground expressions.
+--
+-- > > counterExampleGeneralizations (groundsFor not) false
+-- > []
+--
+-- > > counterExampleGeneralizations (groundsFor not) (false -&&- true)
+-- > [False && _ :: Bool]
+--
+-- > > counterExampleGeneralizations (groundsFor not) (false -||- true)
+-- > []
+--
+-- > > counterExampleGeneralizations (groundsFor not) (false -/=- false)
+-- > [p /= p :: Bool]
+--
+-- > > counterExampleGeneralizations (groundsFor not) (false -&&- true -&&- false)
+-- > [ (False && _) && _ :: Bool
+-- > , (False && p) && p :: Bool
+-- > , _ && False :: Bool
+-- > , (_ && _) && False :: Bool
+-- > , (p && p) && False :: Bool
+-- > , (_ && True) && False :: Bool
+-- > , (False && _) && False :: Bool
+-- > , (False && True) && _ :: Bool
+-- > ]
 counterExampleGeneralizations :: (Expr -> [Expr]) -> Expr -> [Expr]
 counterExampleGeneralizations grounds e =
   [ canonicalize $ g
