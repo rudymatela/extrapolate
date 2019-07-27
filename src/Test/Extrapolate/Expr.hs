@@ -20,6 +20,9 @@ module Test.Extrapolate.Expr
 
   -- * misc re-exports
   , (-==>-)
+  , (-&&-)
+  , false
+  , implies
   )
 where
 

@@ -25,8 +25,6 @@ import Test.Extrapolate.Speculation
 import Test.Extrapolate.Generalization
 import Test.Extrapolate.Utils
 
-import Data.Haexpress.Fixtures
-
 conditionalCounterExampleGeneralizations
   :: Int -> [[Expr]] -> (Expr -> [Expr]) -> (Expr -> Expr -> Expr)
   -> Expr -> [Expr]
