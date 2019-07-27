@@ -29,6 +29,7 @@ module Test.Extrapolate.Generalizable
   , (*<=*)
   , (*<*)
 
+  , Listable (..)
   , module Test.Extrapolate.Expr
   )
 where

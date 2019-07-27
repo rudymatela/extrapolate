@@ -14,17 +14,9 @@ module Test.Extrapolate.Core
   , module Test.Extrapolate.Expr
   , module Test.Extrapolate.Generalizable
   , module Test.Extrapolate.Generalization
+  , module Test.Extrapolate.Testable
 
   , backgroundOf
-
-  , Option (..)
-  , WithOption (..)
-  , maxTests
-  , extraInstances
-  , maxConditionSize
-  , groundsFor
-  , namesFor
-  , tBackground
 
   , counterExamples
   , counterExampleGen
@@ -41,10 +33,6 @@ module Test.Extrapolate.Core
   , getBackground
   , fullInstances
 
-  , Testable (..)
-  , results
-  , limitedResults
-
   , computeMinFailures
   )
 where
@@ -54,7 +42,6 @@ where
 
 import Data.List (sort)
 import Data.Maybe
-import Data.Ratio (Ratio, numerator, denominator)
 
 import Data.Functor ((<$>)) -- for GHC <= 7.8
 import Data.Monoid ((<>))
@@ -83,11 +70,7 @@ import Test.Extrapolate.Utils
 import Test.Extrapolate.Expr
 import Test.Extrapolate.Generalizable
 import Test.Extrapolate.Generalization
-
-getBackground :: Instances -> [Expr]
-getBackground is = concat [eval err e | e@(Value "background" _) <- is]
-  where
-  err = error "Cannot evaluate background"
+import Test.Extrapolate.Testable
 
 getEqInstancesFromBackground :: Instances -> Instances
 getEqInstancesFromBackground is = eqs ++ iqs
@@ -98,100 +81,6 @@ getEqInstancesFromBackground is = eqs ++ iqs
 
 backgroundOf :: Generalizable a => a -> [Expr]
 backgroundOf x = getBackground $ instances x []
-
-tBackground :: Testable a => a -> [Expr]
-tBackground = getBackground . tinstances
-
--- I don't love Option/WithOption.  It is clever but it is not __clear__.
--- Maybe remove from future versions of the tool?
-data Option = MaxTests Int
-            | ExtraInstances Instances
-            | MaxConditionSize Int
-            | MinFailures (Ratio Int)
-            | MaxSpeculateSize (Maybe Int)
-            | ConstantBound (Maybe Int)
-            | DepthBound (Maybe Int)
-  deriving (Show, Typeable) -- Typeable needed for GHC <= 7.8
-
-data WithOption a = With
-                  { property :: a
-                  , option :: Option }
-
-type Options = [Option]
-
-maxTests :: Testable a => a -> Int
-maxTests p = head $ [m | MaxTests m <- options p] ++ [500]
-
-extraInstances :: Testable a => a -> Instances
-extraInstances p = concat [is | ExtraInstances is <- options p]
-
-maxConditionSize :: Testable a => a -> Int
-maxConditionSize p = head $ [m | MaxConditionSize m <- options p] ++ [4]
-
-groundsFor :: Testable a => a -> Expr -> [Expr]
-groundsFor p  =  take (maxTests p) . grounds (lookupTiers $ tinstances p)
-
-isListableFor :: Testable a => a -> Expr -> Bool
-isListableFor p e
-  | e == value "prop" p  =  False
-  | otherwise            =  isListable is e
-  where
-  is = tinstances p
-
-namesFor :: Testable a => a -> Expr -> [String]
-namesFor  =  lookupNames . tinstances
-
--- minimum number of failures for a conditional generalization
-computeMinFailures :: Testable a => a -> Int
-computeMinFailures p = max 2 $ m * numerator r `div` denominator r
-  where
-  r = head $ [r | MinFailures r <- options p] ++ [0]
-  m = maxTests p
-
-computeMaxSpeculateSize :: Testable a => a -> Maybe Int
-computeMaxSpeculateSize p = head $ [b | MaxSpeculateSize b <- options p] ++ [Just 4]
-
-computeConstantBound :: Testable a => a -> Maybe Int
-computeConstantBound p = head $ [b | ConstantBound b <- options p] ++ [Nothing]
-
-computeDepthBound :: Testable a => a -> Maybe Int
-computeDepthBound p = head $ [b | DepthBound b <- options p] ++ [Nothing]
-
-class Typeable a => Testable a where
-  resultiers :: a -> [[(Expr,Bool)]]
-  tinstances :: a -> Instances
-  options :: a -> Options
-  options _ = []
-
-instance Testable a => Testable (WithOption a) where
-  resultiers (p `With` o) = resultiers p
-  tinstances (p `With` o) = tinstances p ++ extraInstances (p `With` o)
-  options    (p `With` o) = o : options p
-
-instance Testable Bool where
-  resultiers p = [[(value "prop" p, p)]]
-  tinstances _ = instances bool . instances int $ []
-
-instance (Testable b, Generalizable a, Listable a) => Testable (a->b) where
-  resultiers p = concatMapT resultiersFor tiers
-    where resultiersFor x = mapFst (replaceFun (value "prop" p :$ expr x)) `mapT` resultiers (p x)
-          mapFst f (x,y) = (f x, y)
-  tinstances p = instances (undefarg p) $ tinstances (p undefined)
-    where
-    undefarg :: (a -> b) -> a
-    undefarg _ = undefined
-
-results :: Testable a => a -> [(Expr,Bool)]
-results = concat . resultiers
-
-limitedResults :: Testable a => a -> [(Expr,Bool)]
-limitedResults p  =  take (maxTests p) (results p)
-
-counterExamples :: Testable a => a -> [Expr]
-counterExamples p  =  [as | (as,False) <- limitedResults p]
-
-counterExample :: Testable a => a -> Maybe Expr
-counterExample  =  listToMaybe . counterExamples
 
 counterExampleGens :: Testable a => a -> Maybe (Expr,[Expr])
 counterExampleGens p  =  case counterExample p of
