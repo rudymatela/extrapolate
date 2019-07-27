@@ -88,6 +88,7 @@ library
                  , Test.Extrapolate.Expr
                  , Test.Extrapolate.Generalizable
                  , Test.Extrapolate.Generalization
+                 , Test.Extrapolate.Speculation
                  , Test.Extrapolate.Testable
                  , Test.Extrapolate.IO
                  , Test.Extrapolate.TypeBinding

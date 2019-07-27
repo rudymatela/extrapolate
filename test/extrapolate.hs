@@ -241,10 +241,8 @@ namesFor'  =  lookupNames theInstances
 
 tinstancesUnrepeated :: Testable a => a -> Bool
 tinstancesUnrepeated p = nub is == is
-                      && nub is' == is'
   where
   is = map extractiers $ filter (not . isBackground) $ tinstances p
-  is' = map extractiers $ filter (not . isBackground) $ fullInstances p
   -- All tiers look the same without evaluating its elements:
   -- > > tinstances bool
   -- > [tiers :: [[Expr]],name :: Bool -> [Char],background :: [Expr],tiers :: [[Expr]],name :: Int -> [Char],background :: [Expr]]
