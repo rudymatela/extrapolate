@@ -10,7 +10,7 @@ tests :: Int -> [Bool]
 tests n =
   [ True
 
-  , tBackground prop
+  , testableBackground prop
     == [ operatorE (is_ -==- is_)
        , operatorE (is_ -/=- is_)
        , operatorE (is_ -<=- is_)
@@ -28,7 +28,7 @@ tests n =
        , operatorE (i_ -<- i_)
        ]
 
-  , concat (take 2 $ atomsFor prop)
+  , concat (take 2 $ testableAtoms prop)
     == [ b_
        , i_
        , is_
@@ -87,16 +87,16 @@ tests n =
        , zero -<-  i_
        ]
 
-  , candidateConditions (groundsFor prop) thyes (prop' xxs)
+  , candidateConditions (testableGrounds prop) thyes (prop' xxs)
     == [ true
        , xxs -/=- nil
        , elem' zero xxs
        ]
 
-  , validConditions thyes (groundsFor prop) (prop' xxs)
+  , validConditions thyes (testableGrounds prop) (prop' xxs)
     == [false]
 
-  , candidateConditions (groundsFor prop) thyes (prop' $ xx -:- xxs)
+  , candidateConditions (testableGrounds prop) thyes (prop' $ xx -:- xxs)
     == [ true
        , xxs -/=- nil
        , elem' xx xxs
@@ -108,18 +108,18 @@ tests n =
        , zero -<- xx
        ]
 
-  , validConditions thyes (groundsFor prop) (prop' $ xx -:- xxs)
+  , validConditions thyes (testableGrounds prop) (prop' $ xx -:- xxs)
     == [ elem' xx xxs
        , false
        ]
   ]
 
 thyes :: (Thy,[Expr])
-thyes  =  theoryAndReprConds (maxConditionSize prop) (===) (atomsFor prop)
+thyes  =  theoryAndReprConds (testableMaxConditionSize prop) (===) (testableAtoms prop)
   where
   e1 === e2 = isTrue grounds $ e1 -==- e2
-  grounds = groundsFor prop
-  (-==-) = mkEquationFor prop
+  grounds = testableGrounds prop
+  (-==-) = testableMkEquation prop
 
 prop' :: Expr -> Expr
 prop' e  =  propE :$ e
