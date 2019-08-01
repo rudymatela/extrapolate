@@ -10,4 +10,5 @@ get-pkg-v() {
 }
 get-ghc-v
 get-pkg-v leancheck
+get-pkg-v haexpress
 get-pkg-v speculate
