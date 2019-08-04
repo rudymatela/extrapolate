@@ -135,3 +135,12 @@ reallyDeriveGeneralizableCascading t =
   =<< filterM (liftM not . isTypeSynonym)
   =<< return . (t:) . delete t
   =<< t `typeConCascadingArgsThat` (`isntInstanceOf` ''Generalizable)
+
+letin :: Name -> Name -> [Name] -> ExpQ
+letin x c ns = do
+  und <- VarE <$> lookupValN "undefined"
+  let lhs = conP c (map varP ns)
+  let rhs = return $ foldl AppE (ConE c) [und | _ <- ns]
+  let bot = foldl1 (\e1 e2 -> [| $e1 . $e2 |])
+                   [ [| instances $(varE n) |] | n <- ns ]
+  [| let $lhs = $rhs `asTypeOf` $(varE x) in $bot |]
