@@ -39,7 +39,7 @@ GHCFLAGS = -O2 \
 HADDOCKFLAGS = --no-print-missing-docs \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo --optghc=-dynamic)
 LIST_ALL_HSS = find src test mk eg/*.hs bench/*.hs -name "*.hs"
-LIB_DEPS = base template-haskell leancheck haexpress speculate
+LIB_DEPS = base template-haskell leancheck express speculate
 
 all: mk/toplibs
 

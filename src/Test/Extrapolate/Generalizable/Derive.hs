@@ -27,7 +27,7 @@ import Test.LeanCheck.Derive (deriveListableIfNeeded, deriveListableCascading)
 import Test.LeanCheck.Utils.TypeBinding ((-:>))
 
 import Language.Haskell.TH
-import Data.Haexpress.Utils.TH
+import Data.Express.Utils.TH
 
 import Control.Monad (liftM, filterM)
 import Data.Functor ((<$>)) -- for GHC <= 7.8

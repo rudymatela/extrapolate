@@ -27,7 +27,7 @@ module Test
 
   , instancesSubset
 
-  , module Data.Haexpress.Fixtures
+  , module Data.Express.Fixtures
   )
 where
 
@@ -41,7 +41,7 @@ import Test.Speculate.Reason
 import Test.Extrapolate
 import Test.Extrapolate.Core
 import Test.Extrapolate.Utils
-import Data.Haexpress.Fixtures
+import Data.Express.Fixtures
 import Test.LeanCheck.Utils.Operators
 
 reportTests :: [Bool] -> IO ()

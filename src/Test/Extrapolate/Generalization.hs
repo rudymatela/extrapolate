@@ -68,7 +68,7 @@ counterExampleGeneralizations grounds  =
 -- This takes a function that returns whether to generalize a given
 -- subexpression.
 --
--- > > import Data.Haexpress.Fixtures
+-- > > import Data.Express.Fixtures
 --
 -- > > candidateGeneralizations (\e -> typ e == typ one) (one -+- two)
 -- > [ _ :: Int
@@ -107,7 +107,7 @@ fastCandidateGeneralizations should  =  concatMap fastCanonicalVariations
 -- Returns candidate generalizations for an expression by replacing values with
 -- holes. (cf. 'candidateGeneralizations')
 --
--- > > import Data.Haexpress.Fixtures
+-- > > import Data.Express.Fixtures
 --
 -- > > candidateHoleGeneralizations (\e -> typ e == typ one) (one -+- two)
 -- > [ _ :: Int

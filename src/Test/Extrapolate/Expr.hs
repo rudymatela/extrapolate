@@ -9,10 +9,10 @@
 -- a library for generalization of counter-examples.
 --
 -- This module re-exports functionality from
--- "Data.Haexpress" and "Test.Speculate.Expr"
+-- "Data.Express" and "Test.Speculate.Expr"
 -- along with some extra utilities.
 module Test.Extrapolate.Expr
-  ( module Data.Haexpress
+  ( module Data.Express
   , module Test.Speculate.Expr
 
   , canonicalizeUsingHoles
@@ -26,8 +26,8 @@ module Test.Extrapolate.Expr
   )
 where
 
-import Data.Haexpress
-import Data.Haexpress.Fixtures
+import Data.Express
+import Data.Express.Fixtures
 import Test.Speculate.Expr
 
 -- |

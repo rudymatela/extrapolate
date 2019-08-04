@@ -30,7 +30,7 @@ where
 import Test.LeanCheck.Utils.TypeBinding
 
 -- TODO: reexport LeanCheck's typebinding operators
--- TODO: or maybe re-export Haexpress's typebinding operators?
+-- TODO: or maybe re-export Express's typebinding operators?
 
 arg1 :: (a -> b) -> a
 arg1 _  =  undefined
