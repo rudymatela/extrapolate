@@ -107,7 +107,7 @@ test-suite test
   main-is:             extrapolate.hs
   other-modules:       Test
   hs-source-dirs:      test
-  build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
+  build-depends:       base >= 4 && < 5, leancheck, express, speculate, extrapolate
   default-language:    Haskell2010
 
 test-suite derive
@@ -115,7 +115,7 @@ test-suite derive
   main-is:             derive.hs
   other-modules:       Test
   hs-source-dirs:      test
-  build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
+  build-depends:       base >= 4 && < 5, leancheck, express, speculate, extrapolate
   default-language:    Haskell2010
 
 test-suite utils
@@ -123,7 +123,7 @@ test-suite utils
   main-is:             utils.hs
   other-modules:       Test
   hs-source-dirs:      test
-  build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
+  build-depends:       base >= 4 && < 5, leancheck, express, speculate, extrapolate
   default-language:    Haskell2010
 
 test-suite step-by-step
@@ -131,5 +131,5 @@ test-suite step-by-step
   main-is:             step-by-step.hs
   other-modules:       Test
   hs-source-dirs:      test
-  build-depends:       base >= 4 && < 5, leancheck, speculate, extrapolate
+  build-depends:       base >= 4 && < 5, leancheck, express, speculate, extrapolate
   default-language:    Haskell2010
