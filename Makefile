@@ -33,9 +33,9 @@ GHCEXTRAFLAGS = #-prof -fprof-auto #-caf-all
 #   $ ./eg/sorting +RTS -p -RTS
 #   $ cat sorting.prof | grep -v ' [0-5].[0-9] ......$'
 GHCFLAGS = -O2 \
-  -Wall -Wno-name-shadowing -Wno-orphans -Wno-unused-matches \
   $(GHCEXTRAFLAGS) \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo -dynamic)
+#  -Wall -Wno-name-shadowing -Wno-orphans -Wno-unused-matches
 HADDOCKFLAGS = --no-print-missing-docs \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo --optghc=-dynamic)
 LIST_ALL_HSS = find src test mk eg/*.hs bench/*.hs -name "*.hs"
