@@ -24,6 +24,7 @@ where
 import Test.Extrapolate.Generalizable hiding (Name, isInstanceOf)
 import Test.Extrapolate.Utils (foldr0)
 import Test.LeanCheck.Derive (deriveListableIfNeeded, deriveListableCascading)
+import Test.LeanCheck.Utils.TypeBinding ((-:>))
 
 import Language.Haskell.TH
 import Data.Haexpress.Utils.TH

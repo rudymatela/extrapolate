@@ -11,6 +11,7 @@
 -- and utilities involving it.
 --
 -- You are probably better off importing "Test.Extrapolate".
+{-# LANGUAGE DeriveDataTypeable #-} -- for GHC <= 7.8
 module Test.Extrapolate.Testable
   ( Testable (..)
   , results
@@ -90,11 +91,12 @@ counterExamples p  =  [as | (as,False) <- limitedResults p]
 data Option = MaxTests Int
             | ExtraInstances Instances
             | MaxConditionSize Int
-  deriving Typeable -- Typeable needed for GHC <= 7.8
+  deriving Typeable -- for GHC <= 7.8
 
 data WithOption a = With
                   { property :: a
                   , option :: Option }
+  deriving Typeable -- for GHC <= 7.8
 
 type Options = [Option]
 

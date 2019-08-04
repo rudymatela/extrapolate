@@ -20,6 +20,8 @@ module Test.Extrapolate.Speculation
   )
 where
 
+import Data.Monoid ((<>)) -- for GHC <= 8.2
+
 import Test.LeanCheck ((\/))
 
 import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
