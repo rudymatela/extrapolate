@@ -142,6 +142,6 @@ testableAtoms  =  atoms . tinstances
            $ [ eval (error msg :: [[Expr]]) tiersE
              | tiersE@(Value "tiers" _) <- is ]
     where
-    vs = sort . mapMaybe (maybeHoleOfTy is) . nubMergeMap (typesIn . typ) $ esU
+    vs = sort . mapMaybe (maybeHoleOfTy is) . typesInList . map typ $ esU
     esU = concat [evl e | e@(Value "background" _) <- is]
     msg = "canditateConditions: wrong type, not [[Expr]]"

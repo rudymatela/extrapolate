@@ -26,7 +26,6 @@ import Test.LeanCheck ((\/))
 
 import Test.Speculate.Engine (theoryAndRepresentativesFromAtoms, classesFromSchemasAndVariables)
 import Test.Speculate.Reason (Thy)
-import Test.Speculate.Utils (boolTy, typesIn)
 
 import Test.Extrapolate.Utils
 import Test.Extrapolate.Expr
