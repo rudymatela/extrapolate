@@ -5,8 +5,8 @@ packages:
 
 extra-deps:
 - leancheck-0.9.1
-- speculate-0.4.0
-- express-0.1.0
+- speculate-0.4.1
+- express-0.1.1
 
 flags: {}
 
