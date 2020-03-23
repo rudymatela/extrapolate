@@ -305,11 +305,8 @@ mk/Toplibs.o: \
   mk/Toplibs.hs
 src/Test/Extrapolate/ConditionalGeneralization.o: \
   src/Test/Extrapolate/Utils.hs \
-  src/Test/Extrapolate/TypeBinding.hs \
-  src/Test/Extrapolate/Testable.hs \
   src/Test/Extrapolate/Speculation.hs \
   src/Test/Extrapolate/Generalization.hs \
-  src/Test/Extrapolate/Generalizable.hs \
   src/Test/Extrapolate/Expr.hs \
   src/Test/Extrapolate/ConditionalGeneralization.hs
 src/Test/Extrapolate/Core.o: \
