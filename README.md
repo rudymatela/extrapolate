@@ -22,6 +22,10 @@ To install the latest version of [Extrapolate from Hackage] using [cabal], just:
 
 To test if it installed correctly, follow through the next section.
 
+Starting from Cabal v3, you need to pass `--lib` to `cabal install`:
+
+	$ cabal install extrapolate --lib
+
 
 Using Extrapolate
 -----------------
