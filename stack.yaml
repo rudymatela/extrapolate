@@ -1,13 +1,9 @@
-resolver: lts-13.30
+resolver: lts-15.5 # or ghc-8.8.3
 
 packages:
 - .
 
 extra-deps:
-- leancheck-0.9.1
+- leancheck-0.9.2
 - speculate-0.4.1
-- express-0.1.1
-
-flags: {}
-
-extra-package-dbs: []
+- express-0.1.2

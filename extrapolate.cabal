@@ -64,7 +64,6 @@ extra-source-files: .gitignore
                   , mk/haddock-i
                   , mk/haskell.mk
                   , stack.yaml
-                  , stack-lts-11.yaml
                   , test/model/bench/*.out
                   , test/model/eg/*.out
                   , test/sdist
