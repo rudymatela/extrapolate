@@ -54,7 +54,7 @@ matrix:
     env:                   GHCVER=8.10.1       CABALVER=3.2    STACKVER=nightly-2020-03-28
     addons: {apt: {packages: [ghc-8.10.1, cabal-install-3.2],  sources: hvr-ghc}}
   - ghc: '8.8'
-    env:                   GHCVER=8.8.3        CABALVER=3.0    STACKVER=lts-15.5
+    env:                   GHCVER=8.8.3        CABALVER=3.0    STACKVER=lts-15.6
     addons: {apt: {packages: [ghc-8.8.3,  cabal-install-3.0],  sources: hvr-ghc}}
   - ghc: '8.6'
     env:                   GHCVER=8.6.5        CABALVER=2.4    STACKVER=lts-14.27
