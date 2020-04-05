@@ -5,5 +5,5 @@ packages:
 
 extra-deps:
 - leancheck-0.9.3
-- speculate-0.4.1
+- speculate-0.4.2
 - express-0.1.3
