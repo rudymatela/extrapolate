@@ -48,7 +48,7 @@ canonicalizeUsingHolesWith namesFor  =  c1 . unrepeatedToHole1
 
 unand :: Expr -> (Expr,Expr)
 unand ((op :$ e1) :$ e2) | op == andE  =  (e1,e2)
-unand _  =  error "unimply: not an implication"
+unand _  =  error "unand: not an implication"
 
 -- | /O(n)/.
 -- Replaces the function in the given 'Expr'.
