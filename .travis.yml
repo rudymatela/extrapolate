@@ -34,7 +34,7 @@ before_install:
 - travis_retry curl -L https://www.stackage.org/stack/linux-x86_64 | tar xz --wildcards --strip-components=1 -C ~/.local/bin '*/stack'
 - stack config set system-ghc --global true
 - stack --version
-- cabal install leancheck express speculate || cabal install leancheck express speculate --lib
+- cabal install leancheck express speculate || cabal v1-install leancheck express speculate
 
 script:
 - make && make test
