@@ -30,18 +30,12 @@ import Test.Speculate.Reason (Thy)
 import Test.Extrapolate.Utils
 import Test.Extrapolate.Expr
 
--- Generates expression schemas and a theory
-theoryAndReprsFromPropAndAtoms :: Int -> (Expr -> Expr -> Bool) -> [[Expr]] -> (Thy,[[Expr]])
-theoryAndReprsFromPropAndAtoms maxConditionSize (===) ess =
-  theoryAndRepresentativesFromAtoms
-    (===) maxConditionSize ess
-
-theoryAndReprExprs :: Int -> (Expr -> Expr -> Bool) -> [[Expr]] -> (Thy,[Expr])
-theoryAndReprExprs maxConditionSize (===) =
+theoryAndReprExprs :: (Expr -> Expr -> Bool) -> Int -> [[Expr]] -> (Thy,[Expr])
+theoryAndReprExprs (===) maxConditionSize  =
     (\(thy,ess) -> (thy, concat $ take maxConditionSize ess))
-  . theoryAndReprsFromPropAndAtoms maxConditionSize (===)
+  . theoryAndRepresentativesFromAtoms (===) maxConditionSize
 
-theoryAndReprConds :: Int -> (Expr -> Expr -> Bool) -> [[Expr]] -> (Thy, [Expr])
-theoryAndReprConds maxConditionSize (===) ess  =  (thy, filter (\c -> typ c == boolTy) es)
+theoryAndReprConds :: (Expr -> Expr -> Bool) -> Int -> [[Expr]] -> (Thy, [Expr])
+theoryAndReprConds (===) maxConditionSize ess  =  (thy, filter (\c -> typ c == boolTy) es)
   where
-  (thy,es) = theoryAndReprExprs maxConditionSize (===) ess
+  (thy,es) = theoryAndReprExprs (===) maxConditionSize ess

@@ -115,7 +115,7 @@ tests n =
   ]
 
 thyes :: (Thy,[Expr])
-thyes  =  theoryAndReprConds (testableMaxConditionSize prop) (===) (testableAtoms prop)
+thyes  =  theoryAndReprConds (===) (testableMaxConditionSize prop) (testableAtoms prop)
   where
   e1 === e2 = isTrue grounds $ e1 -==- e2
   grounds = testableGrounds prop

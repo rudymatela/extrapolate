@@ -28,7 +28,7 @@ import Test.Extrapolate.Utils
 conditionalCounterExampleGeneralizations
   :: Int -> [[Expr]] -> (Expr -> [Expr]) -> (Expr -> Expr -> Expr)
   -> Expr -> [Expr]
-conditionalCounterExampleGeneralizations maxCondSize atoms grounds (-==-) e  =
+conditionalCounterExampleGeneralizations maxConditionSize atoms grounds (-==-) e  =
   [ canonicalize $ g -&&- wc
   | g <- fastCandidateGeneralizations isListable e
   , let wc = weakestCondition' g
@@ -38,7 +38,7 @@ conditionalCounterExampleGeneralizations maxCondSize atoms grounds (-==-) e  =
   where
   isListable = not . null . grounds . holeAsTypeOf
   weakestCondition' = weakestCondition
-    (theoryAndReprConds maxCondSize (===) atoms)
+    (theoryAndReprConds (===) maxConditionSize atoms)
     grounds
   e1 === e2 = isTrue grounds $ e1 -==- e2
 
