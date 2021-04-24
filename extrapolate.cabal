@@ -1,5 +1,5 @@
 name:                extrapolate
-version:             0.4.2
+version:             0.4.4
 synopsis:            generalize counter-examples of test properties
 description:
   Extrapolate is a tool able to provide generalized counter-examples of test
@@ -84,7 +84,7 @@ source-repository head
 source-repository this
   type:            git
   location:        https://github.com/rudymatela/extrapolate
-  tag:             v0.4.2
+  tag:             v0.4.4
 
 library
   exposed-modules: Test.Extrapolate
