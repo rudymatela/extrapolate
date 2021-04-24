@@ -34,16 +34,7 @@ import Test.Extrapolate.Expr
 theoryAndReprsFromPropAndAtoms :: Int -> (Expr -> Expr -> Bool) -> [[Expr]] -> (Thy,[[Expr]])
 theoryAndReprsFromPropAndAtoms maxConditionSize (===) ess =
   theoryAndRepresentativesFromAtoms
-    maxConditionSize compareExpr (const True) (===) ess
-  where
-  compareExpr :: Expr -> Expr -> Ordering
-  compareExpr = compareComplexity <> lexicompareBy cmp
-  e1 `cmp` e2 | arity e1 == 0 && arity e2 /= 0 = LT
-  e1 `cmp` e2 | arity e1 /= 0 && arity e2 == 0 = GT
-  e1 `cmp` e2 = compareIndex (concat ess) e1 e2 <> e1 `compare` e2
--- NOTE: "concat ess" may be an infinite list.  This function assumes
--- that the symbols will appear on the list eventually for termination.  If I
--- am correct this ivariant is assured by the rest of the code.
+    (===) maxConditionSize ess
 
 theoryAndReprExprs :: Int -> (Expr -> Expr -> Bool) -> [[Expr]] -> (Thy,[Expr])
 theoryAndReprExprs maxConditionSize (===) =
