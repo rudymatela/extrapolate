@@ -72,10 +72,10 @@ test-sdist:
 test-via-cabal:
 	cabal configure --enable-tests --enable-benchmarks --ghc-options="$(GHCFLAGS) -O0"
 	cabal build
-	cabal test extrapolate
+	cabal test test
 
 test-via-stack:
-	stack test extrapolate:test:extrapolate --ghc-options="$(GHCFLAGS) -O0" --system-ghc --no-install-ghc --no-terminal
+	stack test extrapolate:test:test --ghc-options="$(GHCFLAGS) -O0" --system-ghc --no-install-ghc --no-terminal
 
 hugs-test:
 	echo 'unsupported at the moment'
