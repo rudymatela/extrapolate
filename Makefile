@@ -36,11 +36,11 @@ GHCFLAGS = -O2 \
   $(GHCEXTRAFLAGS) \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo -dynamic)
 #  -Wall -Wno-name-shadowing -Wno-orphans -Wno-unused-matches
-HADDOCKFLAGS = --no-print-missing-docs \
+HADDOCKFLAGS = \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo --optghc=-dynamic)
 LIST_ALL_HSS = find src test mk eg/*.hs bench/*.hs -name "*.hs"
-LIB_DEPS = base template-haskell leancheck express speculate
-
+LIB_DEPS = base template-haskell $(INSTALL_DEPS)
+INSTALL_DEPS = leancheck express speculate
 all: mk/toplibs
 
 all-all: mk/All.hs
@@ -68,6 +68,17 @@ egs: $(EG)
 
 test-sdist:
 	./test/sdist
+
+test-via-cabal:
+	cabal configure --enable-tests --enable-benchmarks --ghc-options="$(GHCFLAGS) -O0"
+	cabal build
+	cabal test extrapolate
+
+test-via-stack:
+	stack test extrapolate:test:extrapolate --ghc-options="$(GHCFLAGS) -O0" --system-ghc --no-install-ghc --no-terminal
+
+hugs-test:
+	echo 'unsupported at the moment'
 
 .PHONY: bench
 bench: $(patsubst %,%.bench,$(EG))
