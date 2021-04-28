@@ -70,17 +70,16 @@ data Exp = Int Int
          | Or Exp Exp
   deriving (Show, Read, Typeable, Generic, Eq, Ord)
 
-deriveListable ''Lang
---deriveListable ''Var
-deriveListable ''Mod
-deriveListable ''Func
-deriveListable ''Stmt
-deriveListable ''Exp
-
---------------------------------------------------------------------------------
-
 instance Listable Var where
   tiers = cons1 Var `suchThat` (\(Var s) -> all isAlphaNum s && not (null s))
+
+deriveListable ''Exp
+deriveListable ''Stmt
+deriveListable ''Func
+deriveListable ''Mod
+deriveListable ''Lang
+
+--------------------------------------------------------------------------------
 
 {-
 instance Listable Lang where
