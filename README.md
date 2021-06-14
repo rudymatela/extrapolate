@@ -154,8 +154,8 @@ Extrapolate is also subject to a chapter in a [PhD Thesis (2017)].
 
 [extrapolate-logo]: https://github.com/rudymatela/extrapolate/raw/master/doc/extrapolate.svg?sanitize=true
 
-[build-status]:    https://travis-ci.org/rudymatela/extrapolate.svg?branch=master
-[build-log]:       https://travis-ci.org/rudymatela/extrapolate
+[build-log]:    https://github.com/rudymatela/extrapolate/actions/workflows/build.yml
+[build-status]: https://github.com/rudymatela/extrapolate/actions/workflows/build.yml/badge.svg
 [hackage-version]: https://img.shields.io/hackage/v/extrapolate.svg
 [stackage-lts-badge]:              https://stackage.org/package/extrapolate/badge/lts
 [stackage-nightly-badge]:          https://stackage.org/package/extrapolate/badge/nightly
