@@ -77,9 +77,6 @@ test-via-cabal:
 test-via-stack:
 	stack test extrapolate:test:test --ghc-options="$(GHCFLAGS) -O0" --system-ghc --no-install-ghc --no-terminal
 
-hugs-test:
-	echo 'unsupported at the moment'
-
 .PHONY: bench
 bench: $(patsubst %,%.bench,$(EG))
 	@mkdir -p bench/runtime/$$HOSTNAME
