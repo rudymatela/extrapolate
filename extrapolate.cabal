@@ -68,7 +68,8 @@ extra-source-files: .gitignore
                   , test/model/bench/*.out
                   , test/model/eg/*.out
                   , test/sdist
-tested-with: GHC==8.10
+tested-with: GHC==9.0
+           , GHC==8.10
            , GHC==8.8
            , GHC==8.6
            , GHC==8.4
