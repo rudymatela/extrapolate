@@ -26,7 +26,6 @@ prop :: T -> Bool
 prop t  =  pre t ==> post t
 
 instance Name Int8
-instance Express Int8 where  expr = val
 instance Generalizable Int8 where
   background x = reifyEqOrd x
 

@@ -26,7 +26,6 @@ prop :: T -> Bool
 prop t  =  pre t ==> post t
 
 instance Name Int16
-instance Express Int16 where  expr = val
 instance Generalizable Int16 where
   background x = reifyEqOrd x
 
