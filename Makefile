@@ -16,6 +16,7 @@ QUICKEG = \
   eg/gencalc \
   eg/parser \
   eg/heap \
+  eg/ratio \
   eg/redblack \
   eg/word-refinements
 EG = \

@@ -219,6 +219,23 @@ eg/parser.o: \
   src/Test/Extrapolate/Core.hs \
   src/Test/Extrapolate/ConditionalGeneralization.hs \
   eg/parser.hs
+eg/ratio: \
+  eg/ratio.hs \
+  mk/toplibs
+eg/ratio.o: \
+  src/Test/Extrapolate/Utils.hs \
+  src/Test/Extrapolate/TypeBinding.hs \
+  src/Test/Extrapolate/Testable.hs \
+  src/Test/Extrapolate/Speculation.hs \
+  src/Test/Extrapolate.hs \
+  src/Test/Extrapolate/IO.hs \
+  src/Test/Extrapolate/Generalization.hs \
+  src/Test/Extrapolate/Generalizable.hs \
+  src/Test/Extrapolate/Generalizable/Derive.hs \
+  src/Test/Extrapolate/Expr.hs \
+  src/Test/Extrapolate/Core.hs \
+  src/Test/Extrapolate/ConditionalGeneralization.hs \
+  eg/ratio.hs
 eg/redblack: \
   eg/RedBlackSet.hs \
   eg/redblack.hs \

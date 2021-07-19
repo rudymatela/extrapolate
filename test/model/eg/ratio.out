@@ -1,0 +1,23 @@
++++ OK, passed 500 tests.
+
++++ OK, passed 500 tests.
+
++++ OK, passed 500 tests.
+
++++ OK, passed 500 tests.
+
+*** Failed! Exception 'Ratio has zero denominator' (after 1 tests):
+0 % 1
+
+*** Failed! Falsifiable (after 40 tests):
+(1 % 2) (1 % 2)
+
+*** Failed! Falsifiable (after 11 tests):
+0 0 2
+
+Generalization:
+x x 2
+
+Conditional Generalization:
+x x x  when  1 < x
+

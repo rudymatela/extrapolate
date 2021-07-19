@@ -46,6 +46,7 @@ eg/gencalc
 eg/overflow
 eg/overflow8
 eg/heap
+eg/ratio
 eg/redblack
 eg/word-refinements
 eg/*.runtime
