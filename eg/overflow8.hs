@@ -25,7 +25,6 @@ post t  =  (sum . concat) (toList t) < 2 * 16 -- 3 * 16
 prop :: T -> Bool
 prop t  =  pre t ==> post t
 
-instance Name Int8
 instance Generalizable Int8 where
   background x = reifyEqOrd x
 

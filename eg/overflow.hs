@@ -25,7 +25,6 @@ post t  =  (sum . concat) (toList t) < 5 * 256
 prop :: T -> Bool
 prop t  =  pre t ==> post t
 
-instance Name Int16
 instance Generalizable Int16 where
   background x = reifyEqOrd x
 
