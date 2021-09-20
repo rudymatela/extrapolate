@@ -58,21 +58,21 @@ import Data.List (delete)
 --
 -- This function needs the @TemplateHaskell@ extension.
 deriveGeneralizable :: Name -> DecsQ
-deriveGeneralizable  =  deriveWhenNeededOrWarn ''Express reallyDerive
+deriveGeneralizable  =  deriveWhenNeededOrWarn ''Generalizable reallyDerive
   where
   reallyDerive  =  reallyDeriveGeneralizableWithRequisites
 
 -- | Same as 'deriveGeneralizable' but does not warn when instance already exists
 --   ('deriveGeneralizable' is preferable).
 deriveGeneralizableIfNeeded :: Name -> DecsQ
-deriveGeneralizableIfNeeded  =  deriveWhenNeeded ''Express reallyDerive
+deriveGeneralizableIfNeeded  =  deriveWhenNeeded ''Generalizable reallyDerive
   where
   reallyDerive  =  reallyDeriveGeneralizableWithRequisites
 
 -- | Derives a 'Generalizable' instance for a given type 'Name'
 --   cascading derivation of type arguments as well.
 deriveGeneralizableCascading :: Name -> DecsQ
-deriveGeneralizableCascading = deriveWhenNeeded ''Express reallyDerive
+deriveGeneralizableCascading = deriveWhenNeeded ''Generalizable reallyDerive
   where
   reallyDerive t  =  concat
                  <$> sequence [ deriveListableCascading t
