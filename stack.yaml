@@ -1,9 +1,9 @@
-resolver: lts-17.9 # or ghc-8.10.4
+resolver: lts-18.14 # or ghc-8.10.7
 
 packages:
 - .
 
 extra-deps:
 - leancheck-0.9.10
-- speculate-0.4.10
-- express-1.0.4
+- speculate-0.4.14
+- express-1.0.8
