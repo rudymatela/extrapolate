@@ -129,8 +129,8 @@ see [Extrapolate's API documentation].
 There are two other tools for [Haskell] capable of producing generalized
 counter-examples: [SmartCheck] and [Lazy SmallCheck 2012].
 
-Extrapolate was accepted for presentation at [IFL 2017], see the
-[IFL paper about Extrapolate](https://matela.com.br/paper/extrapolate.pdf).
+Extrapolate was presented at [IFL 2017] and was subject to a paper titled
+[Extrapolate: generalizing counterexamples of functional test properties](https://matela.com.br/extrapolate.pdf).
 Extrapolate is also subject to a chapter in a [PhD Thesis (2017)].
 
 [extrapolate-on-hackage]:          https://hackage.haskell.org/package/extrapolate
@@ -150,7 +150,7 @@ Extrapolate is also subject to a chapter in a [PhD Thesis (2017)].
 [IFL 2017]:             http://iflconference.org/
 [SmartCheck]:           https://github.com/leepike/SmartCheck
 [Lazy SmallCheck 2012]: https://github.com/UoYCS-plasma/lazysmallcheck2012
-[PhD Thesis (2017)]: https://matela.com.br/paper/rudy-phd-thesis-2017.pdf
+[PhD Thesis (2017)]: https://matela.com.br/thesis-rudy.pdf
 
 [extrapolate-logo]: https://github.com/rudymatela/extrapolate/raw/master/doc/extrapolate.svg?sanitize=true
 
