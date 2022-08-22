@@ -104,7 +104,7 @@ library
                  , Test.Extrapolate.Utils
   other-extensions:    TemplateHaskell, CPP
   build-depends: base >= 4 && < 5
-               , leancheck >= 0.9.4
+               , leancheck >= 1.0.0
                , template-haskell
                , speculate >= 0.4.6
                , express >= 1.0.4
