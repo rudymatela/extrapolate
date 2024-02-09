@@ -3,10 +3,10 @@
 import Test
 
 main :: IO ()
-main = mainTest tests 1000
+main  =  mainTest tests 1000
 
 tests :: Int -> [Bool]
-tests n =
+tests n  =
   [ True
 
   , holds n $ elemBy (==) ==== elem -:> ()
