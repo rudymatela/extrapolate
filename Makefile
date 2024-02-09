@@ -41,7 +41,7 @@ HADDOCKFLAGS = \
   $(shell grep -q "Arch Linux" /etc/lsb-release && echo --optghc=-dynamic)
 LIST_ALL_HSS = find src test mk eg/*.hs bench/*.hs -name "*.hs"
 LIB_DEPS = base $(INSTALL_DEPS)
-INSTALL_DEPS = leancheck express speculate template-haskell
+INSTALL_DEPS = leancheck express speculate template-haskell transformers
 all: mk/toplibs
 
 all-all: mk/All.hs
